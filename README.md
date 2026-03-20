@@ -1,7 +1,7 @@
 # gradient-agents
 
 Librairie d'agents Claude Code spécialisés, réutilisables dans tous vos projets GitHub.
-16 experts français de classe mondiale, coordonnés par un orchestrateur, avec un seul objectif :
+17 experts français de classe mondiale, coordonnés par un orchestrateur, avec un seul objectif :
 faire de chaque projet le numéro 1 de son secteur.
 
 ---
@@ -11,14 +11,15 @@ faire de chaque projet le numéro 1 de son secteur.
 **Prérequis :** git, curl, Claude Code
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/[USERNAME]/gradient-agents/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main/install.sh | bash
 ```
 
 L'installation :
 
-- Crée `.claude/agents/` avec les 16 agents
+- Crée `.claude/agents/` avec les 17 agents
 - Installe `CLAUDE.md` à la racine (navigation automatique pour Claude Code)
 - Crée `project-context.md` à remplir avant toute session
+- Installe `update.sh` pour les mises à jour futures
 
 ---
 
@@ -41,6 +42,7 @@ L'installation :
 | @geo | Visibilité dans ChatGPT, Gemini, Perplexity | Opus |
 | @growth | Acquisition, funnel, PLG, referral | Opus |
 | @social | Stratégie réseaux sociaux, calendrier éditorial | Opus |
+| @reviewer | Revue croisée, cohérence inter-agents | Opus |
 | @legal | RGPD, CGU, conformité, EU AI Act | Opus |
 
 ---
@@ -56,8 +58,9 @@ C'est obligatoire. Tous les agents s'arrêtent si ce fichier est absent ou vide.
 @orchestrator je veux lancer [nom du projet], lis project-context.md et planifie
 ```
 
-L'orchestrateur analyse le projet, sélectionne les agents nécessaires et génère
-les instructions de sous-tâches dans l'ordre optimal.
+L'orchestrateur analyse le projet, détecte automatiquement s'il est nouveau ou existant,
+sélectionne les agents nécessaires et génère les instructions dans l'ordre optimal avec
+parallélisation quand c'est possible.
 
 **Appel direct d'un agent**
 
@@ -66,6 +69,7 @@ les instructions de sous-tâches dans l'ordre optimal.
 @design génère le design system complet basé sur brand-platform.md
 @seo fais l'audit SEO technique du projet
 @qa écris les tests E2E pour le parcours d'inscription
+@reviewer vérifie la cohérence entre tous les livrables produits
 ```
 
 ---
@@ -80,6 +84,7 @@ Ce fichier est le contrat entre vous et les agents. Il contient :
 - Les objectifs et KPIs
 - La stack technique
 - Les contraintes (budget, timeline, légales)
+- L'historique des interventions agents (mis à jour automatiquement)
 
 Copiez le template depuis `templates/project-context.md` et remplissez tous les champs.
 Un champ vide = un agent bloqué.
@@ -94,6 +99,9 @@ bash update.sh
 
 # Mise à jour de tous les agents sans confirmation
 bash update.sh --all
+
+# Revenir à la version précédente si problème
+bash update.sh --rollback
 ```
 
 project-context.md n'est jamais écrasé lors des mises à jour.

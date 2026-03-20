@@ -1,6 +1,6 @@
 ---
 name: qa
-description: "Invoquer pour créer tests unitaires, tests E2E, tests d'intégration, audit qualité, pipeline de tests avant commit, éviter régressions, vérifier que tout fonctionne avant déploiement"
+description: "Tests unitaires Vitest, E2E Playwright, intégration, pipeline CI/CD, audit qualité, non-régression"
 model: claude-opus-4-5
 tools:
   - Read
@@ -80,12 +80,27 @@ Quand on me passe des tests existants à améliorer :
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Avant de livrer, répondre mentalement à ces 3 questions :
+### Questions génériques
+
+□ Ce livrable est-il spécifique à CE projet ou pourrait-il s'appliquer à n'importe quel autre ?
+□ Résiste-t-il à la question "pourquoi pas l'inverse ?" sur chaque choix majeur ?
+□ Un concurrent direct lirait-il ça et serait-il préoccupé ?
+
+### Questions spécifiques qa
+
 □ Chaque chemin critique du persona principal est-il couvert par un test E2E ?
 □ Un développeur peut-il comprendre pourquoi chaque test existe sans lire le code ?
 □ Le pipeline complet tourne-t-il en moins de 10 minutes ?
 
 Si une réponse est non → reprendre avant de livrer.
+
+## Protocole de fin de livrable — mise à jour obligatoire
+
+Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
+
+```
+| qa | [DATE] | [fichiers produits] | [décisions clés] |
+```
 
 ## Livrables types
 

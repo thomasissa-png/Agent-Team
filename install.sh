@@ -3,12 +3,12 @@ set -euo pipefail
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # gradient-agents — Script d'installation
-# Usage : curl -fsSL https://raw.githubusercontent.com/[USERNAME]/gradient-agents/main/install.sh | bash
+# Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main/install.sh | bash
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-VERSION="3.0.0"
-REPO_URL="https://github.com/[USERNAME]/gradient-agents"
-RAW_URL="https://raw.githubusercontent.com/[USERNAME]/gradient-agents/main"
+VERSION="3.1.0"
+REPO_URL="https://github.com/thomasissa-png/gradient-agents"
+RAW_URL="https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main"
 AGENTS_DIR=".claude/agents"
 TEMPLATES_DIR="templates"
 TEMP_DIR=$(mktemp -d)
@@ -60,38 +60,68 @@ check_existing_agents() {
   fi
 }
 
-clone_repo_sparse() {
+clone_repo() {
   echo -e "${BLUE}→ Téléchargement des agents...${NC}"
-  cd "$TEMP_DIR"
-  git clone --filter=blob:none --sparse --quiet "$REPO_URL" repo
-  cd repo
-  git sparse-checkout set .claude/agents templates CLAUDE.md
-  echo -e "${GREEN}✓ Agents téléchargés${NC}"
+
+  # Tentative avec sparse checkout (repos publics et privés avec auth)
+  if git clone --filter=blob:none --sparse --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+    cd "$TEMP_DIR/repo"
+    git sparse-checkout set .claude/agents templates CLAUDE.md
+    echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
+  else
+    # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
+    echo -e "${YELLOW}  Sparse checkout indisponible, clone complet...${NC}"
+    if git clone --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+      echo -e "${GREEN}✓ Agents téléchargés (clone complet)${NC}"
+    else
+      echo -e "${RED}✗ Impossible de cloner le repo.${NC}"
+      echo -e "${RED}  Vérifie que l'URL est correcte et que tu as les droits d'accès.${NC}"
+      echo -e "${RED}  Pour un repo privé, configure un token : https://docs.github.com/en/authentication${NC}"
+      exit 1
+    fi
+  fi
 }
 
 install_agents() {
   echo -e "${BLUE}→ Installation des agents...${NC}"
-  mkdir -p "$OLDPWD/$AGENTS_DIR"
-  cp -r "$TEMP_DIR/repo/.claude/agents/." "$OLDPWD/$AGENTS_DIR/"
-  echo -e "${GREEN}✓ Agents installés dans ${AGENTS_DIR}/${NC}"
+  local target_dir
+  target_dir="$(pwd)/$AGENTS_DIR"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD/$AGENTS_DIR"
+  fi
+  mkdir -p "$target_dir"
+  cp -r "$TEMP_DIR/repo/.claude/agents/." "$target_dir/"
+  echo -e "${GREEN}✓ $(ls "$target_dir"/*.md 2>/dev/null | wc -l | tr -d ' ') agents installés dans ${AGENTS_DIR}/${NC}"
 }
 
 install_claude_md() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
   if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
-    if [ -f "$OLDPWD/CLAUDE.md" ]; then
+    if [ -f "$target_dir/CLAUDE.md" ]; then
       echo -e "${YELLOW}⚠ CLAUDE.md existe déjà à la racine — non écrasé.${NC}"
-      echo -e "  Consulte ${TEMP_DIR}/repo/CLAUDE.md pour voir la version recommandée."
+      echo -e "  Pour voir la version recommandée : cat $TEMP_DIR/repo/CLAUDE.md"
     else
-      cp "$TEMP_DIR/repo/CLAUDE.md" "$OLDPWD/CLAUDE.md"
+      cp "$TEMP_DIR/repo/CLAUDE.md" "$target_dir/CLAUDE.md"
       echo -e "${GREEN}✓ CLAUDE.md installé${NC}"
     fi
   fi
 }
 
 install_project_context() {
-  if [ ! -f "$OLDPWD/project-context.md" ]; then
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
+  if [ ! -f "$target_dir/project-context.md" ]; then
     if [ -f "$TEMP_DIR/repo/templates/project-context.md" ]; then
-      cp "$TEMP_DIR/repo/templates/project-context.md" "$OLDPWD/project-context.md"
+      cp "$TEMP_DIR/repo/templates/project-context.md" "$target_dir/project-context.md"
       echo -e "${GREEN}✓ project-context.md créé à la racine — à remplir avant d'utiliser les agents${NC}"
     fi
   else
@@ -99,13 +129,33 @@ install_project_context() {
   fi
 }
 
+install_update_script() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
+  if [ -f "$TEMP_DIR/repo/update.sh" ]; then
+    cp "$TEMP_DIR/repo/update.sh" "$target_dir/update.sh"
+    chmod +x "$target_dir/update.sh"
+    echo -e "${GREEN}✓ update.sh installé${NC}"
+  fi
+}
+
 print_summary() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo -e "${BOLD}  Agents installés :${NC}"
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-  for agent_file in "$OLDPWD/$AGENTS_DIR"/*.md; do
+  for agent_file in "$target_dir/$AGENTS_DIR"/*.md; do
     agent_name=$(basename "$agent_file" .md)
     description=$(grep -m1 "^description:" "$agent_file" 2>/dev/null | sed 's/description: *//;s/^"//;s/"$//' || echo "—")
     printf "  ${GREEN}%-20s${NC} %s\n" "@$agent_name" "$description"
@@ -129,8 +179,9 @@ print_summary() {
 print_header
 check_requirements
 check_existing_agents
-clone_repo_sparse
+clone_repo
 install_agents
 install_claude_md
 install_project_context
+install_update_script
 print_summary

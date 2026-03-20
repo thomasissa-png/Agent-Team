@@ -18,7 +18,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 |---|---|---|
 | Nouveau projet complet | orchestrator | tous |
 | Stratégie / positionnement | creative-strategy | product-manager |
-| Code / développement | fullstack | infrastructure, ia |
+| Code / développement | fullstack | qa, infrastructure, ia |
 | Interface visuelle | design | ux |
 | Parcours utilisateur | ux | design, copywriter |
 | Contenu / texte | copywriter | seo, geo |
@@ -29,14 +29,16 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 | Analytics / mesure | data-analyst | product-manager |
 | Acquisition / croissance | growth | social, data-analyst |
 | Réseaux sociaux | social | copywriter, creative-strategy |
+| Tests / qualité / non-régression | qa | fullstack, infrastructure |
+| Revue croisée / cohérence | reviewer | orchestrator |
 | Juridique / conformité | legal | — |
-| Tests / qualité | qa | fullstack, infrastructure |
 | Roadmap / backlog | product-manager | creative-strategy |
 
 ## Convention d'appel
 
 - `@orchestrator` : planification multi-agents
 - `@fullstack` : écriture de code React, Next.js, Expo, API
+- `@qa` : tests unitaires, E2E, intégration, pipeline CI/CD, audit qualité
 - `@design` : UI, design system, composants visuels
 - `@ux` : parcours, wireframes, conversion
 - `@copywriter` : textes, landing pages, emails
@@ -49,7 +51,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 - `@data-analyst` : KPIs, tracking, analytics
 - `@growth` : acquisition, funnel, PLG
 - `@social` : stratégie et contenu réseaux sociaux
-- `@qa` : tests unitaires, E2E, intégration, pipeline CI/CD, audit qualité
+- `@reviewer` : revue croisée, cohérence inter-agents, validation finale
 - `@legal` : RGPD, CGU, conformité
 
 ## Règles communes à tous les agents
@@ -61,3 +63,4 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 5. Bloquer et signaler si le contexte est insuffisant
 6. Terminer chaque livrable par un bloc Handoff standardisé
 7. En mode révision : justifier chaque changement, ne pas tout réécrire
+8. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés

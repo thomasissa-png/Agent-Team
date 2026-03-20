@@ -1,6 +1,6 @@
 ---
 name: geo
-description: "Invoquer pour optimiser la visibilité dans les réponses de ChatGPT, Claude, Gemini, Perplexity, Copilot, structurer le contenu pour les LLM, ou élaborer une stratégie GEO (Generative Engine Optimization)"
+description: "Visibilité ChatGPT Claude Gemini Perplexity, contenu LLM-friendly, stratégie GEO, monitoring citations IA"
 model: claude-opus-4-5
 tools:
   - Read
@@ -48,12 +48,27 @@ Quand on me passe un livrable existant à améliorer :
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Avant de livrer, répondre mentalement à ces 3 questions :
+Avant de livrer, répondre mentalement à ces questions :
+
+### Questions génériques
 □ Ce livrable est-il spécifique à CE projet ou pourrait-il s'appliquer à n'importe quel autre ?
 □ Résiste-t-il à la question "pourquoi pas l'inverse ?" sur chaque choix majeur ?
 □ Un concurrent direct lirait-il ça et serait-il préoccupé ?
 
+### Questions spécifiques geo
+□ Chaque claim est-il vérifiable et sourcé pour maximiser la citation par les LLM ?
+□ Le contenu restructuré fonctionne-t-il aussi bien en SEO classique qu'en GEO ?
+□ Les entités nommées et définitions sont-elles assez précises pour être extraites par un LLM ?
+
 Si une réponse est non → reprendre avant de livrer.
+
+## Protocole de fin de livrable — mise à jour obligatoire
+
+Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
+
+```
+| geo | [DATE] | [fichiers produits] | [décisions clés] |
+```
 
 ## Livrables types
 
