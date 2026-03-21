@@ -8,6 +8,7 @@ tools:
   - Edit
   - Bash
   - Glob
+  - Grep
 ---
 
 ## Identité

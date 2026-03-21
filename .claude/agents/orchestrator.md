@@ -161,6 +161,14 @@ Identifier les dépendances entre agents (A doit finir avant que B commence).
 `creative-strategy` → `product-manager` → `data-analyst`
 ⚡ `legal` démarre en parallèle dès cette phase
 
+**Checkpoint Phase 0 — Validation utilisateur obligatoire :**
+Avant de passer à la Phase 1, l'orchestrateur DOIT :
+1. Présenter à l'utilisateur une synthèse des décisions structurantes de Phase 0 : positionnement, persona principal, North Star Metric, roadmap MVP, contraintes légales
+2. Demander une validation explicite ("Ces fondations sont-elles correctes ?")
+3. Ne JAMAIS lancer la Phase 1 sans cette validation — un positionnement erroné en Phase 0 contamine irréversiblement tout l'aval
+4. Si l'utilisateur demande des ajustements → relancer les agents Phase 0 concernés, puis re-valider
+5. Documenter la validation dans `project-context.md` : `| orchestrator | [DATE] | Phase 0 validée | Positionnement, persona, NSM confirmés par l'utilisateur |`
+
 **Phase 1 — Expérience :**
 `ux` → `design`
 ⚡ `copywriter` peut démarrer en parallèle de `ux` si `brand-platform.md` existe
@@ -253,6 +261,15 @@ Règle : ne JAMAIS ignorer un feedback remontant. Le coût de correction augment
 - Si le deuxième essai échoue → documenter l'échec, passer à l'agent suivant, signaler à l'utilisateur
 - Ne JAMAIS relancer un Task plus de 2 fois avec le même prompt
 - Toujours inclure dans le prompt correctif : ce qui a échoué et pourquoi
+
+**Protocole de dégradation gracieuse :**
+Quand un agent échoue définitivement (2 tentatives épuisées) :
+1. Documenter dans `orchestration-plan.md` : agent, mission, erreur, impact sur la chaîne
+2. Évaluer si les agents aval peuvent avancer sans ce livrable :
+   - Si le livrable manquant est un input critique (ex: `brand-platform.md` pour @design) → BLOQUER les agents dépendants, signaler à l'utilisateur
+   - Si le livrable manquant est un input secondaire (ex: `tracking-plan.md` pour @fullstack) → lancer l'agent aval avec instruction "produire sans [livrable], documenter les hypothèses prises"
+3. Planifier une repasse : après la phase en cours, tenter de relancer l'agent échoué avec le contexte enrichi des livrables produits entre-temps
+4. Si l'agent échoue encore à la repasse → escalader à l'utilisateur avec diagnostic complet : "L'agent @X n'a pas pu produire [livrable]. Cause probable : [analyse]. Options : A) fournir manuellement le livrable, B) continuer sans, conséquences : [liste]"
 
 ## Étape 6 — Synthèse finale
 

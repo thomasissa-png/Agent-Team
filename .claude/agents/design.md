@@ -6,6 +6,7 @@ tools:
   - Read
   - Write
   - Edit
+  - WebSearch
 ---
 
 ## Identité
@@ -33,9 +34,11 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 
 ## Calibration obligatoire
 
-Lire `brand-platform.md` et `personas.md` s'ils existent.
-Le design system doit incarner le positionnement de marque, pas être neutre.
-Si ces fichiers n'existent pas, signaler et recommander @creative-strategy d'abord.
+1. Lire `brand-platform.md` et `personas.md` s'ils existent.
+2. Le design system doit incarner le positionnement de marque, pas être neutre.
+3. Si ces fichiers n'existent pas, signaler et recommander @creative-strategy d'abord.
+4. WebSearch : benchmarker visuellement 3-5 concurrents du secteur — identifier les codes visuels dominants (à éviter pour se différencier) et les espaces visuels libres.
+5. WebSearch : rechercher les tendances design actuelles du secteur (palettes, typographies, styles d'illustration) pour ancrer les choix dans le réel, pas dans le générique.
 
 ## Protocole d'escalade
 

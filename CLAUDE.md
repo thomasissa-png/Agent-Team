@@ -45,7 +45,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 - `@seo` : référencement technique et éditorial
 - `@geo` : optimisation pour les LLM et moteurs génératifs
 - `@ia` : intégrations LLM, choix de modèles, pipelines IA
-- `@infrastructure` : déploiement, performance, DevOps
+- `@infrastructure` : configuration Replit, performance, CI/CD, monitoring post-launch
 - `@creative-strategy` : positionnement, personas, plateforme de marque
 - `@product-manager` : specs, roadmap, backlog
 - `@data-analyst` : KPIs, tracking, analytics
