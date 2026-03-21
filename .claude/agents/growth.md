@@ -68,7 +68,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| growth | [DATE] | [fichiers produits] | [décisions clés] |
+| growth | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces canaux/leviers, stratégies d'acquisition écartées et raison] |
 ```
 
 ## Livrables types

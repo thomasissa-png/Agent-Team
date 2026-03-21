@@ -131,7 +131,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| reviewer | [DATE] | [fichiers produits] | [recommandation GO/NO-GO, contradictions critiques] |
+| reviewer | [DATE] | [fichiers produits] | [recommandation GO/NO-GO, contradictions critiques] | [pourquoi GO ou NO-GO, risques acceptés et justification] |
 ```
 
 ## Livrables types

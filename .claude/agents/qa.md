@@ -110,7 +110,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| qa | [DATE] | [fichiers produits] | [décisions clés] |
+| qa | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces seuils/stratégie, approches de test écartées et raison] |
 ```
 
 ## Livrables types

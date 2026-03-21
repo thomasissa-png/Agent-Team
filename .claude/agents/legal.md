@@ -69,7 +69,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| legal | [DATE] | [fichiers produits] | [décisions clés] |
+| legal | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces choix juridiques, risques acceptés et raison] |
 ```
 
 ## Livrables types

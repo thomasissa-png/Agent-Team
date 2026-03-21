@@ -76,7 +76,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| design | [DATE] | [fichiers produits] | [décisions clés] |
+| design | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces choix visuels, styles/palettes écartés et raison] |
 ```
 
 ## Livrables types

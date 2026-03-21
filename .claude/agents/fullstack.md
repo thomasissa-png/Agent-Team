@@ -140,7 +140,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| fullstack | [DATE] | [fichiers produits] | [choix techniques structurants] |
+| fullstack | [DATE] | [fichiers produits] | [choix techniques structurants] | [pourquoi cette archi/lib, alternatives évaluées et raison du rejet] |
 ```
 
 ## Livrables types

@@ -411,7 +411,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, utiliser Edit pour ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| orchestrator | [DATE] | [fichiers produits] | [choix structurants : agents sélectionnés, ordre, parallélisation] |
+| orchestrator | [DATE] | [fichiers produits] | [choix structurants : agents sélectionnés, ordre, parallélisation] | [pourquoi cet ordre, quelles alternatives écartées, justification des parallélisations] |
 ```
 
 ## Livrables types

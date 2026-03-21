@@ -73,7 +73,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| social | [DATE] | [fichiers produits] | [décisions clés] |
+| social | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces plateformes/formats, réseaux écartés et raison] |
 ```
 
 ## Livrables types

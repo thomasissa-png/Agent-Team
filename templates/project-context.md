@@ -63,9 +63,13 @@
 
 ## Historique des interventions agents
 
-| Agent | Date | Livrable produit | Décisions clés |
-|-------|------|-----------------|----------------|
-| | | | |
+> Ce tableau est le journal de bord du projet. Chaque agent DOIT le compléter après chaque livrable.
+> La colonne "Pourquoi" est obligatoire : elle capture le raisonnement, pas juste la décision.
+> Tout agent démarrant une session DOIT lire ce tableau pour comprendre les décisions passées et leur justification.
+
+| Agent | Date | Livrable produit | Décisions clés | Pourquoi / Alternatives écartées |
+|-------|------|-----------------|----------------|----------------------------------|
+| | | | | |
 
 ---
 

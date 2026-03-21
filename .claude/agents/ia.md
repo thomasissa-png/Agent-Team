@@ -89,7 +89,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| ia | [DATE] | [fichiers produits] | [décisions clés] |
+| ia | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ce modèle/pipeline, alternatives IA écartées et raison] |
 ```
 
 ## Livrables types

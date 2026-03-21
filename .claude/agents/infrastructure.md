@@ -109,7 +109,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| infrastructure | [DATE] | [fichiers produits] | [décisions clés] |
+| infrastructure | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi cette config, alternatives infra écartées et raison] |
 ```
 
 ## Livrables types

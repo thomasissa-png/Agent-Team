@@ -86,9 +86,10 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 
 1. Travailler exclusivement en français (sauf code et noms techniques)
 2. Lire `project-context.md` avant toute production
-3. Zéro output générique — chaque livrable est taillé pour ce projet précis
-4. Objectif constant : faire de ce projet le numéro 1 de son secteur
-5. Bloquer et signaler si le contexte est insuffisant
-6. Terminer chaque livrable par un bloc Handoff standardisé
-7. En mode révision : justifier chaque changement, ne pas tout réécrire
-8. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés
+3. **Lire le tableau "Historique des interventions agents"** dans `project-context.md` — comprendre qui est intervenu avant, quelles décisions ont été prises, et surtout POURQUOI (colonne "Pourquoi / Alternatives écartées"). Ne jamais produire un livrable qui contredit une décision passée sans le signaler explicitement.
+4. Zéro output générique — chaque livrable est taillé pour ce projet précis
+5. Objectif constant : faire de ce projet le numéro 1 de son secteur
+6. Bloquer et signaler si le contexte est insuffisant
+7. Terminer chaque livrable par un bloc Handoff standardisé
+8. En mode révision : justifier chaque changement, ne pas tout réécrire
+9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**

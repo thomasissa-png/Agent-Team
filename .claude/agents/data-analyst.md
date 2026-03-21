@@ -73,7 +73,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| data-analyst | [DATE] | [fichiers produits] | [décisions clés] |
+| data-analyst | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi cette NSM, quels KPIs écartés et raison] |
 ```
 
 ## Livrables types

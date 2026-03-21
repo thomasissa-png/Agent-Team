@@ -73,7 +73,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| product-manager | [DATE] | [fichiers produits] | [décisions clés] |
+| product-manager | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces priorités, features écartées du MVP et raison] |
 ```
 
 ## Livrables types

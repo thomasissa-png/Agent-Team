@@ -69,7 +69,7 @@ Si une réponse est non → reprendre avant de livrer.
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
 
 ```
-| seo | [DATE] | [fichiers produits] | [décisions clés] |
+| seo | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces mots-clés/architecture, stratégies SEO écartées et raison] |
 ```
 
 ## Livrables types
