@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Agents — Dashboard</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0A0A0A;--surface:#111111;--card:#161616;
+    --text:#F5F0E8;--text-muted:rgba(245,240,232,0.55);--text-dim:rgba(245,240,232,0.4);
+    --border:rgba(245,240,232,0.12);--border-light:rgba(245,240,232,0.08);
+    --accent:#E8FF00;--red:#FF4D4D;
+    --radius:10px;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  /* ── NAV STICKY ── */
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  nav .logo{font-weight:700;font-size:15px;color:var(--accent);margin-right:auto;letter-spacing:-0.3px}
+  nav a{color:var(--text-muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+  nav a:hover,nav a.active{color:var(--text);background:rgba(245,240,232,0.06)}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1200px;margin:0 auto;padding:32px 20px}
+  section{margin-bottom:64px}
+  h2{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+  .section-sub{color:var(--text-muted);font-size:14px;margin-bottom:32px}
+
+  /* ── AGENT CARDS ── */
+  .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .agent-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
+  .agent-card:hover{border-color:rgba(232,255,0,0.25)}
+  .agent-card.highlighted{border-color:var(--accent);box-shadow:0 0 20px rgba(232,255,0,0.08)}
+  .agent-name{font-size:15px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+  .agent-name .at{color:var(--accent);font-weight:400;font-size:13px}
+  .agent-role{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+  .agent-desc{font-size:13px;color:var(--text-muted);line-height:1.6;flex:1}
+  .agent-phase{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);background:rgba(232,255,0,0.08);padding:3px 8px;border-radius:4px;margin-bottom:10px;width:fit-content}
+
+  /* ── CHAMPS REQUIS ── */
+  .agent-required{border-top:1px solid var(--border-light);margin-top:14px;padding-top:10px}
+  .agent-required-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+  .required-tags{display:flex;flex-wrap:wrap;gap:4px}
+  .required-tag{font-size:11px;color:var(--text-muted);border:1px solid rgba(245,240,232,0.15);border-radius:4px;padding:2px 7px;white-space:nowrap}
+
+  /* ── PROMPTS ── */
+  .search-wrap{display:flex;justify-content:center;margin-bottom:28px}
+  .search-box{position:relative;width:100%;max-width:400px}
+  .search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+  .search-box input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;padding:10px 14px 10px 40px;outline:none;transition:border-color .2s}
+  .search-box input::placeholder{color:var(--text-dim)}
+  .search-box input:focus{border-color:var(--accent)}
+  .no-results{display:none;text-align:center;color:var(--text-muted);font-size:14px;padding:32px 0}
+
+  .prompt-category{margin-bottom:32px}
+  .prompt-category h3{font-size:16px;font-weight:600;margin-bottom:14px;color:var(--text);display:flex;align-items:center;gap:8px}
+  .prompt-category h3 .cat-icon{font-size:14px}
+  .prompts-list{display:flex;flex-direction:column;gap:10px}
+  .prompt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color .2s}
+  .prompt-card:hover{border-color:rgba(232,255,0,0.2)}
+  .prompt-card.hidden{display:none}
+  .prompt-title{font-size:14px;font-weight:600;margin-bottom:6px}
+  .prompt-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .prompt-agent-tag{font-size:11px;color:var(--accent);border:1px solid rgba(232,255,0,0.25);border-radius:4px;padding:1px 6px}
+  .prompt-body{font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-line}
+  .prompt-body strong{color:var(--text);font-weight:600}
+
+  /* ── CHANGELOG ── */
+  .changelog-controls{margin-bottom:20px}
+  .changelog-controls select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:6px 12px;outline:none;cursor:pointer}
+  .changelog-controls select:focus{border-color:var(--accent)}
+  .changelog-list{display:flex;flex-direction:column;gap:10px}
+  .changelog-entry{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:background .15s;flex-wrap:wrap}
+  .changelog-entry:hover{background:rgba(245,240,232,0.03)}
+  .changelog-date{font-size:12px;color:var(--text-dim);min-width:85px;padding-top:2px}
+  .changelog-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+  .badge-nouveau{background:var(--accent);color:#000}
+  .badge-maj{border:1px solid var(--accent);color:var(--accent);background:transparent}
+  .badge-supprime{border:1px solid var(--red);color:var(--red);background:transparent}
+  .badge-agent{font-size:11px;color:var(--text-muted);border:1px solid var(--border);border-radius:4px;padding:2px 7px}
+  .changelog-desc{font-size:13px;color:var(--text-muted);flex:1;min-width:200px}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:600px){
+    .agents-grid{grid-template-columns:1fr}
+    .search-box{max-width:100%}
+    .changelog-entry{flex-direction:column;gap:6px}
+    nav{padding:10px 16px}
+    nav a{font-size:12px;padding:5px 10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav>
+  <span class="logo">Gradient Agents</span>
+  <a href="#equipe">L'Équipe</a>
+  <a href="#prompts">Prompts</a>
+  <a href="#changelog">Changelog</a>
+</nav>
+
+<!-- ════ DATA ════ -->
+<script>
+const AGENTS = [
+  {
+    id:"orchestrator", name:"Orchestrator", at:"@orchestrator",
+    role:"Chef d'orchestre — 20 ans d'expérience",
+    phase:"Phase 0 — Coordination",
+    desc:"Planification multi-agents, séquencement Phase 0→5, arbitrage, surveillance de la cohérence globale.",
+    required:["Tous les champs de project-context.md"]
+  },
+  {
+    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy",
+    role:"Directrice de stratégie créative — 18 ans",
+    phase:"Phase 0 — Stratégie",
+    desc:"Positionnement, personas, plateforme de marque, benchmark concurrentiel, brief créatif.",
+    required:["Secteur","Persona principal","Problème résolu","Alternative actuelle"]
+  },
+  {
+    id:"product-manager", name:"Product Manager", at:"@product-manager",
+    role:"VP Product — 12 ans",
+    phase:"Phase 0 — Produit",
+    desc:"Vision produit, user stories, specs fonctionnelles, priorisation RICE/MoSCoW, backlog.",
+    required:["Objectif principal à 6 mois","Persona principal","Stack technique"]
+  },
+  {
+    id:"data-analyst", name:"Data Analyst", at:"@data-analyst",
+    role:"Head of Analytics — 10 ans",
+    phase:"Phase 0 — Analytics",
+    desc:"North Star Metric, tracking plan, KPIs AARRR, analyse de cohortes, tests A/B.",
+    required:["Objectif principal à 6 mois","KPI North Star","Stack technique"]
+  },
+  {
+    id:"legal", name:"Legal", at:"@legal",
+    role:"Juriste digital senior — 19 ans",
+    phase:"Phase 0→5 — Parallèle",
+    desc:"RGPD, CGU/CGV, protection IP/marques, contrats SaaS, EU AI Act, DSA/DMA.",
+    required:["Secteur","Persona principal","Contraintes légales ou sectorielles"]
+  },
+  {
+    id:"ux", name:"UX", at:"@ux",
+    role:"Lead UX Researcher & Designer — 14 ans",
+    phase:"Phase 1 — Expérience",
+    desc:"Architecture d'information, user flows, wireframes, CRO, onboarding, accessibilité.",
+    required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
+  },
+  {
+    id:"design", name:"Design", at:"@design",
+    role:"Directeur artistique digital — 11 ans",
+    phase:"Phase 1 — Visuel",
+    desc:"Design tokens, composants UI, dark mode, accessibilité WCAG 2.2 AA, cohérence cross-platform.",
+    required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
+  },
+  {
+    id:"copywriter", name:"Copywriter", at:"@copywriter",
+    role:"Senior copywriter — 13 ans",
+    phase:"Phase 1–3 — Contenu",
+    desc:"Landing pages, brand voice, UX writing, séquences email, copywriting de conversion.",
+    required:["Persona principal","Ton de marque","Promesse unique"]
+  },
+  {
+    id:"fullstack", name:"Fullstack", at:"@fullstack",
+    role:"Staff Engineer Next.js & React Native — 16 ans",
+    phase:"Phase 2 — Développement",
+    desc:"Frontend/backend, API routes, auth, Supabase, Stripe, TypeScript strict.",
+    required:["Stack technique","Base de données","Outils IA utilisés"]
+  },
+  {
+    id:"qa", name:"QA", at:"@qa",
+    role:"QA Engineering Manager — 9 ans",
+    phase:"Phase 2 — Tests",
+    desc:"Vitest, Playwright E2E, pipeline CI/CD, validation tracking-plan, tests de performance.",
+    required:["Stack technique","Base de données","Hébergement"]
+  },
+  {
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure",
+    role:"SRE / Platform Engineer — 13 ans",
+    phase:"Phase 2 — Infra",
+    desc:"Déploiement Replit, Core Web Vitals, CI/CD, sécurité, monitoring.",
+    required:["Stack technique","Hébergement","Budget mensuel estimé"]
+  },
+  {
+    id:"ia", name:"IA", at:"@ia",
+    role:"AI Engineer — 7 ans en production",
+    phase:"Phase 2 — Intelligence",
+    desc:"Intégration API LLM (Claude, GPT, Gemini), génération d'images, optimisation tokens/coûts.",
+    required:["Stack technique","Outils IA utilisés","Budget mensuel estimé"]
+  },
+  {
+    id:"seo", name:"SEO", at:"@seo",
+    role:"Consultant SEO technique — 17 ans",
+    phase:"Phase 3 — Référencement",
+    desc:"SEO technique, stratégie mots-clés, Core Web Vitals, données structurées, maillage interne.",
+    required:["Secteur","Persona principal","Stack technique"]
+  },
+  {
+    id:"geo", name:"GEO", at:"@geo",
+    role:"Pionnier GEO — 4 ans",
+    phase:"Phase 3 — Visibilité IA",
+    desc:"Optimisation citations ChatGPT/Claude/Gemini, contenu LLM-friendly, monitoring IA.",
+    required:["Secteur","Persona principal","Promesse unique"]
+  },
+  {
+    id:"growth", name:"Growth", at:"@growth",
+    role:"Head of Growth — 10 ans",
+    phase:"Phase 4 — Acquisition",
+    desc:"Canaux d'acquisition, funnel AARRR, boucles virales, referral, modélisation CAC/LTV.",
+    required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel estimé"]
+  },
+  {
+    id:"social", name:"Social", at:"@social",
+    role:"Social Media Strategist — 8 ans",
+    phase:"Phase 4 — Réseaux",
+    desc:"Stratégie par plateforme, calendrier éditorial, formats natifs, community management.",
+    required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
+  },
+  {
+    id:"reviewer", name:"Reviewer", at:"@reviewer",
+    role:"Senior auditor qualité — 22 ans",
+    phase:"Phase 5 — Validation",
+    desc:"Détection contradictions, vérification alignement, audit cohérence, recommandation GO/NO-GO.",
+    required:["Tous les livrables des agents concernés"]
+  }
+];
+
+const PROMPTS = [
+  {
+    category:"Lancement de projet",
+    items:[
+      {
+        title:"Lancer un nouveau projet complet",
+        agents:["orchestrator"],
+        contexte:"Premier lancement, project-context.md rempli",
+        livrable:"orchestration-plan.md + project-synthesis.md",
+        exemple:"@orchestrator Voici le project-context.md rempli pour [NomDuProjet]. Lance le séquencement complet Phase 0→5, identifie les dépendances entre agents, et produis l'orchestration-plan.md avec le calendrier d'exécution."
+      },
+      {
+        title:"Définir la stratégie de marque",
+        agents:["creative-strategy"],
+        contexte:"Début de projet, avant tout développement",
+        livrable:"brand-platform.md, personas.md, creative-brief.md",
+        exemple:"@creative-strategy Analyse le project-context.md et produis la plateforme de marque complète : positionnement, personas détaillés, benchmark concurrentiel et brief créatif. Objectif : différenciation claire dans le secteur [secteur]."
+      },
+      {
+        title:"Créer la roadmap produit",
+        agents:["product-manager"],
+        contexte:"Après validation stratégie créative",
+        livrable:"product-vision.md, roadmap.md, backlog.md",
+        exemple:"@product-manager À partir du brand-platform.md de @creative-strategy et du project-context.md, définis la vision produit, la roadmap à 6 mois priorisée RICE, et le backlog initial avec user stories."
+      }
+    ]
+  },
+  {
+    category:"Développement",
+    items:[
+      {
+        title:"Développer une feature complète",
+        agents:["fullstack","qa"],
+        contexte:"Specs validées par @product-manager",
+        livrable:"Code source + tests",
+        exemple:"@fullstack Implémente la feature [nom] selon les specs de functional-specs.md. Stack : Next.js 14 App Router, Supabase, TypeScript strict. Inclus les API routes, les composants UI et la gestion d'erreurs. @qa prépare les tests."
+      },
+      {
+        title:"Intégrer Stripe (paiement)",
+        agents:["fullstack","legal"],
+        contexte:"Modèle de pricing défini",
+        livrable:"Code Stripe + CGV mises à jour",
+        exemple:"@fullstack Intègre Stripe Checkout pour le plan [free/pro/enterprise]. Webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal vérifie la conformité CGV pour la vente en ligne."
+      },
+      {
+        title:"Ajouter une intégration LLM",
+        agents:["ia","fullstack"],
+        contexte:"Cas d'usage IA identifié",
+        livrable:"Pipeline IA + API routes",
+        exemple:"@ia Conçois le pipeline pour [cas d'usage : résumé, génération, classification]. Choisis le modèle optimal (coût/qualité), structure les prompts, et définis les fallbacks. @fullstack implémente les routes API avec le Vercel AI SDK."
+      },
+      {
+        title:"Configurer le CI/CD",
+        agents:["qa","infrastructure"],
+        contexte:"Code base prête pour l'automatisation",
+        livrable:"Pipeline GitHub Actions + config",
+        exemple:"@qa Configure le pipeline CI/CD GitHub Actions : lint, type-check, tests Vitest, tests E2E Playwright. @infrastructure valide la config de déploiement Replit et le monitoring post-deploy."
+      }
+    ]
+  },
+  {
+    category:"Contenu & Visibilité",
+    items:[
+      {
+        title:"Rédiger la landing page",
+        agents:["copywriter","seo"],
+        contexte:"Brand voice définie, personas validés",
+        livrable:"landing-page-copy.md + metadata SEO",
+        exemple:"@copywriter Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Ton : [ton de marque]. Persona cible : [persona]. @seo optimise les meta title/description et les headings."
+      },
+      {
+        title:"Stratégie SEO complète",
+        agents:["seo","geo"],
+        contexte:"Site en production ou pré-lancement",
+        livrable:"seo-strategy.md, keyword-map.md, geo-strategy.md",
+        exemple:"@seo Réalise l'audit SEO technique complet et la stratégie de mots-clés pour [secteur]. @geo analyse la visibilité actuelle sur ChatGPT, Claude et Perplexity et propose le plan d'optimisation GEO."
+      },
+      {
+        title:"Séquence email onboarding",
+        agents:["copywriter","growth"],
+        contexte:"Parcours onboarding défini par @ux",
+        livrable:"email-sequences.md + funnel metrics",
+        exemple:"@copywriter Crée la séquence de 5 emails onboarding : bienvenue, activation feature clé, social proof, upgrade, réengagement. @growth définit les triggers et les KPIs de conversion par étape."
+      }
+    ]
+  },
+  {
+    category:"Qualité & Conformité",
+    items:[
+      {
+        title:"Audit RGPD complet",
+        agents:["legal"],
+        contexte:"Avant mise en production",
+        livrable:"rgpd-checklist.md, privacy-policy.md",
+        exemple:"@legal Réalise l'audit RGPD complet : registre des traitements, base légale par donnée, durées de conservation, flux transfrontaliers. Produis la politique de confidentialité et la checklist de conformité."
+      },
+      {
+        title:"Revue croisée avant livraison",
+        agents:["reviewer"],
+        contexte:"Tous les livrables produits",
+        livrable:"cross-review-report.md",
+        exemple:"@reviewer Audite la cohérence entre tous les livrables : alignement brand voice ↔ copy ↔ UI, cohérence specs ↔ code, conformité légale. Signale toute contradiction et donne la recommandation GO/NO-GO."
+      },
+      {
+        title:"Audit qualité et tests",
+        agents:["qa"],
+        contexte:"Code développé, avant release",
+        livrable:"qa-strategy.md, rapports de tests",
+        exemple:"@qa Exécute l'audit qualité complet : couverture de tests unitaires (cible >80%), tests E2E des parcours critiques, validation du tracking-plan, tests de performance. Produis le rapport avec les blockers identifiés."
+      },
+      {
+        title:"Audit UX et conversion",
+        agents:["ux","data-analyst"],
+        contexte:"Produit en production avec trafic",
+        livrable:"ux-audit.md, dashboard-specs.md",
+        exemple:"@ux Audite les parcours critiques : onboarding, conversion, rétention. Identifie les frictions et propose les améliorations priorisées. @data-analyst configure les dashboards de suivi et les métriques de conversion."
+      }
+    ]
+  }
+];
+
+const CHANGELOG = [
+  {
+    date:"2026-03-21",
+    agent:"qa",
+    type:"nouveau",
+    description:"Création de l'agent QA — tests unitaires, E2E, pipeline CI/CD, audit qualité"
+  },
+  {
+    date:"2026-03-21",
+    agent:"orchestrator",
+    type:"mise à jour",
+    description:"Intégration de @qa en Phase 2 du pipeline de développement"
+  },
+  {
+    date:"2026-03-21",
+    agent:"tous",
+    type:"mise à jour",
+    description:"Ajout du protocole d'escalade, mode révision et standard de livraison sur tous les agents"
+  }
+];
+</script>
+
+<!-- ════ SECTION ÉQUIPE ════ -->
+<div class="container">
+
+<section id="equipe">
+  <h2>L'Équipe</h2>
+  <p class="section-sub">17 agents spécialisés — de la stratégie au déploiement</p>
+  <div class="agents-grid" id="agents-grid"></div>
+</section>
+
+<!-- ════ SECTION PROMPTS ════ -->
+<section id="prompts">
+  <h2>Prompts</h2>
+  <p class="section-sub">Bibliothèque de prompts prêts à l'emploi pour chaque situation</p>
+
+  <!-- Recherche -->
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="prompt-search" placeholder="Rechercher un prompt... (ex: stripe, rgpd, landing)">
+    </div>
+  </div>
+  <div id="no-results" class="no-results">Aucun prompt trouvé pour cette recherche</div>
+  <div id="prompts-container"></div>
+</section>
+
+<!-- ════ SECTION CHANGELOG ════ -->
+<section id="changelog">
+  <h2>Changelog</h2>
+  <p class="section-sub">Historique des modifications des agents</p>
+  <div class="changelog-controls">
+    <select id="changelog-filter">
+      <option value="tous">Tous les agents</option>
+    </select>
+  </div>
+  <div class="changelog-list" id="changelog-list"></div>
+</section>
+
+</div><!-- /.container -->
+
+<script>
+/* ── Helpers ── */
+function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+
+/* ── Render agents ── */
+(function renderAgents(){
+  const grid=document.getElementById("agents-grid");
+  AGENTS.forEach(a=>{
+    const card=document.createElement("div");
+    card.className="agent-card";
+    card.dataset.agent=a.id;
+    card.innerHTML=`
+      <div class="agent-phase">${a.phase}</div>
+      <div class="agent-name"><span class="at">${a.at}</span> ${a.name}</div>
+      <div class="agent-role">${a.role}</div>
+      <div class="agent-desc">${a.desc}</div>
+      <div class="agent-required">
+        <div class="agent-required-label">Requis</div>
+        <div class="required-tags">${a.required.map(r=>`<span class="required-tag">${r}</span>`).join("")}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+})();
+
+/* ── Render prompts ── */
+(function renderPrompts(){
+  const container=document.getElementById("prompts-container");
+  PROMPTS.forEach(cat=>{
+    const section=document.createElement("div");
+    section.className="prompt-category";
+    section.innerHTML=`<h3>${cat.category}</h3>`;
+    const list=document.createElement("div");
+    list.className="prompts-list";
+    cat.items.forEach(p=>{
+      const card=document.createElement("div");
+      card.className="prompt-card";
+      card.dataset.search=stripAccents([p.title,p.agents.join(" "),p.contexte,p.livrable,p.exemple].join(" ")).toLowerCase();
+      card.innerHTML=`
+        <div class="prompt-title">${p.title}</div>
+        <div class="prompt-meta">${p.agents.map(a=>`<span class="prompt-agent-tag">@${a}</span>`).join("")}</div>
+        <div class="prompt-body"><strong>[CONTEXTE]</strong> ${p.contexte}
+<strong>[LIVRABLE]</strong> ${p.livrable}
+<strong>[EXEMPLE]</strong> ${p.exemple}</div>`;
+      list.appendChild(card);
+    });
+    section.appendChild(list);
+    container.appendChild(section);
+  });
+})();
+
+/* ── Search ── */
+(function initSearch(){
+  const input=document.getElementById("prompt-search");
+  const noResults=document.getElementById("no-results");
+  input.addEventListener("input",function(){
+    const q=stripAccents(this.value.trim()).toLowerCase();
+    const cards=document.querySelectorAll(".prompt-card");
+    let visible=0;
+    cards.forEach(c=>{
+      if(!q||c.dataset.search.includes(q)){c.classList.remove("hidden");visible++}
+      else{c.classList.add("hidden")}
+    });
+    /* hide empty categories */
+    document.querySelectorAll(".prompt-category").forEach(cat=>{
+      const has=cat.querySelectorAll(".prompt-card:not(.hidden)").length>0;
+      cat.style.display=has?"":"none";
+    });
+    noResults.style.display=visible===0&&q?"block":"none";
+  });
+})();
+
+/* ── Changelog ── */
+(function renderChangelog(){
+  const list=document.getElementById("changelog-list");
+  const filter=document.getElementById("changelog-filter");
+  const agentSet=new Set();
+
+  /* populate filter */
+  CHANGELOG.forEach(e=>agentSet.add(e.agent));
+  agentSet.forEach(a=>{
+    const opt=document.createElement("option");
+    opt.value=a;opt.textContent="@"+a;
+    filter.appendChild(opt);
+  });
+
+  function badgeClass(type){
+    if(type==="nouveau")return"badge badge-nouveau";
+    if(type==="supprimé")return"badge badge-supprime";
+    return"badge badge-maj";
+  }
+
+  function render(agentFilter){
+    list.innerHTML="";
+    const entries=CHANGELOG.slice().sort((a,b)=>b.date.localeCompare(a.date));
+    entries.forEach(e=>{
+      if(agentFilter!=="tous"&&e.agent!==agentFilter)return;
+      const el=document.createElement("div");
+      el.className="changelog-entry";
+      el.dataset.agent=e.agent;
+      el.innerHTML=`
+        <span class="changelog-date">${e.date}</span>
+        <div class="changelog-badges">
+          <span class="${badgeClass(e.type)}">${e.type}</span>
+          <span class="badge-agent">@${e.agent}</span>
+        </div>
+        <span class="changelog-desc">${e.description}</span>`;
+
+      /* highlight card on hover */
+      el.addEventListener("mouseenter",()=>{
+        document.querySelectorAll(`.agent-card[data-agent="${e.agent}"]`).forEach(c=>c.classList.add("highlighted"));
+      });
+      el.addEventListener("mouseleave",()=>{
+        document.querySelectorAll(".agent-card.highlighted").forEach(c=>c.classList.remove("highlighted"));
+      });
+      list.appendChild(el);
+    });
+  }
+
+  filter.addEventListener("change",()=>render(filter.value));
+  render("tous");
+})();
+</script>
+
+</body>
+</html>
