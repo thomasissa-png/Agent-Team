@@ -1,7 +1,7 @@
 ---
 name: product-manager
 description: "Vision produit, roadmap, specs fonctionnelles, user stories, backlog, priorisation RICE MoSCoW"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

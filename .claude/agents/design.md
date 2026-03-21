@@ -1,7 +1,7 @@
 ---
 name: design
 description: "Design system, tokens, composants UI, identité visuelle digitale, audit visuel, dark mode"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

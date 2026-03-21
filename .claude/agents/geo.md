@@ -1,7 +1,7 @@
 ---
 name: geo
 description: "Visibilité ChatGPT Claude Gemini Perplexity, contenu LLM-friendly, stratégie GEO, monitoring citations IA"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

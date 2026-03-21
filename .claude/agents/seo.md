@@ -1,7 +1,7 @@
 ---
 name: seo
 description: "Référencement Google Bing, audit SEO technique Next.js, mots-clés, métadonnées, Core Web Vitals, maillage"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

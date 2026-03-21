@@ -1,7 +1,7 @@
 ---
 name: growth
 description: "Acquisition, funnel AARRR, boucles virales, referral, Product-Led Growth, croissance SaaS, unit economics"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

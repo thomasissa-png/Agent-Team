@@ -1,7 +1,7 @@
 ---
 name: qa
 description: "Tests unitaires Vitest, E2E Playwright, intégration, pipeline CI/CD, audit qualité, non-régression"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

@@ -1,7 +1,7 @@
 ---
 name: ux
 description: "Architecture information, parcours utilisateur, wireframes, conversion, onboarding SaaS, audit UX, frictions"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

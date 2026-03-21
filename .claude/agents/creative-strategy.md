@@ -1,7 +1,7 @@
 ---
 name: creative-strategy
 description: "Positionnement, personas, plateforme de marque, concept créatif, benchmark concurrence, stratégie campagne"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

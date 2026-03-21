@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: "Revue croisée de livrables, cohérence inter-agents, détection contradictions, validation avant livraison finale"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

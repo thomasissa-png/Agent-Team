@@ -1,7 +1,7 @@
 ---
 name: infrastructure
 description: "Déploiement, Core Web Vitals, base de données, CI/CD, sécurité, hébergement Vercel Docker VPS"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

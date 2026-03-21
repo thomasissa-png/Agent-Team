@@ -1,7 +1,7 @@
 ---
 name: copywriter
 description: "Landing page, email, UX writing, brand voice, slogan, pitch, microcopy, texte persuasif de marque"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

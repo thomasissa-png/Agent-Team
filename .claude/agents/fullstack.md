@@ -1,7 +1,7 @@
 ---
 name: fullstack
 description: "Code React, Next.js, Expo, API routes, hooks, Supabase, Stripe, formulaires, animations, développement frontend backend"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write

@@ -1,7 +1,7 @@
 ---
 name: legal
 description: "RGPD, CGU CGV mentions légales, politique confidentialité, marques INPI, contrat SaaS, EU AI Act DSA DMA"
-model: claude-opus-4-5
+model: claude-opus-4-6
 tools:
   - Read
   - Write
