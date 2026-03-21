@@ -68,6 +68,7 @@
   .prompt-agent-tag{font-size:11px;color:var(--accent);border:1px solid rgba(232,255,0,0.25);border-radius:4px;padding:1px 6px}
   .prompt-body{font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-line}
   .prompt-body strong{color:var(--text);font-weight:600}
+  .prompt-prereq{font-size:12px;color:var(--accent);opacity:0.85;margin-top:6px;padding:6px 10px;border-left:2px solid var(--accent);background:rgba(232,255,0,0.04)}
   .prompt-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
   .btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;white-space:nowrap}
   .btn-copy:hover{border-color:var(--accent);color:var(--accent)}
@@ -255,6 +256,7 @@ const PROMPTS = [
       {
         title:"Lancer un nouveau projet complet",
         agents:["orchestrator"],
+        prerequis:"project-context.md rempli intégralement",
         contexte:"Premier lancement, project-context.md rempli",
         livrable:"orchestration-plan.md + project-synthesis.md",
         exemple:"@orchestrator Voici le project-context.md rempli pour Kōdō (app SaaS de suivi énergétique pour PME). Lance le séquencement complet Phase 0→5, identifie les dépendances entre agents, et produis l'orchestration-plan.md avec le calendrier d'exécution."
@@ -262,6 +264,7 @@ const PROMPTS = [
       {
         title:"Définir la stratégie de marque",
         agents:["creative-strategy"],
+        prerequis:"project-context.md validé",
         contexte:"Début de projet, avant tout développement",
         livrable:"brand-platform.md, personas.md, creative-brief.md",
         exemple:"@creative-strategy Analyse le project-context.md et produis la plateforme de marque complète : positionnement, personas détaillés, benchmark concurrentiel et brief créatif. Objectif : différenciation claire dans le secteur de la gestion énergétique B2B."
@@ -269,9 +272,26 @@ const PROMPTS = [
       {
         title:"Créer la roadmap produit",
         agents:["product-manager"],
+        prerequis:"brand-platform.md livré par @creative-strategy",
         contexte:"Après validation stratégie créative",
         livrable:"product-vision.md, roadmap.md, backlog.md",
         exemple:"@product-manager À partir du brand-platform.md de @creative-strategy et du project-context.md, définis la vision produit, la roadmap à 6 mois priorisée RICE, et le backlog initial avec user stories."
+      },
+      {
+        title:"Définir les KPIs et le tracking plan",
+        agents:["data-analyst"],
+        prerequis:"product-vision.md livré par @product-manager",
+        contexte:"Phase 0 — avant tout développement, pour mesurer dès le jour 1",
+        livrable:"kpi-framework.md, tracking-plan.md, dashboard-specs.md",
+        exemple:"@data-analyst Définis la North Star Metric et les KPIs AARRR pour Kōdō. Produis le tracking plan complet : chaque événement, sa source, son déclencheur, et le dashboard cible. Configure les specs pour GA4/Mixpanel/PostHog selon la stack."
+      },
+      {
+        title:"Pivoter ou repositionner un projet existant",
+        agents:["orchestrator","creative-strategy"],
+        prerequis:"project-context.md mis à jour avec les nouvelles hypothèses",
+        contexte:"Projet existant qui change de direction, nouveau marché ou nouveau persona",
+        livrable:"orchestration-plan.md révisé, brand-platform.md v2",
+        exemple:"@orchestrator Le projet pivote : nouveau persona (DRH au lieu de DSI), même produit. Identifie les livrables agents à reprendre, ceux à conserver, et produis le plan de re-séquencement. @creative-strategy repositionne la plateforme de marque."
       }
     ]
   },
@@ -281,6 +301,7 @@ const PROMPTS = [
       {
         title:"Auditer et refondre un site existant",
         agents:["ux","design","fullstack"],
+        prerequis:"URL du site + accès analytics si disponible",
         contexte:"Site en production avec des problèmes identifiés (conversion, UX, dette technique)",
         livrable:"ux-audit.md, design-system.md, plan de refonte",
         exemple:"@ux Audite le parcours actuel du site : points de friction, taux d'abandon, parcours critiques. @design Évalue la cohérence visuelle et propose les bases du nouveau design system. @fullstack Évalue la dette technique et propose un plan de migration."
@@ -288,8 +309,9 @@ const PROMPTS = [
       {
         title:"Diagnostiquer un problème de performance",
         agents:["infrastructure","seo"],
+        prerequis:"URL du site en production",
         contexte:"Site en production, temps de chargement dégradés",
-        livrable:"performance-audit.md, plan d'optimisation",
+        livrable:"performance-audit.md, plan d'optimisation Core Web Vitals",
         exemple:"@infrastructure Mesure les Core Web Vitals (LCP, CLS, INP), identifie les goulots d'étranglement (bundle size, requêtes API, assets non optimisés). @seo Vérifie l'impact sur le crawl budget et le ranking."
       }
     ]
@@ -300,30 +322,34 @@ const PROMPTS = [
       {
         title:"Développer une feature complète",
         agents:["fullstack","qa"],
-        contexte:"Specs validées par @product-manager",
-        livrable:"Code source + tests",
-        exemple:"@fullstack Implémente le tableau de bord utilisateur selon les specs de functional-specs.md. Stack : Next.js 14 App Router, Supabase, TypeScript strict. Inclus les API routes, les composants UI et la gestion d'erreurs. @qa prépare les tests."
+        prerequis:"functional-specs.md (@product-manager) + design-system.md (@design) + tracking-plan.md (@data-analyst)",
+        contexte:"Specs validées, design system prêt, tracking plan défini",
+        livrable:"Code source, tests unitaires Vitest, tests E2E Playwright, couverture >80%",
+        exemple:"@fullstack Implémente le tableau de bord utilisateur selon functional-specs.md. Stack : Next.js 14 App Router, Supabase, TypeScript strict. Inclus les API routes, les composants du design system, et les events du tracking-plan. @qa écrit les tests unitaires Vitest et les tests E2E Playwright des parcours critiques."
       },
       {
         title:"Intégrer Stripe (paiement)",
-        agents:["fullstack","legal"],
-        contexte:"Modèle de pricing défini",
-        livrable:"Code Stripe + CGV mises à jour",
-        exemple:"@fullstack Intègre Stripe Checkout pour les plans Free/Pro/Enterprise. Webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal vérifie la conformité CGV pour la vente en ligne."
+        agents:["fullstack","legal","infrastructure"],
+        prerequis:"Modèle de pricing défini dans roadmap.md (@product-manager)",
+        contexte:"Plans tarifaires validés, prêt pour la monétisation",
+        livrable:"Code Stripe + CGV + config secrets",
+        exemple:"@fullstack Intègre Stripe Checkout pour les plans Free/Pro/Enterprise. Webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal vérifie la conformité CGV pour la vente en ligne. @infrastructure configure les variables d'environnement Stripe (clés API, webhook secret) et le monitoring des paiements."
       },
       {
         title:"Ajouter une intégration LLM",
         agents:["ia","fullstack"],
-        contexte:"Cas d'usage IA identifié",
-        livrable:"Pipeline IA + API routes",
+        prerequis:"Cas d'usage IA défini dans functional-specs.md (@product-manager)",
+        contexte:"Feature IA spécifiée : entrée, sortie attendue, budget tokens défini",
+        livrable:"ai-architecture.md, API routes, prompt-library.md",
         exemple:"@ia Conçois le pipeline pour la génération automatique de fiches produit à partir de photos et specs techniques. Choisis le modèle optimal (coût/qualité), structure les prompts, et définis les fallbacks. @fullstack implémente les routes API avec le Vercel AI SDK."
       },
       {
         title:"Configurer le CI/CD",
         agents:["qa","infrastructure"],
-        contexte:"Code base prête pour l'automatisation",
-        livrable:"Pipeline GitHub Actions + config",
-        exemple:"@qa Configure le pipeline CI/CD GitHub Actions : lint, type-check, tests Vitest, tests E2E Playwright. @infrastructure valide la config de déploiement Replit et le monitoring post-deploy."
+        prerequis:"Code source existant avec au moins un test",
+        contexte:"Code base prête pour l'automatisation des vérifications",
+        livrable:".github/workflows/ci.yml, .replit, monitoring-setup.md",
+        exemple:"@qa Définit la stratégie de tests (lint → type-check → Vitest → Playwright) et écrit le workflow GitHub Actions. @infrastructure configure le déploiement Replit (.replit, replit.nix), le health check endpoint, et le monitoring post-deploy (Sentry, UptimeRobot)."
       }
     ]
   },
@@ -333,9 +359,18 @@ const PROMPTS = [
       {
         title:"Créer le design system",
         agents:["design","fullstack"],
-        contexte:"Après validation brand platform et avant développement",
+        prerequis:"brand-platform.md (@creative-strategy) + wireframes.md (@ux)",
+        contexte:"Identité de marque validée, wireframes approuvés",
         livrable:"design-system.md, design-tokens.json, component-library.md",
-        exemple:"@design Crée le design system complet : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), variantes dark mode, règles d'accessibilité WCAG 2.2 AA. @fullstack Implémente les tokens en CSS variables et les composants en React."
+        exemple:"@design Crée le design system complet : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), variantes dark mode, règles d'accessibilité WCAG 2.2 AA. @fullstack Implémente les tokens en CSS variables/Tailwind et les composants en React avec Storybook."
+      },
+      {
+        title:"Auditer la cohérence visuelle",
+        agents:["design","ux"],
+        prerequis:"Site ou app en production",
+        contexte:"Incohérences visuelles détectées entre les pages ou les composants",
+        livrable:"Audit visuel structuré, plan de correction",
+        exemple:"@design Audite la cohérence visuelle de toutes les pages : usage des tokens, hiérarchie typographique, espacements, contrastes WCAG 2.2 AA, cohérence des composants entre les vues. @ux Vérifie que les parcours clés sont visuellement guidés et que les CTA sont hiérarchisés."
       }
     ]
   },
@@ -345,23 +380,34 @@ const PROMPTS = [
       {
         title:"Rédiger la landing page",
         agents:["copywriter","seo"],
+        prerequis:"brand-platform.md + personas.md (@creative-strategy)",
         contexte:"Brand voice définie, personas validés",
         livrable:"landing-page-copy.md + metadata SEO",
         exemple:"@copywriter Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Ton : expert mais accessible. Persona cible : directeur RSE de PME industrielle. @seo optimise les meta title/description et les headings."
       },
       {
-        title:"Stratégie SEO complète",
+        title:"Stratégie SEO + GEO complète",
         agents:["seo","geo"],
-        contexte:"Site en production ou pré-lancement",
+        prerequis:"landing-page-copy.md (@copywriter) — le contenu doit exister avant l'optimisation",
+        contexte:"Site en production ou pré-lancement, contenu rédigé",
         livrable:"seo-strategy.md, keyword-map.md, geo-strategy.md",
-        exemple:"@seo Réalise l'audit SEO technique complet et la stratégie de mots-clés pour le secteur de l'énergie B2B. @geo analyse la visibilité actuelle sur ChatGPT, Claude et Perplexity et propose le plan d'optimisation GEO."
+        exemple:"@seo Réalise l'audit SEO technique complet : Core Web Vitals, données structurées JSON-LD, maillage interne, stratégie de mots-clés pour l'énergie B2B. @geo Analyse la visibilité sur ChatGPT, Claude, Gemini et Perplexity. Propose le plan GEO : entités nommées, claims vérifiables, structure FAQ optimisée pour les citations IA."
       },
       {
         title:"Séquence email onboarding",
         agents:["copywriter","growth"],
-        contexte:"Parcours onboarding défini par @ux",
+        prerequis:"onboarding-flow.md (@ux) + brand-voice.md (@copywriter)",
+        contexte:"Parcours onboarding défini, brand voice validée",
         livrable:"email-sequences.md + funnel metrics",
         exemple:"@copywriter Crée la séquence de 5 emails onboarding : bienvenue, activation feature clé, social proof, upgrade, réengagement. @growth définit les triggers et les KPIs de conversion par étape."
+      },
+      {
+        title:"Produire le brand voice guide",
+        agents:["copywriter"],
+        prerequis:"brand-platform.md + personas.md (@creative-strategy)",
+        contexte:"Avant toute rédaction de contenu — le guide de ton cadre tout le copy du projet",
+        livrable:"brand-voice.md, ux-writing-guide.md",
+        exemple:"@copywriter Produis le brand voice guide complet : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy de formulaires."
       }
     ]
   },
@@ -371,9 +417,26 @@ const PROMPTS = [
       {
         title:"Lancer une campagne d'acquisition",
         agents:["growth","social","copywriter"],
+        prerequis:"personas.md (@creative-strategy) + brand-voice.md (@copywriter)",
         contexte:"Produit lancé, premiers utilisateurs à acquérir",
         livrable:"acquisition-plan.md, editorial-calendar.md, content-templates.md",
-        exemple:"@growth Définis les 3 canaux prioritaires selon le persona et le budget. Modélise le CAC cible. @social Planifie le calendrier éditorial sur 4 semaines avec les formats natifs par plateforme. @copywriter Rédige les accroches et les copies pour chaque canal."
+        exemple:"@growth Définis les 3 canaux prioritaires selon le persona et le budget. Modélise le CAC cible et la LTV. @social Planifie le calendrier éditorial sur 4 semaines avec les formats natifs par plateforme. @copywriter Rédige les accroches et les copies pour chaque canal."
+      },
+      {
+        title:"Créer la stratégie social media",
+        agents:["social","copywriter"],
+        prerequis:"personas.md (@creative-strategy) + brand-voice.md (@copywriter)",
+        contexte:"Besoin d'une présence organique sur les réseaux sociaux",
+        livrable:"social-strategy.md, editorial-calendar.md, content-templates.md",
+        exemple:"@social Sélectionne les 2-3 plateformes prioritaires selon le persona (LinkedIn, Instagram, TikTok, X, YouTube). Définis la ligne éditoriale, les formats natifs (carrousels, Reels, threads), le rythme de publication et les KPIs par plateforme. @copywriter Rédige les templates de posts et les accroches type."
+      },
+      {
+        title:"Auditer un funnel existant",
+        agents:["growth","data-analyst"],
+        prerequis:"tracking-plan.md (@data-analyst) + données analytics disponibles",
+        contexte:"Produit en production avec trafic, conversion à optimiser",
+        livrable:"funnel-audit.md, dashboard de conversion",
+        exemple:"@growth Diagnostique le funnel AARRR complet : taux par étape, points de churn, segments sous-performants. Identifie les 3 leviers à plus fort impact. @data-analyst Produis le dashboard de conversion par cohorte et configure les alertes sur les métriques critiques."
       }
     ]
   },
@@ -381,32 +444,68 @@ const PROMPTS = [
     category:"Qualité & Conformité",
     items:[
       {
-        title:"Audit RGPD complet",
+        title:"Audit juridique complet",
         agents:["legal"],
-        contexte:"Avant mise en production",
-        livrable:"rgpd-checklist.md, privacy-policy.md",
-        exemple:"@legal Réalise l'audit RGPD complet : registre des traitements, base légale par donnée, durées de conservation, flux transfrontaliers. Produis la politique de confidentialité et la checklist de conformité."
+        prerequis:"tracking-plan.md (@data-analyst) — pour vérifier les traitements de données",
+        contexte:"Avant mise en production — couvre RGPD, CGU/CGV, PI, EU AI Act",
+        livrable:"legal-audit.md, rgpd-checklist.md, cgu-draft.md, privacy-policy.md",
+        exemple:"@legal Réalise l'audit juridique complet : (1) RGPD — registre des traitements, base légale par donnée, durées de conservation, flux transfrontaliers ; (2) CGU/CGV adaptées au modèle SaaS ; (3) protection IP — vérification marque INPI/EUIPO ; (4) conformité EU AI Act si features IA. Produis tous les documents juridiques."
       },
       {
         title:"Revue croisée avant livraison",
         agents:["reviewer"],
-        contexte:"Tous les livrables produits",
-        livrable:"cross-review-report.md",
-        exemple:"@reviewer Audite la cohérence entre tous les livrables : alignement brand voice ↔ copy ↔ UI, cohérence specs ↔ code, conformité légale. Signale toute contradiction et donne la recommandation GO/NO-GO."
+        prerequis:"Tous les livrables des phases précédentes",
+        contexte:"Fin de sprint ou pré-lancement — dernière vérification avant mise en ligne",
+        livrable:"cross-review-report.md, consistency-audit.md",
+        exemple:"@reviewer Audite la cohérence entre tous les livrables : alignement brand voice ↔ copy ↔ UI, cohérence specs ↔ code, conformité légale, couverture du tracking plan. Identifie les agents manquants, les angles morts, et les contradictions. Recommandation GO/NO-GO avec liste des blockers."
       },
       {
         title:"Audit qualité et tests",
         agents:["qa"],
+        prerequis:"Code source (@fullstack) + tracking-plan.md (@data-analyst)",
         contexte:"Code développé, avant release",
-        livrable:"qa-strategy.md, rapports de tests",
-        exemple:"@qa Exécute l'audit qualité complet : couverture de tests unitaires (cible >80%), tests E2E des parcours critiques, validation du tracking-plan, tests de performance. Produis le rapport avec les blockers identifiés."
+        livrable:"qa-strategy.md, TESTING.md, rapports de couverture",
+        exemple:"@qa Exécute l'audit qualité complet : couverture de tests unitaires Vitest (cible >80%), tests E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté (Grep sur les event names), tests de performance Lighthouse CI. Produis le rapport avec les blockers identifiés."
       },
       {
         title:"Audit UX et conversion",
         agents:["ux","data-analyst"],
+        prerequis:"tracking-plan.md (@data-analyst) + données analytics",
         contexte:"Produit en production avec trafic",
         livrable:"ux-audit.md, dashboard-specs.md",
-        exemple:"@ux Audite les parcours critiques : onboarding, conversion, rétention. Identifie les frictions et propose les améliorations priorisées. @data-analyst configure les dashboards de suivi et les métriques de conversion."
+        exemple:"@ux Audite les parcours critiques : onboarding (time-to-value), conversion (friction points), rétention (churn signals). Mesure les taux d'abandon par étape. @data-analyst Configure les dashboards de conversion par cohorte et les métriques de rétention."
+      },
+      {
+        title:"Optimiser l'onboarding SaaS",
+        agents:["ux","copywriter","data-analyst"],
+        prerequis:"onboarding-flow.md (@ux) + tracking-plan.md (@data-analyst)",
+        contexte:"Onboarding existant avec time-to-value trop long ou taux d'abandon élevé",
+        livrable:"onboarding-flow.md v2, ux-writing-guide.md, dashboard onboarding",
+        exemple:"@ux Redesign le parcours onboarding : réduis le time-to-value à moins de 3 minutes, supprime les étapes non essentielles, ajoute les moments de succès. @copywriter Rédige le microcopy : welcome screen, tooltips, empty states, messages de succès. @data-analyst Configure le funnel onboarding avec les taux de passage par étape."
+      },
+      {
+        title:"Revue de cohérence en cours de projet",
+        agents:["reviewer"],
+        prerequis:"Au moins 3 livrables agents produits",
+        contexte:"En cours de développement — vérifier l'alignement avant d'aller plus loin",
+        livrable:"consistency-audit.md",
+        exemple:"@reviewer Vérifie la cohérence entre les livrables produits jusqu'ici : est-ce que le code respecte les specs ? Est-ce que le copy respecte la brand voice ? Est-ce que le tracking plan couvre les KPIs définis ? Signale les dérives et les agents qui devraient intervenir maintenant."
+      },
+      {
+        title:"Configurer le monitoring post-launch",
+        agents:["infrastructure"],
+        prerequis:"Code déployé + tracking-plan.md (@data-analyst)",
+        contexte:"Site en production, besoin de surveillance automatisée",
+        livrable:"monitoring-setup.md, alerting config",
+        exemple:"@infrastructure Configure le monitoring complet : Sentry pour les erreurs JS/API, UptimeRobot pour la disponibilité, health check endpoint /api/health, alertes Slack sur les incidents critiques (downtime, error rate >1%, Core Web Vitals dégradés)."
+      },
+      {
+        title:"Choisir et optimiser les modèles IA",
+        agents:["ia"],
+        prerequis:"Cas d'usage IA défini dans functional-specs.md (@product-manager)",
+        contexte:"Plusieurs modèles possibles, besoin d'optimiser le ratio coût/qualité",
+        livrable:"model-selection.md, benchmark comparatif, prompt-library.md",
+        exemple:"@ia Compare Claude Sonnet vs GPT-4o vs Gemini Pro pour notre cas d'usage (résumé de documents techniques). Benchmark : qualité de sortie, latence P95, coût par 1000 requêtes, support du streaming. Recommande le modèle principal + le fallback. Optimise les prompts pour réduire les tokens de 30%."
       }
     ]
   }
@@ -447,7 +546,7 @@ const CHANGELOG = [
 <!-- ════ SECTION PROMPTS ════ -->
 <section id="prompts" aria-labelledby="titre-prompts">
   <h2 id="titre-prompts">Prompts prêts à copier</h2>
-  <p class="section-sub">18 prompts pour lancer, développer et livrer</p>
+  <p class="section-sub">28 prompts pour lancer, développer et livrer — chacun avec ses prérequis</p>
 
   <!-- Filtre par agent -->
   <div class="prompt-filter-wrap">
@@ -559,9 +658,10 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
           <button class="btn-copy" data-text="${p.exemple.replace(/"/g,'&quot;')}">Copier</button>
         </div>
         <div class="prompt-meta">${p.agents.map(a=>`<span class="prompt-agent-tag">@${a}</span>`).join("")}</div>
-        <div class="prompt-body"><strong>[CONTEXTE]</strong> ${p.contexte}
+        <div class="prompt-body">${p.prerequis?`<strong>[PRÉREQUIS]</strong> ${p.prerequis}\n`:``}<strong>[CONTEXTE]</strong> ${p.contexte}
 <strong>[LIVRABLE]</strong> ${p.livrable}
-<strong>[EXEMPLE]</strong> ${p.exemple}</div>`;
+<strong>[EXEMPLE]</strong> ${p.exemple}</div>
+        ${p.prerequis?`<div class="prompt-prereq">⚡ Avant de lancer : ${p.prerequis}</div>`:``}`;
       list.appendChild(card);
     });
     section.appendChild(list);
