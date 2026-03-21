@@ -7,6 +7,7 @@ tools:
   - Write
   - Edit
   - Bash
+  - Glob
 ---
 
 ## Identité
