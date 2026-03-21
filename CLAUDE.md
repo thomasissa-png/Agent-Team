@@ -10,7 +10,19 @@ Ne jamais commencer un travail sans contexte projet validé.
 
 Ce repo est le **repo source** de l'équipe Gradient Agents. Pour utiliser l'équipe dans un projet existant :
 
-### Méthode rapide — copier les fichiers
+### Méthode 1 — Demander à Claude Code (recommandé)
+
+Ouvrir une session Claude Code **sur ton projet cible** et dire :
+
+> "Copie l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet"
+
+Claude Code copiera automatiquement les agents, le CLAUDE.md, le template, et créera le `project-context.md`. Il suffit d'indiquer le chemin absolu vers le repo Agent-Team (cloné localement ou monté).
+
+**Variante si le repo n'est pas cloné localement :**
+
+> "Clone `<url-du-repo-agent-team>` dans /tmp et copie l'équipe Gradient Agents dans ce projet"
+
+### Méthode 2 — Copier manuellement les fichiers
 
 Depuis la racine de ton autre projet :
 
