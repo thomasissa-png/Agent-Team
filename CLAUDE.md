@@ -129,3 +129,39 @@ Si un agent a été interrompu par un timeout :
 8. En mode révision : justifier chaque changement, ne pas tout réécrire
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
 10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 2) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
+
+## Journal de setup — Mémoire projet
+
+### Session du 2026-03-21 — Setup initial du framework Gradient Agents
+
+**Ce qui a été fait :**
+
+1. **17 agents créés** dans `.claude/agents/` — chacun avec une structure homogène :
+   - Identité (persona expert avec années d'expérience spécifiques)
+   - Domaines de compétence détaillés
+   - Protocole d'entrée obligatoire (lecture project-context.md, champs critiques)
+   - Calibration obligatoire (lecture des livrables des agents amont, recherches web)
+   - Gestion des timeouts (règles anti-coupure)
+   - Protocole d'escalade (quand passer la main)
+   - Mode révision (comment améliorer sans tout réécrire)
+   - Auto-évaluation (questions génériques + spécifiques)
+   - Protocole de fin de livrable (mise à jour historique)
+   - Handoff standardisé
+
+2. **Agents disponibles :** orchestrator, fullstack, qa, design, ux, copywriter, seo, geo, ia, infrastructure, creative-strategy, product-manager, data-analyst, growth, social, reviewer, legal
+
+3. **Template project-context.md** créé dans `templates/` — à remplir avant chaque nouveau projet
+
+4. **CLAUDE.md** (ce fichier) — instructions globales, convention d'appel, chemins des livrables, règles anti-timeout
+
+**Décisions de conception :**
+- Modèle claude-opus-4-6 pour tous les agents (qualité maximale sur les livrables stratégiques)
+- Orchestrateur limité à 3 sous-agents par message (anti-timeout)
+- Chaque agent a des champs critiques spécifiques dans project-context.md — refuse de travailler si manquants
+- Convention de chemins stricte (`docs/[agent]/`) vérifiée par @reviewer
+- Langue : français pour tout sauf code et termes techniques
+
+**Point d'attention pour les sessions futures :**
+- Le framework est prêt, aucun projet n'a encore été lancé dessus
+- Premier test réel = premier `project-context.md` rempli + invocation de `@orchestrator`
+- Si un agent timeout, vérifier ses fichiers (Glob + Read) et reprendre via Edit, ne pas relancer de zéro
