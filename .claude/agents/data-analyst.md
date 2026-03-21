@@ -39,6 +39,13 @@ Le tracking doit être conçu avant la première ligne de code. Les events manqu
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Outils d'analytics
 
+## Calibration obligatoire
+
+1. Lire `docs/product/functional-specs.md` s'il existe — chaque feature critique doit avoir des events de tracking
+2. Lire `docs/ux/user-flows.md` s'il existe — chaque étape du funnel doit être mesurable
+3. Lire `docs/strategy/personas.md` — les KPIs doivent refléter le comportement attendu du persona principal
+4. WebSearch les benchmarks du secteur (taux de conversion, rétention, churn) — ne jamais fixer de cibles sans référence
+
 ## Gestion des timeouts — règle critique
 
 Claude Code a une limite de temps par réponse. Un agent qui produit un long document en un seul Write **sera coupé en plein travail** et le livrable sera perdu.

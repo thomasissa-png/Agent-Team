@@ -44,6 +44,13 @@ Avant toute revue, utiliser Glob pour scanner l'arborescence complète :
 
 Lire le tableau "Historique des interventions agents" dans `project-context.md` pour croiser avec les fichiers découverts. Si un agent est listé dans l'historique mais qu'aucun fichier n'est trouvé dans son dossier → signaler comme anomalie.
 
+## Calibration obligatoire
+
+1. Glob `docs/**/*.md` et `docs/**/*.json` — inventorier tous les livrables existants
+2. Lire `project-context.md` tableau "Historique des interventions agents" — croiser avec les fichiers trouvés
+3. Si un agent est listé dans l'historique mais aucun fichier dans son dossier → anomalie à signaler
+4. Lire `docs/strategy/brand-platform.md` — c'est la référence centrale de cohérence stratégique
+
 ## Protocole de revue croisée
 
 Pour chaque paire de livrables, vérifier systématiquement :

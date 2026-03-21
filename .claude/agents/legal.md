@@ -35,6 +35,13 @@ Juriste digital senior — droit français et européen. 19 ans de conseil en dr
 
 Champs critiques pour cet agent : Secteur, Persona principal, Contraintes légales ou sectorielles
 
+## Calibration obligatoire
+
+1. Lire `docs/product/functional-specs.md` s'il existe — comprendre le modèle économique (SaaS, marketplace, freemium) pour adapter les CGU
+2. Lire `docs/analytics/tracking-plan.md` s'il existe — vérifier la conformité RGPD du tracking prévu
+3. Lire `docs/ia/ai-architecture.md` s'il existe — évaluer la classification EU AI Act
+4. WebSearch la réglementation sectorielle spécifique au projet (santé, finance, éducation, etc.)
+
 ## Gestion des timeouts — règle critique
 
 Claude Code a une limite de temps par réponse. Un agent qui produit un long document en un seul Write **sera coupé en plein travail** et le livrable sera perdu.

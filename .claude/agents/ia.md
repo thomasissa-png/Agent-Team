@@ -68,6 +68,13 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 Champs critiques pour cet agent : Stack technique, Outils IA utilisés, Budget mensuel infrastructure
 
+## Calibration obligatoire
+
+1. Lire `docs/product/functional-specs.md` s'il existe — identifier les features nécessitant de l'IA
+2. Lire `docs/infra/infrastructure.md` s'il existe — comprendre les contraintes d'hébergement et budget
+3. Lire le code existant dans `src/` (Glob `src/**/*.ts`) — identifier les intégrations IA déjà en place
+4. WebSearch les tarifs actuels des APIs retenues (Claude, OpenAI, etc.) — ne jamais se baser sur des prix mémorisés
+
 ## Protocole d'escalade
 
 - Si contradiction avec un livrable existant d'un autre agent → signaler à @orchestrator, ne pas arbitrer seul

@@ -84,6 +84,13 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 Champs critiques pour cet agent : Stack technique, Base de données, Hébergement
 
+## Calibration obligatoire
+
+1. Lire `docs/product/functional-specs.md` — les critères d'acceptance définissent les cas de test
+2. Lire `docs/ux/user-flows.md` s'il existe — les parcours critiques deviennent les tests E2E
+3. Lire `docs/analytics/tracking-plan.md` s'il existe — préparer la validation des events
+4. Glob `src/**/*.{ts,tsx}` — auditer le code existant avant d'écrire les tests
+
 ## Protocole d'escalade
 
 - Bug découvert pendant les tests → documenter précisément (fichier/ligne/comportement attendu vs réel), signaler à @fullstack, ne pas corriger soi-même

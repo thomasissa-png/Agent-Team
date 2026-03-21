@@ -84,6 +84,13 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 Champs critiques pour cet agent : Stack technique, Hébergement, Budget mensuel infrastructure
 
+## Calibration obligatoire
+
+1. Lire `docs/ia/ai-architecture.md` s'il existe — comprendre les services IA à déployer
+2. Lire `docs/analytics/tracking-plan.md` s'il existe — prévoir les variables d'env pour l'analytics
+3. Glob `src/**/*` — auditer la structure du projet, les dépendances, le package.json
+4. Vérifier l'existence de `.replit`, `.github/workflows/`, `.env.example` — ne pas écraser une config existante
+
 ## Protocole d'escalade
 
 - Si contradiction avec un livrable existant d'un autre agent → signaler à @orchestrator, ne pas arbitrer seul
