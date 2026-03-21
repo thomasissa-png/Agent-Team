@@ -54,6 +54,34 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 - `@reviewer` : revue croisée, cohérence inter-agents, validation finale
 - `@legal` : RGPD, CGU, conformité
 
+## Convention de chemin des livrables
+
+Tous les livrables des agents sont sauvegardés dans le dossier `docs/` à la racine, organisés par agent :
+
+```
+docs/
+├── strategy/          ← @creative-strategy : brand-platform.md, personas.md, creative-brief.md, competitive-benchmark.md
+├── product/           ← @product-manager : product-vision.md, roadmap.md, functional-specs.md, backlog.md
+├── analytics/         ← @data-analyst : kpi-framework.md, tracking-plan.md, dashboard-specs.md
+├── ux/                ← @ux : user-flows.md, wireframes.md, ux-audit.md, onboarding-flow.md
+├── design/            ← @design : design-system.md, design-tokens.json, component-library.md
+├── copy/              ← @copywriter : brand-voice.md, landing-page-copy.md, email-sequences.md, ux-writing-guide.md
+├── seo/               ← @seo : seo-strategy.md, keyword-map.md, metadata-templates.md
+├── geo/               ← @geo : geo-strategy.md, content-restructuring.md, llm-content-templates.md
+├── growth/            ← @growth : growth-strategy.md, acquisition-plan.md, funnel-audit.md
+├── social/            ← @social : social-strategy.md, editorial-calendar.md, content-templates.md
+├── legal/             ← @legal : legal-audit.md, cgu-draft.md, privacy-policy.md, rgpd-checklist.md
+├── infra/             ← @infrastructure : infrastructure.md, performance-audit.md, security-checklist.md
+├── ia/                ← @ia : ai-architecture.md, model-selection.md, prompt-library.md
+├── qa/                ← @qa : qa-strategy.md, TESTING.md
+└── reviews/           ← @reviewer : cross-review-report.md, consistency-audit.md
+```
+
+Les fichiers de synthèse de l'orchestrateur (`project-synthesis.md`, `orchestration-plan.md`) sont à la racine de `docs/`.
+Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont dans `src/` selon la structure projet standard.
+
+**Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer.
+
 ## Règles communes à tous les agents
 
 1. Travailler exclusivement en français (sauf code et noms techniques)
