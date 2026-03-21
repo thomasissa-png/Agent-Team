@@ -6,6 +6,66 @@ Avant toute action dans ce projet, lire `project-context.md` à la racine.
 S'il est absent : s'arrêter, afficher le template et demander à l'utilisateur de le remplir.
 Ne jamais commencer un travail sans contexte projet validé.
 
+## Installer l'équipe dans un autre projet
+
+Ce repo est le **repo source** de l'équipe Gradient Agents. Pour utiliser l'équipe dans un projet existant :
+
+### Méthode rapide — copier les fichiers
+
+Depuis la racine de ton autre projet :
+
+```bash
+# 1. Cloner le repo Agent-Team (ou le référencer si déjà cloné)
+git clone <url-agent-team> /tmp/Agent-Team
+
+# 2. Copier les agents dans ton projet
+mkdir -p .claude/agents
+cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
+
+# 3. Copier le CLAUDE.md (instructions globales)
+cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
+
+# 4. Copier le template de contexte projet
+mkdir -p templates
+cp /tmp/Agent-Team/templates/project-context.md templates/
+
+# 5. Créer le project-context.md à la racine et le remplir
+cp templates/project-context.md ./project-context.md
+# → Ouvrir project-context.md et remplir TOUS les champs avant de lancer un agent
+```
+
+### Structure résultante dans ton projet
+
+```
+ton-projet/
+├── .claude/
+│   └── agents/          ← les 17 agents copiés
+├── templates/
+│   └── project-context.md  ← template vierge (référence)
+├── project-context.md      ← contexte rempli pour CE projet
+├── CLAUDE.md               ← instructions globales (ce fichier)
+├── docs/                   ← sera créé par les agents (livrables)
+└── src/                    ← ton code existant
+```
+
+### Premier lancement
+
+1. **Remplir `project-context.md`** — c'est obligatoire, aucun agent ne travaillera sans
+2. **Invoquer `@orchestrator`** pour un projet complet, ou un agent spécifique pour une tâche ciblée
+3. Les agents créeront automatiquement leurs dossiers dans `docs/` au fur et à mesure
+
+### Invocation des agents dans Claude Code
+
+Dans une session Claude Code sur ton projet, utiliser la syntaxe d'invocation d'agent :
+
+- **Via le menu** : taper `/` puis sélectionner l'agent dans la liste
+- **Dans le prompt** : mentionner `@orchestrator`, `@fullstack`, `@design`, etc.
+- **Directement** : demander une tâche et Claude routera vers le bon agent si le CLAUDE.md est présent
+
+### Mise à jour des agents
+
+Si l'équipe Gradient Agents évolue dans ce repo source, re-copier les fichiers `.claude/agents/*.md` et le `CLAUDE.md` dans les projets cibles. Le `project-context.md` de chaque projet reste intact — il est spécifique à chaque projet.
+
 ## Comment utiliser les agents
 
 Les agents sont dans `.claude/agents/`. Chaque agent est un expert autonome.
