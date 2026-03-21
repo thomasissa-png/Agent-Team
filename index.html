@@ -8,7 +8,7 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
     --bg:#0A0A0A;--surface:#111111;--card:#161616;
-    --text:#F5F0E8;--text-muted:rgba(245,240,232,0.55);--text-dim:rgba(245,240,232,0.4);
+    --text:#F5F0E8;--text-muted:rgba(245,240,232,0.68);--text-dim:rgba(245,240,232,0.62);
     --border:rgba(245,240,232,0.12);--border-light:rgba(245,240,232,0.08);
     --accent:#E8FF00;--red:#FF4D4D;
     --radius:10px;
@@ -32,18 +32,20 @@
   .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
   .agent-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
   .agent-card:hover{border-color:rgba(232,255,0,0.25)}
-  .agent-card.highlighted{border-color:var(--accent);box-shadow:0 0 20px rgba(232,255,0,0.08)}
+  .agent-card.highlighted{border-color:var(--accent);box-shadow:0 0 24px rgba(232,255,0,0.15)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   .agent-name{font-size:15px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:8px}
   .agent-name .at{color:var(--accent);font-weight:400;font-size:13px}
   .agent-role{font-size:12px;color:var(--text-muted);margin-bottom:10px}
   .agent-desc{font-size:13px;color:var(--text-muted);line-height:1.6;flex:1}
-  .agent-phase{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);background:rgba(232,255,0,0.08);padding:3px 8px;border-radius:4px;margin-bottom:10px;width:fit-content}
+  .agent-phase{display:inline-block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);background:rgba(232,255,0,0.08);padding:3px 8px;border-radius:4px;margin-bottom:10px;width:fit-content}
 
   /* ── CHAMPS REQUIS ── */
   .agent-required{border-top:1px solid var(--border-light);margin-top:14px;padding-top:10px}
-  .agent-required-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+  .agent-required-label{font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
   .required-tags{display:flex;flex-wrap:wrap;gap:4px}
-  .required-tag{font-size:11px;color:var(--text-muted);border:1px solid rgba(245,240,232,0.15);border-radius:4px;padding:2px 7px;white-space:nowrap}
+  .required-tag{font-size:11px;color:var(--text-muted);border:1px solid rgba(245,240,232,0.22);border-radius:4px;padding:2px 7px;white-space:nowrap}
 
   /* ── PROMPTS ── */
   .search-wrap{display:flex;justify-content:center;margin-bottom:28px}
@@ -60,12 +62,19 @@
   .prompts-list{display:flex;flex-direction:column;gap:10px}
   .prompt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color .2s}
   .prompt-card:hover{border-color:rgba(232,255,0,0.2)}
-  .prompt-card.hidden{display:none}
+  .prompt-card.hidden,.prompt-card.agent-filtered{display:none}
   .prompt-title{font-size:14px;font-weight:600;margin-bottom:6px}
   .prompt-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   .prompt-agent-tag{font-size:11px;color:var(--accent);border:1px solid rgba(232,255,0,0.25);border-radius:4px;padding:1px 6px}
   .prompt-body{font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-line}
   .prompt-body strong{color:var(--text);font-weight:600}
+  .prompt-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  .btn-copy:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-copy.copied{border-color:var(--accent);color:var(--accent)}
+  .prompt-filter-wrap{display:flex;justify-content:center;margin-bottom:12px}
+  .prompt-filter-wrap select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:6px 12px;outline:none;cursor:pointer}
+  .prompt-filter-wrap select:focus{border-color:var(--accent)}
 
   /* ── CHANGELOG ── */
   .changelog-controls{margin-bottom:20px}
@@ -83,8 +92,20 @@
   .badge-agent{font-size:11px;color:var(--text-muted);border:1px solid var(--border);border-radius:4px;padding:2px 7px}
   .changelog-desc{font-size:13px;color:var(--text-muted);flex:1;min-width:200px}
 
+  /* ── PIPELINE ── */
+  .pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:40px;overflow-x:auto}
+  .pipeline-phase{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px}
+  .pipeline-phase-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);margin-bottom:8px}
+  .pipeline-agent{font-size:12px;color:var(--text-muted);padding:2px 0}
+  .pipeline-agent:hover{color:var(--text);cursor:pointer}
+
   /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .agents-grid{grid-template-columns:repeat(2,1fr)}
+    .pipeline{grid-template-columns:repeat(3,1fr)}
+  }
   @media(max-width:600px){
+    .pipeline{grid-template-columns:repeat(2,1fr)}
     .agents-grid{grid-template-columns:1fr}
     .search-box{max-width:100%}
     .changelog-entry{flex-direction:column;gap:6px}
@@ -110,120 +131,120 @@ const AGENTS = [
     id:"orchestrator", name:"Orchestrator", at:"@orchestrator",
     role:"Chef d'orchestre — 20 ans d'expérience",
     phase:"Phase 0 — Coordination",
-    desc:"Planification multi-agents, séquencement Phase 0→5, arbitrage, surveillance de la cohérence globale.",
-    required:["Tous les champs de project-context.md"]
+    desc:"Point d'entrée de tout projet. Décompose le travail entre agents, définit l'ordre d'exécution et vérifie que les livrables s'assemblent sans contradiction.",
+    required:["Nom du projet","Secteur","Persona principal","Objectif à 6 mois","Stack technique","KPI North Star","Promesse unique","Ton de marque"]
   },
   {
     id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy",
     role:"Directrice de stratégie créative — 18 ans",
     phase:"Phase 0 — Stratégie",
-    desc:"Positionnement, personas, plateforme de marque, benchmark concurrentiel, brief créatif.",
-    required:["Secteur","Persona principal","Problème résolu","Alternative actuelle"]
+    desc:"Définit le positionnement, les personas et la plateforme de marque. Produit le brief créatif qui guide tous les autres agents.",
+    required:["Secteur","Persona principal","Problème principal","Alternative actuelle"]
   },
   {
     id:"product-manager", name:"Product Manager", at:"@product-manager",
     role:"VP Product — 12 ans",
     phase:"Phase 0 — Produit",
-    desc:"Vision produit, user stories, specs fonctionnelles, priorisation RICE/MoSCoW, backlog.",
+    desc:"Traduit la stratégie en roadmap actionnable : vision produit, specs fonctionnelles, user stories priorisées et backlog.",
     required:["Objectif principal à 6 mois","Persona principal","Stack technique"]
   },
   {
     id:"data-analyst", name:"Data Analyst", at:"@data-analyst",
     role:"Head of Analytics — 10 ans",
     phase:"Phase 0 — Analytics",
-    desc:"North Star Metric, tracking plan, KPIs AARRR, analyse de cohortes, tests A/B.",
-    required:["Objectif principal à 6 mois","KPI North Star","Stack technique"]
+    desc:"Définit ce qu'il faut mesurer, configure le tracking et construit les tableaux de bord. Répond à la question : est-ce que ça marche ?",
+    required:["Objectif principal à 6 mois","KPI North Star","Stack technique","Outils d'analytics"]
   },
   {
     id:"legal", name:"Legal", at:"@legal",
     role:"Juriste digital senior — 19 ans",
     phase:"Phase 0→5 — Parallèle",
-    desc:"RGPD, CGU/CGV, protection IP/marques, contrats SaaS, EU AI Act, DSA/DMA.",
+    desc:"Vérifie la conformité juridique en parallèle de toutes les phases : RGPD, CGU/CGV, protection IP, contrats SaaS, EU AI Act.",
     required:["Secteur","Persona principal","Contraintes légales ou sectorielles"]
   },
   {
     id:"ux", name:"UX", at:"@ux",
     role:"Lead UX Researcher & Designer — 14 ans",
     phase:"Phase 1 — Expérience",
-    desc:"Architecture d'information, user flows, wireframes, CRO, onboarding, accessibilité.",
+    desc:"Conçoit les parcours utilisateur : comment on arrive, comment on comprend, comment on agit. Wireframes, architecture de pages, conversion.",
     required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
   },
   {
     id:"design", name:"Design", at:"@design",
     role:"Directeur artistique digital — 11 ans",
     phase:"Phase 1 — Visuel",
-    desc:"Design tokens, composants UI, dark mode, accessibilité WCAG 2.2 AA, cohérence cross-platform.",
+    desc:"Traduit les parcours UX en interface visuelle : couleurs, typographies, composants, tokens. Garant de la cohérence visuelle sur tous les écrans.",
     required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
   },
   {
     id:"copywriter", name:"Copywriter", at:"@copywriter",
     role:"Senior copywriter — 13 ans",
     phase:"Phase 1–3 — Contenu",
-    desc:"Landing pages, brand voice, UX writing, séquences email, copywriting de conversion.",
-    required:["Persona principal","Ton de marque","Promesse unique"]
+    desc:"Rédige tous les textes du projet : landing pages, brand voice, UX writing, emails. Chaque mot est calibré pour le persona cible.",
+    required:["Persona principal","Ton de marque","Promesse unique","3 mots qui définissent la marque","3 mots qui ne définissent pas la marque"]
   },
   {
     id:"fullstack", name:"Fullstack", at:"@fullstack",
-    role:"Staff Engineer Next.js & React Native — 16 ans",
+    role:"Développeur senior full-stack — 16 ans",
     phase:"Phase 2 — Développement",
-    desc:"Frontend/backend, API routes, auth, Supabase, Stripe, TypeScript strict.",
+    desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Supabase, Stripe. TypeScript strict uniquement.",
     required:["Stack technique","Base de données","Outils IA utilisés"]
   },
   {
     id:"qa", name:"QA", at:"@qa",
     role:"QA Engineering Manager — 9 ans",
     phase:"Phase 2 — Tests",
-    desc:"Vitest, Playwright E2E, pipeline CI/CD, validation tracking-plan, tests de performance.",
+    desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
     id:"infrastructure", name:"Infrastructure", at:"@infrastructure",
     role:"SRE / Platform Engineer — 13 ans",
     phase:"Phase 2 — Infra",
-    desc:"Déploiement Replit, Core Web Vitals, CI/CD, sécurité, monitoring.",
+    desc:"Configure le déploiement Replit, optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel estimé"]
   },
   {
     id:"ia", name:"IA", at:"@ia",
     role:"AI Engineer — 7 ans en production",
     phase:"Phase 2 — Intelligence",
-    desc:"Intégration API LLM (Claude, GPT, Gemini), génération d'images, optimisation tokens/coûts.",
+    desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
     required:["Stack technique","Outils IA utilisés","Budget mensuel estimé"]
   },
   {
     id:"seo", name:"SEO", at:"@seo",
     role:"Consultant SEO technique — 17 ans",
     phase:"Phase 3 — Référencement",
-    desc:"SEO technique, stratégie mots-clés, Core Web Vitals, données structurées, maillage interne.",
+    desc:"Optimise le référencement Google : audit technique, stratégie de mots-clés, données structurées, maillage interne.",
     required:["Secteur","Persona principal","Stack technique"]
   },
   {
     id:"geo", name:"GEO", at:"@geo",
-    role:"Pionnier GEO — 4 ans",
+    role:"Spécialiste GEO — 4 ans de pratique",
     phase:"Phase 3 — Visibilité IA",
-    desc:"Optimisation citations ChatGPT/Claude/Gemini, contenu LLM-friendly, monitoring IA.",
+    desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google — le GEO cible les IA génératives.",
     required:["Secteur","Persona principal","Promesse unique"]
   },
   {
     id:"growth", name:"Growth", at:"@growth",
     role:"Head of Growth — 10 ans",
     phase:"Phase 4 — Acquisition",
-    desc:"Canaux d'acquisition, funnel AARRR, boucles virales, referral, modélisation CAC/LTV.",
-    required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel estimé"]
+    desc:"Conçoit la stratégie d'acquisition : canaux prioritaires, funnel de conversion, boucles virales, referral et modélisation CAC/LTV.",
+    required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel acquisition"]
   },
   {
     id:"social", name:"Social", at:"@social",
     role:"Social Media Strategist — 8 ans",
     phase:"Phase 4 — Réseaux",
-    desc:"Stratégie par plateforme, calendrier éditorial, formats natifs, community management.",
+    desc:"Planifie la présence sur les réseaux sociaux : stratégie par plateforme, calendrier éditorial, formats natifs et community management.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
     id:"reviewer", name:"Reviewer", at:"@reviewer",
     role:"Senior auditor qualité — 22 ans",
     phase:"Phase 5 — Validation",
-    desc:"Détection contradictions, vérification alignement, audit cohérence, recommandation GO/NO-GO.",
-    required:["Tous les livrables des agents concernés"]
+    desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
+    required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   }
 ];
 
@@ -236,14 +257,14 @@ const PROMPTS = [
         agents:["orchestrator"],
         contexte:"Premier lancement, project-context.md rempli",
         livrable:"orchestration-plan.md + project-synthesis.md",
-        exemple:"@orchestrator Voici le project-context.md rempli pour [NomDuProjet]. Lance le séquencement complet Phase 0→5, identifie les dépendances entre agents, et produis l'orchestration-plan.md avec le calendrier d'exécution."
+        exemple:"@orchestrator Voici le project-context.md rempli pour Kōdō (app SaaS de suivi énergétique pour PME). Lance le séquencement complet Phase 0→5, identifie les dépendances entre agents, et produis l'orchestration-plan.md avec le calendrier d'exécution."
       },
       {
         title:"Définir la stratégie de marque",
         agents:["creative-strategy"],
         contexte:"Début de projet, avant tout développement",
         livrable:"brand-platform.md, personas.md, creative-brief.md",
-        exemple:"@creative-strategy Analyse le project-context.md et produis la plateforme de marque complète : positionnement, personas détaillés, benchmark concurrentiel et brief créatif. Objectif : différenciation claire dans le secteur [secteur]."
+        exemple:"@creative-strategy Analyse le project-context.md et produis la plateforme de marque complète : positionnement, personas détaillés, benchmark concurrentiel et brief créatif. Objectif : différenciation claire dans le secteur de la gestion énergétique B2B."
       },
       {
         title:"Créer la roadmap produit",
@@ -255,6 +276,25 @@ const PROMPTS = [
     ]
   },
   {
+    category:"Refonte & Audit",
+    items:[
+      {
+        title:"Auditer et refondre un site existant",
+        agents:["ux","design","fullstack"],
+        contexte:"Site en production avec des problèmes identifiés (conversion, UX, dette technique)",
+        livrable:"ux-audit.md, design-system.md, plan de refonte",
+        exemple:"@ux Audite le parcours actuel du site : points de friction, taux d'abandon, parcours critiques. @design Évalue la cohérence visuelle et propose les bases du nouveau design system. @fullstack Évalue la dette technique et propose un plan de migration."
+      },
+      {
+        title:"Diagnostiquer un problème de performance",
+        agents:["infrastructure","seo"],
+        contexte:"Site en production, temps de chargement dégradés",
+        livrable:"performance-audit.md, plan d'optimisation",
+        exemple:"@infrastructure Mesure les Core Web Vitals (LCP, CLS, INP), identifie les goulots d'étranglement (bundle size, requêtes API, assets non optimisés). @seo Vérifie l'impact sur le crawl budget et le ranking."
+      }
+    ]
+  },
+  {
     category:"Développement",
     items:[
       {
@@ -262,21 +302,21 @@ const PROMPTS = [
         agents:["fullstack","qa"],
         contexte:"Specs validées par @product-manager",
         livrable:"Code source + tests",
-        exemple:"@fullstack Implémente la feature [nom] selon les specs de functional-specs.md. Stack : Next.js 14 App Router, Supabase, TypeScript strict. Inclus les API routes, les composants UI et la gestion d'erreurs. @qa prépare les tests."
+        exemple:"@fullstack Implémente le tableau de bord utilisateur selon les specs de functional-specs.md. Stack : Next.js 14 App Router, Supabase, TypeScript strict. Inclus les API routes, les composants UI et la gestion d'erreurs. @qa prépare les tests."
       },
       {
         title:"Intégrer Stripe (paiement)",
         agents:["fullstack","legal"],
         contexte:"Modèle de pricing défini",
         livrable:"Code Stripe + CGV mises à jour",
-        exemple:"@fullstack Intègre Stripe Checkout pour le plan [free/pro/enterprise]. Webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal vérifie la conformité CGV pour la vente en ligne."
+        exemple:"@fullstack Intègre Stripe Checkout pour les plans Free/Pro/Enterprise. Webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal vérifie la conformité CGV pour la vente en ligne."
       },
       {
         title:"Ajouter une intégration LLM",
         agents:["ia","fullstack"],
         contexte:"Cas d'usage IA identifié",
         livrable:"Pipeline IA + API routes",
-        exemple:"@ia Conçois le pipeline pour [cas d'usage : résumé, génération, classification]. Choisis le modèle optimal (coût/qualité), structure les prompts, et définis les fallbacks. @fullstack implémente les routes API avec le Vercel AI SDK."
+        exemple:"@ia Conçois le pipeline pour la génération automatique de fiches produit à partir de photos et specs techniques. Choisis le modèle optimal (coût/qualité), structure les prompts, et définis les fallbacks. @fullstack implémente les routes API avec le Vercel AI SDK."
       },
       {
         title:"Configurer le CI/CD",
@@ -288,6 +328,18 @@ const PROMPTS = [
     ]
   },
   {
+    category:"Design & UI",
+    items:[
+      {
+        title:"Créer le design system",
+        agents:["design","fullstack"],
+        contexte:"Après validation brand platform et avant développement",
+        livrable:"design-system.md, design-tokens.json, component-library.md",
+        exemple:"@design Crée le design system complet : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), variantes dark mode, règles d'accessibilité WCAG 2.2 AA. @fullstack Implémente les tokens en CSS variables et les composants en React."
+      }
+    ]
+  },
+  {
     category:"Contenu & Visibilité",
     items:[
       {
@@ -295,14 +347,14 @@ const PROMPTS = [
         agents:["copywriter","seo"],
         contexte:"Brand voice définie, personas validés",
         livrable:"landing-page-copy.md + metadata SEO",
-        exemple:"@copywriter Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Ton : [ton de marque]. Persona cible : [persona]. @seo optimise les meta title/description et les headings."
+        exemple:"@copywriter Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Ton : expert mais accessible. Persona cible : directeur RSE de PME industrielle. @seo optimise les meta title/description et les headings."
       },
       {
         title:"Stratégie SEO complète",
         agents:["seo","geo"],
         contexte:"Site en production ou pré-lancement",
         livrable:"seo-strategy.md, keyword-map.md, geo-strategy.md",
-        exemple:"@seo Réalise l'audit SEO technique complet et la stratégie de mots-clés pour [secteur]. @geo analyse la visibilité actuelle sur ChatGPT, Claude et Perplexity et propose le plan d'optimisation GEO."
+        exemple:"@seo Réalise l'audit SEO technique complet et la stratégie de mots-clés pour le secteur de l'énergie B2B. @geo analyse la visibilité actuelle sur ChatGPT, Claude et Perplexity et propose le plan d'optimisation GEO."
       },
       {
         title:"Séquence email onboarding",
@@ -310,6 +362,18 @@ const PROMPTS = [
         contexte:"Parcours onboarding défini par @ux",
         livrable:"email-sequences.md + funnel metrics",
         exemple:"@copywriter Crée la séquence de 5 emails onboarding : bienvenue, activation feature clé, social proof, upgrade, réengagement. @growth définit les triggers et les KPIs de conversion par étape."
+      }
+    ]
+  },
+  {
+    category:"Acquisition & Marketing",
+    items:[
+      {
+        title:"Lancer une campagne d'acquisition",
+        agents:["growth","social","copywriter"],
+        contexte:"Produit lancé, premiers utilisateurs à acquérir",
+        livrable:"acquisition-plan.md, editorial-calendar.md, content-templates.md",
+        exemple:"@growth Définis les 3 canaux prioritaires selon le persona et le budget. Modélise le CAC cible. @social Planifie le calendrier éditorial sur 4 semaines avec les formats natifs par plateforme. @copywriter Rédige les accroches et les copies pour chaque canal."
       }
     ]
   },
@@ -371,23 +435,33 @@ const CHANGELOG = [
 </script>
 
 <!-- ════ SECTION ÉQUIPE ════ -->
-<div class="container">
+<main class="container">
 
-<section id="equipe">
-  <h2>L'Équipe</h2>
-  <p class="section-sub">17 agents spécialisés — de la stratégie au déploiement</p>
+<section id="equipe" aria-labelledby="titre-equipe">
+  <h2 id="titre-equipe">L'Équipe</h2>
+  <p class="section-sub">17 agents spécialisés — de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
+  <div id="pipeline"></div>
   <div class="agents-grid" id="agents-grid"></div>
 </section>
 
 <!-- ════ SECTION PROMPTS ════ -->
-<section id="prompts">
-  <h2>Prompts</h2>
-  <p class="section-sub">Bibliothèque de prompts prêts à l'emploi pour chaque situation</p>
+<section id="prompts" aria-labelledby="titre-prompts">
+  <h2 id="titre-prompts">Prompts prêts à copier</h2>
+  <p class="section-sub">18 prompts pour lancer, développer et livrer</p>
+
+  <!-- Filtre par agent -->
+  <div class="prompt-filter-wrap">
+    <label for="prompt-agent-filter" class="sr-only">Filtrer par agent</label>
+    <select id="prompt-agent-filter">
+      <option value="tous">Tous les agents</option>
+    </select>
+  </div>
 
   <!-- Recherche -->
   <div class="search-wrap">
     <div class="search-box">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <label for="prompt-search" class="sr-only">Rechercher un prompt</label>
       <input type="text" id="prompt-search" placeholder="Rechercher un prompt... (ex: stripe, rgpd, landing)">
     </div>
   </div>
@@ -396,10 +470,11 @@ const CHANGELOG = [
 </section>
 
 <!-- ════ SECTION CHANGELOG ════ -->
-<section id="changelog">
-  <h2>Changelog</h2>
-  <p class="section-sub">Historique des modifications des agents</p>
+<section id="changelog" aria-labelledby="titre-changelog">
+  <h2 id="titre-changelog">Changelog</h2>
+  <p class="section-sub">Quoi de neuf dans l'équipe</p>
   <div class="changelog-controls">
+    <label for="changelog-filter" class="sr-only">Filtrer par agent</label>
     <select id="changelog-filter">
       <option value="tous">Tous les agents</option>
     </select>
@@ -407,11 +482,38 @@ const CHANGELOG = [
   <div class="changelog-list" id="changelog-list"></div>
 </section>
 
-</div><!-- /.container -->
+</main><!-- /.container -->
 
 <script>
 /* ── Helpers ── */
 function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+
+/* ── Pipeline Phase 0→5 ── */
+(function renderPipeline(){
+  const el=document.getElementById("pipeline");
+  const phases=[
+    {title:"Phase 0",agents:["orchestrator","creative-strategy","product-manager","data-analyst","legal"]},
+    {title:"Phase 1",agents:["ux","design","copywriter"]},
+    {title:"Phase 2",agents:["fullstack","qa","infrastructure","ia"]},
+    {title:"Phase 3",agents:["seo","geo"]},
+    {title:"Phase 4",agents:["growth","social"]},
+    {title:"Phase 5",agents:["reviewer"]}
+  ];
+  el.className="pipeline";
+  phases.forEach(p=>{
+    const col=document.createElement("div");
+    col.className="pipeline-phase";
+    col.innerHTML=`<div class="pipeline-phase-title">${p.title}</div>`+
+      p.agents.map(a=>`<div class="pipeline-agent" data-target="${a}">@${a}</div>`).join("");
+    el.appendChild(col);
+  });
+  el.addEventListener("click",function(ev){
+    const t=ev.target.closest(".pipeline-agent");
+    if(!t)return;
+    const card=document.querySelector(`.agent-card[data-agent="${t.dataset.target}"]`);
+    if(card){card.scrollIntoView({behavior:"smooth",block:"center"});card.classList.add("highlighted");setTimeout(()=>card.classList.remove("highlighted"),2000)}
+  });
+})();
 
 /* ── Render agents ── */
 (function renderAgents(){
@@ -426,7 +528,7 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
       <div class="agent-role">${a.role}</div>
       <div class="agent-desc">${a.desc}</div>
       <div class="agent-required">
-        <div class="agent-required-label">Requis</div>
+        <div class="agent-required-label">Requis dans project-context.md</div>
         <div class="required-tags">${a.required.map(r=>`<span class="required-tag">${r}</span>`).join("")}</div>
       </div>`;
     grid.appendChild(card);
@@ -436,6 +538,9 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
 /* ── Render prompts ── */
 (function renderPrompts(){
   const container=document.getElementById("prompts-container");
+  const agentFilter=document.getElementById("prompt-agent-filter");
+  const agentSet=new Set();
+
   PROMPTS.forEach(cat=>{
     const section=document.createElement("div");
     section.className="prompt-category";
@@ -443,11 +548,16 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
     const list=document.createElement("div");
     list.className="prompts-list";
     cat.items.forEach(p=>{
+      p.agents.forEach(a=>agentSet.add(a));
       const card=document.createElement("div");
       card.className="prompt-card";
       card.dataset.search=stripAccents([p.title,p.agents.join(" "),p.contexte,p.livrable,p.exemple].join(" ")).toLowerCase();
+      card.dataset.agents=p.agents.join(",");
       card.innerHTML=`
-        <div class="prompt-title">${p.title}</div>
+        <div class="prompt-header">
+          <div class="prompt-title">${p.title}</div>
+          <button class="btn-copy" data-text="${p.exemple.replace(/"/g,'&quot;')}">Copier</button>
+        </div>
         <div class="prompt-meta">${p.agents.map(a=>`<span class="prompt-agent-tag">@${a}</span>`).join("")}</div>
         <div class="prompt-body"><strong>[CONTEXTE]</strong> ${p.contexte}
 <strong>[LIVRABLE]</strong> ${p.livrable}
@@ -456,6 +566,36 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
     });
     section.appendChild(list);
     container.appendChild(section);
+  });
+
+  /* populate agent filter */
+  Array.from(agentSet).sort().forEach(a=>{
+    const opt=document.createElement("option");
+    opt.value=a;opt.textContent="@"+a;
+    agentFilter.appendChild(opt);
+  });
+
+  /* copy button */
+  container.addEventListener("click",function(ev){
+    const btn=ev.target.closest(".btn-copy");
+    if(!btn)return;
+    navigator.clipboard.writeText(btn.dataset.text).then(()=>{
+      btn.textContent="Copié !";btn.classList.add("copied");
+      setTimeout(()=>{btn.textContent="Copier";btn.classList.remove("copied")},1500);
+    });
+  });
+
+  /* agent filter */
+  agentFilter.addEventListener("change",function(){
+    const val=this.value;
+    document.querySelectorAll(".prompt-card").forEach(c=>{
+      if(val==="tous"||c.dataset.agents.split(",").includes(val)){c.classList.remove("agent-filtered")}
+      else{c.classList.add("agent-filtered")}
+    });
+    document.querySelectorAll(".prompt-category").forEach(cat=>{
+      const has=cat.querySelectorAll(".prompt-card:not(.agent-filtered):not(.hidden)").length>0;
+      cat.style.display=has?"":"none";
+    });
   });
 })();
 
@@ -468,12 +608,12 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
     const cards=document.querySelectorAll(".prompt-card");
     let visible=0;
     cards.forEach(c=>{
-      if(!q||c.dataset.search.includes(q)){c.classList.remove("hidden");visible++}
+      if(!q||c.dataset.search.includes(q)){c.classList.remove("hidden")}
       else{c.classList.add("hidden")}
+      if(!c.classList.contains("hidden")&&!c.classList.contains("agent-filtered"))visible++;
     });
-    /* hide empty categories */
     document.querySelectorAll(".prompt-category").forEach(cat=>{
-      const has=cat.querySelectorAll(".prompt-card:not(.hidden)").length>0;
+      const has=cat.querySelectorAll(".prompt-card:not(.hidden):not(.agent-filtered)").length>0;
       cat.style.display=has?"":"none";
     });
     noResults.style.display=visible===0&&q?"block":"none";
