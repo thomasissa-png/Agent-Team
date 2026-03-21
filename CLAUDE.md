@@ -82,6 +82,41 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 
 **Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer.
 
+## Règle absolue numéro 2 — Gestion des timeouts
+
+Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
+
+### Principes anti-timeout
+
+1. **Un fichier = un appel Write/Edit.** Ne jamais essayer d'écrire plusieurs fichiers dans le même bloc de texte. Écrire le fichier 1, puis le fichier 2, puis le fichier 3.
+2. **Découper les gros livrables.** Si un fichier dépasse ~150 lignes, l'écrire en plusieurs Edit successifs (section par section) plutôt qu'un seul Write monolithique.
+3. **Prioriser le contenu critique.** Toujours écrire d'abord les sections essentielles du livrable. Si un timeout survient, l'essentiel est sauvegardé.
+4. **Sauvegarder au fur et à mesure.** Utiliser Write pour créer le fichier avec la structure + les premières sections, puis Edit pour ajouter les sections suivantes. Ne jamais accumuler du contenu en mémoire sans l'écrire.
+5. **Signaler les livrables multi-fichiers.** Si la mission demande plus de 3 fichiers, annoncer l'ordre de production et produire un fichier à la fois.
+
+### Pour l'orchestrateur spécifiquement
+
+- **Ne JAMAIS lancer plus de 3 sous-agents (Task) dans un même message.** Lancer 2-3 Task, attendre leurs résultats, puis lancer les suivants.
+- **Découper l'exécution par phase.** Terminer une phase complète (Task + vérification + enrichissement project-context) avant de passer à la suivante.
+- **Préférer 3 messages courts à 1 message géant.** Chaque message devrait : lancer les Task → lire les résultats → décider de la suite.
+
+### Pour les agents producteurs de contenu (copywriter, creative-strategy, seo, geo, legal)
+
+- Écrire d'abord la structure/le plan du fichier (titres + résumés), puis remplir section par section via Edit.
+- Ne jamais rédiger un document complet de >100 lignes en un seul Write.
+
+### Pour les agents code (fullstack, qa, infrastructure)
+
+- Un composant/fichier par appel Write. Ne jamais écrire 5 fichiers d'un coup.
+- Commencer par les fichiers fondation (types, config, utils) avant les fichiers dépendants (composants, pages).
+
+### En cas de timeout détecté
+
+Si un agent a été interrompu par un timeout :
+1. Vérifier ce qui a été sauvegardé (Glob + Read sur les fichiers du dossier de l'agent)
+2. Reprendre là où le travail s'est arrêté — ne PAS repartir de zéro
+3. Terminer les sections manquantes via Edit sur les fichiers existants
+
 ## Règles communes à tous les agents
 
 1. Travailler exclusivement en français (sauf code et noms techniques)
@@ -93,3 +128,4 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 7. Terminer chaque livrable par un bloc Handoff standardisé
 8. En mode révision : justifier chaque changement, ne pas tout réécrire
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
+10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 2) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
