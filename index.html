@@ -99,6 +99,11 @@
   .diff-table td:first-child{color:var(--text);font-weight:500;font-family:monospace;font-size:12px}
   .diff-table .diff-yes{color:var(--accent)}
   .diff-table .diff-no{color:var(--red)}
+  .install-card .install-context{font-size:13px;color:var(--text-muted);margin-bottom:12px}
+  .install-card .install-context strong{color:var(--text)}
+  .install-alt{margin-bottom:16px}
+  .install-alt-label{font-size:12px;color:var(--text-dim);display:block;margin-bottom:6px}
+  .install-prompt-small{font-size:12px;padding:10px 14px}
   .install-btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;position:absolute;top:8px;right:8px}
   .install-btn-copy:hover{border-color:var(--accent);color:var(--accent)}
   .install-btn-copy.copied{border-color:var(--accent);color:var(--accent)}
@@ -582,9 +587,17 @@ const CHANGELOG = [
     <div class="install-card">
       <h3><span class="label-tag label-new">Nouveau</span> Nouveau projet</h3>
       <p class="install-sub">Pas encore de code — vous partez de zéro</p>
+      <p class="install-context">Ouvrez Claude Code <strong>sur le dossier de votre nouveau projet</strong>, puis :</p>
       <div class="install-prompt">
-        <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un nouveau projet.">Copier</button>
-        <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un nouveau projet."</em>
+        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet.">Copier</button>
+        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet."</em>
+      </div>
+      <div class="install-alt">
+        <span class="install-alt-label">Variante — repo déjà cloné localement :</span>
+        <div class="install-prompt install-prompt-small">
+          <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un nouveau projet.">Copier</button>
+          <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un nouveau projet."</em>
+        </div>
       </div>
       <ul class="install-steps">
         <li>17 agents copiés dans <code>.claude/agents/</code></li>
@@ -599,9 +612,17 @@ const CHANGELOG = [
     <div class="install-card">
       <h3><span class="label-tag label-existing">Existant</span> Projet existant</h3>
       <p class="install-sub">Du code est déjà en place — rien n'est écrasé</p>
+      <p class="install-context">Ouvrez Claude Code <strong>sur votre projet existant</strong>, puis :</p>
       <div class="install-prompt">
-        <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un projet existant, ne rien écraser.">Copier</button>
-        <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un projet existant, ne rien écraser."</em>
+        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser.">Copier</button>
+        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser."</em>
+      </div>
+      <div class="install-alt">
+        <span class="install-alt-label">Variante — repo déjà cloné localement :</span>
+        <div class="install-prompt install-prompt-small">
+          <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un projet existant, ne rien écraser.">Copier</button>
+          <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un projet existant, ne rien écraser."</em>
+        </div>
       </div>
       <ul class="install-steps">
         <li>17 agents ajoutés sans écraser les agents custom</li>
