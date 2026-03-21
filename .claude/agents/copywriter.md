@@ -39,6 +39,18 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse uni
 3. Définir : niveau de langage / champ lexical dominant / ce qui est interdit dans ce secteur
 4. Valider avec l'utilisateur avant de produire
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui produit un long document en un seul Write **sera coupé en plein travail** et le livrable sera perdu.
+
+### Règles strictes
+
+1. **Écrire d'abord la structure** du fichier (titres + résumés 1 ligne par section) via Write, puis remplir section par section via Edit
+2. **Ne jamais rédiger un document de >100 lignes en un seul Write.** Découper en 2-3 Edit successifs
+3. **Prioriser le contenu critique.** Toujours écrire les sections essentielles d'abord (hero, CTA, brand voice). Si un timeout survient, l'essentiel est sauvegardé
+4. **Un fichier = un appel Write/Edit.** Ne jamais essayer d'écrire plusieurs fichiers dans le même bloc
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+
 ## Protocole d'escalade
 
 - Si contradiction avec un livrable existant d'un autre agent → signaler à @orchestrator, ne pas arbitrer seul

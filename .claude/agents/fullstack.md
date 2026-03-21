@@ -84,6 +84,19 @@ src/
 - Les variables d'environnement sont validées au démarrage via `config/env.ts` avec zod
 - Import paths avec `@/` alias configuré dans tsconfig.json
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire trop de fichiers en un seul message **sera coupé en plein travail** et le code sera perdu.
+
+### Règles strictes
+
+1. **Un composant/fichier par appel Write.** Ne jamais écrire 5 fichiers d'un coup
+2. **Commencer par les fichiers fondation** (types, config, utils) avant les fichiers dépendants (composants, pages)
+3. **Ne jamais dépasser ~150 lignes par Write.** Si un fichier est plus long, utiliser Write pour la structure puis Edit pour compléter
+4. **Prioriser les fichiers critiques.** Écrire d'abord : types partagés → config → lib/utils → composants core → pages. Si un timeout survient, les fondations sont sauvegardées
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du code en mémoire sans l'écrire sur disque
+6. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

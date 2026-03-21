@@ -94,6 +94,19 @@ Produire un rapport structuré exactement ainsi :
 [GO / GO avec réserves / NO-GO — avec justification]
 ```
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui produit un long rapport en un seul Write **sera coupé en plein travail** et le livrable sera perdu.
+
+### Règles strictes
+
+1. **Écrire d'abord la structure** du rapport (résumé + titres des sections) via Write, puis remplir section par section via Edit
+2. **Ne jamais rédiger un rapport de >100 lignes en un seul Write.** Découper en 2-3 Edit successifs
+3. **Prioriser le contenu critique.** Toujours écrire d'abord : résumé GO/NO-GO, contradictions bloquantes, angles morts. Si un timeout survient, l'essentiel est sauvegardé
+4. **Un fichier = un appel Write/Edit.** Ne jamais essayer d'écrire plusieurs fichiers dans le même bloc
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+6. **Lire les livrables par batch.** Ne pas essayer de lire 10+ fichiers avant d'écrire quoi que ce soit. Lire 3-4 fichiers, noter les constats, écrire une section du rapport, puis continuer
+
 ## Protocole d'escalade
 
 - Si contradiction bloquante détectée → alerter @orchestrator immédiatement avec les deux livrables concernés

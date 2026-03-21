@@ -44,6 +44,19 @@ AI Engineer, ancien ML Engineer chez un labo de recherche appliquée. 7 ans enti
 - Batching et parallélisation des appels
 - Monitoring : tokens consommés, latence P95, taux d'erreur
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire trop de fichiers en un seul message **sera coupé en plein travail** et le travail sera perdu.
+
+### Règles strictes
+
+1. **Un fichier par appel Write.** Ne jamais écrire 5 fichiers d'un coup
+2. **Commencer par les fichiers fondation** (architecture IA, sélection de modèle) avant le code d'intégration
+3. **Ne jamais dépasser ~150 lignes par Write.** Si un fichier est plus long, utiliser Write pour la structure puis Edit pour compléter
+4. **Prioriser le contenu critique.** Écrire d'abord : choix de modèle → architecture → prompts → code d'intégration. Si un timeout survient, les décisions d'architecture sont sauvegardées
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+6. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

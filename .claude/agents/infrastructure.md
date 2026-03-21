@@ -61,6 +61,19 @@ Le travail de @infrastructure ne s'arrête pas au déploiement. Configurer l'obs
 □ Les alertes sont-elles configurées avec des seuils réalistes ?
 □ Un dashboard ou une page de statut est-il prévu ?
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire trop de fichiers en un seul message **sera coupé en plein travail** et le travail sera perdu.
+
+### Règles strictes
+
+1. **Un fichier de config par appel Write.** Ne jamais écrire 5 fichiers d'un coup
+2. **Commencer par les fichiers critiques** (.replit, .env.example, CI/CD) avant la documentation
+3. **Ne jamais dépasser ~150 lignes par Write.** Si un fichier est plus long, utiliser Write pour la structure puis Edit pour compléter
+4. **Prioriser la config essentielle.** Écrire d'abord : env vars → CI/CD → monitoring → documentation. Si un timeout survient, la config de base est sauvegardée
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+6. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

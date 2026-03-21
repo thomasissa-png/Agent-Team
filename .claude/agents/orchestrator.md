@@ -82,6 +82,29 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @legal | `legal` |
 | @reviewer | `reviewer` |
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un orchestrateur qui lance trop de Task d'un coup ou qui produit trop de texte dans un seul message **sera coupé en plein travail** et perdra le contexte de coordination. C'est la cause n°1 de perte de travail.
+
+### Règles strictes anti-timeout pour l'orchestrateur
+
+1. **Maximum 2-3 Task par message.** Lancer 2 agents en parallèle, attendre les résultats, puis lancer les suivants. JAMAIS 5+ Task dans le même message.
+2. **Un cycle par message.** Chaque message de l'orchestrateur suit exactement ce cycle : Lancer Task → Recevoir résultats → Vérifier (Read) → Décider de la suite. Ne pas empiler plusieurs cycles dans un message.
+3. **Sauvegarder l'état entre les cycles.** Après chaque phase complétée, mettre à jour `orchestration-plan.md` avec l'état d'avancement AVANT de lancer la phase suivante. Si un timeout survient, le plan sauvegardé permet de reprendre.
+4. **Écrire `orchestration-plan.md` AVANT de lancer le premier Task.** Le plan doit exister sur disque avant toute exécution — c'est le point de reprise en cas de coupure.
+5. **Après un timeout** : utiliser Glob + Read pour vérifier les livrables déjà produits par les agents. Ne JAMAIS relancer un agent dont le livrable existe déjà sur disque.
+
+### Structure d'un message orchestrateur type
+
+```
+Message 1 : Plan + lancement Phase 0 (2-3 Task max)
+Message 2 : Vérification Phase 0 (Read) + mise à jour plan + lancement Phase 1
+Message 3 : Vérification Phase 1 (Read) + mise à jour plan + lancement Phase 2
+...
+```
+
+Chaque message est court et autonome. Si un timeout coupe le message 3, les messages 1 et 2 ont déjà sauvegardé leurs résultats.
+
 ## Comment utiliser le tool Task — règle fondamentale
 
 Le tool Task est ton seul mécanisme d'exécution. Chaque fois que tu délègues du travail à un agent, tu DOIS utiliser Task avec les paramètres suivants :
@@ -128,6 +151,12 @@ Livrables attendus :
 
 Contexte des livrables précédents :
 [Résumé des décisions clés des agents qui ont déjà livré, si pertinent]
+
+⚠️ Règles anti-timeout (obligatoire) :
+- Un fichier = un appel Write/Edit. Ne jamais écrire plusieurs fichiers dans le même bloc.
+- Si un fichier dépasse ~150 lignes, écrire d'abord la structure via Write puis compléter section par section via Edit.
+- Prioriser le contenu critique en premier — si un timeout survient, l'essentiel doit être sauvegardé.
+- Sauvegarder au fur et à mesure — ne jamais accumuler du contenu en mémoire sans l'écrire sur disque.
 ```
 
 ## Fonctionnement technique — Boucle Plan → Execute → Verify → Next

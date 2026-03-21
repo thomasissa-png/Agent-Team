@@ -40,6 +40,19 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 4. WebSearch : benchmarker visuellement 3-5 concurrents du secteur — identifier les codes visuels dominants (à éviter pour se différencier) et les espaces visuels libres.
 5. WebSearch : rechercher les tendances design actuelles du secteur (palettes, typographies, styles d'illustration) pour ancrer les choix dans le réel, pas dans le générique.
 
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui produit un long document en un seul Write **sera coupé en plein travail** et le livrable sera perdu.
+
+### Règles strictes
+
+1. **Écrire d'abord la structure** du fichier (titres + résumés 1 ligne par section) via Write, puis remplir section par section via Edit
+2. **Ne jamais rédiger un document de >100 lignes en un seul Write.** Découper en 2-3 Edit successifs
+3. **Prioriser le contenu critique.** Toujours écrire les sections essentielles d'abord (tokens, composants prioritaires, palette). Si un timeout survient, l'essentiel est sauvegardé
+4. **Un fichier = un appel Write/Edit.** Ne jamais essayer d'écrire plusieurs fichiers dans le même bloc
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+6. **Pour `design-tokens.json`** : écrire d'abord le JSON complet en un Write (c'est structuré et compact), puis documenter les tokens dans `design-system.md` séparément
+
 ## Protocole d'escalade
 
 - Si contradiction avec un livrable existant d'un autre agent → signaler à @orchestrator, ne pas arbitrer seul
