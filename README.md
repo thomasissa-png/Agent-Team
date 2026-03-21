@@ -10,16 +10,44 @@ faire de chaque projet le numéro 1 de son secteur.
 
 **Prérequis :** git, curl, Claude Code
 
+### Scénario A — Nouveau projet (pas encore de code)
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main/install.sh | bash
 ```
 
-L'installation :
+Ou dans Claude Code, sur le dossier de votre nouveau projet :
 
-- Crée `.claude/agents/` avec les 17 agents
-- Installe `CLAUDE.md` à la racine (navigation automatique pour Claude Code)
-- Crée `project-context.md` à remplir avant toute session
-- Installe `update.sh` pour les mises à jour futures
+> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un nouveau projet."
+
+**Ce qui se passe :**
+- `.claude/agents/` est créé avec les 17 agents
+- `CLAUDE.md` est copié à la racine
+- `project-context.md` (template vierge) est créé à remplir
+- `docs/` et `src/` sont créés si absents
+
+### Scénario B — Projet existant (code déjà en place)
+
+Dans Claude Code, sur votre projet existant :
+
+> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un projet existant, ne rien écraser."
+
+**Ce qui se passe :**
+- Les 17 agents sont ajoutés dans `.claude/agents/` **sans écraser** les agents custom déjà présents
+- `CLAUDE.md` est **fusionné** avec le vôtre (ajouté en fin de fichier, pas écrasé)
+- `project-context.md` est créé à remplir
+- `src/`, `docs/`, `package.json`, `.github/` et tout fichier existant **ne sont pas touchés**
+
+### Différences clés
+
+| | Nouveau projet | Projet existant |
+|---|---|---|
+| `CLAUDE.md` | Copié tel quel | **Fusionné** avec l'existant |
+| `.claude/agents/` | Créé de zéro | Agents ajoutés, custom préservés |
+| `src/` | Créé vide | **Pas touché** |
+| `docs/` | Créé vide | **Pas touché** |
+| `package.json` | N'existe pas encore | **Pas touché** |
+| `project-context.md` | Template vierge | Template vierge — **documenter l'existant** |
 
 ---
 
@@ -51,18 +79,23 @@ L'installation :
 
 **Étape 1 — Remplir project-context.md**
 C'est obligatoire. Tous les agents s'arrêtent si ce fichier est absent ou vide.
+Sur un projet existant, documenter la stack actuelle, l'architecture, les conventions et les décisions passées.
 
-**Étape 2 — Lancer l'orchestrateur**
+**Étape 2 — Choisir le bon point d'entrée**
+
+| Situation | Commencer par |
+|---|---|
+| Nouveau projet à construire de A à Z | `@orchestrator` — il planifie tout |
+| Projet existant, besoin ciblé | L'agent spécifique : `@fullstack`, `@seo`, `@qa`… |
+| Projet existant, refonte majeure | `@orchestrator` — mais après avoir documenté l'existant |
+
+**Exemples — Nouveau projet :**
 
 ```
 @orchestrator je veux lancer [nom du projet], lis project-context.md et planifie
 ```
 
-L'orchestrateur analyse le projet, détecte automatiquement s'il est nouveau ou existant,
-sélectionne les agents nécessaires et génère les instructions dans l'ordre optimal avec
-parallélisation quand c'est possible.
-
-**Appel direct d'un agent**
+**Exemples — Projet existant :**
 
 ```
 @fullstack crée le composant d'authentification avec NextAuth et Supabase
