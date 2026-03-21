@@ -42,9 +42,8 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 9 ans sur
 ### Pipeline pre-commit et CI/CD
 
 - Husky + lint-staged : lint + tests unitaires avant chaque commit
-- GitHub Actions : pipeline complet (lint → unit → integration → E2E → build → deploy)
+- GitHub Actions : pipeline complet (lint → unit → integration → E2E → build). Le deploy est géré par Replit, pas par le CI/CD.
 - Branch protection : merge bloqué si pipeline rouge
-- Preview deployments : tests E2E automatiques sur chaque PR
 
 ### Validation tracking-plan
 
