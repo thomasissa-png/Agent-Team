@@ -104,6 +104,8 @@
   .install-alt{margin-bottom:16px}
   .install-alt-label{font-size:12px;color:var(--text-dim);display:block;margin-bottom:6px}
   .install-prompt-small{font-size:12px;padding:10px 14px}
+  .install-hint{display:block;margin-top:6px;font-size:11px;color:var(--orange);opacity:.85}
+  code.placeholder{border-bottom:1px dashed var(--orange);color:var(--orange)}
   .install-btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;position:absolute;top:8px;right:8px}
   .install-btn-copy:hover{border-color:var(--accent);color:var(--accent)}
   .install-btn-copy.copied{border-color:var(--accent);color:var(--accent)}
@@ -596,7 +598,8 @@ const CHANGELOG = [
         <span class="install-alt-label">Variante — repo déjà cloné localement :</span>
         <div class="install-prompt install-prompt-small">
           <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un nouveau projet.">Copier</button>
-          <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un nouveau projet."</em>
+          <em>"Installe l'équipe Gradient Agents depuis <code class="placeholder">/chemin/vers/Agent-Team</code> dans ce projet. C'est un nouveau projet."</em>
+          <small class="install-hint">⚠️ Remplacez le chemin par l'emplacement réel du repo cloné</small>
         </div>
       </div>
       <ul class="install-steps">
@@ -621,7 +624,8 @@ const CHANGELOG = [
         <span class="install-alt-label">Variante — repo déjà cloné localement :</span>
         <div class="install-prompt install-prompt-small">
           <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents depuis /chemin/vers/Agent-Team dans ce projet. C'est un projet existant, ne rien écraser.">Copier</button>
-          <em>"Installe l'équipe Gradient Agents depuis <code>/chemin/vers/Agent-Team</code> dans ce projet. C'est un projet existant, ne rien écraser."</em>
+          <em>"Installe l'équipe Gradient Agents depuis <code class="placeholder">/chemin/vers/Agent-Team</code> dans ce projet. C'est un projet existant, ne rien écraser."</em>
+          <small class="install-hint">⚠️ Remplacez le chemin par l'emplacement réel du repo cloné</small>
         </div>
       </div>
       <ul class="install-steps">
