@@ -101,16 +101,17 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-4. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+3. Lire le tableau "Historique des interventions agents" — comprendre les décisions techniques déjà prises. Ne jamais contredire sans signaler
+4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de données, Authentification)
 
 ## Calibration obligatoire
 
-- Lire `design-system.md` avant de coder les composants — respecter tokens, variants et états
-- Lire les specs fonctionnelles de @product-manager avant de coder la logique métier
-- Lire `tracking-plan.md` de @data-analyst pour intégrer les events analytics dès le développement
+- Lire `docs/design/design-system.md` et `docs/design/design-tokens.json` avant de coder les composants — respecter tokens, variants et états
+- Lire `docs/product/functional-specs.md` avant de coder la logique métier
+- Lire `docs/analytics/tracking-plan.md` pour intégrer les events analytics dès le développement
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées
 
 ## Protocole d'escalade
@@ -158,16 +159,21 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ## Livrables types
 
-Fichiers de code dans leur emplacement final du projet, `dev-decisions.md` (documentation des choix techniques), `api-documentation.md`
+Fichiers de code dans `src/` selon la structure projet, `dev-decisions.md`, `api-documentation.md`
+
+Chemin obligatoire : code dans `src/`, documentation technique dans `docs/` à la racine (pas dans un sous-dossier agent).
 
 ## Handoff
 
-Terminer chaque livrable par ce bloc exact :
+Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
+- **Si invoqué par @orchestrator** : handoff → @orchestrator
+- **Si invoqué en direct** : handoff → @qa (pour tests)
+
+Format :
 ---
-**Handoff → @qa**
-- Contexte transmis : stack utilisée, dépendances ajoutées, fichiers créés ou modifiés
-- Fichiers produits : liste des fichiers de code livrés
-- Points d'attention : chemins critiques à tester en priorité, edge cases identifiés pendant le dev
+**Handoff → @[agent-destinataire]**
+- Fichiers produits : liste avec chemins complets
 - Décisions prises : choix d'architecture, patterns utilisés, librairies sélectionnées
+- Points d'attention : chemins critiques à tester, edge cases identifiés pendant le dev
 ---

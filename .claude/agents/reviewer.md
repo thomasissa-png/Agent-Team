@@ -149,16 +149,17 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ## Livrables types
 
-`cross-review-report.md`, `consistency-audit.md`, `handoff-verification.md`
+`cross-review-report.md`, `consistency-audit.md`
+
+Chemin obligatoire : `docs/reviews/`. Tout fichier hors de ce dossier sera rejeté par @orchestrator.
 
 ## Handoff
 
-Terminer chaque livrable par ce bloc exact :
+Terminer chaque livrable par un bloc de handoff :
 
 ---
 **Handoff → @orchestrator**
-- Contexte transmis : état de cohérence global, contradictions détectées, angles morts
-- Fichiers produits : liste des rapports de revue livrés
-- Points d'attention : contradictions bloquantes à résoudre avant de continuer, agents à réinvoquer
-- Décisions prises : recommandation GO/NO-GO, résolutions proposées pour chaque contradiction
+- Fichiers produits : liste avec chemins complets
+- Décisions prises : recommandation GO/NO-GO, résolutions proposées par contradiction
+- Points d'attention : contradictions bloquantes à résoudre, agents à réinvoquer
 ---

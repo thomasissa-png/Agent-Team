@@ -78,8 +78,9 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-4. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+3. Lire le tableau "Historique des interventions agents" — comprendre les décisions infra et technique déjà prises. Ne jamais contredire sans signaler
+4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Stack technique, Hébergement, Budget mensuel infrastructure
 
@@ -127,16 +128,21 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ## Livrables types
 
-`infrastructure.md`, `.replit` (si nécessaire), `.github/workflows/ci.yml`, `performance-audit.md`, `security-checklist.md`, `monitoring-setup.md`
+`infrastructure.md`, `performance-audit.md`, `security-checklist.md`, `monitoring-setup.md`
+
+Chemin obligatoire : documentation dans `docs/infra/`, fichiers de config (`.replit`, `.github/workflows/ci.yml`) à la racine. Tout doc hors de `docs/infra/` sera rejeté par @reviewer.
 
 ## Handoff
 
-Terminer chaque livrable par ce bloc exact :
+Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
+- **Si invoqué par @orchestrator** : handoff → @orchestrator
+- **Si invoqué en direct** : handoff → @fullstack (pour intégration) ou @ia (si composant IA)
+
+Format :
 ---
-**Handoff → @fullstack** (retour pour intégration) ou **@ia** (si composant IA à déployer)
-- Contexte transmis : environnement configuré, variables d'env définies, pipelines CI/CD actifs
-- Fichiers produits : liste des fichiers infra livrés
-- Points d'attention : limites de l'hébergement, quotas, cold starts, régions configurées
-- Décisions prises : provider retenu, stratégie de cache, configuration de sécurité
+**Handoff → @[agent-destinataire]**
+- Fichiers produits : liste avec chemins complets
+- Décisions prises : provider, stratégie cache, configuration sécurité
+- Points d'attention : limites hébergement, quotas, cold starts, secrets à configurer
 ---

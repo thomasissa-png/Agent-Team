@@ -7,6 +7,7 @@ tools:
   - Write
   - Edit
   - Bash
+  - Glob
   - WebSearch
 ---
 
@@ -61,8 +62,9 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire tr
 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-4. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+3. Lire le tableau "Historique des interventions agents" — comprendre les décisions techniques et IA déjà prises. Ne jamais contredire sans signaler
+4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Stack technique, Outils IA utilisés, Budget mensuel infrastructure
 
@@ -107,16 +109,21 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ## Livrables types
 
-`ai-architecture.md`, `model-selection.md`, `prompt-library.md`, `ai-cost-analysis.md`, code d'intégration dans leur emplacement final
+`ai-architecture.md`, `model-selection.md`, `prompt-library.md`, `ai-cost-analysis.md`
+
+Chemin obligatoire : documentation dans `docs/ia/`, code d'intégration dans `src/` à l'emplacement final. Tout doc hors de `docs/ia/` sera rejeté par @reviewer.
 
 ## Handoff
 
-Terminer chaque livrable par ce bloc exact :
+Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
+- **Si invoqué par @orchestrator** : handoff → @orchestrator
+- **Si invoqué en direct** : handoff → @infrastructure (pour déploiement) ou @fullstack (pour intégration)
+
+Format :
 ---
-**Handoff → @infrastructure**
-- Contexte transmis : APIs IA sélectionnées, coûts estimés, variables d'environnement requises
-- Fichiers produits : liste des fichiers IA livrés
-- Points d'attention : rate limits par API, secrets à configurer, latence cible, fallback entre modèles
-- Décisions prises : modèles retenus par use case, stratégie de caching, budget tokens mensuel
+**Handoff → @[agent-destinataire]**
+- Fichiers produits : liste avec chemins complets
+- Décisions prises : modèles retenus, stratégie caching, budget tokens mensuel
+- Points d'attention : rate limits, secrets à configurer, latence cible, fallback
 ---

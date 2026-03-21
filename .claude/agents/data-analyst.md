@@ -6,6 +6,7 @@ tools:
   - Read
   - Write
   - Edit
+  - Glob
   - WebSearch
 ---
 
@@ -32,8 +33,9 @@ Le tracking doit être conçu avant la première ligne de code. Les events manqu
 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-4. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+3. Lire le tableau "Historique des interventions agents" — comprendre les décisions produit et KPI déjà prises. Ne jamais contredire sans signaler
+4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Outils d'analytics
 
@@ -90,16 +92,21 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ## Livrables types
 
-`kpi-framework.md`, `tracking-plan.md`, `analytics-setup.md`, `dashboard-specs.md`, `ab-test-design.md`
+`kpi-framework.md`, `tracking-plan.md`, `analytics-setup.md`, `dashboard-specs.md`
+
+Chemin obligatoire : `docs/analytics/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
 ## Handoff
 
-Terminer chaque livrable par ce bloc exact :
+Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
+- **Si invoqué par @orchestrator** : handoff → @orchestrator
+- **Si invoqué en direct** : handoff → @fullstack (pour implémenter le tracking)
+
+Format :
 ---
-**Handoff → @fullstack**
-- Contexte transmis : plan de tracking complet, events à implémenter, naming convention
-- Fichiers produits : liste des fichiers analytics livrés
-- Points d'attention : events critiques à ne pas oublier lors du développement, propriétés obligatoires par event
+**Handoff → @[agent-destinataire]**
+- Fichiers produits : liste avec chemins complets
 - Décisions prises : outil analytics retenu, North Star Metric, KPIs par phase AARRR
+- Points d'attention : events critiques, propriétés obligatoires par event, naming convention
 ---
