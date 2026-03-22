@@ -400,7 +400,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Positionnement & plateforme de marque",
         agents:["creative-strategy"],
         quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit",
-        prompt:"@creative-strategy Analyse project-context.md et produis la plateforme de marque complète : positionnement, personas détaillés avec jobs-to-be-done, benchmark concurrentiel, et brief créatif."
+        prompt:"@creative-strategy Analyse project-context.md. Si les champs Secteur, Persona principal, Problème principal ou Alternative actuelle sont insuffisants, pose-moi les questions pour les compléter avant de continuer. Benchmark 3-5 concurrents via WebSearch. Produis la plateforme de marque complète : positionnement (territoire, promesse, preuve, ton), personas détaillés avec jobs-to-be-done et objections, benchmark concurrentiel (espaces occupés vs libres), et brief créatif. Livrables : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md."
       },
       {
         title:"Vision produit & roadmap",
@@ -412,7 +412,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"KPIs & tracking plan",
         agents:["data-analyst"],
         quand:"Avant tout développement, pour mesurer dès le jour 1",
-        prompt:"@data-analyst Définis la North Star Metric et les KPIs AARRR. Produis le tracking plan complet : chaque event, sa source, son trigger. Specs de dashboard prêtes pour l'outil analytics choisi."
+        prompt:"@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features MVP, modèle économique) et génère-les avant de continuer. Définis la North Star Metric avec sa formule de calcul. Produis les KPIs AARRR avec valeurs cibles par étape. Produis le tracking plan complet : chaque event (nom, trigger, propriétés, type), naming convention, outil analytics recommandé selon le budget. Specs de dashboard prêts à implémenter. Livrables : docs/analytics/kpi-framework.md + docs/analytics/tracking-plan.md + docs/analytics/dashboard-specs.md."
       },
       {
         title:"Audit juridique & conformité",
@@ -442,7 +442,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Brand voice & guide d'écriture",
         agents:["copywriter"],
         quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants",
-        prompt:"@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer. Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy."
+        prompt:"@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer. Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy. Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md."
       },
       {
         title:"Landing page complète",
@@ -466,7 +466,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Intégrer le paiement Stripe",
         agents:["fullstack","legal","infrastructure"],
         quand:"Plans tarifaires validés dans la roadmap",
-        prompt:"@fullstack Intègre Stripe Checkout : webhook /api/stripe/webhook, gestion des abonnements, portail client. @legal Vérifie la conformité CGV. @infrastructure Configure les variables d'environnement et le monitoring des paiements."
+        prompt:"@fullstack Lis docs/product/functional-specs.md (plans tarifaires, pricing). S'il n'existe pas, pose-moi les questions pour spécifier les plans (nombre de tiers, prix, features par tier, essai gratuit oui/non) et génère les specs avant de coder. Intègre Stripe Checkout : route API /api/stripe/webhook (signature verification), gestion des abonnements (création, upgrade, downgrade, annulation), portail client Stripe. Livrables : code dans src/app/api/stripe/. Puis @legal : lis docs/product/functional-specs.md et vérifie la conformité des CGV avec le modèle d'abonnement implémenté. Mets à jour docs/legal/cgu-draft.md (section paiements, remboursements, résiliation). Puis @infrastructure : liste les variables d'environnement Stripe à configurer (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_*). Ajoute le monitoring webhook (alertes si taux d'échec >1%). Mets à jour docs/infra/infrastructure.md."
       },
       {
         title:"Ajouter une feature IA (LLM)",
@@ -478,7 +478,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Configurer CI/CD & déploiement",
         agents:["qa","infrastructure"],
         quand:"Code source avec au moins un test",
-        prompt:"@qa Écris le workflow GitHub Actions : lint, type-check, Vitest, Playwright. @infrastructure Configure le déploiement (Replit/.replit + replit.nix), health check /api/health, monitoring Sentry + UptimeRobot."
+        prompt:"@qa Lis le code dans src/ et docs/qa/qa-strategy.md s'il existe. Écris le workflow GitHub Actions (.github/workflows/ci.yml) : lint (ESLint), type-check (tsc --noEmit), tests unitaires Vitest, tests E2E Playwright. Définis les seuils bloquants (couverture >80%, Lighthouse scores). Livrables : .github/workflows/ci.yml + docs/qa/qa-strategy.md. Puis @infrastructure : lis docs/infra/infrastructure.md s'il existe. Configure la compatibilité Replit (.replit + replit.nix). Crée la route /api/health (status, version, uptime). Configure Sentry (Next.js, source maps) + UptimeRobot (endpoint /api/health, intervalle 5min). Documente les variables d'environnement à configurer. Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/."
       },
       {
         title:"Choisir & optimiser les modèles IA",
@@ -496,13 +496,13 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Stratégie SEO technique & éditoriale",
         agents:["seo"],
         quand:"Contenu rédigé, site en production ou pré-lancement",
-        prompt:"@seo Base-toi sur project-context.md (persona, secteur) et docs/copy/landing-page-copy.md si disponible. Audit SEO complet : Core Web Vitals (LCP, CLS, INP), données structurées JSON-LD, maillage interne, stratégie de mots-clés. Audite en priorité les pages à plus fort trafic/conversion. Livrables : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md. Critère de qualité : chaque recommandation doit être actionnable avec la page cible et la priorité (P0/P1/P2)."
+        prompt:"@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md s'il existe. Lis docs/strategy/brand-platform.md s'il existe (mots-clés de marque). Audit SEO complet : Core Web Vitals (LCP, CLS, INP), données structurées JSON-LD, maillage interne, stratégie de mots-clés. Audite en priorité les pages à plus fort trafic/conversion. Livrables : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md. Critère de qualité : chaque recommandation doit être actionnable avec la page cible et la priorité (P0/P1/P2)."
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
         agents:["geo"],
         quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity",
-        prompt:"@geo Analyse notre visibilité actuelle sur les IA génératives. Propose le plan GEO : entités nommées, claims vérifiables, FAQ optimisée pour les citations IA, restructuration du contenu pour le format LLM-friendly."
+        prompt:"@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, pose-moi les questions pour les créer (mots-clés principaux, pages existantes, objectif de visibilité) et génère-les avant de continuer. Lis aussi docs/strategy/brand-platform.md (entités de marque). Analyse la visibilité actuelle sur ChatGPT, Claude, Gemini, Perplexity (via WebSearch). Propose le plan GEO : entités nommées à pousser, claims vérifiables avec sources, FAQ optimisée pour les citations IA, restructuration du contenu existant en format LLM-friendly. Livrables : docs/geo/geo-strategy.md + docs/geo/content-restructuring.md."
       },
       {
         title:"SEO + GEO combinés",
@@ -550,7 +550,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Revue croisée GO/NO-GO",
         agents:["reviewer"],
         quand:"Fin de sprint ou pré-lancement",
-        prompt:"@reviewer Audite la cohérence entre tous les livrables : brand voice ↔ copy ↔ UI, specs ↔ code, conformité légale, couverture tracking. Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers."
+        prompt:"@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour les créer. Audite la cohérence croisée : brand voice (docs/copy/brand-voice.md) ↔ copy (docs/copy/) ↔ UI (docs/design/), specs (docs/product/) ↔ code (src/), conformité légale (docs/legal/), couverture tracking (docs/analytics/). Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers. Livrable : docs/reviews/cross-review-report.md."
       },
       {
         title:"Revue intermédiaire (mid-projet)",
@@ -562,7 +562,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Audit qualité & tests complets",
         agents:["qa"],
         quand:"Code développé, avant release",
-        prompt:"@qa Audit qualité complet : couverture Vitest (cible >80%), E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté, Lighthouse CI. Rapport avec blockers."
+        prompt:"@qa Lis docs/product/functional-specs.md et docs/analytics/tracking-plan.md s'ils existent pour référence. Audit qualité complet : couverture Vitest (cible >80%), E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté, Lighthouse CI. Rapport avec blockers classés par sévérité. Livrable : docs/qa/qa-strategy.md."
       },
       {
         title:"Audit UX & conversion",
@@ -574,13 +574,13 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Audit stratégique first principles",
         agents:["elon"],
         quand:"Tu veux un regard brutal et honnête sur ton projet",
-        prompt:"@elon Audite ce projet en first principles. Note chaque dimension sur 10 : vision, exécution, moat, scalabilité. Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Donne le verdict sans filtre."
+        prompt:"@elon Lis project-context.md et tous les livrables dans docs/. Audite ce projet en first principles. Note chaque dimension sur 10 : vision, exécution, moat, scalabilité. Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Donne le verdict sans filtre. Livrable : docs/reviews/elon-audit.md."
       },
       {
         title:"Monitoring post-launch",
         agents:["infrastructure"],
         quand:"Site déployé en production",
-        prompt:"@infrastructure Configure le monitoring complet : Sentry (erreurs JS/API), UptimeRobot (disponibilité), health check /api/health, alertes Slack sur incidents critiques (downtime, error rate >1%, Core Web Vitals dégradés)."
+        prompt:"@infrastructure Lis docs/infra/infrastructure.md s'il existe. Configure le monitoring complet : Sentry (erreurs JS/API, source maps Next.js), UptimeRobot (disponibilité, endpoint /api/health, intervalle 5min), health check /api/health (status, version, uptime), alertes Slack sur incidents critiques (downtime, error rate >1%, Core Web Vitals dégradés). Documente les variables d'environnement nécessaires. Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/."
       }
     ]
   },
