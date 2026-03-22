@@ -1506,39 +1506,136 @@ Critères de validation : chaque métrique a un seuil cible, le verdict est argu
     items:[
       {
         title:"Revue croisée GO/NO-GO",
-        agents:["reviewer"],
-        quand:"Fin de sprint ou pré-lancement",
-        prompt:"@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour les créer. Audite la cohérence croisée : brand voice (docs/copy/brand-voice.md) ↔ copy (docs/copy/) ↔ UI (docs/design/), specs (docs/product/) ↔ code (src/), conformité légale (docs/legal/), couverture tracking (docs/analytics/). Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers. Livrable : docs/reviews/cross-review-report.md."
+        agents:["reviewer","legal"],
+        quand:"Fin de sprint ou pré-lancement. La revue est le dernier filet de sécurité avant de lancer — ne pas la sauter.",
+        prompt:`@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour les créer. Audite la cohérence croisée sur ces axes :
+
+1. Brand ↔ Copy : le ton dans docs/copy/ est-il aligné avec docs/strategy/brand-platform.md et docs/copy/brand-voice.md ?
+2. Specs ↔ Code : les features dans src/ correspondent-elles à docs/product/functional-specs.md ? Critères d'acceptation respectés ?
+3. Design ↔ Code : les tokens de docs/design/design-tokens.json sont-ils respectés dans src/ ? Contrastes WCAG ?
+4. Tracking ↔ KPIs : chaque event de docs/analytics/tracking-plan.md est-il implémenté ? Les KPIs sont-ils mesurables ?
+5. Conformité légale : docs/legal/ couvre-t-il le modèle économique, les données traitées, et la conformité IA ?
+6. Performance : les choix visuels et techniques sont-ils compatibles avec un LCP < 2.5s ?
+7. GEO : le contenu est-il structuré pour la visibilité sur les IA génératives ?
+8. Persona drift : le persona utilisé dans tous les livrables est-il le même que dans project-context.md ?
+
+Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers classés P0 (critique) / P1 (majeur) / P2 (mineur). Livrable : docs/reviews/cross-review-report.md.
+
+Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
+
+Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), zéro blocker P0 non résolu pour un GO.`
       },
       {
         title:"Revue intermédiaire (mid-projet)",
         agents:["reviewer"],
-        quand:"Au moins 3 livrables produits, avant d'aller plus loin",
-        prompt:"@reviewer Lis tous les fichiers dans docs/ produits jusqu'ici. Vérifie la cohérence croisée sur ces axes : specs (docs/product/functional-specs.md) ↔ code (src/), brand voice (docs/copy/brand-voice.md) ↔ copy (docs/copy/), tracking plan (docs/analytics/tracking-plan.md) ↔ KPIs (docs/analytics/kpi-framework.md). Signale : contradictions, livrables manquants pour continuer, dérives par rapport au project-context.md. Livrable : docs/reviews/mid-review.md avec statut par axe (OK/Warning/Blocker)."
+        quand:"Au moins 3 livrables produits, avant d'aller plus loin. La revue intermédiaire détecte les dérives avant qu'elles ne coûtent cher.",
+        prompt:`@reviewer Lis tous les fichiers dans docs/ produits jusqu'ici. Lis aussi project-context.md pour vérifier l'alignement.
+
+Vérifie la cohérence croisée sur ces axes :
+1. Specs ↔ code : docs/product/functional-specs.md ↔ src/. Features manquantes ou divergentes.
+2. Brand voice ↔ copy : docs/copy/brand-voice.md ↔ docs/copy/. Ton cohérent dans tous les contenus.
+3. Tracking ↔ KPIs : docs/analytics/tracking-plan.md ↔ docs/analytics/kpi-framework.md. Chaque KPI est-il mesurable ?
+4. Design ↔ code : docs/design/design-tokens.json ↔ src/. Valeurs hardcodées vs tokens.
+5. Persona drift : le persona dans tous les livrables est-il celui de project-context.md ?
+6. Livrables manquants : quels livrables sont nécessaires pour continuer mais n'existent pas encore ?
+
+Signale : contradictions, dérives par rapport au project-context.md, livrables manquants bloquants.
+
+Livrable : docs/reviews/mid-review.md avec statut par axe (OK / Warning / Blocker) et actions correctives recommandées.
+
+Critères de validation : chaque axe a un verdict, les actions correctives sont assignées à un agent spécifique.`
       },
       {
         title:"Audit qualité & tests complets",
-        agents:["qa"],
-        quand:"Code développé, avant release",
-        prompt:"@qa Lis docs/product/functional-specs.md (critères d'acceptation par feature). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider). S'il n'existe pas, signale-le — l'audit se concentrera sur les tests fonctionnels. Audit qualité complet : couverture Vitest (cible >80%), E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté, Lighthouse CI (scores cibles : Performance >90, Accessibility >95). Rapport avec blockers classés par sévérité (critique/majeur/mineur). Livrable : docs/qa/qa-strategy.md."
+        agents:["qa","infrastructure"],
+        quand:"Code développé, avant release. Les tests sont l'assurance vie du produit — ils protègent les fonctionnalités qui marchent pendant que tu développes les suivantes.",
+        prompt:`@qa Lis docs/product/functional-specs.md (critères d'acceptation par feature). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider) et docs/design/design-tokens.json (tokens à vérifier).
+
+Audit qualité complet :
+1. Tests unitaires Vitest : couverture cible > 80%. Identifier les modules non couverts.
+2. Tests E2E Playwright : chaque parcours critique a au moins un test E2E. Scénarios : onboarding, conversion, paiement (si applicable), parcours d'erreur.
+3. Tracking validation : vérifier que chaque event du tracking-plan est implémenté et déclenché correctement.
+4. Lighthouse CI : scores cibles Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90.
+5. Sécurité : audit des dépendances (npm audit), headers HTTP, validation des inputs, CSRF protection.
+6. Accessibilité : navigation clavier, screen reader, contrastes, aria-labels sur les éléments interactifs.
+7. Responsive : tests sur mobile (375px), tablette (768px), desktop (1280px).
+
+Rapport avec blockers classés par sévérité (critique/majeur/mineur) et effort de correction estimé.
+
+Livrable : docs/qa/qa-strategy.md.
+
+Puis @infrastructure : lis docs/qa/qa-strategy.md et vérifie que la CI/CD bloque sur les seuils définis. Mets à jour .github/workflows/ci.yml si nécessaire. Vérifie le monitoring post-deploy (rollback automatique si erreur rate > seuil). Mets à jour docs/infra/infrastructure.md.
+
+Critères de validation : couverture > 80%, zéro blocker critique non résolu, Lighthouse scores respectent les cibles, CI/CD bloque sur les seuils.`
       },
       {
         title:"Audit UX & conversion",
-        agents:["ux","data-analyst"],
-        quand:"Produit en production avec trafic",
-        prompt:"@ux Lis docs/ux/user-flows.md (parcours définis). S'il n'existe pas, pose-moi les questions pour le créer (parcours critiques, étapes, points de décision) et génère-le avant de continuer. Utilise aussi les données analytics fournies. Audite les parcours critiques : onboarding, conversion, rétention. Identifie les friction points, taux d'abandon par étape, et propose 3-5 quick wins priorisés. Livrable : docs/ux/ux-audit.md. Puis @data-analyst : prends docs/ux/ux-audit.md et configure les dashboards de conversion par cohorte (jour 1, 7, 30) + métriques de rétention. Livrable : docs/analytics/dashboard-specs.md."
+        agents:["ux","data-analyst","growth"],
+        quand:"Produit en production avec trafic. Les données sont la vérité — pas les opinions.",
+        prompt:`@ux Lis docs/ux/user-flows.md (parcours définis). S'il n'existe pas, pose-moi les questions pour le créer (parcours critiques, étapes, points de décision) et génère-le avant de continuer. Lis aussi les données analytics fournies (coller dans le prompt ou dans project-context.md Notes libres).
+
+Audit UX sur les parcours critiques :
+1. Onboarding : time-to-value actuel, taux d'abandon par étape, étapes de friction.
+2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles.
+3. Rétention : fréquence d'usage, features les plus/moins utilisées, patterns des power users vs churners.
+4. Accessibilité : navigation clavier, screen reader, contrastes, hiérarchie des headings.
+5. Mobile : parcours critiques testés sur 375px, touch targets, temps de chargement.
+
+Pour chaque friction identifiée : description, impact estimé, solution proposée, effort de correction.
+3-5 quick wins priorisés par impact/effort.
+
+Livrable : docs/ux/ux-audit.md.
+
+Puis @data-analyst : prends docs/ux/ux-audit.md et configure les dashboards de conversion par cohorte (J1, J7, J30) + métriques de rétention + alertes sur les drops. Livrable : docs/analytics/dashboard-specs.md.
+
+Puis @growth : lis docs/ux/ux-audit.md et identifie les impacts sur le funnel d'acquisition. Les frictions UX identifiées affectent-elles le CAC ? Recommande les optimisations prioritaires. Ajoute dans docs/growth/funnel-audit.md.
+
+Critères de validation : chaque friction a un impact estimé, les quick wins sont actionnables en < 1 semaine, les dashboards sont configurés.`
       },
       {
         title:"Audit stratégique first principles",
         agents:["elon"],
-        quand:"Tu veux un regard brutal et honnête sur ton projet",
-        prompt:"@elon Lis project-context.md puis tous les livrables dans docs/ (stratégie, product, design, copy, analytics, infra). Si aucun livrable n'existe, signale-le et base l'audit sur project-context.md seul. Audite en first principles : note chaque dimension sur 10 (vision, exécution, moat, scalabilité, vitesse d'exécution). Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Identifie le plus gros risque d'échec. Donne le verdict sans filtre. Livrable : docs/reviews/elon-audit.md."
+        quand:"Tu veux un regard brutal et honnête sur ton projet — pas des compliments polis. Utile à tout moment, particulièrement avant un pivot ou une levée.",
+        prompt:`@elon Lis project-context.md puis tous les livrables dans docs/ (stratégie, product, design, copy, analytics, infra, legal). Si aucun livrable n'existe, signale-le et base l'audit sur project-context.md seul.
+
+Audite en first principles — pas de complaisance :
+1. Vision (note /10) : le problème est-il réel et important ? La solution est-elle 10x meilleure que l'alternative ?
+2. Exécution (note /10) : la vitesse d'exécution est-elle compatible avec le marché ? Qu'est-ce qui ralentit ?
+3. Moat (note /10) : quel avantage concurrentiel durable ? (network effects, data moat, switching costs, brand, technologie). Si la réponse est "aucun", le dire.
+4. Scalabilité (note /10) : le produit/business model scale-t-il sans effort linéaire ? Quels sont les bottlenecks ?
+5. Vitesse (note /10) : combien de temps entre une idée et sa mise en production ? Qu'est-ce qui peut être supprimé/automatisé ?
+6. Risque n°1 : le plus gros risque d'échec — pas le risque évident, le risque que personne ne veut voir.
+7. Levier n°1 : la chose qui, si elle était 10x mieux, changerait tout.
+8. Théâtre vs valeur : qu'est-ce qui a l'air bien mais ne crée pas de valeur réelle ?
+
+Verdict sans filtre. Pas de langue de bois. Livrable : docs/reviews/elon-audit.md.
+
+Critères de validation : chaque dimension est notée avec justification, le risque n°1 et le levier n°1 sont identifiés, le verdict est actionnable.`
       },
       {
         title:"Monitoring post-launch",
-        agents:["infrastructure"],
-        quand:"Site déployé en production",
-        prompt:"@infrastructure Lis docs/infra/infrastructure.md s'il existe. Configure le monitoring complet : Sentry (erreurs JS/API, source maps Next.js), UptimeRobot (disponibilité, endpoint /api/health, intervalle 5min), health check /api/health (status, version, uptime), alertes Slack sur incidents critiques (downtime, error rate >1%, Core Web Vitals dégradés). Documente les variables d'environnement nécessaires. Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/."
+        agents:["infrastructure","data-analyst","copywriter"],
+        quand:"Site déployé en production. Le monitoring est ton système d'alerte précoce — sans lui, tu découvres les problèmes quand les utilisateurs te les signalent (ou partent).",
+        prompt:`@infrastructure Lis docs/infra/infrastructure.md s'il existe. Lis aussi docs/analytics/tracking-plan.md pour identifier les métriques business à monitorer.
+
+Configure le monitoring complet :
+1. Erreurs : Sentry (erreurs JS/API, source maps Next.js, alertes par sévérité, regroupement par issue).
+2. Disponibilité : UptimeRobot (endpoint /api/health, intervalle 5min, alerte SMS + Slack si down > 1min).
+3. Health check : route /api/health (status, version, uptime, dernière erreur, latence DB, usage mémoire).
+4. Performance : Core Web Vitals en continu (LCP, CLS, INP), alertes si dégradation > 20%.
+5. Business : taux d'erreur webhook (Stripe), taux d'échec signup, taux d'erreur API par endpoint.
+6. Alertes : Slack channel dédié, escalade (warning → critical → page), protocole de réponse (qui est prévenu, dans quel ordre).
+7. Status page : page publique (style status.monproduit.com) pour communiquer l'état du service aux utilisateurs.
+
+Variables d'environnement à configurer documentées dans .env.example.
+
+Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/.
+
+Puis @data-analyst : lis docs/infra/infrastructure.md et ajoute les métriques business dans le monitoring (conversion rate, signup rate, temps de session moyen). Alerte si une métrique business drop > 20% sur 24h. Mets à jour docs/analytics/dashboard-specs.md.
+
+Puis @copywriter : rédige le template de communication incident (status page update, email aux utilisateurs, post social). Ton : transparent, rassurant, factuel. Livrable : ajout dans docs/copy/ux-writing-guide.md section "Communication incident".
+
+Critères de validation : chaque type de monitoring est configuré avec des seuils d'alerte, le protocole d'escalade est défini, la status page existe.`
       }
     ]
   },
