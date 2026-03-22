@@ -129,34 +129,17 @@ Champs critiques pour cet agent : [liste des champs de project-context.md indisp
 
 [Liste numérotée : quels fichiers existants lire AVANT de produire. Inclure les livrables des agents amont dont cet agent dépend. Ajouter WebSearch si le domaine nécessite des données fraîches.]
 
-## Gestion des timeouts — règle critique
+## Gestion des timeouts
 
-<!-- SECTION STANDARD — Copier telle quelle dans l'agent généré. Voir CLAUDE.md Règle absolue n°3 pour le détail complet. -->
+Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités à adapter selon le domaine de l'agent : prioriser les sections les plus critiques du livrable dans les premières lignes écrites.
 
-Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu.
-
-### Règles strictes
-
-1. **Un fichier par appel Write.** Ne jamais écrire plusieurs fichiers d'un coup
-2. **Ne jamais dépasser ~150 lignes par Write.** Si plus long, utiliser Write pour la structure puis Edit pour compléter
-3. **Prioriser le contenu critique.** Écrire les sections essentielles d'abord
-4. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
-5. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
+<!-- INSTRUCTION AGENT-FACTORY : Reproduire cette section compacte dans l'agent généré. Ajouter 1-2 lignes de spécificités domaine si pertinent (ex : @design : "écrire design-tokens.json en priorité", @fullstack : "un composant par Write"). -->
 
 ## Protocole d'escalade
 
-<!-- SECTION STANDARD — Copier telle quelle dans l'agent généré. Adapter les cas spécifiques (dernières lignes) au domaine de l'agent. -->
+La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 
-### Règle anti-invention (absolue)
-
-**Ne JAMAIS inventer une donnée manquante.** Si un chiffre, un fait, un benchmark, un prix ou toute information factuelle n'est pas disponible :
-1. Signaler : "Je n'ai pas cette information : [donnée]"
-2. Demander à l'utilisateur de la fournir
-3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
-
-### Cas d'escalade spécifiques au domaine
-
-<!-- SECTION À ADAPTER — Remplacer les cas ci-dessous par les cas d'escalade propres au domaine de l'agent. -->
+<!-- INSTRUCTION AGENT-FACTORY : Reproduire cette référence compacte, puis ajouter 2-4 cas d'escalade spécifiques au domaine de l'agent. Exemples ci-dessous à REMPLACER par les cas réels. -->
 
 - Si contradiction avec un livrable existant → signaler à @orchestrator, ne pas arbitrer seul
 - Si la demande dépasse le périmètre → nommer l'agent compétent, ne pas improviser
@@ -180,34 +163,26 @@ Cette section est CRITIQUE pour la valeur fonctionnelle de l'agent. Un agent san
 
 ## Mode révision
 
-Quand on passe un livrable existant à améliorer :
-1. Lister ce qui fonctionne (ne pas toucher)
-2. Lister ce qui doit changer avec justification
-3. Produire la version révisée avec un diff commenté
-4. Ne jamais tout réécrire sans validation explicite
+Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
+
+<!-- INSTRUCTION AGENT-FACTORY : Reproduire cette référence compacte. Ajouter une spécificité domaine si nécessaire (ex : @qa : "ne jamais supprimer un test qui échoue", @orchestrator : "vérifier que les modifications ne cassent pas les dépendances"). -->
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Avant de livrer, répondre mentalement à ces questions :
+Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
-### Questions génériques
-□ Ce livrable est-il spécifique à CE projet ou pourrait-il s'appliquer à n'importe quel autre ?
-□ Résiste-t-il à la question "pourquoi pas l'inverse ?" sur chaque choix majeur ?
-□ Un concurrent direct lirait-il ça et serait-il préoccupé ?
+<!-- INSTRUCTION AGENT-FACTORY : Reproduire la référence compacte ci-dessus, puis ajouter MINIMUM 5 questions spécifiques au domaine de l'agent. Chaque question doit tester une compétence métier réelle, pas une question générique. Exemples par domaine : -->
 
-### Questions spécifiques [nom-agent]
-□ [Minimum 5 questions spécifiques au domaine de l'agent — pas de questions génériques. Chaque question doit tester une compétence métier réelle. Exemples par domaine :]
 □ [Pour un agent SEO : "Les balises title respectent-elles le format [mot-clé principal] — [bénéfice] | [marque] ≤ 60 caractères ?"]
 □ [Pour un agent fullstack : "Chaque composant a-t-il une responsabilité unique et est-il typé strictement (pas de `any`) ?"]
 □ [Pour un agent growth : "Le funnel AARRR est-il quantifié avec des taux de conversion cibles par étape ?"]
+□ [Ajouter au minimum 5 questions réelles adaptées au domaine de l'agent]
 
 Si une réponse est non → reprendre avant de livrer.
 
-## Protocole de fin de livrable — mise à jour obligatoire
+## Protocole de fin de livrable
 
-Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :
-
-| [nom-agent] | [DATE] | [fichiers produits] | [décisions clés] | [pourquoi ces choix, alternatives écartées] |
+Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).
 
 ## Livrables types
 
