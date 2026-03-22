@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gradient Agents — Dashboard</title>
-<meta name="description" content="19 agents IA specialises qui coordonnent votre projet de la strategie au deploiement. 59 prompts prets a l'emploi.">
+<meta name="description" content="19 agents IA specialises qui coordonnent votre projet de la strategie au deploiement. 75 prompts prets a l'emploi.">
 <meta property="og:title" content="Gradient Agents — Dashboard">
 <meta property="og:description" content="Une equipe de 19 agents IA specialises pour piloter votre projet de A a Z.">
 <meta property="og:type" content="website">
@@ -1707,6 +1707,75 @@ Puis @growth : lis docs/product/pmf-diagnostic.md. Si PMF atteint : recommande l
 Puis @data-analyst : configure le dashboard PMF (Sean Ellis results, rétention cohortes, engagement depth, NPS trend). Livrable : mise à jour de docs/analytics/dashboard-specs.md.
 
 Critères de validation : chaque métrique a un seuil cible, le verdict est argumenté avec des données (pas des opinions), les actions suivantes sont concrètes.`
+      },
+      {
+        title:"Community management & engagement",
+        agents:["social","growth","copywriter"],
+        quand:"Produit lancé avec des premiers utilisateurs actifs. La communauté est le meilleur canal d'acquisition organique et le meilleur rempart contre le churn — mais elle ne se construit pas toute seule.",
+        prompt:`@social Lis project-context.md (persona, secteur, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/social/social-strategy.md s'il existe. S'ils n'existent pas, pose-moi les questions : qui sont les utilisateurs cibles, sur quelles plateformes sont-ils actifs, quel est le ton de la marque, quel budget temps/argent pour la communauté.
+
+Stratégie de community management complète :
+1. Choix des plateformes communautaires : Discord, Slack, forum intégré, groupe Facebook/LinkedIn, subreddit — justifier le choix selon le persona (B2B → LinkedIn/Slack, B2C tech → Discord/Reddit, B2C grand public → Facebook/Instagram). Maximum 2 plateformes au lancement pour concentrer l'effort.
+2. Modération : charte communautaire (règles claires, ton attendu, comportements interdits), processus de modération (qui modère, quand, outils), gestion des trolls et conflits, escalade vers le support si besoin.
+3. Engagement : calendrier d'animations (AMA, challenges, sondages, partage de use cases, early access features). Fréquence : minimum 3 interactions/semaine. Métriques : taux de réponse < 4h sur les questions, ratio posts équipe/communauté (objectif : 30/70 après 3 mois).
+4. Programme ambassadeurs : identification des power users (critères : fréquence d'usage, contributions communautaires, NPS promoteurs). Avantages : accès beta, badge, mention dans les changelogs, swag. Objectif : 5-10 ambassadeurs actifs à 6 mois.
+5. Feedback loop : canaliser les retours communautaires vers le produit (feature requests, bugs, suggestions). Outil de vote (Canny, feature board intégré). Boucle de retour : quand une feature demandée est livrée, le signaler à la communauté (close the loop).
+6. Métriques communautaires : membres actifs/mois, taux d'engagement (messages/membre), sentiment (positif/neutre/négatif), conversion communauté → utilisateur payant, NPS communautaire.
+
+Livrable : docs/social/community-strategy.md.
+
+Puis @growth : lis docs/social/community-strategy.md et intègre la communauté dans le funnel d'acquisition. Comment le referral et le bouche-à-oreille communautaire alimentent la croissance. Mets à jour docs/growth/growth-strategy.md section "Canaux organiques".
+
+Puis @copywriter : lis docs/social/community-strategy.md et rédige : la charte communautaire (ton accueillant mais cadré), les templates de posts d'animation (AMA, sondage, annonce feature, welcome message), les réponses types aux questions fréquentes. Livrable : docs/copy/community-templates.md.
+
+Critères de validation : maximum 2 plateformes retenues avec justification, la charte est rédigée, le calendrier d'animation couvre les 4 premières semaines, les métriques de succès sont définies avec des seuils.`
+      },
+      {
+        title:"Monitoring UX (session replay & heatmaps)",
+        agents:["data-analyst","ux","fullstack"],
+        quand:"Produit en production avec des utilisateurs actifs. Les analytics quantitatifs disent QUOI (taux de clic, conversion), le monitoring UX montre POURQUOI (où les utilisateurs hésitent, rage-clickent, abandonnent).",
+        prompt:`@data-analyst Lis project-context.md (budget, stack). Lis docs/analytics/tracking-plan.md et docs/analytics/kpi-framework.md s'ils existent. S'ils n'existent pas, pose-moi les questions : parcours critiques à analyser, volume d'utilisateurs, budget outils analytics, données déjà collectées.
+
+Stratégie de monitoring UX complète :
+1. Choix de l'outil : comparatif Hotjar vs PostHog vs FullStory vs Microsoft Clarity (gratuit). Critères : prix (volume de sessions/mois), fonctionnalités (replay, heatmaps, funnels, rage click detection), conformité RGPD (hébergement EU, anonymisation), intégration avec la stack. Recommandation avec justification.
+2. Session replay : configuration (quelles pages enregistrer, sampling rate selon le volume — 100% si < 1000 sessions/jour, 10-30% au-delà), masquage des données sensibles (inputs password, données bancaires, PII), rétention (30 jours minimum). Segments à analyser en priorité : utilisateurs qui abandonnent le funnel, nouveaux utilisateurs (onboarding), utilisateurs qui contactent le support.
+3. Heatmaps : pages à instrumenter en priorité (landing page, pricing, signup, dashboard principal). Types : click maps, scroll maps, move maps. Fréquence d'analyse : hebdomadaire pendant le premier mois, puis bimensuelle.
+4. Rage clicks & dead clicks : détection automatique des clics de frustration (élément non cliquable qui ressemble à un bouton, bouton qui ne répond pas, double-clic rapide). Alerte si le taux de rage clicks dépasse 3% sur une page.
+5. Funnel analysis : recréer les funnels critiques dans l'outil (signup, activation, conversion, achat). Identifier les étapes à plus fort taux d'abandon. Corréler avec les session replays des abandons.
+6. Rapport UX mensuel : template de rapport (top 5 friction points, session replays illustratives, recommandations d'amélioration priorisées par impact, comparaison mois/mois).
+
+Livrable : docs/analytics/ux-monitoring-plan.md + mise à jour de docs/analytics/tracking-plan.md.
+
+Puis @ux : lis docs/analytics/ux-monitoring-plan.md et définis le protocole d'analyse : quand regarder les session replays (après chaque release, après un drop de conversion), comment documenter les insights (format standardisé : page, problème observé, replay ID, sévérité, recommandation), comment prioriser les corrections. Mets à jour docs/ux/ux-audit.md.
+
+Puis @fullstack : lis docs/analytics/ux-monitoring-plan.md et intègre l'outil choisi : script conditionné au consentement cookies (pas de chargement sans consentement), masquage CSS des éléments sensibles (data-hj-suppress ou équivalent), événements custom pour les interactions clés. Code dans src/.
+
+Critères de validation : l'outil est choisi avec justification budget/RGPD, les données sensibles sont masquées, le script est conditionné au consentement, les pages critiques sont instrumentées, le template de rapport mensuel est défini.`
+      },
+      {
+        title:"Stratégie d'emailing automation",
+        agents:["growth","copywriter","data-analyst"],
+        quand:"Produit avec une base d'utilisateurs inscrits (même petite). L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer.",
+        prompt:`@growth Lis project-context.md (persona, modèle économique). Lis docs/growth/growth-strategy.md et docs/analytics/kpi-framework.md s'ils existent. Lis docs/ux/user-flows.md pour les parcours utilisateur. S'ils n'existent pas, pose-moi les questions : parcours utilisateur principal, points de conversion, taille de la base email, outil d'emailing actuel ou budget pour en choisir un.
+
+Stratégie d'emailing automation complète :
+1. Choix de l'outil : comparatif selon le volume et le budget (Resend pour les devs/transactionnel, Loops pour le product-led, Brevo/Mailchimp pour le marketing classique, Customer.io pour l'automation avancée). Critères : prix par email/contact, API/SDK, templates, automation, analytics, conformité RGPD, délivrabilité.
+2. Séquences transactionnelles : emails déclenchés par une action (confirmation inscription, reset password, confirmation achat, facture). Template pour chaque email avec : objet, contenu, CTA, timing (immédiat).
+3. Séquences d'onboarding : série de 3-5 emails post-inscription pour activer l'utilisateur. Chaque email : objectif (découvrir feature X), timing (J+0, J+1, J+3, J+7, J+14), condition d'envoi (n'envoyer J+3 que si l'utilisateur n'a pas fait l'action X). Objectif : augmenter le taux d'activation de 20%.
+4. Séquences de rétention : email de réengagement si inactif > 7 jours, email de milestone (premier succès, 10ème utilisation), email de feedback (NPS à J+30). Segmentation par comportement (actif/inactif/power user).
+5. Séquences marketing : newsletter (fréquence, contenu type), annonces produit (new features), promotions si pertinent. Segmentation par intérêt et engagement.
+6. Triggers comportementaux : mapper chaque trigger (événement utilisateur) à un email. Exemples : abandon de panier → email à H+1, feature non utilisée → email éducatif à J+3, upgrade potentiel → email de proposition. Maximum 1 email automatique par jour par utilisateur.
+7. A/B testing emails : tester les objets (2 variantes minimum), les CTA, le timing d'envoi. Taille d'échantillon minimum par test. Dashboard de suivi.
+8. Métriques : taux d'ouverture cible (> 25%), taux de clic (> 3%), taux de désabonnement (< 0.5%), taux de bounce (< 2%). Alerte si une métrique dévie.
+9. Conformité : double opt-in si requis (RGPD), lien de désabonnement obligatoire, adresse physique dans le footer, gestion des préférences email (fréquence, type de contenu).
+
+Livrable : docs/growth/email-automation-plan.md.
+
+Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-voice.md (ton de marque). Rédige les templates de chaque séquence : objet (< 50 caractères, testé anti-spam), preview text, corps (court, 1 CTA par email, mobile-first), CTA (verbe d'action). Ton : humain, utile, pas vendeur. Livrable : docs/copy/email-sequences.md.
+
+Puis @data-analyst : lis docs/growth/email-automation-plan.md et configure le tracking : events d'ouverture/clic/conversion par séquence, dashboard de performance email (taux par séquence, par cohorte, tendance), alertes si délivrabilité < 95% ou désabonnement > 1%. Mets à jour docs/analytics/tracking-plan.md.
+
+Critères de validation : chaque séquence a un trigger, un timing et un objectif mesurable, les templates sont rédigés et conformes RGPD, le tracking par séquence est configuré, les métriques cibles sont définies.`
       }
     ]
   },
@@ -1846,6 +1915,54 @@ Puis @data-analyst : lis docs/infra/infrastructure.md et ajoute les métriques b
 Puis @copywriter : rédige le template de communication incident (status page update, email aux utilisateurs, post social). Ton : transparent, rassurant, factuel. Livrable : ajout dans docs/copy/ux-writing-guide.md section "Communication incident".
 
 Critères de validation : chaque type de monitoring est configuré avec des seuils d'alerte, le protocole d'escalade est défini, la status page existe.`
+      },
+      {
+        title:"Audit accessibilité RGAA/WCAG",
+        agents:["ux","fullstack","legal"],
+        quand:"Avant la mise en production, ou après une refonte. L'accessibilité est une obligation légale en France (RGAA) et une bonne pratique UX — 15% de la population mondiale a un handicap.",
+        prompt:`@ux Lis project-context.md (type de site, audience). Lis docs/ux/ux-audit.md et docs/design/design-system.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur le type de site (vitrine, SaaS, e-commerce), l'audience cible, et les obligations légales connues (secteur public = RGAA obligatoire, privé > 250M€ CA = RGAA obligatoire depuis 2025).
+
+Audit accessibilité complet RGAA/WCAG 2.1 AA :
+1. Audit automatisé : passer chaque page avec axe-core (via Playwright ou extension navigateur). Lister toutes les violations par sévérité (critical, serious, moderate, minor). Les outils automatisés détectent ~30% des problèmes — l'audit manuel est indispensable.
+2. Audit manuel — Navigation clavier : chaque parcours critique (signup, achat, recherche, navigation) doit être réalisable au clavier seul. Vérifier : focus visible sur tous les éléments interactifs, ordre de tabulation logique, pas de piège à focus (focus trap sauf modales), skip links.
+3. Audit manuel — Lecteurs d'écran : tester avec NVDA (Windows) ou VoiceOver (Mac). Vérifier : structure de headings (H1-H6 hiérarchiques), aria-labels sur les éléments interactifs, alt texts descriptifs sur les images (vides sur les images décoratives), live regions pour le contenu dynamique (notifications, mises à jour AJAX).
+4. Audit manuel — Contrastes : ratio minimum 4.5:1 pour le texte normal, 3:1 pour le texte large (> 18px ou > 14px bold). Vérifier aussi les contrastes des bordures, icônes, et états focus/hover. Outil : Colour Contrast Analyser.
+5. Audit manuel — Formulaires : chaque champ a un label associé (pas de placeholder seul), les erreurs de validation sont annoncées (aria-live ou focus sur l'erreur), les champs obligatoires sont indiqués (pas uniquement par la couleur).
+6. Audit manuel — Médias : sous-titres sur les vidéos, transcription sur les audios, alternatives textuelles sur les contenus visuels complexes (graphiques, infographies).
+7. Plan de remédiation : pour chaque violation, fiche corrective (critère RGAA/WCAG concerné, localisation, correction proposée, effort estimé, priorité). Les violations critiques bloquent la mise en production.
+8. Déclaration d'accessibilité : page obligatoire (RGAA) avec : niveau de conformité visé, résultat de l'audit, liste des non-conformités, plan de correction, contact.
+
+Livrable : docs/ux/accessibility-audit.md.
+
+Puis @fullstack : lis docs/ux/accessibility-audit.md et corrige toutes les violations critiques et serious. Un fichier par Edit. Ajoute les tests automatisés axe-core dans la CI (le build échoue si une violation critique est introduite). Code dans src/ + tests dans src/__tests__/.
+
+Puis @legal : lis docs/ux/accessibility-audit.md et vérifie les obligations légales spécifiques au projet (secteur public, seuils de CA, sanctions). Rédige la déclaration d'accessibilité conforme RGAA. Livrable : docs/legal/accessibility-statement.md + mise à jour de docs/legal/legal-audit.md.
+
+Critères de validation : zéro violation critique ou serious restante, la navigation clavier fonctionne sur tous les parcours, les contrastes passent WCAG AA, les tests axe-core sont dans la CI, la déclaration d'accessibilité est publiée.`
+      },
+      {
+        title:"Audit de sécurité complet",
+        agents:["infrastructure","fullstack","legal"],
+        quand:"Avant la mise en production, ou après l'ajout de fonctionnalités sensibles (paiement, auth, données personnelles). Une faille de sécurité détruit la confiance — et la confiance ne se reconstruit pas.",
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement). Lis docs/infra/infrastructure.md et docs/infra/security-checklist.md s'ils existent. S'ils n'existent pas, pose-moi les questions : stack, hébergeur, données sensibles traitées (PII, paiement, santé), auth provider, services tiers avec accès aux données.
+
+Audit de sécurité complet :
+1. OWASP Top 10 : vérifier chaque risque du Top 10 2021 sur le code et l'infrastructure. Pour chaque risque : statut (protégé / vulnérable / non applicable), preuve, correction si vulnérable. Priorité : injection (SQL, XSS, SSRF), broken authentication, broken access control.
+2. Headers HTTP : vérifier et configurer Content-Security-Policy (CSP strict, pas de unsafe-inline sauf nécessité documentée), Strict-Transport-Security (HSTS, max-age 1 an, includeSubDomains), X-Content-Type-Options (nosniff), X-Frame-Options (DENY ou SAMEORIGIN), Referrer-Policy (strict-origin-when-cross-origin), Permissions-Policy (désactiver les APIs non utilisées : camera, microphone, geolocation).
+3. Authentification : vérifier la robustesse (hash bcrypt/argon2, pas de MD5/SHA1), session management (httpOnly, secure, sameSite cookies), rate limiting sur login (max 5 tentatives/minute), 2FA disponible si données sensibles, password policy (min 8 caractères, pas de max artificiel).
+4. Dépendances vulnérables : npm audit, vérifier les CVE critiques et high. Plan de mise à jour pour les dépendances avec CVE connues. Configurer Dependabot ou Renovate pour les mises à jour automatiques.
+5. Secrets management : vérifier qu'aucun secret n'est dans le code (git history inclus), que les variables d'environnement sont documentées dans .env.example (sans valeurs réelles), que les secrets sont différents entre dev/staging/prod, que la rotation des clés API est planifiée.
+6. Protection des données : chiffrement at rest (base de données) et in transit (TLS 1.2+), anonymisation des logs (pas de PII dans les logs), backup chiffré, politique de rétention des données alignée RGPD.
+7. API security : rate limiting global et par endpoint, validation des inputs (zod/joi côté serveur, pas seulement côté client), CORS configuré strictement (pas de wildcard *), protection CSRF sur les mutations.
+8. Pentest léger : tester manuellement les scénarios d'attaque courants (IDOR : accéder aux données d'un autre utilisateur en changeant l'ID, privilege escalation : accéder à une route admin en tant qu'utilisateur, XSS : injecter du script dans les champs de saisie).
+
+Livrable : docs/infra/security-audit.md + mise à jour de docs/infra/security-checklist.md.
+
+Puis @fullstack : lis docs/infra/security-audit.md et corrige toutes les vulnérabilités critiques et high. Priorité : injection, broken access control, secrets exposés. Un fichier par Edit. Ajoute npm audit dans la CI (le build échoue si CVE critique). Code dans src/.
+
+Puis @legal : lis docs/infra/security-audit.md et vérifie la conformité avec les obligations de sécurité RGPD (article 32 : mesures techniques et organisationnelles appropriées). Documente les mesures de sécurité dans le registre des traitements. Si des données sensibles (santé, financières) sont traitées, vérifier les obligations sectorielles. Mets à jour docs/legal/rgpd-checklist.md.
+
+Critères de validation : zéro vulnérabilité critique ou high restante, les headers de sécurité sont tous configurés, npm audit passe sans CVE critique, aucun secret dans le code ou les logs, le pentest léger ne révèle pas d'IDOR ou de privilege escalation.`
       }
     ]
   },
@@ -2094,6 +2211,48 @@ Puis @fullstack : lis docs/growth/ab-testing-plan.md et implémente l'infrastruc
 Conformité : les A/B tests doivent respecter le RGPD — le tracking des variantes nécessite un consentement si les données sont personnelles. Pas de manipulation trompeuse (dark patterns) dans les variantes testées. @legal vérifie dans docs/legal/legal-audit.md.
 
 Critères de validation : chaque test a une hypothèse falsifiable et un protocole statistiquement valide, l'infrastructure de feature flags est implémentée, les garde-fous sont configurés, la conformité RGPD du tracking est vérifiée.`
+      },
+      {
+        title:"Reporting investisseurs",
+        agents:["data-analyst","product-manager"],
+        quand:"Levée de fonds en cours ou prévue, ou investisseurs existants à informer. Un bon reporting investisseur montre que tu maîtrises tes métriques — un mauvais reporting montre que tu pilotes à vue.",
+        prompt:`@data-analyst Lis project-context.md (modèle économique, KPIs, stade de maturité). Lis docs/analytics/kpi-framework.md s'il existe. S'il n'existe pas, pose-moi les questions : modèle de revenu (SaaS, marketplace, transactionnel), stade (pre-seed, seed, série A), métriques actuelles connues (MRR, utilisateurs, churn), fréquence de reporting souhaitée.
+
+Dashboard et reporting investisseurs complet :
+1. Métriques SaaS essentielles : MRR (Monthly Recurring Revenue) et croissance MoM, ARR (Annual Recurring Revenue), churn rate (gross et net), LTV (Lifetime Value), CAC (Customer Acquisition Cost), ratio LTV/CAC (cible > 3), payback period. Pour les marketplaces : GMV, take rate, liquidité. Pour le transactionnel : revenu/transaction, fréquence d'achat.
+2. Métriques produit : DAU/MAU ratio (engagement), taux d'activation (% des inscrits qui atteignent le "aha moment"), rétention par cohorte (J1, J7, J30), NPS. Ces métriques montrent la santé du produit indépendamment du revenu.
+3. Métriques de croissance : nouveaux utilisateurs/mois, source d'acquisition (organique vs payant vs referral), taux de conversion par étape du funnel, viral coefficient si applicable.
+4. Dashboard investisseur : layout recommandé (métriques clés en haut, tendances sur 6-12 mois, cohortes, unit economics). Outil : Notion dashboard, Google Sheets, ou intégré au produit admin. Mise à jour automatique si possible (API analytics → dashboard).
+5. Template de reporting mensuel : format email/doc structuré — highlights (3 wins), lowlights (3 challenges), métriques clés avec tendance, cash position et runway, asks (ce dont l'équipe a besoin). Maximum 1 page. Les investisseurs lisent en diagonale — aller à l'essentiel.
+6. Narrative : comment raconter l'histoire des métriques (pas juste les chiffres). Contextualiser : pourquoi le churn a augmenté ce mois (changement de pricing), pourquoi le MRR a stagné (focus produit, pas acquisition). Les investisseurs investissent dans des équipes qui comprennent leurs métriques.
+
+Livrable : docs/analytics/investor-reporting.md + docs/analytics/dashboard-specs.md (section investisseurs).
+
+Puis @product-manager : lis docs/analytics/investor-reporting.md et complète avec la narrative produit : roadmap highlights pour le prochain trimestre, milestones atteints, decisions clés et leur rationale. Ajoute dans docs/product/investor-narrative.md. Le deck investisseur doit raconter une histoire cohérente entre les métriques et la vision produit.
+
+Critères de validation : toutes les métriques SaaS essentielles sont définies avec leur formule de calcul, le template de reporting mensuel est prêt à remplir, le dashboard a un layout défini, la narrative est alignée avec les métriques.`
+      },
+      {
+        title:"Veille concurrentielle automatisée",
+        agents:["creative-strategy","data-analyst","growth"],
+        quand:"En continu, dès que le positionnement est défini. Connaître tes concurrents n'est pas optionnel — ignorer le marché c'est piloter les yeux fermés.",
+        prompt:`@creative-strategy Lis project-context.md (secteur, concurrents identifiés, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/competitive-benchmark.md s'ils existent. S'ils n'existent pas, pose-moi les questions : 3-5 concurrents directs, concurrents indirects, sur quels axes surveiller (pricing, features, contenu, levées de fonds, recrutement).
+
+Stratégie de veille concurrentielle :
+1. Cartographie concurrentielle : matrice des concurrents directs (même problème, même cible) et indirects (même problème, cible différente ou solution alternative). Pour chaque concurrent : positionnement, pricing, features clés, forces/faiblesses, taille estimée (employés, trafic via SimilarWeb/WebSearch), dernière levée de fonds.
+2. Axes de surveillance : features (changelog, product hunt, blog), pricing (pages pricing, annonces), contenu (blog, SEO, réseaux sociaux), recrutement (LinkedIn, Welcome to the Jungle — indicateur de croissance et de direction stratégique), avis utilisateurs (G2, Trustpilot, Product Hunt, App Store), levées de fonds (Crunchbase, presse).
+3. Outils de monitoring : alertes Google (nom concurrent + mots-clés), suivi des pages pricing (Visualping ou équivalent), suivi des changelogs (RSS), suivi SEO (positions sur les mots-clés partagés via Ahrefs/SEMrush ou WebSearch mensuel), suivi réseaux sociaux (mentions, engagement).
+4. Différenciation : pour chaque concurrent, identifier 2-3 axes de différenciation exploitables. Ce que le produit fait mieux, ce que le concurrent fait mieux, ce que personne ne fait encore. Opportunités de positionnement "blue ocean".
+5. Rapport de veille mensuel : template structuré — mouvements concurrents du mois (features lancées, changements de prix, contenus publiés, levées), impact sur notre positionnement, actions recommandées (réactive : répondre à un mouvement concurrent, proactive : exploiter une faiblesse identifiée).
+6. Alertes critiques : définir les événements qui nécessitent une réaction rapide (concurrent qui copie notre feature phare, concurrent qui baisse drastiquement son prix, nouveau concurrent sur notre niche, concurrent qui lève > 10M€).
+
+Livrable : docs/strategy/competitive-watch.md + mise à jour de docs/strategy/competitive-benchmark.md.
+
+Puis @data-analyst : lis docs/strategy/competitive-watch.md et configure les outils de monitoring automatisé : alertes Google, suivi de positionnement SEO, dashboard de veille (fréquence de mise à jour, sources, métriques). Mets à jour docs/analytics/dashboard-specs.md section "Veille concurrentielle".
+
+Puis @growth : lis docs/strategy/competitive-watch.md et identifie les opportunités d'acquisition exploitables : mots-clés où les concurrents sont faibles, canaux sous-exploités par la concurrence, audiences des concurrents à cibler (audiences lookalike, comparatif content). Mets à jour docs/growth/growth-strategy.md section "Opportunités concurrentielles".
+
+Critères de validation : au moins 3 concurrents directs cartographiés avec données réelles (pas inventées), les outils de monitoring sont configurés, les axes de différenciation sont documentés, le template de rapport mensuel est prêt, les alertes critiques sont définies.`
       }
     ]
   }
@@ -2122,7 +2281,7 @@ const CHANGELOG = [
     date:"2026-03-22",
     agent:"tous",
     type:"mise à jour",
-    description:"Bibliothèque de prompts refondée — 59 prompts organisés par phase projet, format simplifié copier-coller"
+    description:"Bibliothèque de prompts refondée — 75 prompts organisés par phase projet, format simplifié copier-coller"
   },
   {
     date:"2026-03-22",
@@ -2291,7 +2450,7 @@ const CHANGELOG = [
 <!-- ════ SECTION PROMPTS ════ -->
 <section id="prompts" aria-labelledby="titre-prompts">
   <h2 id="titre-prompts">Bibliothèque de Prompts</h2>
-  <p class="section-sub">59 prompts organisés par phase — copie, colle, c'est parti</p>
+  <p class="section-sub">75 prompts organisés par phase — copie, colle, c'est parti</p>
 
   <!-- Filtre par agent -->
   <div class="prompt-filter-wrap">
