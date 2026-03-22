@@ -467,29 +467,29 @@ const PROMPTS = [
     items:[
       {
         title:"Définir mon projet (obligatoire en premier)",
-        agents:["orchestrator"],
+        agents:["orchestrator","legal"],
         quand:"Premier prompt à lancer — crée automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler.",
         prompt:`Lis templates/project-context.md pour la structure complète. Si project-context.md existe déjà à la racine, lis-le et propose de mettre à jour les champs modifiés (ne pas écraser les données existantes). Sinon, crée-le avec les informations ci-dessous. Remplis tous les champs. Voici les infos :
 
 — IDENTITÉ —
 Nom du projet : [NOM]
-Secteur : [SECTEUR]
+Secteur : [SECTEUR — sois précis : "analytics marketing pour PME françaises 10-50 employés" plutôt que "SaaS"]
 Stade : [Idée / MVP / Beta / Production / Croissance]
 
 — CIBLE —
-Persona principal : [Prénom fictif, âge, métier, situation — ex : "Marie, 35 ans, CMO startup, gère 5 canaux seule"]
-Problème principal : [Ce qui le frustre / coûte / fait perdre du temps]
-Alternative actuelle : [Ce qu'il fait aujourd'hui sans ton produit]
+Persona principal : [Prénom fictif, âge, métier, situation, frustration concrète — ex : "Marie, 35 ans, CMO startup, gère 5 canaux seule, perd 3h/semaine à consolider ses metrics"]
+Problème principal : [Ce qui le frustre / coûte / fait perdre du temps — quantifié si possible]
+Alternative actuelle : [Ce qu'il fait aujourd'hui sans ton produit — et pourquoi c'est insuffisant]
 
 — POSITIONNEMENT —
-Promesse unique : [Ce qu'on promet et que personne d'autre ne promet]
+Promesse unique : [Ce qu'on promet et que personne d'autre ne promet — en une phrase actionnable]
 Ton de marque : [Ex : expert et bienveillant / décalé et direct / premium et sobre]
 3 mots qui définissent la marque : [MOT1, MOT2, MOT3]
 Concurrent principal : [NOM] — notre différence : [DIFFÉRENCE]
 
 — OBJECTIFS —
-Objectif principal à 6 mois : [OBJECTIF]
-KPI North Star : [UNE SEULE MÉTRIQUE — ex : "MRR", "utilisateurs actifs / semaine"]
+Objectif principal à 6 mois : [OBJECTIF chiffré — ex : "500 utilisateurs actifs payants, MRR 5K€"]
+KPI North Star : [UNE SEULE MÉTRIQUE d'usage — ex : "nombre de dashboards créés par semaine"]
 
 — STACK TECHNIQUE —
 Frontend : [Next.js / React / Expo / autre]
@@ -509,7 +509,18 @@ Budget acquisition mensuel : [MONTANT ou "à définir"]
 Timeline de lancement : [DATE ou DÉLAI]
 Contraintes spécifiques : [CONTRAINTES ou "aucune"]
 
-Après avoir créé project-context.md, confirme ce qui a été rempli et signale les champs laissés vides qui devront être complétés plus tard.`
+— PRÉSENCE EXISTANTE (optionnel) —
+Réseaux sociaux : [comptes existants, nombre d'abonnés]
+Site web existant : [URL ou "aucun"]
+Base email : [taille ou "aucune"]
+
+Après avoir créé project-context.md :
+1. Confirme ce qui a été rempli et signale les champs laissés vides qui devront être complétés plus tard.
+2. Vérifie la qualité de chaque champ critique (un persona sans frustration concrète ou un KPI trop vague = insuffisant — pose des questions ciblées).
+3. Signale les implications légales évidentes (données sensibles, IA, e-commerce) : "Tu auras besoin de lancer le prompt Audit juridique & conformité pour couvrir [points identifiés]."
+4. Propose les 3 prochains prompts à lancer selon le stade du projet.
+
+Critères de validation : project-context.md créé avec tous les champs, chaque champ critique passe le seuil de qualité (pas juste rempli, mais exploitable par les agents).`
       }
     ]
   },
@@ -520,20 +531,60 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
-        quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement",
-        prompt:"@orchestrator Lis project-context.md. S'il n'existe pas, pose-moi les questions pour le créer (lis templates/project-context.md pour la structure) et génère-le avant de continuer. Lance le projet : séquence toutes les phases (0→5), identifie les dépendances entre agents et les parallélisations possibles. Livrables attendus : docs/orchestration-plan.md (plan de séquencement) + docs/project-synthesis.md (synthèse finale). Commence immédiatement par la Phase 0."
+        quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions.",
+        prompt:`@orchestrator Lis project-context.md. S'il n'existe pas, pose-moi les questions pour le créer (lis templates/project-context.md pour la structure) et génère-le avant de continuer. Vérifie la qualité de chaque champ critique (pas juste la présence — un persona sans frustration ou un KPI vague = insuffisant).
+
+Lance le projet en mode autopilot : séquence toutes les phases (0→5), identifie les dépendances entre agents et les parallélisations possibles. Adapte l'ordre des phases au type de projet (SaaS, e-commerce, site vitrine, marketplace, API — l'ordre par défaut n'est pas toujours optimal).
+
+Règles :
+- Checkpoint obligatoire après Phase 0 (fondations) pour ma validation.
+- Maximum 2-3 agents par message pour éviter les timeouts.
+- Sauvegarde docs/orchestration-plan.md après chaque phase complétée (point de reprise).
+- Vérification de drift après chaque phase : le persona et le KPI North Star doivent rester alignés dans tous les livrables.
+- Enrichis project-context.md avec les découvertes de chaque phase.
+- Intègre la dimension légale (RGPD, conformité) dès Phase 0 en parallèle.
+
+Livrables attendus : docs/orchestration-plan.md (plan vivant, mis à jour à chaque phase) + docs/project-synthesis.md (synthèse finale avec métriques d'orchestration). Commence immédiatement par la Phase 0.
+
+Critères de succès : tous les livrables produits sont cohérents entre eux (brand ↔ copy ↔ design ↔ code), le KPI North Star est tracké, la conformité légale est couverte.`
       },
       {
         title:"Faire un check-up complet de mon projet",
-        agents:["reviewer","elon"],
-        quand:"Tu as plusieurs livrables et tu veux savoir où tu en es",
-        prompt:"@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour en produire. Audite la cohérence croisée entre tous les livrables : brand ↔ copy ↔ design, specs ↔ code, tracking ↔ KPIs, conformité légale. Produis la recommandation GO/NO-GO avec blockers listés. Livrable : docs/reviews/cross-review-report.md. Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Audite en first principles : note chaque dimension sur 10, identifie ce qui manque pour être n°1. Livrable : docs/reviews/elon-audit.md."
+        agents:["reviewer","elon","legal"],
+        quand:"Tu as plusieurs livrables et tu veux savoir où tu en es — idéalement avant un lancement ou après une phase de développement intense",
+        prompt:`@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour en produire. Audite la cohérence croisée entre tous les livrables sur ces axes :
+- Brand ↔ copy : le ton des contenus (docs/copy/) est-il aligné avec la brand platform (docs/strategy/brand-platform.md) ?
+- Specs ↔ code : les features implémentées dans src/ correspondent-elles aux specs dans docs/product/functional-specs.md ?
+- Tracking ↔ KPIs : chaque event dans docs/analytics/tracking-plan.md est-il implémenté dans le code ? Les KPIs de docs/analytics/kpi-framework.md sont-ils mesurables ?
+- Design ↔ code : les tokens de docs/design/design-tokens.json sont-ils respectés dans src/ ?
+- Conformité légale : docs/legal/ couvre-t-il le modèle économique et les données traitées ?
+- Performance : les choix visuels et techniques sont-ils compatibles avec un LCP < 2.5s ?
+
+Produis la recommandation GO/NO-GO avec blockers classés par sévérité (P0 critique / P1 majeur / P2 mineur). Livrable : docs/reviews/cross-review-report.md.
+
+Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Audite en first principles : note chaque dimension sur 10 (vision, exécution, moat, scalabilité, vitesse). Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Identifie le plus gros risque d'échec et le plus gros levier sous-exploité. Livrable : docs/reviews/elon-audit.md.
+
+Critères de validation : chaque incohérence est documentée avec l'agent responsable et l'action corrective recommandée.`
       },
       {
         title:"Pivoter mon projet",
-        agents:["orchestrator","creative-strategy"],
-        quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement",
-        prompt:"@orchestrator Le projet pivote. Lis project-context.md — si les nouvelles orientations n'y sont pas encore, pose-moi les questions pour le mettre à jour (nouveau persona, nouveau marché, nouveau positionnement) et mets-le à jour avant de continuer. Trie les livrables existants dans docs/ : à garder, à adapter, à refaire. Produis le plan de re-séquencement des agents. Livrable : docs/orchestration-plan.md (version pivot). Puis lance @creative-strategy pour repositionner la plateforme de marque. Livrable attendu : docs/strategy/brand-platform.md mis à jour."
+        agents:["orchestrator","creative-strategy","data-analyst"],
+        quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement. Le pivot doit être documenté pour ne pas perdre les acquis.",
+        prompt:`@orchestrator Le projet pivote. Lis project-context.md — si les nouvelles orientations n'y sont pas encore, pose-moi les questions pour le mettre à jour (nouveau persona, nouveau marché, nouveau positionnement) et mets-le à jour avant de continuer.
+
+Protocole de pivot :
+1. Inventaire des livrables existants dans docs/ — classe chacun : à garder tel quel / à adapter / à refaire.
+2. Identifie les dépendances entre livrables impactés (un changement de persona impacte brand-platform, personas, copy, UX flows, tracking...).
+3. Produis le plan de re-séquencement des agents impactés uniquement (ne pas relancer ce qui reste valide).
+4. Documente le changement : avant/après pour chaque champ modifié dans project-context.md.
+
+Livrable : docs/orchestration-plan.md (version pivot, avec section "Changements par rapport à la version précédente").
+
+Puis lance @creative-strategy pour repositionner la plateforme de marque selon le nouveau persona/marché. Livrable attendu : docs/strategy/brand-platform.md mis à jour.
+
+Puis @data-analyst : lis project-context.md mis à jour et docs/analytics/kpi-framework.md. Le KPI North Star est-il toujours pertinent après le pivot ? Recommande les ajustements de métriques. Mets à jour docs/analytics/kpi-framework.md.
+
+Critères de validation : project-context.md reflète le pivot, tous les livrables impactés sont identifiés, le plan de re-séquencement ne relance que le nécessaire.`
       }
     ]
   },
