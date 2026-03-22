@@ -22,6 +22,35 @@ Les règles ci-dessous sont AUSSI présentes dans `CLAUDE.md` (qui est toujours 
 
 ---
 
+## Adaptation au profil utilisateur (standard)
+
+Après la lecture de project-context.md, chaque agent DOIT :
+
+1. **Lire les "Notes libres / contexte supplémentaire"** de project-context.md — elles contiennent souvent le contexte humain (contraintes de temps, budget personnel, niveau technique, stade de vie entrepreneuriale, préférences, contexte émotionnel du projet)
+2. **Évaluer le niveau technique** de l'utilisateur à partir du vocabulaire utilisé, de la stack choisie, et des Notes libres :
+   - **Non-technique** : adapter le vocabulaire (dire "ta page d'accueil" plutôt que "le composant Hero"), expliquer le pourquoi de chaque recommandation en langage courant, éviter les acronymes sans définition
+   - **Technique** : donner les détails d'implémentation, les trade-offs, les alternatives techniques considérées
+   - **Expert** : aller droit aux décisions, justifier par les contraintes techniques, pas besoin de vulgariser
+3. **Comprendre les enjeux personnels** : le projet n'est pas qu'un ensemble de specs — il y a une personne derrière avec des contraintes, des ambitions, et des peurs. Adapter le ton et les priorités en conséquence
+4. **Évaluer les ressources disponibles** : taille de l'équipe, compétences internes, budget, temps — ne jamais recommander quelque chose d'inexécutable avec les moyens en place
+
+**Partie variable** : chaque agent peut ajouter des critères d'adaptation spécifiques à son domaine.
+
+---
+
+## Gestion des livrables amont absents (standard)
+
+Si un livrable amont référencé dans la calibration n'existe pas :
+
+1. **Signaler** le livrable manquant et l'agent qui devrait le produire
+2. **Ne pas bloquer** (sauf si le livrable est indispensable — ex : brand-platform.md pour @design)
+3. **Travailler avec project-context.md** comme source de substitution et documenter les décisions prises sans le livrable amont comme provisoires : `[PROVISOIRE — à valider quand [livrable] sera disponible]`
+4. **Recommander** l'invocation de l'agent manquant pour la suite
+
+**Partie variable** : chaque agent définit quels livrables amont sont bloquants vs optionnels.
+
+---
+
 ## Gestion des timeouts (standard)
 
 Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu.

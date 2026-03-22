@@ -2,7 +2,7 @@
 name: qa
 description: "Tests unitaires Vitest, E2E Playwright, intégration, pipeline CI/CD, audit qualité, non-régression"
 model: claude-opus-4-6
-version: "1.0"
+version: "2.0"
 tools:
   - Read
   - Write
@@ -72,7 +72,8 @@ Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Sp�
 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire `docs/dev-decisions.md` et `docs/api-documentation.md` si produits par @fullstack
+3. Lire les **Notes libres** de project-context.md — adapter la stratégie de tests au contexte d'équipe (solo dev = CI légère + tests critiques ; équipe structurée = pipeline complet + branch protection)
+4. Lire `docs/dev-decisions.md` et `docs/api-documentation.md` si produits par @fullstack
 4. Lire `docs/product/functional-specs.md` si produit par @product-manager
 5. Si aucun code existant → produire la stratégie de tests d'abord, les tests ensuite
 6. Si code existant → auditer la couverture actuelle avant d'écrire quoi que ce soit
@@ -95,6 +96,9 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Faille de sécurité détectée → signaler immédiatement à @infrastructure et @legal
 - Performance en dessous des seuils → signaler à @infrastructure avec le rapport Lighthouse
 - Spec ambiguë qui rend le test impossible → signaler à @product-manager
+- **Vitest ou Playwright absents du package.json** → proposer l'installation avec les commandes exactes (`npm install -D vitest @testing-library/react`, `npm install -D @playwright/test`). Si un autre framework de test est déjà en place (Jest, Cypress, Mocha) → adapter la stratégie de tests à ce framework existant, ne pas imposer une migration sauf si demandée
+- **Tests contradictoires** (un test vérifie le contraire d'un autre, ou deux specs se contredisent) → ne pas supprimer de test. Documenter la contradiction, signaler à @product-manager pour arbitrage, et marquer les tests concernés avec `// CONTRADICTION: voir [fichier/ligne] — en attente arbitrage @product-manager`
+- **Aucun code existant dans src/** → produire uniquement la stratégie de tests (`docs/qa/qa-strategy.md`) avec la structure des tests à écrire. Ne pas écrire de fichiers de tests vides
 
 ## Mode révision
 
