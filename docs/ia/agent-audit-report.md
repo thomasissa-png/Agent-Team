@@ -332,8 +332,74 @@
 
 | Agent | Note /10 | Forces | Faiblesses principales |
 |-------|----------|--------|----------------------|
-| | | | |
+| @orchestrator | 9.5 | Profondeur exceptionnelle (470 lignes), enrichissement project-context entre phases, criteres qualite par champ | Pas de WebSearch macro, mode revision minimal, pas de budget tokens global |
+| @fullstack | 9.0 | Conventions de nommage precises, stack opinionnaire et coherente, calibration sur les bons fichiers amont | Chemin docs flou (contredit CLAUDE.md), pas de WebSearch versions, pas de gestion migrations DB |
+| @qa | 8.5 | Pipeline de test complet (unit/E2E/perf/a11y/visuel), validation tracking-plan unique, bon ordre de lecture | Pas de WebSearch, calibration design manquante, pas d'escalade vers @ia pour les tests LLM |
+| @design | 8.0 | Benchmark visuel concurrentiel, accessibilite WCAG 2.2 AA native, auto-evaluations precises | Ne lit pas les wireframes UX, dark mode non verifie, champs critiques incomplets |
+| @ux | 8.0 | Persona credible avec resultats mesurables, bons patterns SaaS, WebSearch concurrentielle | Auto-evaluations trop courtes, pas de lecture brand-platform, pas de prototypage |
+| @copywriter | 8.5 | Calibration sectorielle exemplaire, couverture cycle de vie textuel complet, champs critiques les plus pertinents | Pas de lecture explicite brand-platform ni keyword-map, auto-evaluation incomplete |
+| @seo | 8.0 | SEO technique Next.js tres precis, bonne articulation avec @geo, 3 dimensions d'auto-evaluation | Pas de calibration structuree, champs critiques minimalistes, pas de SEO programmatique |
+| @geo | 7.5 | Positionnement unique et pionnier, auto-evaluations differenciantes, coordination @seo bien geree | Pas de calibration structuree, pas de protocole de veille formalise, domaine encore theorique |
+| @ia | 8.5 | Couverture technique la plus large, calibration exemplaire et sequencee, auto-evaluation couts/fallback/cache | Ordre des sections incoherent, pas de securite API keys, pas de calibration brand/UX |
+| @infrastructure | 9.0 | Monitoring post-launch detaille, contraintes Replit explicites, calibration methodique | Pas de WebSearch dans les tools, pas de backup/disaster recovery, cache non verifie en sortie |
+| @creative-strategy | 8.0 | Positionnement "premier agent", calibration concurrentielle exemplaire, champs critiques bien choisis | Pas de lecture de livrables internes, handoff vague, pas de territoire verbal |
+| @product-manager | 8.5 | Couverture fonctionnelle PM complete, calibration benchmark concurrentiel, auto-evaluations les plus exigeantes (5Q) | Champ "modele economique" manquant, pas de calibration analytics/growth, handoff sans @ux |
+| @data-analyst | 9.0 | Position temporelle explicite unique, calibration la plus complete (4 sources), cycle complet setup/analyse/experimentation | Champ "outils analytics" premature, pas de coordination RGPD avec @legal, handoff sans @growth |
+| @growth | 8.5 | Full-funnel (pas juste acquisition), calibration 3 sources pertinentes, handoff le plus riche (3 destinataires) | Pas de calibration SEO/GEO, champ budget potentiellement bloquant, Bash sous-exploite |
+| @social | 7.5 | Calibration brand voice bien chainee, approche systeme de contenu, escalade intelligente vers @copywriter | Agent le plus court (120 lignes), auto-evaluations minimales, pas de WebSearch concurrentielle |
+| @reviewer | 9.0 | Protocole revue croisee le plus structure (4 dimensions), decouverte livrables methodique, gardien factuel | Pas de verification factuelle externe via WebSearch, handoff toujours via orchestrateur, pas de priorisation dette revue |
+| @legal | 8.0 | Disclaimer "drafts pas avis formels", calibration 3 sources juridiques critiques, pouvoir de blocage | Auto-evaluations trop courtes (3Q), pas de calibration growth/social, champs critiques vagues |
 
 ---
 
 ## Synthese generale
+
+### Note moyenne du framework : 8.47 / 10
+
+Calcul : (9.5 + 9 + 8.5 + 8 + 8 + 8.5 + 8 + 7.5 + 8.5 + 9 + 8 + 8.5 + 9 + 8.5 + 7.5 + 9 + 8) / 17 = 8.47
+
+### Points forts structurels du framework
+
+1. **Homogeneite architecturale remarquable.** Les 17 agents partagent la meme structure (identite, competences, protocole d'entree, calibration, timeouts, escalade, auto-evaluation, handoff). Cette homogeneite reduit la charge cognitive pour l'utilisateur et garantit que chaque agent respecte les memes regles de base. C'est une decision de design qui scale bien.
+
+2. **Chaine de dependances bien pensee.** L'ordre d'intervention est globalement coherent : creative-strategy en premier, puis product-manager, data-analyst, UX, design, fullstack, QA, et reviewer en fin de chaine. Les calibrations croisees (chaque agent lit les livrables de ses predecesseurs) creent un pipeline ou l'information se propage naturellement.
+
+3. **Protocole anti-invention present partout.** Chaque agent a une regle explicite contre l'invention de donnees, avec un mecanisme d'hypotheses balisees. C'est une decision critique pour un framework IA : sans cette regle, les agents fabriqueraient des benchmarks, des tarifs et des metriques, rendant les livrables dangereux.
+
+4. **Gestion des timeouts adaptee par type d'agent.** La regle anti-coupure est declinee differemment pour les agents contenu (structure puis sections), les agents code (fichiers fondation d'abord), et l'orchestrateur (max 3 sous-agents). C'est un signe de maturite operationnelle.
+
+5. **Trois agents se distinguent nettement.** @orchestrator (9.5), @infrastructure (9.0), @data-analyst (9.0) et @reviewer (9.0) sont les piliers du framework. Leur profondeur, leur calibration et leurs protocoles sont exemplaires.
+
+### Faiblesses recurrentes
+
+1. **Calibrations croisees incompletes (13/17 agents concernes).** La faiblesse la plus systematique : la majorite des agents ne lisent pas tous les livrables pertinents de leurs predecesseurs. @design ne lit pas les wireframes de @ux. @copywriter ne lit pas le brand-platform de @creative-strategy. @growth ne lit pas les strategies SEO/GEO. @legal ne lit pas les strategies growth/social. Chaque lien manquant est un risque de contradiction non detectee.
+
+2. **WebSearch sous-exploitee (6/17 agents).** @qa, @fullstack, @geo, @seo n'utilisent pas WebSearch dans leur calibration malgre sa presence dans les tools declares. Pour @seo et @geo en particulier, c'est un manque critique : ces domaines evoluent mensuellement et les bonnes pratiques memorisees deviennent rapidement obsoletes.
+
+3. **Auto-evaluations inegales.** 5 agents ont des auto-evaluations completes (5 questions specifiques) : @product-manager, @data-analyst, @growth, @infrastructure, @reviewer. Les autres ont 3 questions, ce qui est insuffisant pour garantir la qualite du livrable. @social et @legal sont les plus sous-evalues.
+
+4. **Champs critiques parfois mal calibres.** Plusieurs agents demandent des champs qui sont soit prematures (outils analytics pour @data-analyst alors que c'est lui qui devrait recommander), soit trop vagues (contraintes legales pour @legal), soit manquants (modele economique pour @product-manager). Ces champs sont le premier filtre de qualite du framework -- s'ils sont mal definis, tout le reste en souffre.
+
+5. **Handoffs incomplets en mode direct.** Quand les agents sont invoques directement (pas via @orchestrator), certains handoffs omettent des destinataires naturels : @product-manager ne cible pas @ux, @data-analyst ne cible pas @growth, @legal ne cible que @orchestrator. En mode direct, ces chainons manquants cassent le flux de travail.
+
+### Recommandations prioritaires (par ordre d'impact)
+
+**P0 -- Corriger immediatement :**
+
+1. **Completer les calibrations croisees.** Pour chaque agent, ajouter la lecture explicite des livrables de tous les agents dont il depend. Effort : 1h de revue des 17 fichiers. Impact : elimination des contradictions inter-agents.
+
+2. **Uniformiser les auto-evaluations a 5 questions specifiques minimum.** Les agents a 3 questions (@ux, @social, @legal, @design, @seo, @geo) doivent etre completes. Effort : 30min par agent. Impact : qualite de sortie homogene.
+
+**P1 -- Corriger rapidement :**
+
+3. **Ajouter des protocoles WebSearch dans la calibration des agents qui en manquent.** Priorite : @seo (recherche mots-cles), @geo (veille moteurs generatifs), @qa (versions outils), @fullstack (versions librairies). Effort : 15min par agent. Impact : livrables a jour.
+
+4. **Revoir les champs critiques de @product-manager, @data-analyst et @legal.** Ajouter "Modele economique" pour PM, remplacer "Outils analytics" par "Budget analytics" pour data-analyst, preciser les champs de @legal. Effort : 10min. Impact : premier filtre de qualite renforce.
+
+**P2 -- Ameliorer au prochain cycle :**
+
+5. **Ajouter un mecanisme de budget tokens global dans @orchestrator.** L'orchestrateur devrait estimer le cout total d'une orchestration complete et alerter si le budget est depasse. Effort : refonte partielle de l'orchestrateur. Impact : maitrise des couts sur les projets longs.
+
+6. **Creer un agent @devops ou renforcer @infrastructure avec les capacites CI/CD avancees.** L'agent infrastructure est excellent sur le monitoring mais leger sur le deploiement continu, les environnements de staging, et la gestion des secrets. Effort : extension ou nouvel agent. Impact : pipeline de deploiement complet.
+
+7. **Formaliser un protocole de test du framework lui-meme.** Lancer un projet fictif complet (de @creative-strategy a @reviewer) pour identifier les frictions reelles entre agents. Aucun projet n'a encore ete lance sur ce framework -- les faiblesses identifiees dans cet audit sont theoriques. Seul un test en conditions reelles revelera les vrais points de blocage.
