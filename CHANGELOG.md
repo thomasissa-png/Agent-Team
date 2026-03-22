@@ -4,6 +4,29 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## Session du 2026-03-22 — 20 nouveaux prompts (39→59) post-audits de couverture
+
+**Ce qui a ete fait :**
+
+1. **Consolidation de 5 audits de couverture** : @elon (6/10), @creative-strategy (5.5/10), @growth (3/10), @product-manager, @design — identification des prompts manquants avec deduplication croisee
+2. **20 nouveaux prompts ajoutes** dans `index.html` (39→59 prompts) :
+   - Phase 0 (6) : Valider la demande, Proposition de valeur, Messaging matrix, Pricing, Scope MVP, Storytelling
+   - Phase 1 (4) : Direction artistique, Identite verbale, Specs interaction composants, Specs responsive
+   - Phase 2 (2) : Setup initial projet, Audit handoff design→code
+   - Phase 3 (1) : Strategie de contenu & calendrier editorial
+   - Phase 4 (5) : Plan de lancement, Referral, Retention/churn, PLG, PMF
+   - Raccourcis (2) : Feedback & roadmap v2, A/B testing
+3. **Standard 9/10 applique** : chaque prompt inclut le pattern d'autonomie ("Lis [fichier]. S'il n'existe pas, pose-moi les questions..."), les chemins de livrables explicites, le chainage multi-agents avec handoffs, et les notes anti-timeout quand pertinent
+4. **8 prompts dedupliques** : Naming, Unit economics, Scalabilite technique, Sprint planning, Retrospective, Upsell/expansion, Scale 1K-10K, Prototype interactif — fusionnes ou integres dans les prompts existants/nouveaux
+5. **Plan d'orchestration** : `docs/orchestration-plan-new-prompts.md` mis a jour avec la liste consolidee, la methode de deduplication, et les prompts non retenus avec justification
+
+**Decisions de conception :**
+- Priorite aux prompts couvrant les phases manquantes du cycle business (retention, monetisation, validation marche) plutot qu'a la granularite operationnelle (sprint planning, retrospective)
+- Les prompts de scale (1K→10K) et d'expansion revenue integres dans PMF et PLG plutot qu'isoles
+- Le naming reste geerable via le prompt brand-platform existant (ajout optionnel si demande)
+
+---
+
 ## Session du 2026-03-22 — Compaction + @elon + audit 9/10
 
 **Ce qui a été fait :**
