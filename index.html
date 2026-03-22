@@ -1647,19 +1647,67 @@ Critères de validation : chaque type de monitoring est configuré avec des seui
         title:"Refondre un site existant",
         agents:["ux","design","fullstack"],
         quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@ux Lis docs/ux/user-flows.md (parcours existants). S'il n'existe pas, audite les parcours directement depuis le code dans src/ et les specs dans docs/product/functional-specs.md. Si aucun n'existe, pose-moi les questions sur les parcours critiques actuels. Audite : friction points, taux d'abandon, parcours critiques. Livrable : docs/ux/ux-audit.md. Puis @design : prends docs/ux/ux-audit.md et lis docs/design/design-system.md s'il existe. Évalue la cohérence visuelle. Propose le nouveau design system aligné sur les problèmes identifiés. Livrable : docs/design/design-system.md. Enfin @fullstack : prends docs/ux/ux-audit.md + docs/design/design-system.md. Lis docs/product/functional-specs.md — s'il n'existe pas, signale-le. Évalue la dette technique. Propose le plan de migration [progressive recommandé — big bang uniquement si dette technique < 20 fichiers] avec planning par étape. Livrable : docs/dev-decisions.md avec stratégie de migration et risques identifiés."
+        prompt:`@ux Lis docs/ux/user-flows.md (parcours existants), docs/analytics/kpi-framework.md (métriques actuelles) et docs/product/functional-specs.md (features). S'ils n'existent pas, audite directement le code dans src/ et pose-moi les questions sur les parcours critiques actuels (pages les plus visitées, taux de rebond, parcours d'achat/signup).
+
+Audit UX complet :
+1. Parcours critiques : mapping de chaque flow clé (signup, achat, recherche), identification des friction points avec sévérité (bloquant/majeur/mineur).
+2. Performance perçue : temps de chargement par page, Core Web Vitals (LCP, CLS, INP), impact sur l'abandon.
+3. Accessibilité : conformité WCAG 2.2 AA, navigation clavier, lecteurs d'écran — signaler les violations bloquantes.
+4. Mobile : audit responsive, touch targets, parcours mobile vs desktop.
+5. Benchmark : comparer 2-3 concurrents sur les mêmes parcours via WebSearch.
+
+Livrable : docs/ux/ux-audit.md (avec matrice de priorisation des corrections).
+
+Puis @design : lis docs/ux/ux-audit.md + docs/design/design-system.md s'il existe + docs/strategy/brand-platform.md (positionnement). Évalue la cohérence visuelle page par page. Propose le nouveau design system aligné sur les problèmes identifiés : tokens corrigés, composants à refaire, hiérarchie visuelle des CTA. Vérifie les contrastes WCAG 2.2 AA. Livrable : docs/design/design-system.md.
+
+Puis @fullstack : lis docs/ux/ux-audit.md + docs/design/design-system.md + docs/product/functional-specs.md (s'il n'existe pas, signale-le). Évalue la dette technique (fichiers > 300 lignes, dépendances obsolètes, code dupliqué). Produis le plan de migration progressive (big bang uniquement si dette < 20 fichiers) : étapes, fichiers impactés par étape, risques de régression, rollback possible, estimation effort. Inclus la migration du tracking analytics (events à préserver). Livrable : docs/dev-decisions.md.
+
+Critères de validation : chaque friction point a une correction proposée avec priorité, le plan de migration a un chemin critique et un plan de rollback, l'accessibilité WCAG 2.2 AA est auditée.`
       },
       {
         title:"Diagnostiquer un problème de performance",
-        agents:["infrastructure","seo"],
-        quand:"Le site est lent",
-        prompt:"@infrastructure Lis docs/infra/infrastructure.md s'il existe (stack, hébergement). Mesure les Core Web Vitals (LCP, CLS, INP) via Lighthouse CI et WebPageTest. Identifie les bottlenecks : bundle size (webpack-bundle-analyzer), requêtes API lentes (P95), assets non optimisés (images, fonts, scripts tiers). Classe chaque problème par impact (critique/moyen/faible) avec la correction recommandée. Livrable : docs/infra/performance-audit.md. Puis @seo : prends docs/infra/performance-audit.md et vérifie l'impact sur le crawl budget et le ranking. Livrables : section 'Impact SEO' ajoutée à docs/infra/performance-audit.md."
+        agents:["infrastructure","seo","data-analyst"],
+        quand:"Site lent, Core Web Vitals dans le rouge, ou plaintes utilisateurs sur la vitesse. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, hébergement, CDN) et project-context.md (budget). S'ils n'existent pas, pose-moi les questions (hébergeur, stack, trafic mensuel estimé).
+
+Audit de performance complet :
+1. Core Web Vitals : LCP, CLS, INP — mesure via Lighthouse CI et WebPageTest sur mobile ET desktop. Objectifs : LCP < 2.5s, CLS < 0.1, INP < 200ms.
+2. Bundle analysis : taille totale JS/CSS, tree-shaking effectif, code splitting, chunks > 100KB à identifier (webpack-bundle-analyzer ou equivalent).
+3. Assets : images non optimisées (format, dimensions, lazy loading), fonts (subset, display swap, preload), scripts tiers bloquants.
+4. API : latence P50/P95/P99 par endpoint, requêtes N+1, absence de cache, réponses > 1MB.
+5. Infrastructure : TTFB, compression (gzip/brotli), CDN, HTTP/2-3, cache headers.
+6. Budget performance : définir un budget (JS < 200KB gzipped, total page < 1MB, LCP < 2.5s) et mesurer l'écart actuel.
+
+Pour chaque problème : sévérité (critique/majeur/mineur), correction recommandée, effort estimé, impact attendu sur les Core Web Vitals.
+
+Livrable : docs/infra/performance-audit.md.
+
+Puis @seo : lis docs/infra/performance-audit.md. Évalue l'impact sur le crawl budget (pages lentes = moins crawlées), le ranking (Core Web Vitals = signal de classement Google), et l'indexation. Vérifie aussi les ressources bloquées pour Googlebot. Ajoute une section "Impact SEO & priorités" dans docs/infra/performance-audit.md.
+
+Puis @data-analyst : lis docs/infra/performance-audit.md et corrèle les problèmes de performance avec les métriques business (taux de rebond par page, conversion par vitesse de chargement si données disponibles). Livrable : section "Impact business" ajoutée à docs/infra/performance-audit.md.
+
+Critères de validation : chaque bottleneck a une sévérité, une correction et un effort estimé ; le budget performance est défini ; l'impact SEO est quantifié.`
       },
       {
         title:"Auditer la cohérence visuelle",
-        agents:["design","ux"],
-        quand:"Incohérences entre pages/composants",
-        prompt:"@design Lis docs/design/design-system.md (tokens de référence). S'il n'existe pas, pose-moi les questions pour le créer (couleurs, typographies, espacements, composants) et génère-le avant de continuer. Audite la cohérence visuelle page par page : tokens respectés, typographies, espacements, contrastes WCAG 2.2 AA. Produis un rapport avec captures/exemples des écarts. Livrable : docs/design/visual-audit.md. Puis @ux : prends docs/design/visual-audit.md et vérifie que les parcours sont visuellement guidés, les CTA hiérarchisés (primaire/secondaire/tertiaire), et la navigation intuitive. Ajoute tes recommandations dans docs/ux/ux-audit.md."
+        agents:["design","ux","legal"],
+        quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité.",
+        prompt:`@design Lis docs/design/design-system.md (tokens de référence) et docs/strategy/brand-platform.md (positionnement, ton). S'ils n'existent pas, pose-moi les questions pour les créer (couleurs principales, typographies, espacements, composants existants, identité de marque) et génère-les avant de continuer.
+
+Audit de cohérence visuelle complet :
+1. Tokens : vérifier page par page que les couleurs, typographies, espacements et rayons de bordure respectent le design system. Lister chaque écart avec la page/composant concerné.
+2. Hiérarchie visuelle : les CTA sont-ils correctement hiérarchisés (primaire/secondaire/tertiaire) ? Les titres suivent-ils une hiérarchie H1 > H2 > H3 cohérente ?
+3. Contrastes WCAG 2.2 AA : vérifier les ratios de contraste texte/fond (minimum 4.5:1 pour le texte normal, 3:1 pour le texte large). Signaler chaque violation.
+4. Composants : identifier les composants dupliqués (même fonction, design différent), les variantes non documentées, les états manquants (hover, focus, disabled, loading, error).
+5. Responsive : vérifier la cohérence entre breakpoints (mobile/tablet/desktop). Les composants se comportent-ils de manière prévisible ?
+6. Dark mode (si applicable) : vérifier que tous les tokens ont leur équivalent dark.
+7. Performance visuelle : signaler les éléments potentiellement lourds (images > 500KB, animations complexes, vidéos autoplay) incompatibles avec un LCP < 2.5s.
+
+Livrable : docs/design/visual-audit.md (avec captures/exemples des écarts et matrice de corrections priorisées).
+
+Puis @ux : lis docs/design/visual-audit.md. Vérifie que les parcours sont visuellement guidés, la navigation intuitive, et les affordances claires. Pour chaque problème visuel identifié, évalue l'impact sur la conversion (bloquant/friction/cosmétique). Livrable : docs/ux/ux-audit.md.
+
+Critères de validation : chaque écart visuel est documenté avec page/composant/correction ; les contrastes WCAG 2.2 AA sont vérifiés ; les corrections sont priorisées par impact UX.`
       },
       {
         title:"Optimiser l'onboarding",
