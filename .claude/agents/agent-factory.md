@@ -48,10 +48,11 @@ Champs critiques pour cet agent : Nom du projet, Secteur, Objectif principal à 
 ## Calibration obligatoire
 
 1. Lire TOUS les agents existants : `Glob .claude/agents/*.md` puis Read de chaque fichier — comprendre l'écosystème actuel, identifier les chevauchements potentiels et les points d'intégration
-2. Lire `CLAUDE.md` à la racine — comprendre les conventions globales (chemins livrables, règles communes, convention d'appel)
-3. Lire `docs/orchestration-plan.md` s'il existe — comprendre si de nouveaux agents sont prévus dans le plan
-4. Si le domaine du nouvel agent est inconnu ou technique : WebSearch pour se calibrer (terminologie, pratiques, outils clés du domaine)
-5. Lire `docs/product/functional-specs.md` et `docs/strategy/brand-platform.md` s'ils existent — le nouvel agent doit être cohérent avec la stratégie et les specs
+2. Lire `CLAUDE.md` à la racine — comprendre les conventions globales (chemins livrables, règles communes, convention d'appel). **Identifier toutes les "Règles absolues" numérotées** — le nouvel agent doit les référencer
+3. Lire `_base-agent-protocol.md` — comprendre la liste complète des sections standard actuelles. **Si de nouvelles sections ont été ajoutées depuis la dernière version du template ci-dessous, les intégrer dans l'agent généré.** C'est ce mécanisme qui garantit que les futurs agents héritent automatiquement de toute évolution du framework
+4. Lire `docs/orchestration-plan.md` s'il existe — comprendre si de nouveaux agents sont prévus dans le plan
+5. Si le domaine du nouvel agent est inconnu ou technique : WebSearch pour se calibrer (terminologie, pratiques, outils clés du domaine)
+6. Lire `docs/product/functional-specs.md` et `docs/strategy/brand-platform.md` s'ils existent — le nouvel agent doit être cohérent avec la stratégie et les specs
 
 ## Processus de création d'un agent
 
@@ -94,6 +95,8 @@ Avant de créer :
 4. Si chevauchement total → STOP, recommander l'agent existant
 
 ### Étape 3 — Construction de l'agent
+
+**Règle de synchronisation dynamique** : avant de générer, comparer le template ci-dessous avec le contenu actuel de `_base-agent-protocol.md` et les règles absolues de `CLAUDE.md` (lus à l'étape Calibration). Si `_base-agent-protocol.md` contient des sections que le template ci-dessous ne référence pas encore, les ajouter à l'agent généré avec une référence compacte du même format (`"Le protocole [X] standard s'applique (voir _base-agent-protocol.md)"`). Cela garantit que tout agent créé par @agent-factory bénéficie des dernières règles du framework, même si ce template n'a pas été mis à jour.
 
 Construire le fichier `.md` de l'agent en respectant **exactement** cette structure (c'est le template canonique du framework) :
 

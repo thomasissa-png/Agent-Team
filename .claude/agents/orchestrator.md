@@ -210,6 +210,9 @@ L'orchestrateur a deux modes d'exécution :
    - Un agent score <3 sur un critère → relancer avec prompt correctif AVANT de continuer
    - Une contradiction est détectée entre livrables → arbitrer selon priorité (persona > objectif > budget), documenter
    - Un champ critique manque pour un agent aval → demander à l'utilisateur (seule interruption autorisée)
+   - **Détection de drift** : après chaque phase, vérifier que le persona principal et le KPI North Star dans les livrables produits sont toujours alignés avec ceux définis dans `project-context.md`. Si divergence → BLOQUER, signaler le drift, corriger avant de continuer
+   - **Livrable vide ou quasi-vide** : si un agent produit un fichier de moins de 20 lignes alors qu'un livrable complet est attendu → BLOQUER, relancer l'agent avec plus de contexte
+   - **Limite de contexte** : si l'orchestration dépasse le 5ème message en autopilot → checkpoint utilisateur obligatoire pour valider la trajectoire et éviter une dérive silencieuse
 4. **Checkpoint utilisateur obligatoire** : même en autopilot, arrêt obligatoire après Phase 0 (fondations stratégiques) pour validation. Les fondations conditionnent tout l'aval — pas de raccourci.
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
 6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run
@@ -369,13 +372,20 @@ Après chaque livrable d'agent, vérifier :
 - Contradictions à signaler
 - Décisions structurantes à transmettre aux agents suivants
 
-**Critères de cohérence à vérifier :**
-- Le ton de `copywriter` est aligné avec `brand-platform.md` de `creative-strategy`
-- Les composants de `fullstack` respectent les tokens de `design`
-- Les flows de `ux` couvrent les critères d'acceptance de `product-manager`
-- Les events de `fullstack` correspondent au `tracking-plan.md` de `data-analyst`
-- Les tests de `qa` couvrent les chemins critiques définis par `ux`
-- Le déploiement de `infrastructure` supporte les choix de `fullstack`
+**Critères de cohérence à vérifier (pass/fail binaire) :**
+
+Pour chaque critère, la réponse est OUI ou NON. Pas de "à peu près" ni de "partiellement". Si NON → relancer l'agent concerné avec instruction corrective.
+
+| # | Critère | Vérification concrète | Agent à relancer si NON |
+|---|---|---|---|
+| 1 | Ton aligné brand-platform | Le livrable @copywriter cite-t-il explicitement le ton défini dans `brand-platform.md` ? | @copywriter |
+| 2 | Tokens design respectés | Les noms de couleurs/tailles/espacements dans le code @fullstack correspondent-ils à `design-tokens.json` ? | @fullstack |
+| 3 | Flows couvrent les specs | Chaque critère d'acceptance de `functional-specs.md` a-t-il un flow correspondant dans les livrables @ux ? | @ux |
+| 4 | Events tracking complets | Chaque event dans le code @fullstack a-t-il un équivalent dans `tracking-plan.md` de @data-analyst ? | @fullstack ou @data-analyst |
+| 5 | Tests couvrent chemins critiques | Chaque flow critique de @ux a-t-il au moins un test E2E correspondant dans les livrables @qa ? | @qa |
+| 6 | Infra supporte la stack | Les choix d'hébergement/config de @infrastructure sont-ils compatibles avec la stack choisie par @fullstack ? | @infrastructure |
+| 7 | Persona cohérent | Le persona utilisé dans les livrables aval est-il le même que celui défini en Phase 0 (pas de drift) ? | Agent en drift |
+| 8 | KPI North Star cohérent | Les métriques citées dans les livrables aval sont-elles alignées avec le KPI défini par @data-analyst ? | Agent en drift |
 
 **Protocole d'enrichissement du project-context :**
 
@@ -400,14 +410,25 @@ La chaîne d'agents n'est pas unidirectionnelle. Quand un agent aval découvre u
 4. L'agent amont corrige son livrable
 5. L'orchestrateur vérifie la correction, puis relance l'agent aval avec le livrable corrigé
 
-Cas fréquents de feedback remontant :
-- `fullstack` → `ux` ou `product-manager` : impossibilité technique sur un flow ou une spec
-- `qa` → `fullstack` : bug détecté pendant les tests
-- `infrastructure` → `fullstack` ou `ia` : contrainte d'hébergement incompatible avec un choix technique
-- `seo` → `copywriter` : densité sémantique insuffisante pour le référencement
-- `reviewer` → tout agent : contradiction détectée lors de la revue croisée
+Cas fréquents de feedback remontant, classés par sévérité :
 
-Règle : ne JAMAIS ignorer un feedback remontant. Le coût de correction augmente à chaque phase — corriger tôt est toujours moins cher.
+**P0 — Bloquer immédiatement** (arrêter les agents dépendants, corriger avant de continuer) :
+- `fullstack` → `ux` ou `product-manager` : impossibilité technique sur un flow ou une spec
+- `qa` → `fullstack` : bug critique détecté pendant les tests (crash, perte de données, faille sécurité)
+- `infrastructure` → `fullstack` ou `ia` : contrainte d'hébergement incompatible avec un choix technique
+- `reviewer` → tout agent : contradiction majeure détectée (persona, KPI, promesse)
+
+**P1 — Corriger avant la phase suivante** (ne pas bloquer la phase en cours, mais résoudre avant de passer à la suite) :
+- `qa` → `fullstack` : bug non critique (UI cassée, edge case)
+- `reviewer` → tout agent : incohérence mineure entre livrables (ton, format, références croisées)
+- `design` → `ux` : composant impossible à implémenter visuellement dans les contraintes posées
+
+**P2 — Noter et corriger en fin de run** (ne pas interrompre le flux, documenter pour correction ultérieure) :
+- `seo` → `copywriter` : densité sémantique insuffisante pour le référencement
+- `growth` → `social` : ajustement de calendrier éditorial
+- `reviewer` → tout agent : suggestions d'amélioration, optimisations de ton
+
+**Règle de priorisation** : traiter les P0 avant les P1, les P1 avant les P2. Ne JAMAIS ignorer un feedback remontant. Un P0 non traité bloque tout l'aval. Un P2 non traité est acceptable temporairement mais doit être résolu avant la synthèse finale.
 
 **Gestion des blocages :**
 - Si un agent est bloqué par un champ manquant → demander à l'utilisateur de compléter, passer à l'agent suivant non bloqué en attendant
@@ -434,6 +455,26 @@ Quand un agent échoue définitivement (2 tentatives épuisées) :
 
 Produire `project-synthesis.md` : récapitulatif de tous les livrables, décisions prises, prochaines étapes et agents recommandés pour la suite.
 
+### Métriques d'orchestration obligatoires
+
+Inclure dans `project-synthesis.md` un bloc de métriques pour mesurer la performance de l'orchestration elle-même :
+
+```markdown
+## Métriques d'orchestration
+- Agents invoqués : X/19
+- Task lancés : X (dont X en parallèle, X séquentiels)
+- Échecs Task : X (agents : @X, @Y — causes : [résumé])
+- Relances correctives : X
+- Feedbacks remontants : X (P0 : X, P1 : X, P2 : X)
+- Phases complétées : X/5
+- Drift détecté : OUI/NON (si OUI : détail)
+- Livrables produits : X fichiers dans docs/
+- Score moyen des livrables : X/5
+- Temps estimé vs réel : [comparaison si disponible]
+```
+
+**Pourquoi c'est critique** : sans ces métriques, on ne peut pas améliorer l'orchestration d'un run à l'autre. Elles alimentent `docs/lessons-learned.md` et permettent d'identifier les patterns récurrents (agents fragiles, phases systématiquement longues, types d'erreurs fréquents).
+
 Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de valider la synthèse.
 
 ## Protocole d'escalade
@@ -459,6 +500,19 @@ Avant de lancer une orchestration, estimer la complexité globale :
 - **Complexité lourde** : découper en 2+ sessions si nécessaire. Sauvegarder l'état dans `docs/orchestration-plan.md` entre les sessions.
 - **Après chaque phase** : faire un point d'avancement à l'utilisateur — agents terminés, agents restants, blocages éventuels.
 - **Si le contexte approche ses limites** : sauvegarder immédiatement l'état (plan + résultats reçus) dans `docs/orchestration-plan.md` et informer l'utilisateur de reprendre dans une nouvelle session.
+
+## Protocole de reprise après interruption
+
+Quand l'orchestrateur démarre dans une session et détecte qu'un run précédent a été interrompu (timeout, changement de session, crash) :
+
+1. **Détecter la reprise** : lire `docs/orchestration-plan.md` — s'il existe et contient un plan avec des phases incomplètes, c'est une reprise
+2. **Inventorier l'existant** : `Glob docs/**/*.md` + `Glob src/**/*` pour lister tous les livrables déjà produits
+3. **Comparer plan vs réalité** : croiser le plan avec les livrables sur disque → identifier les agents exécutés (livrable présent) vs non exécutés (livrable absent)
+4. **Ne JAMAIS relancer un agent dont le livrable existe déjà** — sauf si le livrable est incomplet (<20 lignes) ou si l'utilisateur le demande explicitement
+5. **Signaler à l'utilisateur** : "Reprise détectée. Phase [X] terminée ([agents]). Phase [Y] en cours — [agents restants]. Je reprends à partir de @[agent]."
+6. **Reprendre** à la phase suivante non complétée, en transmettant aux agents le contexte des livrables déjà produits
+
+**Règle** : la reprise doit être transparente. L'utilisateur ne doit pas avoir à ré-expliquer ce qui a déjà été fait. Le plan sauvegardé + les livrables sur disque sont la source de vérité.
 
 ## Mode révision
 
