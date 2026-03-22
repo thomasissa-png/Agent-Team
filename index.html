@@ -49,6 +49,10 @@
   .required-tags{display:flex;flex-wrap:wrap;gap:4px}
   .required-tag{font-size:11px;color:var(--text-muted);border:1px solid rgba(245,240,232,0.22);border-radius:4px;padding:2px 7px;white-space:nowrap}
 
+  /* ── VERSION BADGE ── */
+  .agent-version{font-size:10px;font-weight:600;color:var(--text-dim);background:rgba(245,240,232,0.06);border:1px solid var(--border);border-radius:4px;padding:1px 6px;margin-left:auto;letter-spacing:0.3px;white-space:nowrap}
+  .agent-version.updated{color:var(--accent);background:rgba(232,255,0,0.08);border-color:rgba(232,255,0,0.25)}
+
   /* ── PROMPTS ── */
   .search-wrap{display:flex;justify-content:center;margin-bottom:28px}
   .search-box{position:relative;width:100%;max-width:400px}
@@ -164,133 +168,133 @@
 <script>
 const AGENTS = [
   {
-    id:"orchestrator", name:"Orchestrator", at:"@orchestrator",
+    id:"orchestrator", name:"Orchestrator", at:"@orchestrator", version:"1.0",
     role:"Chef d'orchestre — 20 ans d'expérience",
     phase:"Phase 0 — Coordination",
     desc:"Point d'entrée de tout projet. Décompose le travail entre agents, définit l'ordre d'exécution et vérifie que les livrables s'assemblent sans contradiction.",
     required:["Nom du projet","Secteur","Persona principal","Objectif à 6 mois","Stack technique","KPI North Star","Promesse unique","Ton de marque"]
   },
   {
-    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy",
+    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy", version:"1.0",
     role:"Directrice de stratégie créative — 18 ans",
     phase:"Phase 0 — Stratégie",
     desc:"Définit le positionnement, les personas et la plateforme de marque. Produit le brief créatif qui guide tous les autres agents.",
     required:["Secteur","Persona principal","Problème principal","Alternative actuelle"]
   },
   {
-    id:"product-manager", name:"Product Manager", at:"@product-manager",
+    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"1.0",
     role:"VP Product — 12 ans",
     phase:"Phase 0 — Produit",
     desc:"Traduit la stratégie en roadmap actionnable : vision produit, specs fonctionnelles, user stories priorisées et backlog.",
     required:["Objectif principal à 6 mois","Persona principal","Stack technique"]
   },
   {
-    id:"data-analyst", name:"Data Analyst", at:"@data-analyst",
+    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"1.0",
     role:"Head of Analytics — 10 ans",
     phase:"Phase 0 — Analytics",
     desc:"Définit ce qu'il faut mesurer, configure le tracking et construit les tableaux de bord. Répond à la question : est-ce que ça marche ?",
     required:["Objectif principal à 6 mois","KPI North Star","Stack technique","Outils d'analytics"]
   },
   {
-    id:"legal", name:"Legal", at:"@legal",
+    id:"legal", name:"Legal", at:"@legal", version:"1.0",
     role:"Juriste digital senior — 19 ans",
     phase:"Phase 0→5 — Parallèle",
     desc:"Vérifie la conformité juridique en parallèle de toutes les phases : RGPD, CGU/CGV, protection IP, contrats SaaS, EU AI Act.",
     required:["Secteur","Persona principal","Contraintes légales ou sectorielles"]
   },
   {
-    id:"ux", name:"UX", at:"@ux",
+    id:"ux", name:"UX", at:"@ux", version:"1.0",
     role:"Lead UX Researcher & Designer — 14 ans",
     phase:"Phase 1 — Expérience",
     desc:"Conçoit les parcours utilisateur : comment on arrive, comment on comprend, comment on agit. Wireframes, architecture de pages, conversion.",
     required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
   },
   {
-    id:"design", name:"Design", at:"@design",
+    id:"design", name:"Design", at:"@design", version:"1.0",
     role:"Directeur artistique digital — 11 ans",
     phase:"Phase 1 — Visuel",
     desc:"Traduit les parcours UX en interface visuelle : couleurs, typographies, composants, tokens. Garant de la cohérence visuelle sur tous les écrans.",
     required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
   },
   {
-    id:"copywriter", name:"Copywriter", at:"@copywriter",
+    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"1.0",
     role:"Senior copywriter — 13 ans",
     phase:"Phase 1–3 — Contenu",
     desc:"Rédige tous les textes du projet : landing pages, brand voice, UX writing, emails. Chaque mot est calibré pour le persona cible.",
     required:["Persona principal","Ton de marque","Promesse unique","3 mots qui définissent la marque","3 mots qui ne définissent pas la marque"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"1.0",
     role:"Développeur senior full-stack — 16 ans",
     phase:"Phase 2 — Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Supabase, Stripe. TypeScript strict uniquement.",
     required:["Stack technique","Base de données","Outils IA utilisés"]
   },
   {
-    id:"qa", name:"QA", at:"@qa",
+    id:"qa", name:"QA", at:"@qa", version:"1.0",
     role:"QA Engineering Manager — 9 ans",
     phase:"Phase 2 — Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"1.0",
     role:"SRE / Platform Engineer — 13 ans",
     phase:"Phase 2 — Infra",
     desc:"Configure le déploiement Replit, optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel estimé"]
   },
   {
-    id:"ia", name:"IA", at:"@ia",
+    id:"ia", name:"IA", at:"@ia", version:"1.0",
     role:"AI Engineer — 7 ans en production",
     phase:"Phase 2 — Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
     required:["Stack technique","Outils IA utilisés","Budget mensuel estimé"]
   },
   {
-    id:"seo", name:"SEO", at:"@seo",
+    id:"seo", name:"SEO", at:"@seo", version:"1.0",
     role:"Consultant SEO technique — 17 ans",
     phase:"Phase 3 — Référencement",
     desc:"Optimise le référencement Google : audit technique, stratégie de mots-clés, données structurées, maillage interne.",
     required:["Secteur","Persona principal","Stack technique"]
   },
   {
-    id:"geo", name:"GEO", at:"@geo",
+    id:"geo", name:"GEO", at:"@geo", version:"1.0",
     role:"Spécialiste GEO — 4 ans de pratique",
     phase:"Phase 3 — Visibilité IA",
     desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google — le GEO cible les IA génératives.",
     required:["Secteur","Persona principal","Promesse unique"]
   },
   {
-    id:"growth", name:"Growth", at:"@growth",
+    id:"growth", name:"Growth", at:"@growth", version:"1.0",
     role:"Head of Growth — 10 ans",
     phase:"Phase 4 — Acquisition",
     desc:"Conçoit la stratégie d'acquisition : canaux prioritaires, funnel de conversion, boucles virales, referral et modélisation CAC/LTV.",
     required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel acquisition"]
   },
   {
-    id:"social", name:"Social", at:"@social",
+    id:"social", name:"Social", at:"@social", version:"1.0",
     role:"Social Media Strategist — 8 ans",
     phase:"Phase 4 — Réseaux",
     desc:"Planifie la présence sur les réseaux sociaux : stratégie par plateforme, calendrier éditorial, formats natifs et community management.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"1.0",
     role:"Senior auditor qualité — 22 ans",
     phase:"Phase 5 — Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"1.0",
     role:"Architecte multi-agents — 10 ans",
     phase:"Hors-phase — Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon",
+    id:"elon", name:"Elon", at:"@elon", version:"2.1",
     role:"Elon Musk — Vision stratégique",
     phase:"Hors-phase — Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
@@ -758,9 +762,10 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
     const card=document.createElement("div");
     card.className="agent-card";
     card.dataset.agent=a.id;
+    const isUpdated = a.version && a.version !== "1.0";
     card.innerHTML=`
       <div class="agent-phase">${a.phase}</div>
-      <div class="agent-name"><span class="at">${a.at}</span> ${a.name}</div>
+      <div class="agent-name"><span class="at">${a.at}</span> ${a.name}${a.version?`<span class="agent-version${isUpdated?' updated':''}">v${a.version}</span>`:''}</div>
       <div class="agent-role">${a.role}</div>
       <div class="agent-desc">${a.desc}</div>
       <div class="agent-required">
