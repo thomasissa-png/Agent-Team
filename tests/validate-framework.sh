@@ -7,20 +7,17 @@
 set -euo pipefail
 
 NEW_AGENT_FILE=""
-ROOT="${1:-.}"
+ROOT="."
 STRICT=false
 
-# Parse arguments
+# Parse arguments — positional and flags in any order
 for arg in "$@"; do
   case "$arg" in
     --strict) STRICT=true ;;
     --new-agent=*) NEW_AGENT_FILE="${arg#--new-agent=}" ;;
+    *) ROOT="$arg" ;;
   esac
 done
-# If first arg is not a flag, treat as ROOT
-if [ "${1:-}" != "--strict" ] && [[ "${1:-}" != --new-agent=* ]]; then
-  ROOT="${1:-.}"
-fi
 
 AGENTS_DIR="$ROOT/.claude/agents"
 CLAUDE_MD="$ROOT/CLAUDE.md"
@@ -270,9 +267,19 @@ for agent in "$AGENTS_DIR"/*.md; do
   basename_agent=$(basename "$agent" .md)
   [ "$basename_agent" = "_base-agent-protocol" ] && continue
 
-  LIVRABLE_DIR=$(grep -o 'docs/[a-z-]*/' "$agent" 2>/dev/null | head -1 || true)
-  if [ -n "$LIVRABLE_DIR" ]; then
-    ok "$basename_agent: chemin livrable ($LIVRABLE_DIR)"
+  # Vérifier que l'agent a un chemin livrable défini dans CLAUDE.md
+  if grep -q "@$basename_agent" "$CLAUDE_MD" 2>/dev/null && grep -q "docs/" "$CLAUDE_MD" 2>/dev/null; then
+    # Check if agent is mentioned in the livrable path section (← @agent or @agent :)
+    CLAUDE_LIVRABLE=$(grep -E "@$basename_agent" "$CLAUDE_MD" 2>/dev/null | grep -E "←|docs/|\.md" | head -1 || true)
+    if [ -n "$CLAUDE_LIVRABLE" ]; then
+      ok "$basename_agent: référencé dans les chemins livrables CLAUDE.md"
+    else
+      # Exceptions connues : agent-factory, orchestrator, fullstack n'ont pas de dossier docs/ standard
+      case "$basename_agent" in
+        agent-factory|orchestrator|fullstack) ;;
+        *) warn "$basename_agent: pas de chemin livrable défini dans CLAUDE.md (convention de chemin)" ;;
+      esac
+    fi
   fi
 
   # Check handoff targets exist (skip examples in code blocks and known non-agent patterns)

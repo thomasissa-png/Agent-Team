@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Gradient Agents — Deliverable Validation
 # Vérifie qu'un livrable produit par un agent respecte les standards.
-# Usage: bash tests/validate-deliverable.sh <chemin-fichier>
+# Usage: bash tests/validate-deliverable.sh <chemin-fichier> [--agent <nom>]
 
 set -euo pipefail
 
@@ -27,8 +27,21 @@ err()  { red  "[ERREUR] $1"; ERRORS=$((ERRORS + 1)); }
 warn() { yellow "[AVERTISSEMENT] $1"; WARNINGS=$((WARNINGS + 1)); }
 ok()   { green "[OK] $1"; }
 
+# Safe grep count — always returns a valid integer
+gcount() {
+  local result
+  result=$(grep -ci "$1" "$2" 2>/dev/null) || true
+  echo "${result:-0}"
+}
+
+gcount_e() {
+  local result
+  result=$(grep -c "$1" "$2" 2>/dev/null) || true
+  echo "${result:-0}"
+}
+
 if [ -z "$FILE" ]; then
-  echo "Usage: bash tests/validate-deliverable.sh <chemin-fichier>"
+  echo "Usage: bash tests/validate-deliverable.sh <chemin-fichier> [--agent <nom>]"
   exit 1
 fi
 
@@ -85,8 +98,7 @@ fi
 # 3. Placeholders non remplis
 PLACEHOLDER_COUNT=0
 for pattern in '\[TODO\]' '\[A COMPLETER\]' '\[À COMPLÉTER\]' '\[PLACEHOLDER\]' '\[INSERT\]' '\[XXX\]'; do
-  MATCHES=$(grep -ci "$pattern" "$FILE" 2>/dev/null | tr -d '\n' || echo 0)
-  MATCHES=${MATCHES:-0}
+  MATCHES=$(gcount "$pattern" "$FILE")
   PLACEHOLDER_COUNT=$((PLACEHOLDER_COUNT + MATCHES))
 done
 if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
@@ -96,10 +108,8 @@ else
 fi
 
 # 4. Hypothèses marquées correctement
-HYPO_COUNT=$(grep -c '\[HYPOTHÈSE' "$FILE" 2>/dev/null | tr -d '\n' || echo 0)
-HYPO_COUNT=${HYPO_COUNT:-0}
+HYPO_COUNT=$(gcount_e '\[HYPOTHÈSE' "$FILE")
 if [ "$HYPO_COUNT" -gt 0 ]; then
-  # Vérifier qu'il y a un bloc "Hypothèses à valider" en fin de document
   if grep -qi "Hypothèses à valider" "$FILE"; then
     ok "$HYPO_COUNT hypothèse(s) marquée(s), bloc récapitulatif présent"
   else
@@ -110,7 +120,7 @@ else
 fi
 
 # 5. Sections avec contenu (pas juste des titres vides)
-SECTION_COUNT=$(grep -c "^## " "$FILE" 2>/dev/null || echo 0)
+SECTION_COUNT=$(gcount_e "^## " "$FILE")
 if [ "$SECTION_COUNT" -lt 2 ]; then
   warn "Peu de sections structurées ($SECTION_COUNT). Le livrable manque peut-être de structure."
 else

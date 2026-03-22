@@ -52,14 +52,40 @@ IMPORTANT_FIELDS=(
 )
 
 echo "--- Champs critiques (bloquants) ---"
+# Detect format: template (- **Field** : value) or table (| Field | value |)
+IS_TABLE=false
+grep -q "^|.*|.*|" "$CONTEXT" 2>/dev/null && IS_TABLE=true
+
+extract_value() {
+  local field="$1"
+  local line
+  # Try bold format first: **Field** : value
+  line=$(grep -i "\\*\\*$field\\*\\*" "$CONTEXT" 2>/dev/null | head -1 || true)
+  if [ -n "$line" ]; then
+    echo "$line" | sed "s/.*\\*\\*[^*]*\\*\\* *: *//" | sed 's/^ *//' | sed 's/ *$//'
+    return
+  fi
+  # Try table format: | Field | value |
+  line=$(grep -i "| *$field *|" "$CONTEXT" 2>/dev/null | head -1 || true)
+  if [ -n "$line" ]; then
+    echo "$line" | sed "s/.*| *$field *| *//" | sed 's/ *|.*//' | sed 's/^ *//' | sed 's/ *$//' | tr -d '*'
+    return
+  fi
+  # Not found
+  echo ""
+}
+
+field_exists() {
+  local field="$1"
+  grep -qi "\\*\\*$field\\*\\*\| *$field *|" "$CONTEXT" 2>/dev/null
+}
+
 for field in "${CRITICAL_FIELDS[@]}"; do
-  LINE=$(grep -n "\\*\\*$field\\*\\*" "$CONTEXT" 2>/dev/null | head -1 || true)
-  if [ -z "$LINE" ]; then
+  if ! field_exists "$field"; then
     err "$field : champ absent du fichier"
     continue
   fi
-  # Extract value after the colon
-  VALUE=$(echo "$LINE" | sed "s/.*\\*\\*$field\\*\\* *: *//" | sed 's/^ *//' | sed 's/ *$//')
+  VALUE=$(extract_value "$field")
   if [ -z "$VALUE" ] || echo "$VALUE" | grep -qP '^\[.*\]$'; then
     err "$field : non rempli"
   else
@@ -70,12 +96,11 @@ done
 echo ""
 echo "--- Champs importants (recommandés) ---"
 for field in "${IMPORTANT_FIELDS[@]}"; do
-  LINE=$(grep -n "\\*\\*$field\\*\\*" "$CONTEXT" 2>/dev/null | head -1 || true)
-  if [ -z "$LINE" ]; then
+  if ! field_exists "$field"; then
     warn "$field : champ absent"
     continue
   fi
-  VALUE=$(echo "$LINE" | sed "s/.*\\*\\*$field\\*\\* *: *//" | sed 's/^ *//' | sed 's/ *$//')
+  VALUE=$(extract_value "$field")
   if [ -z "$VALUE" ] || echo "$VALUE" | grep -qP '^\[.*\]$'; then
     warn "$field : non rempli"
   else
