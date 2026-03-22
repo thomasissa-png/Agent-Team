@@ -324,7 +324,7 @@ const PROMPTS = [
         title:"Définir mon projet (obligatoire en premier)",
         agents:["orchestrator"],
         quand:"Premier prompt à lancer — crée automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler.",
-        prompt:`@orchestrator Crée le fichier project-context.md à la racine du projet avec les informations ci-dessous. Remplis le template complet (lis templates/project-context.md pour la structure). Voici les infos :
+        prompt:`Crée le fichier project-context.md à la racine du projet avec les informations ci-dessous. Lis templates/project-context.md pour la structure complète et remplis tous les champs. Voici les infos :
 
 — IDENTITÉ —
 Nom du projet : [NOM]
@@ -382,7 +382,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Faire un check-up complet de mon projet",
         agents:["reviewer","elon"],
         quand:"Tu as plusieurs livrables et tu veux savoir où tu en es",
-        prompt:"@reviewer Lis tous les livrables dans docs/ et produis le rapport de cohérence croisée avec recommandation GO/NO-GO. Ensuite @elon donne ton audit stratégique first principles : qu'est-ce qui manque pour être n°1 ?"
+        prompt:"@reviewer Lis tous les livrables dans docs/ et produis le rapport de cohérence croisée avec recommandation GO/NO-GO. Livrable : docs/reviews/cross-review-report.md. Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Donne ton audit stratégique first principles : qu'est-ce qui manque pour être n°1 ? Livrable : docs/reviews/elon-audit.md."
       },
       {
         title:"Pivoter mon projet",
@@ -419,6 +419,12 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         agents:["legal"],
         quand:"En parallèle des autres phases, avant mise en production. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants.",
         prompt:"@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Audit juridique complet : RGPD (registre des traitements, bases légales, durées de conservation), CGU/CGV adaptées au modèle économique, protection IP (marque INPI/EUIPO), conformité EU AI Act si IA générative. Livrables (un fichier à la fois) : docs/legal/rgpd-checklist.md, docs/legal/cgu-draft.md, docs/legal/privacy-policy.md, docs/legal/legal-audit.md. Critère : chaque document doit être spécifique au projet, pas un template générique."
+      },
+      {
+        title:"Specs fonctionnelles détaillées",
+        agents:["product-manager"],
+        quand:"Après la roadmap, pour détailler les features avant développement",
+        prompt:"@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées : user stories, critères d'acceptation, wireframes textuels, règles métier, cas limites. Livrable : docs/product/functional-specs.md."
       }
     ]
   },
@@ -519,7 +525,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Stratégie d'acquisition complète",
         agents:["growth","social","copywriter"],
-        quand:"Produit lancé, premiers utilisateurs à acquérir",
+        quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
         prompt:"@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV par canal. Livrable : docs/growth/acquisition-plan.md. Puis @social : prends docs/growth/acquisition-plan.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire) et génère-le. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme. Livrable : docs/social/editorial-calendar.md. Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Livrable : docs/copy/acquisition-copies.md."
       },
       {
@@ -591,7 +597,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Refondre un site existant",
         agents:["ux","design","fullstack"],
-        quand:"Site en production avec problèmes UX/performance/dette technique",
+        quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
         prompt:"@ux D'abord, audite le parcours actuel : friction points, taux d'abandon, parcours critiques. Livrable : docs/ux/ux-audit.md. Puis @design : prends docs/ux/ux-audit.md et évalue la cohérence visuelle. Propose le nouveau design system aligné sur les problèmes identifiés. Livrable : docs/design/design-system.md. Enfin @fullstack : prends les deux livrables et évalue la dette technique. Propose le plan de migration [big bang ou progressive — recommande l'approche la plus sûre] avec planning par étape. Livrable : docs/dev-decisions.md avec stratégie de migration et risques identifiés."
       },
       {
@@ -609,7 +615,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Optimiser l'onboarding",
         agents:["ux","copywriter","data-analyst"],
-        quand:"Time-to-value trop long ou taux d'abandon élevé",
+        quand:"Time-to-value trop long ou taux d'abandon élevé. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
         prompt:"@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Réduis le time-to-value à <3 min, supprime les étapes non essentielles, ajoute les moments de succès. Livrable : docs/ux/onboarding-flow.md. Puis @copywriter : prends docs/ux/onboarding-flow.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Rédige le microcopy (welcome, tooltips, empty states, messages de succès). Livrable : docs/copy/ux-writing-guide.md. Puis @data-analyst : configure le funnel onboarding avec taux par étape et alertes sur les drops >20%. Livrable : docs/analytics/dashboard-specs.md."
       },
       {
@@ -657,7 +663,7 @@ const CHANGELOG = [
     date:"2026-03-22",
     agent:"tous",
     type:"mise à jour",
-    description:"Bibliothèque de prompts refondée — 38 prompts organisés par phase projet, format simplifié copier-coller"
+    description:"Bibliothèque de prompts refondée — 39 prompts organisés par phase projet, format simplifié copier-coller"
   },
   {
     date:"2026-03-22",
@@ -813,7 +819,7 @@ const CHANGELOG = [
 <!-- ════ SECTION PROMPTS ════ -->
 <section id="prompts" aria-labelledby="titre-prompts">
   <h2 id="titre-prompts">Bibliothèque de Prompts</h2>
-  <p class="section-sub">38 prompts organisés par phase — copie, colle, c'est parti</p>
+  <p class="section-sub">39 prompts organisés par phase — copie, colle, c'est parti</p>
 
   <!-- Filtre par agent -->
   <div class="prompt-filter-wrap">
