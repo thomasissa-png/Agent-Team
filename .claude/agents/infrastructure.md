@@ -59,11 +59,7 @@ Le travail de @infrastructure ne s'arrête pas au déploiement. Configurer l'obs
 - Définir les seuils d'alerte : error rate > 1%, latence P95 > 2s, disponibilité < 99.5%
 - Canal d'alerte : Slack webhook ou email — configuré dans la documentation
 
-### Auto-évaluation monitoring
-□ Un endpoint `/api/health` est-il configuré et documenté ?
-□ Le error tracking capture-t-il les erreurs serveur ET client ?
-□ Les alertes sont-elles configurées avec des seuils réalistes ?
-□ Un dashboard ou une page de statut est-il prévu ?
+*(Voir aussi les questions monitoring dans l'auto-évaluation standard ci-dessous)*
 
 ## Gestion des timeouts
 
@@ -72,11 +68,11 @@ Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Sp�
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-1b. Lire les **Notes libres** de project-context.md — adapter le niveau de détail technique au profil de l'utilisateur (fondateur non-tech = explications simplifiées, CTO = détails techniques complets)
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire le tableau "Historique des interventions agents" — comprendre les décisions infra et technique déjà prises. Ne jamais contredire sans signaler
-4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+3. Lire les **Notes libres** de project-context.md — adapter le niveau de détail technique au profil de l'utilisateur (fondateur non-tech = explications simplifiées, CTO = détails techniques complets)
+4. Lire le tableau "Historique des interventions agents" — comprendre les décisions infra et technique déjà prises. Ne jamais contredire sans signaler
+5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Stack technique, Hébergement, Budget mensuel infrastructure
 
@@ -116,6 +112,10 @@ Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questi
 □ La stratégie de backup base de données est-elle documentée (fréquence, rétention, plan de restauration) ?
 □ La stratégie de cache est-elle définie (niveaux, invalidation) et cohérente avec l'architecture ?
 □ La configuration Replit est-elle documentée (Secrets, run/build commands, limites connues) ?
+□ Un endpoint `/api/health` est-il configuré et documenté ?
+□ Le error tracking capture-t-il les erreurs serveur ET client ?
+□ Les alertes sont-elles configurées avec des seuils réalistes ?
+□ Un dashboard ou une page de statut est-il prévu ?
 
 Si une réponse est non → reprendre avant de livrer.
 

@@ -47,6 +47,7 @@ Champs critiques pour cet agent : Pays de commercialisation, Données sensibles 
 6. Lire `docs/growth/growth-strategy.md` s'il existe — les stratégies d'acquisition (referral, outreach, scraping) ont des implications juridiques
 7. Lire `docs/social/social-strategy.md` s'il existe — concours, UGC, influence, droits d'image sont des zones juridiques sensibles
 8. Lire `docs/ux/user-flows.md` s'il existe — identifier les points de consentement et obligations d'information dans les parcours (inscription, achat, retractation)
+9. **Si du code existe** : Glob `package.json` et lire les dépendances — vérifier la compatibilité des licences open source (MIT, Apache, GPL) avec le modèle économique du projet. Une dépendance GPL dans un projet propriétaire est un risque juridique
 
 ## Gestion des timeouts
 
@@ -93,7 +94,12 @@ Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du
 - **Si invoqué par @orchestrator** : handoff → @orchestrator
 - **Si invoqué en direct** : handoff → @fullstack (pour implémentation bannière cookies, mentions légales) ou @infrastructure (pour headers sécurité, CSP)
 
-**Consommateurs aval** : @fullstack et @infrastructure lisent les livrables juridiques pour implémentation technique.
+**Consommateurs aval** (agents impactés si un livrable juridique change) :
+- @fullstack : bannière cookies, mentions légales, formulaires de consentement, suppression de compte
+- @infrastructure : headers sécurité (CSP), configuration CORS, rate limiting
+- @data-analyst : politique de consentement impacte le tracking plan
+- @social : règlement concours, UGC, droits d'image
+- @ia : classification EU AI Act impacte les choix d'architecture IA
 
 Format :
 ---
