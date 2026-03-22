@@ -594,127 +594,232 @@ Critères de validation : project-context.md reflète le pivot, tous les livrabl
     items:[
       {
         title:"Positionnement & plateforme de marque",
-        agents:["creative-strategy"],
-        quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit",
-        prompt:"@creative-strategy Analyse project-context.md. Si les champs Secteur, Persona principal, Problème principal ou Alternative actuelle sont insuffisants, pose-moi les questions pour les compléter avant de continuer. Benchmark 3-5 concurrents via WebSearch. Produis la plateforme de marque complète : positionnement (territoire, promesse, preuve, ton), personas détaillés avec jobs-to-be-done et objections, benchmark concurrentiel (espaces occupés vs libres), et brief créatif. Livrables : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md."
+        agents:["creative-strategy","data-analyst"],
+        quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit. Fondation de toute la chaîne — un mauvais positionnement contamine tout l'aval.",
+        prompt:`@creative-strategy Analyse project-context.md. Si les champs Secteur, Persona principal, Problème principal ou Alternative actuelle sont insuffisants (un persona sans frustration concrète, un secteur trop vague comme "Tech"), pose-moi les questions ciblées pour les compléter avant de continuer.
+
+Benchmark 3-5 concurrents via WebSearch (noms réels, positionnement, prix, forces/faiblesses). Produis la plateforme de marque complète :
+1. Positionnement : territoire de marque, promesse (< 20 mots), preuve (ce qui rend la promesse crédible), ton de marque avec exemples.
+2. Personas détaillés : profil, jobs-to-be-done, frustrations quantifiées, objections à l'achat, critères de décision, vocabulaire utilisé par le persona.
+3. Benchmark concurrentiel : matrice des espaces occupés vs libres, opportunité de positionnement différenciant.
+4. Brief créatif : guidelines pour tous les agents aval (copy, design, growth).
+
+Structurer le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
+
+Livrables (un fichier à la fois) : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md.
+
+Puis @data-analyst : lis docs/strategy/personas.md et propose 2-3 métriques de validation du persona (comment vérifier que le persona est réel et pas une hypothèse). Ajoute dans docs/analytics/kpi-framework.md une section "Validation persona".
+
+Critères de validation : le positionnement est formulable en < 20 mots, aucun concurrent direct n'occupe le même créneau, le persona a au moins une frustration quantifiée.`
       },
       {
         title:"Vision produit & roadmap",
-        agents:["product-manager"],
+        agents:["product-manager","data-analyst"],
         quand:"Après la stratégie de marque — ou directement, l'agent créera les prérequis en posant des questions",
-        prompt:"@product-manager Lis docs/strategy/brand-platform.md (positionnement, personas). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (positionnement, personas détaillés, ton de marque, concurrents) et génère-le avant de continuer. Puis définis la vision produit, la roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois], et le backlog initial avec user stories au format 'En tant que [persona], je veux [action], afin de [bénéfice]'. Livrables : docs/product/product-vision.md + docs/product/roadmap.md + docs/product/backlog.md."
+        prompt:`@product-manager Lis docs/strategy/brand-platform.md (positionnement, personas). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (positionnement, personas détaillés, ton de marque, concurrents) et génère-le avant de continuer.
+
+Définis la vision produit et la roadmap :
+1. Vision produit : la description du monde une fois le problème résolu (en 3-5 phrases).
+2. Roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois] : chaque feature scorée Reach × Impact × Confidence / Effort, avec lien explicite au KPI North Star.
+3. Backlog initial avec user stories au format "En tant que [persona], je veux [action], afin de [bénéfice]" + critères d'acceptation par story.
+4. Contraintes techniques identifiées : dépendances, limites de la stack (voir project-context.md), intégrations tierces nécessaires.
+5. Risques produit : les 3 hypothèses les plus risquées et comment les valider.
+
+Livrables : docs/product/product-vision.md + docs/product/roadmap.md + docs/product/backlog.md.
+
+Puis @data-analyst : lis docs/product/roadmap.md et associe à chaque feature de la roadmap un KPI de succès mesurable. Vérifie que le KPI North Star de project-context.md est bien impacté par les features prioritaires. Signale les features "orphelines" (pas de KPI associé). Ajoute dans docs/analytics/kpi-framework.md.
+
+Critères de validation : chaque feature du backlog est liée à un persona + un KPI, la roadmap a un chemin critique identifié.`
       },
       {
         title:"KPIs & tracking plan",
-        agents:["data-analyst"],
-        quand:"Avant tout développement, pour mesurer dès le jour 1",
-        prompt:"@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features MVP, modèle économique) et génère-les avant de continuer. Définis la North Star Metric avec sa formule de calcul. Produis les KPIs AARRR avec valeurs cibles par étape. Produis le tracking plan complet : chaque event (nom, trigger, propriétés, type), naming convention, outil analytics recommandé selon le budget. Specs de dashboard prêts à implémenter. Livrables : docs/analytics/kpi-framework.md + docs/analytics/tracking-plan.md + docs/analytics/dashboard-specs.md."
+        agents:["data-analyst","fullstack"],
+        quand:"Avant tout développement, pour mesurer dès le jour 1. Le tracking est la mémoire du produit — sans lui, chaque décision est une opinion.",
+        prompt:`@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features MVP, modèle économique) et génère-les avant de continuer. Lis aussi project-context.md (budget, stack).
+
+Produis le framework analytique complet :
+1. North Star Metric : définition précise, formule de calcul, fréquence de mesure, valeur cible à 3 et 6 mois.
+2. KPIs AARRR : pour chaque étape (Acquisition, Activation, Rétention, Revenue, Referral) — métrique, formule, valeur cible, outil de mesure.
+3. Tracking plan complet : chaque event (nom, trigger, propriétés, type user/system), naming convention (snake_case, préfixe par domaine), outil analytics recommandé selon le budget (gratuit : Plausible/PostHog ; payant : Mixpanel/Amplitude).
+4. Specs de dashboard : maquette textuelle de chaque dashboard (métriques affichées, filtres, granularité temporelle, alertes).
+5. Privacy by design : quelles données NE PAS collecter (PII), anonymisation, consentement requis par event (lien avec RGPD).
+
+Livrables (un fichier à la fois) : docs/analytics/kpi-framework.md + docs/analytics/tracking-plan.md + docs/analytics/dashboard-specs.md.
+
+Puis @fullstack : lis docs/analytics/tracking-plan.md et évalue l'effort d'implémentation. Signale les events qui nécessitent des modifications backend vs frontend-only. Estime le temps par event. Ajoute une section "Implémentation tracking" dans docs/dev-decisions.md.
+
+Critères de validation : chaque event du tracking plan a un nom, un trigger et des propriétés définis ; le KPI North Star a une formule de calcul ; les dashboards sont directement implémentables.`
       },
       {
         title:"Audit juridique & conformité",
-        agents:["legal"],
-        quand:"En parallèle des autres phases, avant mise en production. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants.",
-        prompt:"@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Audit juridique complet : RGPD (registre des traitements, bases légales, durées de conservation), CGU/CGV adaptées au modèle économique, protection IP (marque INPI/EUIPO), conformité EU AI Act si IA générative. Livrables (un fichier à la fois) : docs/legal/rgpd-checklist.md, docs/legal/cgu-draft.md, docs/legal/privacy-policy.md, docs/legal/legal-audit.md. Critère : chaque document doit être spécifique au projet, pas un template générique."
+        agents:["legal","infrastructure"],
+        quand:"En parallèle des autres phases, avant mise en production. Obligatoire si données sensibles, paiement, ou IA. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants.",
+        prompt:`@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Audit juridique complet :
+
+1. RGPD : registre des traitements (finalité, base légale, durée de conservation par traitement), DPA avec les sous-traitants (Stripe, analytics, hébergeur, fournisseurs IA), droits des utilisateurs (accès, rectification, suppression, portabilité), mécanismes de consentement.
+2. CGU/CGV adaptées au modèle économique : conditions d'abonnement, politique de remboursement, clauses de responsabilité, propriété intellectuelle du contenu généré.
+3. Protection IP : stratégie de dépôt de marque (INPI pour la France, EUIPO pour l'UE), veille concurrentielle sur le nom.
+4. Conformité EU AI Act si IA générative : classification du risque, obligations de transparence, documentation technique requise.
+5. Cookies & consentement : catégorisation des cookies (strictement nécessaires, analytics, marketing), conformité TCF v2, recommandations CNIL.
+6. Accessibilité : obligations RGAA/WCAG selon le type d'organisme et le pays.
+
+Livrables (un fichier à la fois, sauvegarder au fur et à mesure) : docs/legal/legal-audit.md, docs/legal/rgpd-checklist.md, docs/legal/cgu-draft.md, docs/legal/privacy-policy.md.
+
+Puis @infrastructure : lis docs/legal/legal-audit.md et vérifie que l'infrastructure est compatible avec les exigences identifiées (data residency, chiffrement, backups, logs d'accès). Signale les écarts dans docs/infra/infrastructure.md.
+
+Critère : chaque document doit être spécifique au projet (pas un template générique), avec les noms, URLs et données du projet insérés.`
       },
       {
         title:"Specs fonctionnelles détaillées",
-        agents:["product-manager"],
-        quand:"Après la roadmap, pour détailler les features avant développement",
-        prompt:"@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées : user stories, critères d'acceptation, wireframes textuels, règles métier, cas limites. Livrable : docs/product/functional-specs.md."
+        agents:["product-manager","qa"],
+        quand:"Après la roadmap, pour détailler les features avant développement. Les specs sont le contrat entre le product et le dev — chaque ambiguïté ici coûtera 10x en développement.",
+        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/analytics/tracking-plan.md si disponible (events à intégrer dans les specs).
+
+Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées :
+1. User stories avec critères d'acceptation vérifiables (Given/When/Then).
+2. Wireframes textuels (ASCII) de chaque écran avec les états (default, loading, empty, error, success).
+3. Règles métier : logique de calcul, conditions, limites, permissions par rôle.
+4. Cas limites et edge cases : que se passe-t-il si l'utilisateur fait X de manière inattendue ?
+5. Events tracking : quels events de docs/analytics/tracking-plan.md sont déclenchés à chaque étape.
+6. Dépendances : quelles autres features ou APIs sont nécessaires.
+7. Contraintes de performance : temps de réponse cible par action critique.
+
+Livrable : docs/product/functional-specs.md.
+
+Puis @qa : lis docs/product/functional-specs.md et vérifie que chaque critère d'acceptation est testable automatiquement. Signale les critères trop vagues pour être testés. Propose les scénarios de test E2E pour les parcours critiques. Ajoute dans docs/qa/qa-strategy.md.
+
+Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier.`
       },
       {
         title:"Valider la demande avant de construire",
         agents:["growth","creative-strategy","data-analyst"],
-        quand:"Tout début de projet, avant de coder — pour vérifier que le marché existe",
+        quand:"Tout début de projet, avant de coder — pour vérifier que le marché existe. Le prompt le plus important si tu n'as pas encore de clients.",
         prompt:`@growth Lis project-context.md (persona, secteur, problème principal). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer. Lis docs/strategy/brand-platform.md si disponible (positionnement, personas). Conçois le protocole de validation de la demande :
 
-1. Recherche marché : volume de recherche (WebSearch), taille du marché adressable, tendances, signaux de demande existants.
-2. Script d'interviews discovery : 10 questions ouvertes (jobs-to-be-done, pains, alternatives actuelles, willingness-to-pay). Protocole de recrutement (5-8 profils cibles).
-3. Test de demande : landing page waitlist ou fake door test — structure de la page, CTA, objectif de conversion, critère go/no-go chiffré (ex : >5% de conversion = signal positif).
-4. Verdict : matrice hypothèses/validations avec recommandation GO/NO-GO argumentée.
+1. Recherche marché : volume de recherche des mots-clés problème via WebSearch (pas les mots-clés solution), taille du marché adressable (TAM → SAM → SOM), tendances Google Trends, signaux de demande existants (forums, Reddit, tweets de frustration).
+2. Script d'interviews discovery : 10 questions ouvertes (jobs-to-be-done, pains, alternatives actuelles, willingness-to-pay, budget actuel). Protocole de recrutement (5-8 profils cibles, où les trouver, comment les contacter, incentive).
+3. Test de demande : landing page waitlist ou fake door test — structure de la page (headline, sous-titre, 3 bénéfices, CTA email), objectif de conversion, critère go/no-go chiffré (>5% de conversion = signal positif, >10% = signal fort).
+4. Analyse concurrentielle de la demande : les concurrents ont-ils du trafic ? Des avis ? Des clients visibles ? Un concurrent avec des clients mécontents = signal positif.
+5. Verdict : matrice hypothèses/validations avec recommandation GO/NO-GO argumentée et niveau de confiance (faible/moyen/élevé).
 
-Livrable : docs/growth/demand-validation.md. Puis @creative-strategy : lis docs/growth/demand-validation.md et vérifie l'alignement entre la demande validée et le positionnement dans docs/strategy/brand-platform.md. Signale les écarts. Puis @data-analyst : définis les métriques de suivi du test de demande (taux de conversion waitlist, coût par lead, sources de trafic). Livrable : section ajoutée dans docs/analytics/kpi-framework.md.`
+Livrable : docs/growth/demand-validation.md.
+
+Puis @creative-strategy : lis docs/growth/demand-validation.md et vérifie l'alignement entre la demande validée et le positionnement dans docs/strategy/brand-platform.md. Le problème validé par le marché est-il bien celui que la marque promet de résoudre ? Signale les écarts et propose les ajustements.
+
+Puis @data-analyst : définis les métriques de suivi du test de demande (taux de conversion waitlist, coût par lead, sources de trafic, temps passé sur la page). Configure le tracking du test. Livrable : section "Validation demande" ajoutée dans docs/analytics/kpi-framework.md.
+
+Critères de validation : au moins 3 signaux de demande documentés (volume recherche, trafic concurrent, verbatims utilisateurs), critère go/no-go chiffré et non ambigu.`
       },
       {
         title:"Structurer la proposition de valeur",
-        agents:["creative-strategy"],
-        quand:"Après la plateforme de marque — avant de rédiger quoi que ce soit (landing page, emails, ads)",
+        agents:["creative-strategy","copywriter"],
+        quand:"Après la plateforme de marque — avant de rédiger quoi que ce soit (landing page, emails, ads). La proposition de valeur est la phrase que tes utilisateurs répéteront pour parler de toi.",
         prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (positionnement, personas, benchmark concurrentiel). S'il n'existe pas, pose-moi les questions pour le créer (positionnement, persona principal avec frustrations, concurrents) et génère-le avant de continuer.
 
 Traduis le positionnement en proposition de valeur opérationnelle avec cette structure :
-1. Problème documenté : la douleur quantifiée du persona (temps perdu, argent gaspillé, frustration mesurable).
-2. Solution différenciante : le mécanisme unique qui résout ce problème (pas ce que fait le produit — comment il le fait différemment).
-3. Preuve : ce qui rend la promesse crédible (techno, méthode, résultat mesurable).
-4. Résultat : ce que le persona obtient concrètement (chiffré si possible).
-5. Pour qui : les critères de qualification (qui est le client idéal, qui ne l'est PAS).
-6. Pourquoi maintenant : l'urgence ou l'opportunité qui rend l'action immédiate rationnelle.
+1. Problème documenté : la douleur quantifiée du persona (temps perdu, argent gaspillé, frustration mesurable). Utilise les mots du persona, pas du jargon marketing.
+2. Solution différenciante : le mécanisme unique qui résout ce problème (pas ce que fait le produit — comment il le fait différemment des alternatives).
+3. Preuve : ce qui rend la promesse crédible (techno, méthode, résultat mesurable, témoignage, démo).
+4. Résultat : ce que le persona obtient concrètement (chiffré si possible — "gagne 3h/semaine" plutôt que "gagne du temps").
+5. Pour qui : les critères de qualification (qui est le client idéal, qui ne l'est PAS — exclure explicitement aide à qualifier).
+6. Pourquoi maintenant : l'urgence ou l'opportunité qui rend l'action immédiate rationnelle (nouvelle réglementation, tendance marché, coût de l'inaction).
 
-Formule la proposition de valeur en une phrase (<20 mots) + version longue (3-4 phrases). Teste-la contre les 3 concurrents du benchmark : est-elle différenciante ? Crédible ? Mémorable ?
+Formule la proposition de valeur en une phrase (< 20 mots) + version longue (3-4 phrases). Teste-la contre les 3 concurrents du benchmark : est-elle différenciante ? Crédible ? Mémorable ? Le persona la reformulerait-il spontanément ?
 
-Livrable : docs/strategy/value-proposition.md. Critère de qualité : la proposition de valeur doit être directement utilisable par @copywriter pour la landing page et par @growth pour les canaux d'acquisition.`
+Structure le contenu pour être citable par les LLM : claims vérifiables, entités nommées.
+
+Livrable : docs/strategy/value-proposition.md.
+
+Puis @copywriter : lis docs/strategy/value-proposition.md et rédige 3 variantes de la proposition de valeur adaptées à des contextes différents : hero landing page, accroche email, bio social media. Livrable : ajout dans docs/copy/brand-voice.md section "Propositions de valeur".
+
+Critère de qualité : la proposition de valeur est directement utilisable par @copywriter pour la landing page et par @growth pour les canaux d'acquisition. Le persona reconnaît son problème dans la formulation.`
       },
       {
         title:"Construire la messaging matrix",
         agents:["creative-strategy","copywriter"],
-        quand:"Après la proposition de valeur — avant la landing page et les contenus marketing",
+        quand:"Après la proposition de valeur — avant la landing page et les contenus marketing. La messaging matrix est le GPS de toute ta communication.",
         prompt:`@creative-strategy Lis docs/strategy/value-proposition.md et docs/strategy/personas.md. S'ils n'existent pas, pose-moi les questions pour les créer (proposition de valeur, personas avec objections) et génère-les avant de continuer. Lis aussi docs/strategy/competitive-benchmark.md si disponible.
 
-Construis la messaging matrix : une grille qui croise persona × canal × étape du funnel × message clé. Pour chaque combinaison :
-- Message principal (1 phrase)
-- Preuve/argument associé
-- Objection à lever à cette étape
-- Vocabulaire à utiliser vs à éviter
-- CTA recommandé
+Construis la messaging matrix : une grille qui croise persona x canal x étape du funnel x message clé. Pour chaque combinaison :
+- Message principal (1 phrase — dans les mots du persona, pas du marketeur)
+- Preuve/argument associé (vérifiable, pas générique)
+- Objection à lever à cette étape (la vraie, pas la polie)
+- Vocabulaire à utiliser vs à éviter (lien avec docs/copy/brand-voice.md si existant)
+- CTA recommandé (verbe d'action spécifique, pas "En savoir plus")
 
 Canaux à couvrir : landing page, email, réseaux sociaux (LinkedIn, Twitter/X), publicité paid, in-app.
 Étapes funnel : découverte, considération, décision, onboarding, expansion.
 
-Livrable : docs/strategy/messaging-matrix.md. Puis @copywriter : lis docs/strategy/messaging-matrix.md et rédige 2 variantes de message par case prioritaire (landing hero, email sujet, accroche social). Enrichis docs/copy/brand-voice.md avec les formulations validées.`
+Structure le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
+
+Livrable : docs/strategy/messaging-matrix.md.
+
+Puis @copywriter : lis docs/strategy/messaging-matrix.md et rédige 2 variantes de message par case prioritaire (landing hero, email sujet, accroche social). Assure-toi que chaque variante respecte le ton de docs/copy/brand-voice.md. Enrichis docs/copy/brand-voice.md avec les formulations validées.
+
+Critères de validation : chaque case persona x canal x funnel a un message différencié (pas de copier-coller entre les cases), les CTA sont spécifiques à l'étape du funnel.`
       },
       {
         title:"Définir la stratégie de pricing",
-        agents:["product-manager","growth"],
-        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant",
-        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif).
+        agents:["product-manager","growth","legal"],
+        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Le pricing est la feature la plus sous-estimée.",
+        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif, pays).
 
 Définis la stratégie de pricing complète :
-1. Benchmark : analyse des prix de 3-5 concurrents directs via WebSearch (tiers, prix, features par tier).
-2. Modèle : freemium, free trial, paywall direct — avec justification selon le persona et le secteur.
-3. Tiers : nombre de plans (2-4), noms, prix, feature gating par plan justifié par la valeur perçue.
-4. Psychologie des prix : ancrage, price ending, mise en avant du plan recommandé.
-5. Upgrade path : triggers d'upgrade (limites d'usage, features avancées, collaboration), parcours de montée en tier.
-6. Modélisation : estimation ARPU cible, projection MRR à 6 mois selon 3 scénarios (conservateur, base, optimiste).
+1. Benchmark : analyse des prix de 3-5 concurrents directs via WebSearch (tiers, prix, features par tier, modèle — données réelles, pas inventées).
+2. Modèle : freemium, free trial (7j/14j/30j), paywall direct — avec justification selon le persona, le secteur et le stade du projet.
+3. Tiers : nombre de plans (2-4), noms, prix, feature gating par plan justifié par la valeur perçue (pas par le coût technique).
+4. Psychologie des prix : ancrage, price ending, mise en avant du plan recommandé, affichage mensuel vs annuel.
+5. Upgrade path : triggers d'upgrade (limites d'usage, features avancées, collaboration), parcours de montée en tier, downgrade path.
+6. Modélisation : estimation ARPU cible, projection MRR à 6 mois selon 3 scénarios (conservateur, base, optimiste). Hypothèses explicites pour chaque scénario.
 
-Livrable : docs/product/pricing-strategy.md. Puis @growth : lis docs/product/pricing-strategy.md et valide la cohérence avec la stratégie d'acquisition. Vérifie que le CAC estimé par canal est compatible avec la LTV du plan d'entrée. Signale les incohérences. Ajoute la section "Unit Economics" dans docs/growth/growth-strategy.md.`
+Livrable : docs/product/pricing-strategy.md.
+
+Puis @growth : lis docs/product/pricing-strategy.md et valide la cohérence avec la stratégie d'acquisition. Vérifie que le CAC estimé par canal est compatible avec la LTV du plan d'entrée (LTV/CAC > 3x). Signale les incohérences. Ajoute la section "Unit Economics" dans docs/growth/growth-strategy.md.
+
+Puis @legal : lis docs/product/pricing-strategy.md et vérifie la conformité des conditions commerciales (droit de rétractation, transparence tarifaire, CGV). Signale les obligations légales liées au pricing (affichage TVA, mentions obligatoires e-commerce). Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque tier est justifié par la valeur perçue (pas le coût), le modèle économique est viable (LTV/CAC > 3x), les obligations légales sont identifiées.`
       },
       {
         title:"Définir le scope MVP",
-        agents:["product-manager"],
-        quand:"Après la roadmap, avant le développement — pour verrouiller ce qui est dedans et ce qui attend",
+        agents:["product-manager","fullstack"],
+        quand:"Après la roadmap, avant le développement — pour verrouiller ce qui est dedans et ce qui attend. Dire non aux features est plus important que dire oui.",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features envisagées, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/growth/demand-validation.md si disponible (signaux de demande validés).
 
 Produis la définition MVP formalisée :
-1. Features RETENUES (5-8 max) : pour chaque feature, justification RICE (Reach, Impact, Confidence, Effort) et lien avec le KPI North Star.
-2. Features EXCLUES : pour chaque feature écartée, raison explicite (pas assez d'impact, trop d'effort, pas validée par les utilisateurs, v2).
-3. Critères de sortie MVP : les métriques à atteindre pour considérer le MVP comme validé et passer à la v2 (ex : 50 utilisateurs actifs, rétention J7 >30%, NPS >30).
-4. Hypothèse business centrale : la question unique à laquelle le MVP doit répondre (ex : "les PME sont-elles prêtes à payer 29€/mois pour automatiser leur reporting ?").
-5. Timeline : estimation du temps de développement par feature, chemin critique.
+1. Features RETENUES (5-8 max) : pour chaque feature, justification RICE (Reach, Impact, Confidence, Effort) et lien avec le KPI North Star. Si une feature n'impacte pas le KPI, elle n'est pas MVP.
+2. Features EXCLUES : pour chaque feature écartée, raison explicite (pas assez d'impact, trop d'effort, pas validée par les utilisateurs, v2). Documenter = éviter de re-débattre.
+3. Critères de sortie MVP : les métriques à atteindre pour considérer le MVP comme validé et passer à la v2 (ex : 50 utilisateurs actifs, rétention J7 > 30%, NPS > 30).
+4. Hypothèse business centrale : la question unique à laquelle le MVP doit répondre (ex : "les PME sont-elles prêtes à payer 29 euros/mois pour automatiser leur reporting ?").
+5. Timeline : estimation du temps de développement par feature, chemin critique, dépendances techniques.
+6. Risques : les 3 risques principaux du MVP (technique, marché, UX) et le plan de mitigation.
 
-Livrable : docs/product/mvp-scope.md. Critère de qualité : chaque feature retenue doit avoir une justification liée au persona principal et au KPI North Star — pas de feature "nice-to-have" dans le MVP.`
+Livrable : docs/product/mvp-scope.md.
+
+Puis @fullstack : lis docs/product/mvp-scope.md et évalue la faisabilité technique de chaque feature retenue. Signale les features sous-estimées en effort, les dépendances techniques non identifiées, et les choix de stack qui pourraient bloquer. Ajoute une section "Faisabilité technique" dans docs/dev-decisions.md.
+
+Critères de validation : chaque feature retenue a une justification liée au persona principal et au KPI North Star, le MVP répond à une hypothèse business unique et testable, les risques sont identifiés.`
       },
       {
         title:"Écrire le storytelling de fondation",
-        agents:["creative-strategy","copywriter"],
-        quand:"Après la plateforme de marque — utile pour la page About, les pitchs, le contenu social",
+        agents:["creative-strategy","copywriter","seo"],
+        quand:"Après la plateforme de marque — utile pour la page About, les pitchs, le contenu social, le SEO de marque",
         prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (positionnement, personas, ton de marque). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer.
 
 Construis la narration fondatrice du projet :
-1. Histoire d'origine : pourquoi ce problème, pourquoi maintenant, quel événement déclencheur. Si le fondateur a une histoire personnelle liée au problème, l'intégrer.
-2. Tension narrative : ce que le marché fait de façon inacceptable, ce que la marque refuse de faire comme les autres, la rupture incarnée.
-3. Vision à 3-5 ans : où va la marque, quel monde elle veut construire, quel impact elle veut avoir.
+1. Histoire d'origine : pourquoi ce problème, pourquoi maintenant, quel événement déclencheur. Si le fondateur a une histoire personnelle liée au problème, l'intégrer (authenticité > perfection).
+2. Tension narrative : ce que le marché fait de façon inacceptable, ce que la marque refuse de faire comme les autres, la rupture incarnée. Le conflit rend l'histoire mémorable.
+3. Vision à 3-5 ans : où va la marque, quel monde elle veut construire, quel impact elle veut avoir. Concret et ambitieux.
 4. Manifeste : déclaration d'intention (10-15 lignes) qui fait fuir les mauvais clients et attire les bons. Ton : aligné avec la brand voice.
+5. Entités de marque pour le GEO : les noms, termes et concepts propriétaires à pousser pour la visibilité sur les IA génératives.
 
-Livrable : docs/strategy/brand-story.md. Puis @copywriter : lis docs/strategy/brand-story.md et docs/copy/brand-voice.md. Rédige la page About (version web, 300-500 mots) + le pitch elevator (30 secondes) + 3 posts sociaux tirés du storytelling. Livrable : docs/copy/brand-story-content.md.`
+Livrable : docs/strategy/brand-story.md.
+
+Puis @copywriter : lis docs/strategy/brand-story.md et docs/copy/brand-voice.md. Rédige la page About (version web, 300-500 mots, structurée pour le SEO avec H2/H3) + le pitch elevator (30 secondes, version texte) + 3 posts sociaux tirés du storytelling (1 LinkedIn, 1 Twitter/X, 1 format court). Livrable : docs/copy/brand-story-content.md.
+
+Puis @seo : lis docs/copy/brand-story-content.md et optimise la page About pour le SEO de marque (meta title/description, données structurées Organization JSON-LD, maillage interne). Ajoute dans docs/seo/metadata-templates.md.
+
+Critères de validation : l'histoire est spécifique au projet (pas un template générique), le manifeste provoque une réaction (accord fort ou désaccord — pas d'indifférence), les entités de marque sont identifiées pour le GEO.`
       }
     ]
   },
@@ -724,27 +829,89 @@ Livrable : docs/strategy/brand-story.md. Puis @copywriter : lis docs/strategy/br
     items:[
       {
         title:"Parcours utilisateur & wireframes",
-        agents:["ux"],
-        quand:"Après la stratégie — ou directement, l'agent créera les prérequis manquants",
-        prompt:"@ux Lis docs/strategy/brand-platform.md (personas, jobs-to-be-done). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (personas détaillés, jobs-to-be-done, positionnement) et génère-le avant de continuer. Conçois les parcours utilisateur complets : onboarding, activation, conversion, rétention. Produis les wireframes textuels (ASCII) des écrans clés avec l'architecture de navigation. Livrables attendus : docs/ux/user-flows.md + docs/ux/wireframes.md. Format : un schéma par parcours avec les écrans, actions, et points de décision."
+        agents:["ux","data-analyst"],
+        quand:"Après la stratégie — ou directement, l'agent créera les prérequis manquants. Les parcours sont le squelette de ton produit.",
+        prompt:`@ux Lis docs/strategy/brand-platform.md (personas, jobs-to-be-done). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (personas détaillés, jobs-to-be-done, positionnement) et génère-le avant de continuer. Lis aussi docs/product/functional-specs.md si disponible (features, critères d'acceptation).
+
+Conçois les parcours utilisateur complets :
+1. Onboarding : du premier contact à la première valeur (time-to-value cible < 3 min). Chaque étape justifiée — supprimer toute étape qui n'apporte pas de valeur immédiate.
+2. Activation : le "aha moment" — l'action qui prédit la rétention. Définir clairement quelle action = activation.
+3. Conversion : du gratuit au payant (si applicable). Points de friction identifiés, triggers d'upgrade contextuels.
+4. Rétention : boucles d'engagement (notifications, emails, contenu), fréquence d'usage cible.
+5. Architecture de navigation : hiérarchie des pages, navigation principale, actions rapides.
+
+Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (default, loading, empty, error, success). Chaque écran doit indiquer les points de sortie et les fallback UX.
+
+Accessibilité : vérifier que chaque parcours est navigable au clavier et que la hiérarchie des headings est logique.
+
+Livrables attendus : docs/ux/user-flows.md + docs/ux/wireframes.md. Format : un schéma par parcours avec les écrans, actions, points de décision et métriques de conversion attendues par étape.
+
+Puis @data-analyst : lis docs/ux/user-flows.md et associe à chaque étape de chaque parcours un event de tracking. Vérifie que le tracking plan couvre tous les points de décision identifiés. Mets à jour docs/analytics/tracking-plan.md.
+
+Critères de validation : chaque parcours a un objectif mesurable, chaque écran a tous ses états définis, le time-to-value est < 3 min.`
       },
       {
         title:"Design system complet",
         agents:["design","fullstack"],
         quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent.",
-        prompt:"@design Lis docs/ux/wireframes.md et docs/strategy/brand-platform.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (wireframes : écrans clés, navigation ; brand-platform : ton de marque, 3 mots-clés, positionnement). Crée le design system : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), dark mode, accessibilité WCAG 2.2 AA. Livrable : docs/design/design-system.md + docs/design/design-tokens.json. Puis @fullstack : prends docs/design/design-tokens.json et implémente les tokens en CSS variables/Tailwind et les composants React dans src/. Un composant par fichier."
+        prompt:`@design Lis docs/ux/wireframes.md et docs/strategy/brand-platform.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (wireframes : écrans clés, navigation ; brand-platform : ton de marque, 3 mots-clés, positionnement).
+
+Crée le design system complet :
+1. Tokens : couleurs (primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark), typographies (heading + body, échelle, line-height), espacements (échelle 4/8/12/16/24/32/48/64), ombres (subtle, medium, elevated), border-radius.
+2. Composants de base : boutons (primary, secondary, ghost, destructive — avec états hover/focus/disabled/loading), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, tables, alerts, badges, tooltips.
+3. Dark mode : tokens inversés, vérification des contrastes dans les deux modes.
+4. Accessibilité WCAG 2.2 AA : contrastes minimum 4.5:1 pour le texte, 3:1 pour les éléments interactifs, focus visible sur tous les éléments interactifs, tailles de touch target minimum 44x44px.
+5. Performance : les choix visuels doivent être compatibles avec un LCP < 2.5s. Signaler les éléments potentiellement lourds (images, animations, vidéos, fonts custom).
+
+Livrable (un fichier à la fois) : docs/design/design-system.md + docs/design/design-tokens.json.
+
+Puis @fullstack : prends docs/design/design-tokens.json et implémente les tokens en CSS variables/Tailwind config et les composants React dans src/. Un composant par fichier. Vérifie que les contrastes WCAG sont respectés dans l'implémentation.
+
+Critères de validation : tous les tokens sont définis dans design-tokens.json, chaque composant a ses états documentés, les contrastes passent WCAG 2.2 AA, le design est compatible avec un LCP < 2.5s.`
       },
       {
         title:"Brand voice & guide d'écriture",
-        agents:["copywriter"],
-        quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants",
-        prompt:"@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer. Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy. Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md."
+        agents:["copywriter","geo"],
+        quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants. La voix de marque est ce qui rend ton produit reconnaissable.",
+        prompt:`@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer.
+
+Produis le brand voice guide complet :
+1. Ton et registre : description du ton (ex : "expert et bienveillant"), registre de langue (soutenu/courant/familier), exemples concrets de ce qu'on dit vs ce qu'on ne dit pas.
+2. Vocabulaire : mots autorisés, mots interdits (ceux que tous les concurrents utilisent), glossaire de marque (termes propriétaires).
+3. Exemples par contexte : landing page (hero, bénéfices, CTA), email (objet, corps), in-app (messages de succès, erreurs, empty states), social media (LinkedIn, Twitter/X).
+4. Guide UX writing : messages d'erreur (empathiques, actionnables), empty states (utiles, pas juste "rien ici"), tooltips (concis), CTAs (verbes d'action spécifiques), microcopy de formulaires.
+5. Règles de formatage : majuscules, ponctuation, emojis (oui/non), longueur max par type de texte.
+
+Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md.
+
+Puis @geo : lis docs/copy/brand-voice.md et identifie les termes et expressions clés à pousser pour la visibilité sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity). Propose les entités nommées et claims vérifiables à intégrer systématiquement dans le contenu. Ajoute dans docs/geo/geo-strategy.md une section "Entités de marque".
+
+Critères de validation : le guide est suffisamment précis pour que deux rédacteurs différents produisent un ton cohérent, les exemples couvrent au moins 3 contextes différents.`
       },
       {
         title:"Landing page complète",
-        agents:["copywriter","seo"],
-        quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul",
-        prompt:"@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs) et génère-le. Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Calibre le ton sur le persona principal. Livrable : docs/copy/landing-page-copy.md. Puis @seo : prends docs/copy/landing-page-copy.md et optimise les meta title/description, headings H1-H3, et données structurées JSON-LD. Livrable : docs/seo/landing-metadata.md."
+        agents:["copywriter","seo","geo"],
+        quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas.",
+        prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/value-proposition.md. S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
+
+Rédige le copy complet de la landing page :
+1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (la proposition de valeur en 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus").
+2. Social proof : type (témoignages, logos clients, chiffres clés, mentions presse) — si pas encore disponible, proposer un placeholder réaliste avec note "[A remplacer par données réelles]".
+3. Bénéfices : 3-4 bénéfices orientés résultat (pas features), chacun avec titre + description + preuve.
+4. Comment ça marche : 3 étapes simples du parcours utilisateur.
+5. Pricing preview : lien vers la page pricing ou aperçu des plans (si docs/product/pricing-strategy.md existe).
+6. FAQ : 5-7 questions réelles du persona (objections déguisées en questions).
+7. CTA final : répétition du CTA principal avec urgence contextuelle.
+
+Performance : les choix de contenu doivent être compatibles avec un LCP < 2.5s (pas de vidéo autoplay, images optimisées, contenu above the fold priorisé).
+
+Livrable : docs/copy/landing-page-copy.md.
+
+Puis @seo : prends docs/copy/landing-page-copy.md et optimise les meta title/description (avec CTR cible), headings H1-H3 (hiérarchie sémantique), et données structurées JSON-LD (Organization, Product, FAQ). Livrable : docs/seo/landing-metadata.md.
+
+Puis @geo : lis docs/copy/landing-page-copy.md et restructure le contenu FAQ pour être citable par les LLM. Propose les claims vérifiables et entités nommées à injecter dans le copy. Ajoute dans docs/geo/content-restructuring.md.
+
+Critères de validation : le hero est compréhensible en < 5 secondes, chaque bénéfice a une preuve, la FAQ lève les objections principales du persona, le SEO est intégré nativement (pas ajouté après).`
       },
       {
         title:"Définir la direction artistique",
