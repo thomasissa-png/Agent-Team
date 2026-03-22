@@ -117,7 +117,8 @@
   .install-steps-numbered{display:flex;flex-direction:column;gap:14px;margin-bottom:16px}
   .install-step{font-size:13px;color:var(--text-muted);display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:flex-start;min-width:0;word-break:break-word;overflow-wrap:break-word}
   .install-step strong{color:var(--text)}
-  .install-step .install-prompt{grid-column:1 / -1;margin-top:8px}
+  .install-step>span{min-width:0;word-break:break-word;overflow-wrap:break-word}
+  .install-step>span .install-prompt{margin-top:8px}
   .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--bg);font-size:12px;font-weight:700;flex-shrink:0}
   .install-result{font-size:12px;color:var(--text-muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-top:auto;word-break:break-word;overflow-wrap:break-word}
   .install-result-label{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
@@ -2380,15 +2381,15 @@ const CHANGELOG = [
       <h3><span class="label-tag label-new">Nouveau</span> Nouveau projet</h3>
       <p class="install-sub">Pas encore de code — vous partez de zéro</p>
       <div class="install-steps-numbered">
-        <div class="install-step"><span class="step-num">1</span> Créez un repo git et ouvrez Claude Code dessus</div>
-        <div class="install-step"><span class="step-num">2</span> Copiez ce prompt :
+        <div class="install-step"><span class="step-num">1</span><span>Créez un repo git et ouvrez Claude Code dessus</span></div>
+        <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
             <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
             <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
-          </div>
+          </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span> Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</div>
-        <div class="install-step"><span class="step-num">4</span> Lancez <strong>@orchestrator</strong> ou l'agent de votre choix</div>
+        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Lancez <strong>@orchestrator</strong> ou l'agent de votre choix</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Résultat :</div>
@@ -2401,15 +2402,15 @@ const CHANGELOG = [
       <h3><span class="label-tag label-existing">Existant</span> Projet existant</h3>
       <p class="install-sub">Du code est déjà en place — rien n'est écrasé</p>
       <div class="install-steps-numbered">
-        <div class="install-step"><span class="step-num">1</span> Ouvrez Claude Code <strong>à la racine de votre repo git</strong></div>
-        <div class="install-step"><span class="step-num">2</span> Copiez ce prompt :
+        <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>à la racine de votre repo git</strong></span></div>
+        <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
             <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
             <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
-          </div>
+          </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span> Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</div>
-        <div class="install-step"><span class="step-num">4</span> Lancez l'agent dont vous avez besoin (<strong>@fullstack</strong>, <strong>@seo</strong>, etc.)</div>
+        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Lancez l'agent dont vous avez besoin (<strong>@fullstack</strong>, <strong>@seo</strong>, etc.)</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Résultat :</div>
@@ -2422,14 +2423,14 @@ const CHANGELOG = [
       <h3><span class="label-tag label-update">Mise à jour</span> Équipe déjà installée</h3>
       <p class="install-sub">Les agents évoluent — mettez à jour sans perdre vos livrables</p>
       <div class="install-steps-numbered">
-        <div class="install-step"><span class="step-num">1</span> Ouvrez Claude Code <strong>sur votre projet existant</strong></div>
-        <div class="install-step"><span class="step-num">2</span> Copiez ce prompt :
+        <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
+        <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
             <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents depuis https://github.com/thomasissa-png/Agent-Team. Clone dans /tmp, écrase les agents dans .claude/agents/ et le CLAUDE.md, mais ne touche pas à project-context.md, docs/, src/ ni au code existant.">Copier</button>
             <em>"Mets à jour l'équipe Gradient Agents depuis <code>https://github.com/thomasissa-png/Agent-Team</code>. Écrase les agents et CLAUDE.md, ne touche pas au reste."</em>
-          </div>
+          </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span> Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir</div>
+        <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Préservé :</div>
