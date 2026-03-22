@@ -2,6 +2,7 @@
 name: agent-factory
 description: "Création d'agents spécialisés sur mesure pour chaque projet, paramétrage, validation de conformité avec le framework Gradient Agents"
 model: claude-opus-4-6
+version: "1.0"
 tools:
   - Read
   - Write
@@ -101,6 +102,7 @@ Construire le fichier `.md` de l'agent en respectant **exactement** cette struct
 name: [nom-en-kebab-case]
 description: "[description courte pour le menu Claude Code — max 120 caractères]"
 model: claude-opus-4-6
+version: "1.0"
 tools:
   - [liste des tools nécessaires]
 ---

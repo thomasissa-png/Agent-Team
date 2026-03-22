@@ -281,6 +281,20 @@ const AGENTS = [
     phase:"Phase 5 — Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
+  },
+  {
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory",
+    role:"Architecte multi-agents — 10 ans",
+    phase:"Hors-phase — Création",
+    desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
+    required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
+  },
+  {
+    id:"elon", name:"Elon", at:"@elon",
+    role:"Elon Musk — Vision stratégique",
+    phase:"Hors-phase — Advisory",
+    desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
+    required:["Nom du projet","Objectif principal à 6 mois"]
   }
 ];
 
@@ -573,7 +587,7 @@ const CHANGELOG = [
 
 <section id="equipe" aria-labelledby="titre-equipe">
   <h2 id="titre-equipe">L'Équipe</h2>
-  <p class="section-sub">17 agents spécialisés — de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
+  <p class="section-sub">19 agents spécialisés — de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
   <div id="pipeline"></div>
   <div class="agents-grid" id="agents-grid"></div>
 </section>
@@ -595,7 +609,7 @@ const CHANGELOG = [
         <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe <code>.claude/agents/</code> à la racine du repo git."</em>
       </div>
       <ul class="install-steps">
-        <li>17 agents copiés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
+        <li>19 agents copiés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
         <li><code>CLAUDE.md</code> copié à la racine du repo git</li>
         <li><code>project-context.md</code> créé (template vierge)</li>
         <li><code>docs/</code> et <code>src/</code> créés si absents</li>
@@ -613,7 +627,7 @@ const CHANGELOG = [
         <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe <code>.claude/agents/</code> à la racine du repo git, pas dans un sous-dossier."</em>
       </div>
       <ul class="install-steps">
-        <li>17 agents ajoutés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
+        <li>19 agents ajoutés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
         <li><code>CLAUDE.md</code> <strong>fusionné</strong> avec l'existant</li>
         <li><code>project-context.md</code> créé (documenter l'existant)</li>
         <li class="install-no"><code>src/</code>, <code>docs/</code>, <code>package.json</code> pas touchés</li>

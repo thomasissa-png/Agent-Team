@@ -141,6 +141,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 | Juridique / conformité | legal | — |
 | Roadmap / backlog | product-manager | creative-strategy |
 | Création d'agents spécialisés | agent-factory | ia, orchestrator |
+| Audit stratégique / amélioration continue | elon | orchestrator, reviewer |
 
 ## Convention d'appel
 
@@ -162,6 +163,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 - `@reviewer` : revue croisée, cohérence inter-agents, validation finale
 - `@legal` : RGPD, CGU, conformité
 - `@agent-factory` : création d'agents spécialisés sur mesure pour le projet
+- `@elon` : audit stratégique, challenge des décisions, amélioration continue du framework
 
 ## Convention de chemin des livrables
 
@@ -183,7 +185,8 @@ docs/
 ├── infra/             ← @infrastructure : infrastructure.md, performance-audit.md, security-checklist.md
 ├── ia/                ← @ia : ai-architecture.md, model-selection.md, prompt-library.md
 ├── qa/                ← @qa : qa-strategy.md, TESTING.md
-└── reviews/           ← @reviewer : cross-review-report.md, consistency-audit.md
+├── reviews/           ← @reviewer : cross-review-report.md, consistency-audit.md
+│                        @elon : elon-audit-[DATE].md, strategic-review.md
 ```
 
 Les fichiers de synthèse de l'orchestrateur (`project-synthesis.md`, `orchestration-plan.md`) sont à la racine de `docs/`.
@@ -296,92 +299,43 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 - [ ] Tous les livrables sont dans le bon dossier `docs/[agent]/`
 - [ ] Le handoff de chaque agent pointe vers le bon destinataire
 
-## Journal de setup — Mémoire projet
+### Projet test pré-configuré
 
-### Session du 2026-03-21 — Setup initial du framework Gradient Agents
+Un `project-context.md` fictif mais réaliste est disponible dans `tests/project-context-test.md` (projet PulseBoard — analytics marketing pour PME). Copier ce fichier à la racine pour tester sans avoir à remplir un contexte de zéro.
 
-**Ce qui a été fait :**
+### Scoring automatique post-livrable
 
-1. **18 agents créés** dans `.claude/agents/` — chacun avec une structure homogène :
-   - Identité (persona expert avec années d'expérience spécifiques)
-   - Domaines de compétence détaillés
-   - Protocole d'entrée obligatoire (lecture project-context.md, champs critiques)
-   - Calibration obligatoire (lecture des livrables des agents amont, recherches web)
-   - Gestion des timeouts (règles anti-coupure)
-   - Protocole d'escalade (quand passer la main)
-   - Mode révision (comment améliorer sans tout réécrire)
-   - Auto-évaluation (questions génériques + spécifiques)
-   - Protocole de fin de livrable (mise à jour historique)
-   - Handoff standardisé
+Après chaque livrable produit par un agent, l'orchestrateur (ou le reviewer) DOIT évaluer et remplir le tableau "Performance des agents" dans `project-context.md` selon ces critères :
 
-2. **Agents disponibles :** orchestrator, fullstack, qa, design, ux, copywriter, seo, geo, ia, infrastructure, creative-strategy, product-manager, data-analyst, growth, social, reviewer, legal, agent-factory
+| Critère | 1 (Échec) | 3 (Acceptable) | 5 (Excellent) |
+|---|---|---|---|
+| **Complétude** | Sections manquantes, travail inachevé | Sections principales couvertes, détails manquants | Toutes les sections remplies, rien à ajouter |
+| **Cohérence** | Contredit des livrables existants | Pas de contradiction, mais pas de cross-référence | Référence explicitement les livrables amont, aligné |
+| **Actionnabilité** | Trop vague pour être implémenté | Implémentable avec interprétation | Directement implémentable, zéro ambiguïté |
+| **Messages** | Silencieux sur les manques, a inventé | A signalé certains manques | A signalé tous les manques, hypothèses marquées |
+| **Spécificité** | Générique, applicable à n'importe quel projet | Partiellement spécifique | 100% taillé pour ce projet, cite le persona/KPI |
 
-3. **Template project-context.md** créé dans `templates/` — à remplir avant chaque nouveau projet
+**Règle** : un agent avec un score moyen <3 sur un critère doit être relancé avec un prompt correctif.
 
-4. **CLAUDE.md** (ce fichier) — instructions globales, convention d'appel, chemins des livrables, règles anti-timeout
+## Mémoire organisationnelle — Apprentissage inter-projets
 
-**Décisions de conception :**
-- Modèle claude-opus-4-6 pour tous les agents (qualité maximale sur les livrables stratégiques)
-- Orchestrateur limité à 3 sous-agents par message (anti-timeout)
-- Chaque agent a des champs critiques spécifiques dans project-context.md — refuse de travailler si manquants
-- Convention de chemins stricte (`docs/[agent]/`) vérifiée par @reviewer
-- Langue : français pour tout sauf code et termes techniques
+Après chaque projet terminé (ou phase majeure), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec :
 
-**Point d'attention pour les sessions futures :**
-- Le framework est prêt, aucun projet n'a encore été lancé dessus
-- Premier test réel = premier `project-context.md` rempli + invocation de `@orchestrator`
-- Si un agent timeout, vérifier ses fichiers (Glob + Read) et reprendre via Edit, ne pas relancer de zéro
+```markdown
+## [Nom du projet] — [Date]
 
-### Session du 2026-03-22 — Enrichissements et audit qualité
+### Ce qui a bien fonctionné
+- [Pattern, décision, agent qui a surperformé]
 
-**Ce qui a été fait :**
+### Ce qui a mal fonctionné
+- [Friction, timeout, livrable refusé par reviewer, chaîne cassée]
 
-1. **Règle absolue numéro 2 — Zéro invention de données** : ajoutée au CLAUDE.md et aux 18 agents. Les agents doivent signaler les données manquantes, demander l'autorisation avant de poser des hypothèses, et marquer `[HYPOTHÈSE : ...]`. @orchestrator vérifie que les sous-agents n'inventent pas. @reviewer flague NO-GO tout chiffre sans source.
+### Améliorations à apporter au framework
+- [Suggestion concrète : nouvel agent, nouvelle calibration, règle à ajouter]
+```
 
-2. **Enrichissement des agents** (cas d'usage manquants) :
-   - @growth : rétention, churn, pricing & packaging, expansion revenue
-   - @data-analyst : roadmap CRO, analyse rétention cohortes, attribution
-   - @product-manager : recherche utilisateur, pricing, feedback loops
-   - @copywriter : help center, knowledge base, changelog
-   - @fullstack : API publique RESTful, webhooks, SDK client
+**Pourquoi** : sans cette mémoire, chaque projet repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
 
-3. **Tableau de performance des agents** ajouté au template project-context.md (complétude, cohérence, actionnabilité, messages, spécificité 1-5)
+## Journal de setup
 
-4. **Audit complet par @ia** — note moyenne 8.47/10. Rapport dans `docs/ia/agent-audit-report.md`
-
-5. **Implémentation des 7 recommandations de l'audit** :
-   - P0-1 : Calibrations croisées complétées (13 agents — chaque agent lit désormais les livrables de ses prédécesseurs)
-   - P0-2 : Auto-évaluations uniformisées à 5 questions minimum (6 agents complétés : @ux, @design, @seo, @geo, @social, @legal)
-   - P1-3 : WebSearch ajouté dans calibration (@seo, @geo, @social, @reviewer, @infrastructure)
-   - P1-4 : Champs critiques corrigés (@product-manager : +modèle économique, @data-analyst : budget analytics, @legal : pays, données sensibles, IA générative)
-   - P2-5 : Budget temps/complexité ajouté à @orchestrator (estimation légère/moyenne/lourde avant lancement)
-   - P2-6 : @infrastructure renforcé (CI/CD avancé, backup/DR, stratégie cache)
-   - P2-7 : Protocole de test du framework ajouté au CLAUDE.md (test unitaire, intégration, E2E)
-
-6. **Fix installation** : instructions corrigées pour installer `.claude/agents/` à la racine du repo git (pas dans un sous-dossier). Piège monorepo documenté.
-
-**Décisions prises :**
-- Enrichir les agents existants plutôt que créer de nouveaux agents (éviter la complexité)
-- La règle anti-invention est la plus importante du framework — un livrable incomplet vaut mieux qu'un livrable faux
-- Les calibrations croisées sont le levier #1 de cohérence inter-agents
-
-### Session du 2026-03-22 — Ajout de @agent-factory
-
-**Ce qui a été fait :**
-
-1. **Nouvel agent `@agent-factory`** créé dans `.claude/agents/agent-factory.md` — agent capable de créer des agents spécialisés sur mesure pour chaque projet (architecte, directeur podcast, trader, SFX, etc.)
-
-2. **Processus en 5 étapes** intégré dans l'agent :
-   - Recueil du besoin (rôle, mission, livrables, interactions, outils, domaine)
-   - Vérification anti-doublon (pas de chevauchement avec agents existants)
-   - Construction selon le template canonique exact du framework
-   - Intégration dans le framework (CLAUDE.md + orchestrator.md)
-   - Validation via checklist de conformité (15 points)
-
-3. **Intégrations** : CLAUDE.md mis à jour (tableau priorité, convention d'appel, compteur 18 agents), orchestrator.md mis à jour (mapping subagent_type)
-
-**Décisions de conception :**
-- L'agent-factory lit TOUS les agents existants avant de créer (calibration complète) — évite les doublons
-- WebSearch obligatoire si le domaine est inconnu — l'agent ne fabrique jamais un expert sur un domaine qu'il ne comprend pas
-- Le template canonique est intégré dans le processus de création, pas dans un fichier séparé — évite la désynchronisation
-- L'agent-factory peut aussi modifier des agents existants (mode révision) — pas seulement en créer de nouveaux
+L'historique complet des sessions de setup est dans `CHANGELOG.md` à la racine. Consulter ce fichier pour les décisions de conception passées et les modifications apportées au framework.
