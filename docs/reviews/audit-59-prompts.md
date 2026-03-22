@@ -278,3 +278,179 @@ Distribution des notes moyennes par prompt :
 3. Ajouter un plan de reconquete post-incident (geste commercial, communication transparente)
 4. Mentionner la review des pages d'erreur et du mode degrade de l'UI
 
+---
+
+## Recommandations transversales
+
+### 1. Biais structurel : prompts hyper-specialises, sous-exploites en transversalite
+
+La note globale de 6.2/10 revele un pattern clair : chaque prompt est excellent pour ses agents cibles (souvent 9-10) mais mediocre pour les agents non directement concernes (souvent 3-5). Ce n'est pas un defaut en soi — un prompt technique n'a pas besoin d'etre excellent en copywriting. Mais certaines dimensions transversales sont systematiquement absentes :
+
+**Dimension legale (moyenne @legal : 5.0/10)** : seuls les prompts #8 (Audit juridique), #25 (Stripe), #1 (Definir mon projet) mentionnent la conformite. Les prompts IA (#26, #28) ne mentionnent jamais la conformite RGPD sur les donnees envoyees aux modeles. Les prompts d'acquisition (#35, #39) ne mentionnent pas le consentement marketing.
+
+**Recommandation** : Ajouter un encart "[Conformite] Verifie que cette feature est conforme aux recommandations de docs/legal/" dans chaque prompt de developpement et d'acquisition.
+
+### 2. Absence systematique de criteres de test dans les prompts non-QA
+
+**Dimension QA (moyenne @qa : 5.8/10)** : seuls les prompts explicitement QA (#24, #27, #30, #46) incluent des criteres de test. Les prompts de conception (#16-23) et de strategie (#5-15) ne mentionnent jamais "comment verifier que ce livrable est correct".
+
+**Recommandation** : Ajouter une section "Criteres de validation" dans chaque prompt — meme strategique. Exemple pour le prompt #5 (Positionnement) : "Critere : le positionnement est validable si le persona reconnaît son probleme dans la formulation et si aucun concurrent ne fait la meme promesse."
+
+### 3. Pas de mention de performance / temps de chargement dans les prompts copy et design
+
+Les prompts #19 (Landing page), #17 (Design system), #20 (Direction artistique) ne mentionnent jamais les contraintes de performance. Un design system avec des animations lourdes ou une landing page avec 15 images non optimisees ruinera le SEO et l'UX.
+
+**Recommandation** : Ajouter dans les prompts design/copy une contrainte : "Performance : les choix visuels doivent etre compatibles avec un LCP < 2.5s. Signaler les elements potentiellement lourds (images, animations, videos)."
+
+### 4. Faible couverture GEO (moyenne @geo : 4.7/10)
+
+La perspective GEO (visibilite sur les IA generatives) est la plus sous-representee. Seuls les prompts #32 et #33 la couvrent explicitement. Or, dans un contexte 2026, la visibilite sur ChatGPT/Claude/Gemini/Perplexity est aussi strategique que le SEO classique.
+
+**Recommandation** : Ajouter dans les prompts de contenu (#18, #19, #34) une mention : "Structurer le contenu pour etre citable par les LLM : claims verifiables, entites nommees, format FAQ."
+
+### 5. Chainages multi-agents parfois trop ambitieux
+
+Les prompts avec triple chainage (#25 Stripe, #35 Acquisition, #37 Emails, #53 Onboarding) risquent le timeout. Les mentions "si timeout, relancer l'agent manquant separement" sont un bon palliatif, mais le vrai probleme est que 3 agents en sequence dans un seul prompt est fragile.
+
+**Recommandation** : Pour les prompts a 3+ agents, proposer une version "decomposee" avec 3 prompts individuels en alternative. Ou mieux : indiquer dans le "quand" que ces prompts sont a lancer via @orchestrator qui gerera le sequencement.
+
+### 6. Placeholders non remplaces = erreur silencieuse
+
+Les prompts #24 (Developper une feature), #26 (Feature IA), #54 (Creer un agent), #55 (Migrer la stack) contiennent des placeholders `[nom de la feature]`, `[decrire la feature]`, `[domaine]`, `[stack actuelle]`. Si l'utilisateur oublie de les remplacer, l'agent recevra un placeholder brut.
+
+**Recommandation** : Ajouter un pre-check dans les prompts avec placeholders : "Si ce prompt contient encore des crochets `[...]`, signale-le a l'utilisateur et demande les informations manquantes avant de continuer."
+
+### 7. Fallback "pose-moi les questions" : robuste mais verbeux
+
+Quasiment tous les prompts (90%+) incluent le pattern "S'il n'existe pas, pose-moi les questions pour le creer et genere-le avant de continuer." C'est excellent pour la robustesse (aucun prompt ne bloque), mais cela alourdit chaque prompt de 20-30 mots repetitifs.
+
+**Recommandation** : Deplacer ce pattern dans le protocole de base des agents (`_base-agent-protocol.md`) comme regle par defaut : "Si un livrable amont reference dans ta mission n'existe pas, demande a l'utilisateur les informations necessaires pour le creer avant de continuer." Cela allegerait chaque prompt de ~30 mots tout en conservant le comportement.
+
+### 8. Manque de metriques de succes dans les prompts strategiques
+
+Les prompts Phase 0 (#5, #6, #11, #15) produisent des livrables strategiques mais ne definissent pas comment mesurer leur succes. Un positionnement est-il "bon" ? Comment le savoir sans critere ?
+
+**Recommandation** : Ajouter des "criteres de succes du livrable" dans chaque prompt strategique. Exemple pour #5 : "Le positionnement est reussi si : (a) le persona principal s'y reconnait, (b) aucun concurrent direct n'occupe le meme creneau, (c) il est formulable en <20 mots."
+
+---
+
+## Analyse par agent — Notes moyennes et observations
+
+### Notes moyennes par agent (sur l'ensemble des 59 prompts)
+
+| Agent | Note moyenne | Observation cle |
+|---|---|---|
+| @agent-factory | 8.1 | Note la plus haute — les prompts suivent un bon pattern standard |
+| @reviewer | 7.9 | Coherence globale solide, peu de contradictions inter-prompts |
+| @elon | 7.8 | Vision et ambition presentes, first principles respectes |
+| @creative-strategy | 7.0 | Bien represente en Phase 0-1, absent des phases techniques |
+| @product-manager | 7.3 | Bonne couverture specs/roadmap, present dans la majorite des prompts |
+| @copywriter | 5.7 | Fort sur ses prompts propres, invisible dans les prompts techniques |
+| @fullstack | 6.3 | Bien couvert en Phase 2, pertinence limitee en Phase 0/4 |
+| @qa | 5.8 | Sous-represente — criteres de test absents de la majorite des prompts |
+| @infrastructure | 5.3 | Pertinence limitee aux prompts techniques, note basse sur le reste |
+| @ux | 6.5 | Bonne couverture Phase 1/5, dimension UX absente des prompts techniques |
+| @design | 5.3 | Fort sur ses prompts propres, invisible en Phase 0/2/4 |
+| @ia | 4.5 | Seuls 2-3 prompts concernent directement l'IA |
+| @seo | 5.8 | Bien couvert en Phase 3, absent des autres phases |
+| @geo | 4.7 | Note la plus basse — visibilite IA quasi absente de la bibliotheque |
+| @data-analyst | 6.2 | Present en Phase 0/4/5 mais absent de Phase 1/2 |
+| @growth | 6.5 | Bien couvert en Phase 4, pertinence limitee ailleurs |
+| @social | 4.9 | Faiblement represente — peu de prompts social media |
+| @legal | 5.0 | Quasi absent hors prompt #8, dimension conformite negligee |
+
+### Observations croisees
+
+1. **Les agents "meta" (reviewer, elon, agent-factory) donnent les meilleures notes** car ils evaluent la qualite du pattern/prompt lui-meme, pas le contenu metier. Les prompts sont bien structures.
+
+2. **Les agents de niche (geo, ia, legal) donnent les notes les plus basses** car ils ne trouvent pas leur domaine dans la majorite des prompts. C'est normal mais revele un axe d'amelioration : ajouter des dimensions transversales.
+
+3. **L'ecart type entre notes est eleve (~2.5 points)** pour chaque prompt, confirmant que les prompts sont specialises plutot que transversaux.
+
+---
+
+## Prompts manquants identifies par les agents
+
+### Identifies par @legal
+1. **Audit accessibilite RGAA/WCAG** : pas de prompt dedie a la conformite accessibilite numerique (obligation legale en France depuis 2025 pour de nombreux sites)
+2. **Gestion des cookies et consent** : pas de prompt pour configurer un bandeau cookie conforme (TCF v2, CNIL)
+3. **Protection de la propriete intellectuelle** : le prompt #8 le mentionne, mais pas de prompt dedie au depot de marque et a la veille IP
+
+### Identifies par @social
+4. **Community management et moderation** : pas de prompt pour gerer une communaute active (Discord, Slack, forum)
+5. **Strategie d'influence / partenariats** : pas de prompt pour identifier et contacter des micro-influenceurs ou partenaires strategiques
+
+### Identifies par @data-analyst
+6. **Data pipeline et ETL** : pas de prompt pour configurer la collecte, le nettoyage et l'agregation des donnees
+7. **Dashboard de reporting investisseurs** : pas de prompt pour les metriques orientees investisseurs (MRR, churn, CAC, LTV, runway)
+
+### Identifies par @ia
+8. **RAG (Retrieval-Augmented Generation)** : pas de prompt dedie a la construction d'un pipeline RAG (indexation, embeddings, retrieval, generation)
+9. **Evaluation des outputs IA (evals)** : pas de prompt pour mesurer systematiquement la qualite des sorties IA en production
+10. **Fine-tuning et prompt engineering avance** : pas de prompt pour l'optimisation de prompts en production
+
+### Identifies par @infrastructure
+11. **Disaster recovery / backup** : pas de prompt pour la strategie de sauvegarde et le plan de reprise d'activite
+12. **Securite offensive (pentest)** : pas de prompt pour l'audit de securite applicative
+
+### Identifies par @ux
+13. **User research en continu** : pas de prompt pour la mise en place d'un programme de recherche utilisateur permanent (panels, interviews recurrentes)
+14. **Design d'un systeme de notifications** : pas de prompt specifique pour concevoir les notifications in-app, email, push
+
+### Identifies par @growth
+15. **Strategie de partenariats / co-marketing** : pas de prompt pour identifier et structurer des partenariats d'acquisition
+16. **Automatisation marketing (sequences conditionnelles)** : pas de prompt pour les workflows marketing automatises au-dela des emails lineaires
+
+### Identifies par @elon
+17. **Vision a long terme et moat** : pas de prompt pour definir l'avantage concurrentiel durable (network effects, data moat, switching costs)
+18. **Culture et organisation d'equipe** : pas de prompt pour structurer la culture, les rituels, le recrutement
+
+---
+
+## Metriques d'orchestration
+
+- Agents mobilises : 18/19 (orchestrator exclu — il coordonne)
+- Prompts evalues : 59
+- Evaluations individuelles : 1062 (59 x 18)
+- Note globale bibliotheque : 6.2/10
+- Prompts > 7.0 : 2 (3.4%)
+- Prompts < 5.5 : 6 (10.2%)
+- Agent le plus satisfait : @agent-factory (8.1/10)
+- Agent le moins satisfait : @ia (4.5/10)
+- Prompts manquants identifies : 18
+- Recommandations transversales : 8
+
+---
+
+## Conclusion
+
+La bibliotheque de 59 prompts est une base solide (6.2/10) avec des points forts clairs :
+
+**Forces** :
+- Pattern de prompt standardise et robuste (fallback systematique, chainage inter-agents)
+- Couverture exhaustive du cycle de vie projet (Phase 0 a 5 + raccourcis)
+- Les prompts les mieux notes (#1, #19, #10, #39, #14) sont ceux que les utilisateurs lanceront en premier — bon signal
+- Le "quand" de chaque prompt aide a la decision
+
+**Faiblesses** :
+- Dimensions transversales negligees (legal, GEO, performance, tests)
+- Prompts techniques deconnectes des preoccupations business
+- Prompts strategiques deconnectes des contraintes techniques
+- 18 prompts manquants identifies par les agents
+
+**Priorites d'amelioration** :
+1. Ajouter les dimensions legale et conformite dans les prompts d'acquisition et de developpement
+2. Integrer des criteres de validation dans TOUS les prompts (pas juste les prompts QA)
+3. Developper les prompts GEO transversaux (visibilite IA dans le contenu)
+4. Ajouter les 5-6 prompts manquants les plus critiques (accessibilite, RAG, community management, backup)
+5. Refactoriser le pattern fallback en regle de base pour alleger les prompts
+
+---
+
+**Handoff → utilisateur**
+- Fichier produit : `docs/reviews/audit-59-prompts.md`
+- Agents mobilises : 18 perspectives d'evaluation appliquees
+- Decisions prises : notation sur 10 de chaque prompt par chaque agent, identification des forces/faiblesses/manques
+- Points d'attention : les 6 prompts sous 5.5/10 meritent une refonte ; les 18 prompts manquants sont a prioriser
+- Prochaines etapes recommandees : (1) corriger les 5 prompts les plus faibles, (2) ajouter les 5-6 prompts manquants les plus critiques, (3) integrer les 8 recommandations transversales
+

@@ -20,38 +20,38 @@ Lourde — 18 agents, mission unique d'audit
 - @creative-strategy : positionnement, personas, branding dans les prompts
 - @product-manager : specs, user stories, priorisation, completude fonctionnelle
 - @copywriter : qualite redactionnelle, clarte, persuasion
-- Statut : EN COURS
+- Statut : TERMINE
 
 ### Groupe 2 (technique)
 - @fullstack : qualite technique, faisabilite, architecture code
 - @qa : testabilite, criteres de validation, edge cases
 - @infrastructure : deploiement, performance, securite
-- Statut : EN ATTENTE
+- Statut : TERMINE
 
 ### Groupe 3 (design & UX)
 - @ux : parcours utilisateur, conversion, accessibilite
 - @design : coherence visuelle, design system, composants
 - @ia : architecture IA, choix modeles, pipelines
-- Statut : EN ATTENTE
+- Statut : TERMINE
 
 ### Groupe 4 (visibilite)
 - @seo : pertinence SEO, metadonnees, structure
 - @geo : optimisation LLM, visibilite IA
 - @data-analyst : KPIs, tracking, mesurabilite
-- Statut : EN ATTENTE
+- Statut : TERMINE
 
 ### Groupe 5 (croissance & conformite)
 - @growth : acquisition, funnel, PLG
 - @social : reseaux sociaux, contenu, engagement
 - @legal : conformite RGPD, mentions legales
-- Statut : EN ATTENTE
+- Statut : TERMINE
 
 ### Groupe 6 (meta & validation)
 - @reviewer : coherence inter-prompts, contradictions, qualite globale
 - @elon : vision strategique, first principles, ambition
 - @agent-factory : qualite du pattern prompt, reutilisabilite, standard
-- Statut : EN ATTENTE
+- Statut : TERMINE
 
 ## Consolidation
 - Rapport final : docs/reviews/audit-59-prompts.md
-- Statut : EN ATTENTE
+- Statut : TERMINE
