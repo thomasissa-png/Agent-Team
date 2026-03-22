@@ -820,6 +820,30 @@ Puis @copywriter : lis docs/strategy/brand-story.md et docs/copy/brand-voice.md.
 Puis @seo : lis docs/copy/brand-story-content.md et optimise la page About pour le SEO de marque (meta title/description, données structurées Organization JSON-LD, maillage interne). Ajoute dans docs/seo/metadata-templates.md.
 
 Critères de validation : l'histoire est spécifique au projet (pas un template générique), le manifeste provoque une réaction (accord fort ou désaccord — pas d'indifférence), les entités de marque sont identifiées pour le GEO.`
+      },
+      {
+        title:"Stratégie de pricing dynamique",
+        agents:["product-manager","data-analyst","growth","legal"],
+        quand:"Produit avec plusieurs segments utilisateurs ou marchés internationaux qui justifient une tarification adaptative. Après la stratégie de pricing initiale (docs/product/pricing-strategy.md).",
+        prompt:`@product-manager Lis docs/product/pricing-strategy.md (pricing de base) et project-context.md (persona, marchés, modèle économique). S'ils n'existent pas, pose-moi les questions pour les créer (plans actuels, segments utilisateurs, marchés géographiques, panier moyen) et génère-les avant de continuer. Lis aussi docs/analytics/kpi-framework.md si disponible.
+
+Définis la stratégie de pricing dynamique :
+1. Segmentation : identifier les axes de différenciation tarifaire justifiés — par usage (volume), par segment (startup vs enterprise), par géographie (parité de pouvoir d'achat), par engagement (annuel vs mensuel). Pour chaque axe, justifier le différentiel de prix par la valeur perçue.
+2. Modèle de pricing : usage-based, seat-based, hybrid, ou tiered — avec simulation de revenus pour 3 scénarios (conservateur, base, optimiste). Montrer l'impact sur la LTV et le MRR.
+3. Ancrage et psychologie : prix d'ancrage, decoy pricing (plan intermédiaire qui pousse vers le premium), affichage mensuel vs annuel avec réduction, gratuit vs freemium vs trial.
+4. Promotions et discounts : politique de remise (jamais > 30%, toujours justifiée par une contrepartie — annuel, volume, early adopter), coupons, seasonal. Anti-pattern : éviter de créer une attente de promotion permanente.
+5. Prix par marché : si marchés internationaux, adapter les prix au pouvoir d'achat local (PPP) via WebSearch sur les indices. Afficher en devise locale.
+6. Évolution : plan de révision tarifaire (fréquence, critères de déclenchement, communication), grandfathering des clients existants (oui/non, durée).
+
+Livrable : docs/product/pricing-dynamic.md.
+
+Puis @data-analyst : lis docs/product/pricing-dynamic.md et définis les métriques de suivi : ARPU par segment, taux de conversion par plan, upgrade/downgrade rate, élasticité-prix estimée. Configure les alertes si un changement de prix dégrade la conversion > 15%. Livrable : docs/analytics/kpi-framework.md section "Pricing metrics".
+
+Puis @growth : lis docs/product/pricing-dynamic.md et vérifie la cohérence avec la stratégie d'acquisition. Le plan d'entrée doit avoir un CAC compatible (LTV/CAC > 3x). Propose des expérimentations de pricing (A/B test sur la page pricing). Livrable : docs/growth/growth-strategy.md section "Pricing experiments".
+
+Conformité : @legal vérifie les obligations de transparence tarifaire (affichage TTC, mentions obligatoires e-commerce, droit de rétractation), les règles de non-discrimination tarifaire par pays (réglementations EU), et la conformité des conditions de renouvellement automatique. Livrable : docs/legal/legal-audit.md section "Pricing".
+
+Critères de validation : chaque différentiel de prix est justifié par la valeur perçue (pas par le coût), les simulations de revenus couvrent 3 scénarios, les obligations légales de transparence tarifaire sont respectées, les métriques de suivi sont en place.`
       }
     ]
   },
@@ -1837,35 +1861,53 @@ Critères de validation : la cause racine est identifiée (pas juste le symptôm
       },
       {
         title:"Collecter le feedback et planifier la v2",
-        agents:["product-manager","data-analyst","ux"],
-        quand:"Produit en production avec des utilisateurs — pour transformer les retours en roadmap actionnable",
-        prompt:`@product-manager Lis docs/product/backlog.md et docs/analytics/kpi-framework.md. S'ils n'existent pas, pose-moi les questions pour les créer (features actuelles, KPIs, feedbacks reçus) et génère-les avant de continuer. Si des données de feedback existent (tickets support, NPS, feature requests), colle-les dans le prompt.
+        agents:["product-manager","data-analyst","ux","legal"],
+        quand:"Produit en production avec des utilisateurs actifs — pour transformer les retours en roadmap actionnable. Idéal après 1-2 mois de production avec > 50 utilisateurs actifs.",
+        prompt:`@product-manager Lis docs/product/backlog.md, docs/analytics/kpi-framework.md et project-context.md (persona, North Star Metric). S'ils n'existent pas, pose-moi les questions pour les créer (features actuelles, KPIs, feedbacks reçus, persona principal) et génère-les avant de continuer. Si des données de feedback existent (tickets support, NPS, feature requests, reviews), colle-les dans le prompt — ce sont des données réelles, pas à inventer.
 
 Structure la collecte et la priorisation du feedback :
-1. Sources de feedback : in-app survey (NPS à J+14, CSAT après action critique), interviews ciblées (5 churners, 5 power users), tickets support (patterns récurrents), feature requests (agrégation et déduplication).
-2. Matrice de synthèse : chaque feedback catégorisé (bug / amélioration / nouvelle feature / confusion UX) avec fréquence et impact estimé.
-3. Priorisation RICE : chaque item scoré (Reach, Impact, Confidence, Effort) contre les métriques actuelles et le KPI North Star.
-4. Roadmap v2 : les 5-8 items retenus pour la prochaine itération, avec justification et estimation de l'impact sur le KPI North Star.
-5. Items exclus : avec raison et horizon potentiel (v3, never, conditionnel).
+1. Sources de feedback à mettre en place ou analyser : in-app survey (NPS à J+14, CSAT après action critique), interviews ciblées (protocole : 5 churners + 5 power users, questions ouvertes), tickets support (patterns récurrents, volume par catégorie), feature requests (agrégation et déduplication), avis publics (App Store, G2, Trustpilot si applicable), analytics comportementales (rage clicks, dead clicks, abandon flows).
+2. Matrice de synthèse : chaque feedback catégorisé (bug / amélioration / nouvelle feature / confusion UX / demande légale) avec fréquence, nombre d'utilisateurs impactés, et sévérité. Distinguer les retours des power users vs nouveaux utilisateurs.
+3. Priorisation RICE : chaque item scoré (Reach, Impact, Confidence, Effort) contre les métriques actuelles et le KPI North Star. Confidence basée sur des données réelles (nombre de demandes, pas de l'intuition).
+4. Roadmap v2 : les 5-8 items retenus pour la prochaine itération, avec pour chacun : justification, persona impacté, impact estimé sur le KPI North Star, effort estimé, dépendances techniques.
+5. Items exclus : avec raison et horizon potentiel (v3, never, conditionnel). Documenter = éviter de re-débattre.
+6. Quick wins : les items réalisables en < 1 jour qui ont un impact disproportionné (souvent des corrections UX ou des bugs mineurs fréquents).
 
-Livrable : docs/product/feedback-roadmap-v2.md + mise à jour de docs/product/backlog.md. Puis @data-analyst : définis les métriques de succès pour chaque item de la roadmap v2. Livrable : mise à jour de docs/analytics/kpi-framework.md. Puis @ux : lis la roadmap v2 et identifie les items qui nécessitent une refonte de parcours. Pour chacun, esquisse le nouveau flow. Livrable : mise à jour de docs/ux/user-flows.md.`
+Livrable : docs/product/feedback-roadmap-v2.md + mise à jour de docs/product/backlog.md.
+
+Puis @data-analyst : lis docs/product/feedback-roadmap-v2.md et définis les métriques de succès mesurables pour chaque item de la roadmap v2. Configure le tracking des features v2 avant leur développement (events, segments, dashboards). Livrable : mise à jour de docs/analytics/kpi-framework.md + docs/analytics/tracking-plan.md.
+
+Puis @ux : lis docs/product/feedback-roadmap-v2.md et identifie les items qui nécessitent une refonte de parcours. Pour chacun, esquisse le nouveau flow avec les écrans clés et les métriques de conversion cibles. Vérifie l'accessibilité des nouveaux parcours. Livrable : mise à jour de docs/ux/user-flows.md.
+
+Conformité : si des feedbacks concernent la vie privée, les cookies, ou la gestion des données, @legal vérifie la conformité RGPD des améliorations planifiées. Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque item de la roadmap est lié à des feedbacks réels (pas inventés), la priorisation RICE est basée sur des données mesurables, les métriques de succès sont définies avant le développement, les quick wins sont identifiés séparément.`
       },
       {
         title:"Structurer les A/B tests de conversion",
-        agents:["growth","data-analyst","fullstack"],
-        quand:"Produit avec trafic suffisant — pour optimiser les taux de conversion avec des données, pas des opinions",
-        prompt:`@growth Lis docs/analytics/kpi-framework.md et docs/growth/funnel-audit.md. S'ils n'existent pas, pose-moi les questions pour les créer (North Star Metric, taux de conversion par étape, pages à plus fort trafic) et génère-les avant de continuer.
+        agents:["growth","data-analyst","fullstack","legal"],
+        quand:"Produit avec trafic suffisant (> 1000 visiteurs/semaine sur les pages cibles) — pour optimiser les taux de conversion avec des données, pas des opinions. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        prompt:`@growth Lis docs/analytics/kpi-framework.md, docs/growth/funnel-audit.md et project-context.md (North Star Metric, persona). S'ils n'existent pas, pose-moi les questions pour les créer (North Star Metric, taux de conversion par étape, pages à plus fort trafic, trafic mensuel) et génère-les avant de continuer.
 
-Définis le framework d'expérimentation :
-1. Backlog d'hypothèses : 5-10 tests priorisés par impact/effort. Pour chaque test : hypothèse ("Si on change X, alors Y augmente de Z%"), page/composant cible, KPI primaire, KPI secondaire (garde-fou).
-2. Protocole de test : taille d'échantillon nécessaire par test (calculée avec puissance statistique 80%, significativité 95%), durée minimale, critère de victoire (lift minimum détectable).
-3. Priorisation ICE : chaque test scoré Impact/Confidence/Ease. Les 3 premiers tests à lancer.
-4. Calendrier : pas plus de 2 tests simultanés sur le même segment. Planning sur 4-6 semaines.
-5. Template de résultat : format de documentation post-test (hypothèse, résultat, apprentissage, action suivante).
+Définis le framework d'expérimentation complet :
+1. Backlog d'hypothèses : 5-10 tests priorisés par impact/effort. Pour chaque test : hypothèse falsifiable ("Si on change X, alors Y augmente de Z%"), page/composant cible, KPI primaire, KPI secondaire (garde-fou contre la dégradation d'une autre métrique), segment d'utilisateurs concerné.
+2. Protocole de test : taille d'échantillon nécessaire par test (calculée avec puissance statistique 80%, significativité 95%, lift minimum détectable), durée minimale (au moins 2 cycles business complets), critère d'arrêt anticipé (si résultat nettement négatif).
+3. Priorisation ICE : chaque test scoré Impact/Confidence/Ease. Les 3 premiers tests à lancer, avec justification du séquencement.
+4. Calendrier : pas plus de 2 tests simultanés sur le même segment (risque d'interaction). Planning sur 4-6 semaines avec dates de review.
+5. Template de résultat : format standardisé post-test (hypothèse, variantes testées, résultat avec intervalle de confiance, apprentissage, action suivante, impact estimé sur le revenu annuel).
+6. Anti-patterns : documenter ce qu'il ne faut PAS tester (changements trop petits pour être détectables, tests sur trafic insuffisant, tests sans garde-fou).
 
-Tests classiques à considérer : hero de la landing page (headline, CTA), onboarding (nombre d'étapes, ordre), pricing page (mise en page, ancrage), email subjects.
+Tests classiques à considérer : hero de la landing page (headline, CTA, social proof), onboarding (nombre d'étapes, ordre, progressive disclosure), pricing page (mise en page, ancrage, highlight du plan recommandé), email subjects et timing.
 
-Livrable : docs/growth/ab-testing-plan.md. Puis @data-analyst : lis docs/growth/ab-testing-plan.md et configure les métriques de suivi par test (events, segments, dashboards). Livrable : mise à jour de docs/analytics/tracking-plan.md. Puis @fullstack : lis docs/growth/ab-testing-plan.md et implémente l'infrastructure de feature flags pour les 3 premiers tests (Vercel Edge Config, ou lib type Unleash/GrowthBook). Code dans src/.`
+Livrable : docs/growth/ab-testing-plan.md.
+
+Puis @data-analyst : lis docs/growth/ab-testing-plan.md et configure les métriques de suivi par test : events de tracking spécifiques, segments d'attribution, dashboards de suivi en temps réel, alertes si un test dégrade une métrique garde-fou > 10%. Calcule la taille d'échantillon exacte par test. Livrable : mise à jour de docs/analytics/tracking-plan.md.
+
+Puis @fullstack : lis docs/growth/ab-testing-plan.md et implémente l'infrastructure de feature flags pour les 3 premiers tests (Vercel Edge Config, ou lib type Unleash/GrowthBook). Le système doit supporter : allocation par pourcentage, sticky sessions (un utilisateur voit toujours la même variante), exclusion mutuelle entre tests sur le même composant. Code dans src/.
+
+Conformité : les A/B tests doivent respecter le RGPD — le tracking des variantes nécessite un consentement si les données sont personnelles. Pas de manipulation trompeuse (dark patterns) dans les variantes testées. @legal vérifie dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque test a une hypothèse falsifiable et un protocole statistiquement valide, l'infrastructure de feature flags est implémentée, les garde-fous sont configurés, la conformité RGPD du tracking est vérifiée.`
       }
     ]
   }
