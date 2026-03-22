@@ -16,6 +16,14 @@ Pour une tâche ciblée sur un projet existant, invoque directement l'agent conc
 
 > **Installation dans un autre projet :** voir `INSTALL.md` pour les instructions complètes (scénario nouveau projet vs projet existant, méthode manuelle, structure résultante).
 
+## Stratégie de modèles
+
+Les agents utilisent deux modèles selon la complexité de leur tâche :
+- **Opus** (`claude-opus-4-6`) : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure — agents nécessitant un raisonnement complexe, de la coordination multi-étapes, ou de la génération de code
+- **Sonnet** (`claude-sonnet-4-6`) : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, seo, social, ux — agents de production de contenu, stratégie, ou analyse
+
+Pour réduire les coûts, un projet peut basculer tous les agents sur Sonnet. Pour maximiser la qualité, tout sur Opus. Modifier le champ `model` dans le frontmatter de chaque agent.
+
 ## Comment utiliser les agents
 
 Les agents sont dans `.claude/agents/`. Chaque agent est un expert autonome.

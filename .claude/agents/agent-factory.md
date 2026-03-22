@@ -288,7 +288,7 @@ Après la validation structurelle, tester le comportement réel de l'agent. **Ce
 
 Si un test échoue → corriger l'agent avant de considérer la création terminée. Ne jamais livrer un agent qui échoue à un test fonctionnel.
 
-### Étape 5c — Validation croisée par @ia et @qa (RECOMMANDÉE)
+### Étape 5c — Validation croisée par @ia et @qa (OBLIGATOIRE pour agents orchestrés)
 
 Après validation structurelle et fonctionnelle, soumettre le nouvel agent à une vérification d'intégration par les agents techniques du framework :
 
@@ -304,7 +304,7 @@ Après validation structurelle et fonctionnelle, soumettre le nouvel agent à un
    - Si l'agent utilise WebSearch/WebFetch, les cas d'usage sont-ils justifiés et les fallbacks documentés ?
    - Le prompt est-il optimisé (pas de redondance avec CLAUDE.md, instructions claires et non ambiguës) ?
 
-**Quand cette étape est obligatoire** : pour tout agent qui sera intégré dans une chaîne d'orchestration automatisée (phases de l'orchestrateur). Pour un agent invoqué uniquement en direct par l'utilisateur, cette étape est recommandée mais pas bloquante.
+**Règle** : cette étape est **obligatoire** pour tout agent intégré dans les phases de l'orchestrateur. Pour un agent invoqué uniquement en direct par l'utilisateur, elle est recommandée mais pas bloquante. Un agent orchestré qui n'a pas passé cette validation ne doit PAS être référencé dans orchestrator.md.
 
 ## Règles propres à @agent-factory
 

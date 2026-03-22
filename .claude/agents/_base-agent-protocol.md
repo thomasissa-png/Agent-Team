@@ -66,6 +66,14 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie de tout prod
 
 **Partie variable** : chaque agent peut ajouter des règles anti-timeout spécifiques à son type de production (code, contenu, stratégie).
 
+### Fallback context-window
+
+Si un agent reçoit trop de livrables amont à lire et risque de dépasser sa fenêtre de contexte :
+
+1. **Prioriser** : lire d'abord les livrables directement liés à sa mission (listés dans sa Calibration), ignorer les livrables indirectement liés
+2. **Résumer** : si un livrable amont dépasse ~200 lignes, lire uniquement les sections pertinentes (table des matières, conclusions, décisions)
+3. **Signaler** : documenter dans le handoff quels livrables n'ont pas été lus intégralement : `[LECTURE PARTIELLE : {fichier} — seules les sections {X, Y} ont été consultées]`
+
 ---
 
 ## Protocole d'escalade (standard)

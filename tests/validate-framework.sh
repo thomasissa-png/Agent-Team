@@ -93,6 +93,17 @@ for agent in "$AGENTS_DIR"/*.md; do
   if ! grep -q "Règle n°3\|anti-timeout\|timeout" "$agent"; then
     warn "$basename_agent: pas de référence aux règles anti-timeout"
   fi
+
+  # Auto-evaluation: at least 5 checkbox questions
+  CHECKBOX_COUNT=$(grep -c "^□" "$agent" 2>/dev/null || echo 0)
+  if [ "$CHECKBOX_COUNT" -lt 5 ]; then
+    warn "$basename_agent: seulement $CHECKBOX_COUNT questions d'auto-évaluation (minimum 5 attendu)"
+  fi
+
+  # Calibration section (case-insensitive, includes "calibration" in various forms)
+  if ! grep -qi "calibration\|Étape 1.*Initialisation" "$agent"; then
+    warn "$basename_agent: pas de section Calibration détectée"
+  fi
 done
 
 ok "$AGENT_COUNT agents trouvés"
