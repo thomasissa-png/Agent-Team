@@ -322,19 +322,19 @@ const PROMPTS = [
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"Tu viens de remplir project-context.md et tu veux que tout se lance automatiquement",
-        prompt:"@orchestrator Lance le projet. Séquence toutes les phases (0→5), identifie les dépendances entre agents, et produis l'orchestration-plan.md. Commence immédiatement par la Phase 0."
+        prompt:"@orchestrator Lance le projet. Lis project-context.md et tous les fichiers existants dans docs/. Séquence toutes les phases (0→5), identifie les dépendances entre agents, et produis l'orchestration-plan.md. Livrables attendus : orchestration-plan.md + project-synthesis.md. Commence immédiatement par la Phase 0."
       },
       {
         title:"Faire un check-up complet de mon projet",
         agents:["reviewer","elon"],
         quand:"Tu as plusieurs livrables et tu veux savoir où tu en es",
-        prompt:"@reviewer Lis tous les livrables dans docs/ et produis le rapport de cohérence croisée avec recommandation GO/NO-GO. Ensuite @elon donne ton audit stratégique first principles : qu'est-ce qui manque pour être n°1 ?"
+        prompt:"@reviewer Lis tous les livrables dans docs/ et produis le rapport de cohérence croisée : brand voice ↔ copy ↔ UI, specs ↔ code, conformité légale, couverture tracking. Recommandation GO/NO-GO avec liste des blockers. Ensuite @elon audite en first principles : note vision/exécution/moat/scalabilité sur 10, identifie ce qui manque pour être n°1. Livrables : cross-review-report.md + elon-audit.md."
       },
       {
         title:"Pivoter mon projet",
         agents:["orchestrator","creative-strategy"],
         quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement",
-        prompt:"@orchestrator Le projet pivote. Lis project-context.md mis à jour, identifie les livrables à reprendre vs ceux à garder, et produis le plan de re-séquencement. Lance @creative-strategy pour repositionner la plateforme de marque."
+        prompt:"@orchestrator Le projet pivote. Lis project-context.md mis à jour + tous les livrables existants dans docs/. Identifie les livrables à reprendre vs ceux à garder, et produis le plan de re-séquencement avec justification pour chaque livrable conservé/abandonné. Lance @creative-strategy pour repositionner la plateforme de marque en se basant sur le nouveau contexte. Livrables : orchestration-plan.md mis à jour + brand-platform.md révisé."
       }
     ]
   },
@@ -352,7 +352,7 @@ const PROMPTS = [
         title:"Vision produit & roadmap",
         agents:["product-manager"],
         quand:"Après la stratégie de marque, pour cadrer ce qu'on construit",
-        prompt:"@product-manager Définis la vision produit, la roadmap à 6 mois priorisée RICE, et le backlog initial avec user stories. Base-toi sur brand-platform.md et project-context.md."
+        prompt:"@product-manager Lis brand-platform.md (personas, positionnement), project-context.md, et competitive-benchmark.md si existant. Définis la vision produit (mission, proposition de valeur unique, différenciateurs), la roadmap priorisée RICE sur l'horizon [durée, ex: \"6 mois\" / \"12 mois\" / \"18 mois\"], et le backlog initial avec user stories au format 'En tant que [persona], je veux [action] afin de [bénéfice]'. Chaque feature doit référencer le persona cible de brand-platform.md et la North Star Metric de tracking-plan.md. Critères de qualité : chaque item du backlog a un score RICE, les dépendances sont identifiées, les milestones sont datés. Livrables : product-vision.md, roadmap.md, backlog.md."
       },
       {
         title:"KPIs & tracking plan",
@@ -363,8 +363,8 @@ const PROMPTS = [
       {
         title:"Audit juridique & conformité",
         agents:["legal"],
-        quand:"En parallèle des autres phases, avant mise en production",
-        prompt:"@legal Audit juridique complet : RGPD (registre des traitements, bases légales, durées de conservation), CGU/CGV adaptées au modèle économique, protection IP (marque INPI/EUIPO), conformité EU AI Act si IA. Produis tous les documents."
+        quand:"En parallèle des autres phases, avant mise en production. Livrable volumineux : si coupé par timeout, relancer pour compléter les sections manquantes",
+        prompt:"@legal Lis project-context.md et functional-specs.md. Audit juridique complet : RGPD (registre des traitements, bases légales, durées de conservation), CGU/CGV adaptées au modèle économique, protection IP (marque INPI/EUIPO), conformité EU AI Act si IA. Produis tous les documents. Livrables : legal-audit.md, cgu-draft.md, privacy-policy.md, rgpd-checklist.md."
       }
     ]
   },
@@ -376,13 +376,13 @@ const PROMPTS = [
         title:"Parcours utilisateur & wireframes",
         agents:["ux"],
         quand:"Après la stratégie, avant le design visuel",
-        prompt:"@ux Conçois les parcours utilisateur complets : onboarding, activation, conversion, rétention. Produis les wireframes des écrans clés avec l'architecture de navigation."
+        prompt:"@ux Lis brand-platform.md (personas, jobs-to-be-done), functional-specs.md et tracking-plan.md. Conçois les parcours utilisateur complets : onboarding, activation, conversion, rétention. Pour chaque parcours, identifie les écrans, les actions utilisateur, les décisions, et les points de sortie. Produis les wireframes textuels (description structurée de chaque écran : layout, composants, contenu, interactions) des écrans clés avec l'architecture de navigation. Chaque écran doit mentionner les events de tracking correspondants (depuis tracking-plan.md). Critères de qualité : chaque parcours a un objectif mesurable, les edge cases sont documentés (erreurs, états vides, permissions), le nombre de clics vers la valeur est minimisé. Livrables : user-flows.md, wireframes.md."
       },
       {
         title:"Design system complet",
         agents:["design","fullstack"],
-        quand:"Après les wireframes UX, avant le développement",
-        prompt:"@design Crée le design system : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), dark mode, accessibilité WCAG 2.2 AA. @fullstack Implémente les tokens en CSS variables/Tailwind et les composants React."
+        quand:"Après les wireframes UX, avant le développement. Livrable volumineux : si coupé par timeout, relancer pour compléter les sections manquantes",
+        prompt:"@design Lis brand-platform.md et wireframes.md. Crée le design system : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), dark mode, accessibilité WCAG 2.2 AA. Livrables : design-system.md, design-tokens.json. Puis @fullstack implémente les tokens en CSS variables/Tailwind et les composants React dans src/ en se basant sur design-tokens.json."
       },
       {
         title:"Brand voice & guide d'écriture",
@@ -406,7 +406,7 @@ const PROMPTS = [
         title:"Développer une feature",
         agents:["fullstack","qa"],
         quand:"Specs validées, design system prêt",
-        prompt:"@fullstack Implémente la feature selon functional-specs.md. Next.js App Router, TypeScript strict, composants du design system, events du tracking plan. @qa Écris les tests unitaires Vitest et E2E Playwright des parcours critiques. Cible : couverture >80%."
+        prompt:"@fullstack Implémente la feature [nom de la feature, ex: \"système de notifications\" ou \"tableau de bord utilisateur\"] selon functional-specs.md (user stories correspondantes). Lis design-system.md et design-tokens.json pour les composants et tokens, tracking-plan.md pour les events à implémenter, user-flows.md pour le parcours attendu. Next.js App Router, TypeScript strict, composants serveur par défaut. Critères : types stricts (pas de 'any'), gestion des erreurs (error boundaries, loading states, empty states), responsive mobile-first. @qa Écris les tests unitaires Vitest (couverture >80%) et E2E Playwright des parcours critiques de cette feature. Vérifie que chaque event du tracking-plan est déclenché correctement. Livrables : code dans src/, tests dans src/__tests__/."
       },
       {
         title:"Intégrer le paiement Stripe",
@@ -417,8 +417,8 @@ const PROMPTS = [
       {
         title:"Ajouter une feature IA (LLM)",
         agents:["ia","fullstack"],
-        quand:"Cas d'usage IA défini dans les specs",
-        prompt:"@ia Conçois le pipeline IA : choix du modèle (coût/qualité), structure des prompts, fallbacks, limites de tokens. @fullstack Implémente les routes API avec le Vercel AI SDK."
+        quand:"Cas d'usage IA défini dans les specs, budget IA renseigné dans project-context.md",
+        prompt:"@ia Lis functional-specs.md, project-context.md (budget mensuel IA, stack technique), et tracking-plan.md (events IA à tracker). Conçois le pipeline IA pour la feature [nom de la feature IA, ex: \"résumé automatique\" ou \"chatbot support client\"] : 1) Tableau comparatif obligatoire des modèles (modèle, coût/1K tokens in/out, latence P95, qualité 1-5, verdict) — minimum 3 modèles comparés. 2) Calcul de ROI : (temps humain économisé × coût horaire) / coût tokens mensuel — ROI cible >3. 3) Prompts optimisés pour le prompt caching Anthropic (system prompt stable, contenu variable séparé). 4) Fallback : modèle secondaire si principal indisponible, stratégie de dégradation gracieuse. 5) Limites : tokens max par requête, rate limiting, budget mensuel alertes. Livrables : ai-architecture.md, model-selection.md, prompt-library.md, ai-cost-analysis.md, code dans src/lib/ai/. Puis @fullstack implémente les routes API avec le Vercel AI SDK (streaming, useChat) en intégrant les composants de src/lib/ai/."
       },
       {
         title:"Configurer CI/CD & déploiement",
@@ -430,7 +430,7 @@ const PROMPTS = [
         title:"Choisir & optimiser les modèles IA",
         agents:["ia"],
         quand:"Plusieurs modèles possibles, besoin d'optimiser coût/qualité",
-        prompt:"@ia Compare les modèles pour notre cas d'usage. Benchmark : qualité de sortie, latence P95, coût par 1000 requêtes, streaming. Recommande modèle principal + fallback. Optimise les prompts pour réduire les tokens."
+        prompt:"@ia Lis functional-specs.md (features IA identifiées), project-context.md (budget mensuel IA, volume d'utilisateurs estimé), et ai-architecture.md si existant. Pour chaque feature IA, produis le tableau comparatif obligatoire : modèle, coût/1K tokens (in/out), latence P95, qualité (1-5), verdict — minimum 3 modèles par feature (inclure au moins un open source). Calcule le ROI par feature : (temps humain économisé × coût horaire) / coût tokens mensuel — justifie chaque feature avec ROI >1. Recommande modèle principal + fallback pour chaque feature. Optimise les prompts : prompt caching Anthropic (system prompt statique >1024 tokens), réduction de tokens (instructions concises, few-shot minimal). Simule le coût mensuel total selon le volume d'utilisateurs. Livrables : model-selection.md, ai-cost-analysis.md."
       }
     ]
   },
@@ -442,7 +442,7 @@ const PROMPTS = [
         title:"Stratégie SEO technique & éditoriale",
         agents:["seo"],
         quand:"Contenu rédigé, site en production ou pré-lancement",
-        prompt:"@seo Audit SEO complet : Core Web Vitals, données structurées JSON-LD, maillage interne, stratégie de mots-clés. Produis la keyword map et les templates de métadonnées."
+        prompt:"@seo Lis brand-platform.md (personas, positionnement), landing-page-copy.md si existant, et functional-specs.md (pages du site). Audit SEO complet sur les pages prioritaires [liste des pages à auditer, ex: \"landing page, pricing, blog, documentation\"] : 1) Technique : Core Web Vitals (LCP <2.5s, CLS <0.1, INP <200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical tags. 2) Éditorial : stratégie de mots-clés par intention de recherche (informationnelle, transactionnelle, navigationnelle), maillage interne entre pages, optimisation des headings H1-H3. 3) Contenu : meta title (<60 car), meta description (<155 car), alt texts images. Critères de qualité : chaque page a un mot-clé principal et 2-3 secondaires, score Lighthouse SEO >90. Livrables : seo-strategy.md, keyword-map.md, metadata-templates.md."
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
@@ -454,7 +454,7 @@ const PROMPTS = [
         title:"SEO + GEO combinés",
         agents:["seo","geo"],
         quand:"Offensive complète sur Google + IA génératives",
-        prompt:"@seo Audit SEO technique + stratégie de mots-clés. @geo Analyse visibilité sur ChatGPT/Claude/Gemini/Perplexity et propose le plan GEO. Coordonnez-vous pour que le contenu soit optimisé pour les deux canaux sans compromis."
+        prompt:"Exécution séquentielle en 2 étapes. Étape 1 : @seo Lis brand-platform.md (positionnement, personas) et functional-specs.md (pages du site). Produis l'audit SEO technique complet, la keyword map par intention de recherche, et les templates de métadonnées. Livrables : seo-strategy.md, keyword-map.md, metadata-templates.md. Étape 2 : @geo Lis les livrables SEO produits à l'étape 1 (keyword-map.md, seo-strategy.md) et brand-platform.md. Aligne le plan GEO sur la stratégie SEO : entités nommées reprenant les mots-clés prioritaires, claims vérifiables avec sources, FAQ optimisée pour les citations IA, restructuration du contenu au format LLM-friendly. Produis un tableau des synergies et arbitrages entre SEO classique et visibilité IA (ex: contenu long-form pour SEO vs réponses directes pour GEO). Livrables : geo-strategy.md, content-restructuring.md."
       }
     ]
   },
@@ -472,7 +472,7 @@ const PROMPTS = [
         title:"Stratégie social media",
         agents:["social","copywriter"],
         quand:"Besoin d'une présence organique sur les réseaux",
-        prompt:"@social Sélectionne 2-3 plateformes prioritaires, définis la ligne éditoriale, les formats natifs, le rythme de publication et les KPIs. @copywriter Rédige les templates de posts et accroches type."
+        prompt:"@social Lis brand-platform.md (personas, positionnement), brand-voice.md (ton, registre), et project-context.md (budget marketing). Sélectionne 2-3 plateformes prioritaires selon le persona et le secteur, définis la ligne éditoriale alignée sur la brand voice, les formats natifs par plateforme (carousel, vidéo courte, thread, story), le rythme de publication, la répartition budget organique/paid, et les KPIs par plateforme (reach, engagement rate, CTR, conversions). @copywriter Lis brand-voice.md. Rédige 3 templates de posts par plateforme et les accroches type (hook + CTA) en respectant le ton de marque. Critères de qualité : chaque template est adaptable en <5 min, le calendrier couvre 4 semaines. Livrables : social-strategy.md, editorial-calendar.md, content-templates.md."
       },
       {
         title:"Emails onboarding & conversion",
@@ -483,8 +483,8 @@ const PROMPTS = [
       {
         title:"Auditer le funnel existant",
         agents:["growth","data-analyst"],
-        quand:"Produit en production avec trafic, conversion à optimiser",
-        prompt:"@growth Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact. @data-analyst Produis le dashboard de conversion par cohorte et configure les alertes."
+        quand:"Produit en production avec trafic, conversion à optimiser. Pré-requis : données analytics disponibles (fournir accès ou export CSV/JSON des métriques clés)",
+        prompt:"@growth Lis tracking-plan.md et project-context.md (métriques actuelles). Diagnostique le funnel AARRR : taux de conversion par étape (acquisition → activation → rétention → referral → revenue), points de churn principaux, segments sous-performants (par source, device, cohorte), 3 leviers à plus fort impact avec estimation du gain. @data-analyst Lis tracking-plan.md. Produis les specs du dashboard de conversion par cohorte (weekly/monthly), configure les alertes sur les métriques critiques (drop >20% taux de conversion, churn spike, CAC en hausse). Critères de qualité : chaque recommandation de @growth est chiffrée (impact estimé), le dashboard couvre toutes les étapes AARRR. Livrables : funnel-audit.md, dashboard-specs.md."
       }
     ]
   },
@@ -502,7 +502,7 @@ const PROMPTS = [
         title:"Revue intermédiaire (mid-projet)",
         agents:["reviewer"],
         quand:"Au moins 3 livrables produits, avant d'aller plus loin",
-        prompt:"@reviewer Vérifie la cohérence entre les livrables produits jusqu'ici. Le code respecte-t-il les specs ? Le copy respecte-t-il la brand voice ? Le tracking couvre-t-il les KPIs ? Signale les dérives maintenant."
+        prompt:"@reviewer Lis tous les livrables dans docs/ et le code dans src/ si existant. Vérifie la cohérence entre les livrables produits jusqu'ici selon ces axes : 1) Specs ↔ code : les user stories de functional-specs.md sont-elles implémentées ? 2) Brand voice ↔ copy : le contenu respecte-t-il brand-voice.md (ton, vocabulaire autorisé/interdit) ? 3) Tracking ↔ KPIs : les events de tracking-plan.md sont-ils implémentés et couvrent-ils les KPIs de kpi-framework.md ? 4) Design ↔ implémentation : les tokens de design-tokens.json sont-ils respectés dans le code ? Signale les dérives avec niveau de sévérité (bloquant / important / mineur). Livrables : cross-review-report.md avec liste priorisée des corrections à apporter."
       },
       {
         title:"Audit qualité & tests complets",
@@ -514,7 +514,7 @@ const PROMPTS = [
         title:"Audit UX & conversion",
         agents:["ux","data-analyst"],
         quand:"Produit en production avec trafic",
-        prompt:"@ux Audite les parcours critiques : onboarding, conversion, rétention. Identifie les friction points et taux d'abandon. @data-analyst Configure les dashboards de conversion par cohorte et métriques de rétention."
+        prompt:"@ux Lis user-flows.md (parcours définis) et tracking-plan.md (events). Audite les parcours critiques : onboarding (time-to-value), conversion (nombre d'étapes, friction), rétention (motifs de churn). Pour chaque friction point identifié, propose une solution concrète avec impact estimé (fort/moyen/faible). @data-analyst Lis tracking-plan.md et kpi-framework.md. Configure les dashboards de conversion par cohorte (weekly/monthly), métriques de rétention (D1, D7, D30), et heatmaps des parcours critiques. Critères de qualité : chaque recommandation UX est priorisée par impact/effort, le dashboard couvre les parcours audités. Livrables : ux-audit.md, dashboard-specs.md."
       },
       {
         title:"Audit stratégique first principles",
