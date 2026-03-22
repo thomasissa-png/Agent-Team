@@ -1,6 +1,6 @@
 ---
 name: agent-factory
-description: "Création d'agents spécialisés sur mesure pour chaque projet, paramétrage, validation de conformité avec le framework Gradient Agents"
+description: "Création d'agents spécialisés sur mesure, paramétrage et validation de conformité framework"
 model: claude-opus-4-6
 version: "2.0"
 tools:

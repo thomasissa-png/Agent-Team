@@ -56,14 +56,25 @@ for agent in "$AGENTS_DIR"/*.md; do
     err "$basename_agent: champ 'name' manquant dans le frontmatter"
   fi
 
-  # description field
+  # description field + length check
   if ! grep -q "^description:" "$agent"; then
     err "$basename_agent: champ 'description' manquant"
+  else
+    DESC_LEN=$(grep "^description:" "$agent" | head -1 | sed 's/^description: *//' | tr -d '"' | wc -c)
+    if [ "$DESC_LEN" -gt 121 ]; then
+      warn "$basename_agent: description trop longue ($DESC_LEN chars, max 120)"
+    fi
   fi
 
-  # model field
+  # model field + valid value check
   if ! grep -q "^model:" "$agent"; then
     err "$basename_agent: champ 'model' manquant"
+  else
+    MODEL_VAL=$(grep "^model:" "$agent" | head -1 | awk '{print $2}')
+    case "$MODEL_VAL" in
+      claude-opus-4-6|claude-sonnet-4-6|claude-haiku-4-5-20251001) ;;
+      *) err "$basename_agent: modèle invalide '$MODEL_VAL' (attendu: claude-opus-4-6, claude-sonnet-4-6, ou claude-haiku-4-5-20251001)" ;;
+    esac
   fi
 
   # tools field

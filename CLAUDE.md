@@ -106,6 +106,7 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 **Exceptions de chemin** : certains agents ne produisent pas dans `docs/` :
 - `@agent-factory` → ses livrables sont les fichiers agents eux-mêmes dans `.claude/agents/` (+ modifications de `CLAUDE.md` et `orchestrator.md`)
 - `@orchestrator` → `docs/orchestration-plan.md` et `docs/project-synthesis.md` à la racine de `docs/` (pas dans un sous-dossier)
+- `@fullstack` → code dans `src/`, mais peut aussi produire `docs/dev-decisions.md` et `docs/api-documentation.md` à la racine de `docs/`
 
 **Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer (sauf les exceptions documentées ci-dessus).
 
