@@ -19,21 +19,26 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
 
   /* ── NAV STICKY ── */
-  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  nav .logo{font-weight:700;font-size:15px;color:var(--accent);margin-right:auto;letter-spacing:-0.3px}
-  nav a{color:var(--text-muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
-  nav a:hover,nav a.active{color:var(--text);background:rgba(245,240,232,0.06)}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:8px}
+  nav .logo{font-weight:700;font-size:15px;color:var(--accent);margin-right:auto;letter-spacing:-0.3px;white-space:nowrap}
+  nav .nav-links{display:flex;align-items:center;gap:4px}
+  nav a{color:var(--text-muted);text-decoration:none;font-size:13px;font-weight:500;padding:8px 14px;border-radius:20px;transition:all .2s;min-height:44px;display:inline-flex;align-items:center}
+  nav a:hover{color:var(--text);background:rgba(245,240,232,0.06)}
+  nav a.active{color:var(--accent);background:rgba(232,255,0,0.08)}
+  .nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px;cursor:pointer;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+  .nav-toggle svg{display:block}
 
   /* ── LAYOUT ── */
   .container{max-width:1200px;margin:0 auto;padding:32px 20px}
-  section{margin-bottom:64px}
+  section{margin-bottom:64px;padding-top:16px}
+  section:not(:first-of-type){border-top:1px solid var(--border-light);padding-top:48px}
   h2{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
   .section-sub{color:var(--text-muted);font-size:14px;margin-bottom:32px}
 
   /* ── AGENT CARDS ── */
   .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-  .agent-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
-  .agent-card:hover{border-color:rgba(232,255,0,0.25)}
+  .agent-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s,transform .2s}
+  .agent-card:hover{border-color:rgba(232,255,0,0.25);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.3)}
   .agent-card.highlighted{border-color:var(--accent);box-shadow:0 0 24px rgba(232,255,0,0.15)}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
@@ -77,15 +82,16 @@
   .prompt-title{font-size:14px;font-weight:600;margin-bottom:6px}
   .prompt-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   .prompt-agent-tag{font-size:11px;color:var(--accent);border:1px solid rgba(232,255,0,0.25);border-radius:4px;padding:1px 6px}
-  .prompt-body{font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-line}
+  .prompt-body{font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-line;word-break:break-word;overflow-wrap:break-word}
   .prompt-body strong{color:var(--text);font-weight:600}
+  .prompt-body code{background:rgba(232,255,0,0.08);color:var(--accent);padding:1px 5px;border-radius:3px;font-size:0.92em}
   .prompt-quand{font-size:12px;color:var(--accent);opacity:0.85;margin-bottom:10px;padding:5px 10px;border-left:2px solid var(--accent);background:rgba(232,255,0,0.04);border-radius:0 4px 4px 0}
   .prompt-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-  .btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  .btn-copy{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:12px;padding:8px 16px;cursor:pointer;transition:all .2s;white-space:nowrap;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
   .btn-copy:hover{border-color:var(--accent);color:var(--accent)}
   .btn-copy.copied{border-color:var(--accent);color:var(--accent)}
   .prompt-filter-wrap{display:flex;justify-content:center;margin-bottom:12px}
-  .prompt-filter-wrap select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:6px 12px;outline:none;cursor:pointer}
+  .prompt-filter-wrap select{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;padding:10px 16px;outline:none;cursor:pointer;min-height:44px}
   .prompt-filter-wrap select:focus{border-color:var(--accent)}
 
   /* ── INSTALLATION ── */
@@ -97,7 +103,7 @@
   .label-existing{border:1px solid var(--accent);color:var(--accent)}
   .label-update{background:var(--blue, #3b82f6);color:#fff}
   .install-card .install-sub{font-size:13px;color:var(--text-muted);margin-bottom:16px}
-  .install-card .install-prompt{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-size:13px;color:var(--text);line-height:1.6;margin-bottom:16px;position:relative}
+  .install-card .install-prompt{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-size:13px;color:var(--text);line-height:1.6;margin-bottom:16px;position:relative;word-break:break-word}
   .install-card .install-prompt em{color:var(--accent);font-style:normal;font-weight:600}
   .install-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
   .install-steps li{font-size:13px;color:var(--text-muted);padding-left:20px;position:relative}
@@ -111,10 +117,11 @@
   .install-result-label{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
   .install-diff{margin-top:24px}
   .install-diff h3{font-size:15px;font-weight:600;margin-bottom:14px}
-  .diff-table{width:100%;border-collapse:collapse;font-size:13px}
-  .diff-table th{text-align:left;padding:10px 12px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:600}
+  .diff-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);border:1px solid var(--border)}
+  .diff-table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+  .diff-table th{text-align:left;padding:10px 12px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:600;white-space:nowrap}
   .diff-table td{padding:10px 12px;border:1px solid var(--border);color:var(--text-muted)}
-  .diff-table td:first-child{color:var(--text);font-weight:500;font-family:monospace;font-size:12px}
+  .diff-table td:first-child{color:var(--text);font-weight:500;font-family:monospace;font-size:12px;white-space:nowrap}
   .diff-table .diff-yes{color:var(--accent)}
   .diff-table .diff-no{color:var(--red)}
   .install-card .install-context{font-size:13px;color:var(--text-muted);margin-bottom:12px}
@@ -122,7 +129,7 @@
   .install-alt{margin-bottom:16px}
   .install-alt-label{font-size:12px;color:var(--text-dim);display:block;margin-bottom:6px}
   .install-prompt-small{font-size:12px;padding:10px 14px}
-  .install-btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;position:absolute;top:8px;right:8px}
+  .install-btn-copy{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:12px;padding:8px 14px;cursor:pointer;transition:all .2s;position:absolute;top:8px;right:8px;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
   .install-btn-copy:hover{border-color:var(--accent);color:var(--accent)}
   .install-btn-copy.copied{border-color:var(--accent);color:var(--accent)}
   @media(max-width:1100px){.install-grid{grid-template-columns:1fr 1fr}}
@@ -145,24 +152,114 @@
   .changelog-desc{font-size:13px;color:var(--text-muted);flex:1;min-width:200px}
 
   /* ── PIPELINE ── */
-  .pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:40px;overflow-x:auto}
-  .pipeline-phase{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px}
+  .pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:40px}
+  .pipeline-phase{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px}
   .pipeline-phase-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);margin-bottom:8px}
-  .pipeline-agent{font-size:12px;color:var(--text-muted);padding:2px 0}
-  .pipeline-agent:hover{color:var(--text);cursor:pointer}
+  .pipeline-agent{font-size:12px;color:var(--text-muted);padding:4px 6px;min-height:32px;display:flex;align-items:center;cursor:pointer;border-radius:4px;transition:background .15s,color .15s}
+  .pipeline-agent:hover{color:var(--accent);background:rgba(232,255,0,0.08)}
+
+  /* ── BACK TO TOP ── */
+  .back-to-top{position:fixed;bottom:24px;right:24px;z-index:99;width:48px;height:48px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--accent);cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+  .back-to-top:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+  .back-to-top.visible{display:flex}
+
+  /* ── HERO SECTION ── */
+  .hero-banner{padding:48px 0 32px;text-align:center}
+  .hero-banner h1{font-size:40px;font-weight:800;letter-spacing:-1px;margin-bottom:12px}
+  .hero-banner h1 .accent{color:var(--accent)}
+  .hero-banner .hero-sub{font-size:16px;color:var(--text-muted);max-width:560px;margin:0 auto 24px;line-height:1.6}
+  .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+  .hero-stat{text-align:center}
+  .hero-stat .stat-num{font-size:28px;font-weight:800;color:var(--accent);display:block;letter-spacing:-0.5px}
+  .hero-stat .stat-label{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.8px;font-weight:600}
+
+  /* ── SECTION DIVIDERS ── */
+  section{scroll-margin-top:72px}
+  .section-header{margin-bottom:32px}
+
+  /* ── PROMPT BODY COLLAPSIBLE ── */
+  .prompt-body{max-height:120px;overflow:hidden;position:relative;transition:max-height .3s ease}
+  .prompt-body.expanded{max-height:none}
+  .prompt-body:not(.expanded)::after{content:"";position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,var(--surface));pointer-events:none}
+  .btn-expand{background:none;border:none;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;padding:6px 0;display:none;transition:color .2s}
+  .btn-expand:hover{text-decoration:underline}
+  .btn-expand.visible{display:block}
 
   /* ── RESPONSIVE ── */
   @media(max-width:900px){
     .agents-grid{grid-template-columns:repeat(2,1fr)}
     .pipeline{grid-template-columns:repeat(3,1fr)}
   }
-  @media(max-width:600px){
-    .pipeline{grid-template-columns:repeat(2,1fr)}
-    .agents-grid{grid-template-columns:1fr}
+  @media(max-width:768px){
+    /* Nav: hamburger toggle */
+    .nav-toggle{display:inline-flex}
+    nav .nav-links{
+      display:flex;width:100%;flex-direction:column;gap:2px;padding-top:0;
+      max-height:0;overflow:hidden;transition:max-height .3s ease,padding-top .3s ease;
+    }
+    nav .nav-links.open{max-height:300px;padding-top:8px}
+    nav{flex-wrap:wrap}
+    nav a{width:100%;padding:12px 16px;border-radius:var(--radius);min-height:48px;font-size:15px;justify-content:flex-start;border-bottom:1px solid var(--border-light)}
+    nav a:last-child{border-bottom:none}
+
+    /* Hero */
+    .hero-banner{padding:32px 0 24px}
+    .hero-banner h1{font-size:28px}
+    .hero-banner .hero-sub{font-size:14px}
+    .hero-stats{gap:20px}
+    .hero-stat .stat-num{font-size:22px}
+
+    /* Layout */
+    .container{padding:24px 16px}
+    section{margin-bottom:48px}
+    h2{font-size:22px}
+    .section-sub{font-size:13px;margin-bottom:24px}
+
+    /* Agent cards */
+    .agents-grid{grid-template-columns:1fr;gap:12px}
+    .agent-card{padding:16px}
+    .agent-name{flex-wrap:wrap;gap:6px}
+
+    /* Pipeline */
+    .pipeline{grid-template-columns:repeat(2,1fr);gap:6px}
+    .pipeline-phase{padding:10px 8px}
+
+    /* Prompts */
     .search-box{max-width:100%}
-    .changelog-entry{flex-direction:column;gap:6px}
-    nav{padding:10px 16px}
-    nav a{font-size:12px;padding:5px 10px}
+    .search-box input{font-size:16px;padding:12px 14px 12px 40px}
+    .prompt-card{padding:14px}
+    .prompt-header{flex-direction:row;gap:10px;align-items:center}
+    .prompt-title{flex:1;min-width:0}
+    .btn-copy{align-self:center;width:auto;min-width:72px;padding:10px 14px}
+    .prompt-body{font-size:13px;line-height:1.6;max-height:100px}
+    .prompt-filter-wrap{margin-bottom:8px}
+    .prompt-filter-wrap select{width:100%;font-size:16px;min-height:48px}
+
+    /* Installation */
+    .install-card{padding:16px}
+    .install-card .install-prompt{padding:12px 14px 12px 14px;padding-right:70px;font-size:12px}
+    .install-btn-copy{padding:6px 10px;font-size:11px;min-height:40px;min-width:40px}
+    .install-step{font-size:13px;line-height:1.5}
+
+    /* Changelog */
+    .changelog-entry{flex-direction:column;gap:8px;padding:12px}
+    .changelog-desc{min-width:0;font-size:13px}
+    .changelog-controls select{width:100%;font-size:16px;padding:10px 12px;min-height:48px}
+
+    /* Back to top */
+    .back-to-top{bottom:16px;right:16px}
+  }
+
+  @media(max-width:400px){
+    .pipeline{grid-template-columns:1fr}
+    .container{padding:20px 12px}
+    .required-tags{gap:3px}
+    .required-tag{font-size:10px;padding:2px 5px}
+    .agent-phase{font-size:10px}
+    .agent-desc{font-size:12px}
+    .hero-banner h1{font-size:24px}
+    .hero-stats{gap:16px}
+    .hero-stat .stat-num{font-size:20px}
   }
 </style>
 </head>
@@ -171,10 +268,15 @@
 <!-- ════ NAV ════ -->
 <nav>
   <span class="logo">Gradient Agents</span>
-  <a href="#equipe">L'Équipe</a>
-  <a href="#installation">Installation</a>
-  <a href="#prompts">Prompts</a>
-  <a href="#changelog">Changelog</a>
+  <button class="nav-toggle" aria-label="Menu de navigation" aria-expanded="false">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="nav-links">
+    <a href="#equipe">L'Équipe</a>
+    <a href="#installation">Installation</a>
+    <a href="#prompts">Prompts</a>
+    <a href="#changelog">Changelog</a>
+  </div>
 </nav>
 
 <!-- ════ DATA ════ -->
@@ -701,6 +803,17 @@ const CHANGELOG = [
 <!-- ════ SECTION ÉQUIPE ════ -->
 <main class="container">
 
+<!-- ════ HERO ════ -->
+<div class="hero-banner">
+  <h1>Gradient <span class="accent">Agents</span></h1>
+  <p class="hero-sub">Une équipe de 19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="stat-num">19</span><span class="stat-label">Agents</span></div>
+    <div class="hero-stat"><span class="stat-num">39</span><span class="stat-label">Prompts</span></div>
+    <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
+  </div>
+</div>
+
 <section id="equipe" aria-labelledby="titre-equipe">
   <h2 id="titre-equipe">L'Équipe</h2>
   <p class="section-sub">19 agents spécialisés — de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
@@ -782,6 +895,7 @@ const CHANGELOG = [
   <!-- Tableau comparatif -->
   <div class="install-diff">
     <h3>Différences clés</h3>
+    <div class="diff-table-wrap">
     <table class="diff-table">
       <thead>
         <tr><th>Fichier / Dossier</th><th>Nouveau projet</th><th>Projet existant</th><th>Mise à jour</th></tr>
@@ -813,6 +927,7 @@ const CHANGELOG = [
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </section>
 
@@ -855,6 +970,11 @@ const CHANGELOG = [
 </section>
 
 </main><!-- /.container -->
+
+<!-- ════ BACK TO TOP ════ -->
+<button class="back-to-top" aria-label="Retour en haut" id="back-to-top">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
 
 <script>
 /* ── Helpers ── */
@@ -1001,6 +1121,83 @@ document.querySelectorAll(".install-btn-copy").forEach(btn=>{
     });
   });
 });
+
+/* ── Back to top ── */
+(function initBackToTop(){
+  const btn=document.getElementById("back-to-top");
+  if(!btn)return;
+  window.addEventListener("scroll",()=>{
+    btn.classList.toggle("visible",window.scrollY>400);
+  },{passive:true});
+  btn.addEventListener("click",()=>{
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+})();
+
+/* ── Active nav link on scroll ── */
+(function initActiveNav(){
+  const links=document.querySelectorAll("nav .nav-links a[href^='#']");
+  const sections=Array.from(links).map(a=>{
+    const id=a.getAttribute("href").slice(1);
+    return{link:a,el:document.getElementById(id)};
+  }).filter(s=>s.el);
+  function update(){
+    const scrollY=window.scrollY+100;
+    let current=sections[0];
+    sections.forEach(s=>{if(s.el.offsetTop<=scrollY)current=s});
+    links.forEach(l=>l.classList.remove("active"));
+    if(current)current.link.classList.add("active");
+  }
+  window.addEventListener("scroll",update,{passive:true});
+  update();
+})();
+
+/* ── Hamburger toggle ── */
+(function initHamburger(){
+  const toggle=document.querySelector(".nav-toggle");
+  const navLinks=document.querySelector(".nav-links");
+  if(!toggle||!navLinks)return;
+  toggle.addEventListener("click",()=>{
+    const isOpen=navLinks.classList.toggle("open");
+    toggle.setAttribute("aria-expanded",isOpen?"true":"false");
+  });
+  /* Close on link click */
+  navLinks.querySelectorAll("a").forEach(a=>{
+    a.addEventListener("click",()=>{
+      navLinks.classList.remove("open");
+      toggle.setAttribute("aria-expanded","false");
+    });
+  });
+  /* Close on outside click */
+  document.addEventListener("click",(e)=>{
+    if(!e.target.closest("nav")&&navLinks.classList.contains("open")){
+      navLinks.classList.remove("open");
+      toggle.setAttribute("aria-expanded","false");
+    }
+  });
+})();
+
+/* ── Prompt body expand/collapse ── */
+(function initPromptExpand(){
+  document.querySelectorAll(".prompt-card").forEach(card=>{
+    const body=card.querySelector(".prompt-body");
+    if(!body)return;
+    const expandBtn=document.createElement("button");
+    expandBtn.className="btn-expand";
+    expandBtn.textContent="Voir plus";
+    body.after(expandBtn);
+    function checkOverflow(){
+      const isOverflowing=body.scrollHeight>body.clientHeight+10;
+      expandBtn.classList.toggle("visible",isOverflowing&&!body.classList.contains("expanded"));
+    }
+    requestAnimationFrame(checkOverflow);
+    expandBtn.addEventListener("click",()=>{
+      const expanded=body.classList.toggle("expanded");
+      expandBtn.textContent=expanded?"Voir moins":"Voir plus";
+      expandBtn.classList.toggle("visible",true);
+    });
+  });
+})();
 
 /* ── Changelog ── */
 (function renderChangelog(){
