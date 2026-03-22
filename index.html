@@ -1279,6 +1279,142 @@ Puis @fullstack : lis docs/design/visual-audit.md et corrige tous les écarts bl
 Puis @qa : lis docs/design/visual-audit.md et crée les tests de régression visuelle (snapshots Playwright) sur les composants validés. Les composants avec écarts bloquants doivent être corrigés avant les snapshots. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md.
 
 Critères de validation : zéro écart bloquant restant, tous les contrastes passent WCAG AA, les snapshots de régression sont en place.`
+      },
+      {
+        title:"Gestion cookies & consent (RGPD)",
+        agents:["legal","fullstack","infrastructure"],
+        quand:"Dès que le site collecte des données utilisateur (analytics, auth, pixels marketing). Obligatoire avant la mise en production — les amendes CNIL sont réelles et proportionnelles au CA.",
+        prompt:`@legal Lis project-context.md (modèle économique, données collectées). Lis docs/legal/rgpd-checklist.md et docs/legal/legal-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les données collectées (analytics, auth, paiement, marketing) et les services tiers utilisés (Stripe, Google Analytics, Hotjar, etc.) pour calibrer l'audit.
+
+Audit cookies et consentement complet :
+1. Inventaire des cookies : liste exhaustive des cookies et traceurs (first-party et third-party), pour chaque cookie : nom, finalité, durée, service tiers associé, base légale (consentement / intérêt légitime / nécessité contractuelle). Catégories : strictement nécessaires, performance, fonctionnels, marketing/ciblage.
+2. Bandeau cookie : texte conforme CNIL (pas de dark patterns, refus aussi facile qu'acceptation, pas de cookie wall sauf cas justifié), boutons accepter/refuser/personnaliser au même niveau visuel, lien vers politique de confidentialité.
+3. Consent Management Platform : recommandation CMP (Tarteaucitron, Axeptio, ou équivalent open source) avec justification. Configuration : granularité par catégorie, stockage du consentement (localStorage + API backend), durée de validité (13 mois max CNIL), re-consentement si nouveaux traceurs.
+4. Audit cookies tiers : chaque service tiers (analytics, marketing, A/B testing, chat) doit être conditionné au consentement approprié. Scripts chargés dynamiquement après consentement, pas avant.
+5. Registre des traitements : mise à jour avec les traitements liés aux cookies.
+6. Droit de retrait : mécanisme permettant à l'utilisateur de modifier son consentement à tout moment (lien dans le footer).
+
+Livrable : docs/legal/cookie-policy.md + mise à jour de docs/legal/rgpd-checklist.md.
+
+Puis @fullstack : lis docs/legal/cookie-policy.md et implémente le bandeau cookie avec la CMP recommandée. Le bandeau doit : bloquer les scripts non essentiels avant consentement, charger dynamiquement après consentement, stocker le choix, proposer un lien de modification dans le footer. Code dans src/. Un composant par fichier.
+
+Puis @infrastructure : lis docs/legal/cookie-policy.md et vérifie que les headers HTTP (CSP) autorisent les domaines des services tiers listés. Vérifie que le stockage du consentement est persisté côté serveur si nécessaire. Mets à jour docs/infra/infrastructure.md.
+
+Critères de validation : aucun cookie non essentiel n'est déposé avant consentement, le refus est aussi simple que l'acceptation, le registre des traitements est à jour, la CMP est fonctionnelle sur mobile et desktop.`
+      },
+      {
+        title:"Pipeline RAG (Retrieval-Augmented Generation)",
+        agents:["ia","fullstack","infrastructure"],
+        quand:"Quand le produit a besoin de répondre à des questions sur une base documentaire (FAQ intelligente, support client, recherche interne). Le RAG transforme des documents statiques en conversations dynamiques.",
+        prompt:`@ia Lis project-context.md (stack technique, budget IA, outils IA utilisés). Lis docs/ia/ai-architecture.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quel corpus de documents (type, volume, fréquence de mise à jour), quel cas d'usage (support client, recherche interne, assistant), quelle qualité de réponse attendue, quel budget mensuel IA.
+
+Architecture RAG complète :
+1. Ingestion : pipeline d'ingestion des documents (PDF, Markdown, HTML, CSV). Chunking strategy : taille optimale des chunks (512-1024 tokens recommandé), overlap (10-20%), métadonnées à conserver (source, date, section). Gestion des mises à jour (re-indexation incrémentale vs complète).
+2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options : OpenAI text-embedding-3-small, Voyage AI, Cohere embed-v3, ou modèle open source (BGE, E5). Benchmark sur un échantillon du corpus réel.
+3. Vector store : choix de la base vectorielle avec justification (Pinecone, Qdrant, Weaviate, pgvector, Supabase Vector). Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement (cloud vs self-hosted selon budget).
+4. Retrieval : stratégie de recherche (similarity search, MMR pour diversité, hybrid search BM25 + vectoriel). Nombre de chunks à récupérer (top-k), seuil de similarité minimum, re-ranking optionnel.
+5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe).
+6. Évaluation : métriques (faithfulness, relevance, answer correctness), dataset de test avec questions/réponses attendues, pipeline d'évaluation automatisé.
+7. Coût : estimation mensuelle détaillée (embeddings + stockage vectoriel + tokens LLM) selon le volume de requêtes estimé.
+
+Livrable : docs/ia/ai-architecture.md (section RAG) + docs/ia/model-selection.md + docs/ia/ai-cost-analysis.md.
+
+Puis @fullstack : lis docs/ia/ai-architecture.md et implémente le pipeline RAG dans src/lib/ai/ : client vectoriel, fonctions d'ingestion, route API de recherche, composant chat/recherche. Un fichier par module. Intègre le streaming pour les réponses longues.
+
+Puis @infrastructure : lis docs/ia/ai-architecture.md et configure la base vectorielle (provisioning, variables d'environnement, backups). Vérifie les rate limits des APIs d'embedding et de génération. Mets à jour docs/infra/infrastructure.md.
+
+Critères de validation : le pipeline ingère au moins un document de test, la recherche retourne des résultats pertinents avec sources citées, le coût mensuel est documenté et dans le budget, le fallback "je ne sais pas" fonctionne quand la question est hors corpus.`
+      },
+      {
+        title:"Disaster recovery & backup",
+        agents:["infrastructure","fullstack","qa"],
+        quand:"Avant la mise en production, ou dès que la base de données contient des données utilisateur réelles. Perdre des données utilisateur est le scénario catastrophe numéro 1.",
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Vercel, AWS, Railway, etc.), la base de données (PostgreSQL, Supabase, PlanetScale), et les services critiques (auth, paiement, stockage fichiers).
+
+Plan de disaster recovery complet :
+1. Stratégie de backup : backup automatique de la base de données (fréquence : au minimum quotidien, idéalement toutes les 6h pour les données critiques). Rétention : 7 jours glissants minimum, 1 backup mensuel conservé 90 jours. Backup des fichiers uploadés (S3/Supabase Storage). Backup de la configuration (variables d'environnement, secrets — chiffrés).
+2. RTO/RPO : définir le Recovery Time Objective (temps max d'indisponibilité acceptable) et le Recovery Point Objective (perte de données max acceptable). Recommandations par type de service : auth (RTO < 1h, RPO < 1h), données business (RTO < 4h, RPO < 6h), fichiers (RTO < 24h, RPO < 24h).
+3. Plan de reprise : procédure pas à pas pour chaque scénario (crash base de données, corruption de données, suppression accidentelle, compromission sécurité, panne hébergeur). Chaque procédure : étapes numérotées, commandes exactes, personne responsable, temps estimé.
+4. Redondance : base de données en mode réplica si le budget le permet, CDN pour les assets statiques, DNS failover.
+5. Monitoring des backups : alerte si un backup échoue, vérification automatique de l'intégrité (checksum), test de restauration mensuel planifié.
+6. Documentation : runbook accessible en cas d'urgence (pas besoin de chercher dans le code), contacts d'urgence (hébergeur, support DB, équipe).
+
+Livrable : docs/infra/disaster-recovery.md + scripts de backup dans src/scripts/ si applicable.
+
+Puis @fullstack : lis docs/infra/disaster-recovery.md et implémente les endpoints nécessaires : route API /api/admin/backup-status (état du dernier backup, taille, date), seed script pour recréer les données de base après restauration. Code dans src/.
+
+Puis @qa : lis docs/infra/disaster-recovery.md et crée un test de restauration : script qui restaure un backup de test et vérifie l'intégrité des données (count des tables, cohérence des relations). Documente la procédure dans docs/qa/qa-strategy.md section "Tests de disaster recovery".
+
+Critères de validation : les backups sont automatisés et monitorés, le RTO/RPO est défini pour chaque service, au moins un test de restauration a été exécuté avec succès, le runbook est complet et accessible.`
+      },
+      {
+        title:"Gestion des erreurs & feedback utilisateur",
+        agents:["fullstack","ux","design"],
+        quand:"Pendant le développement, dès les premiers parcours utilisateur implémentés. Les messages d'erreur sont souvent le dernier truc codé et le premier truc que l'utilisateur voit quand ça plante.",
+        prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/product/functional-specs.md et docs/ux/user-flows.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les parcours critiques (signup, achat, soumission de formulaire) et les erreurs les plus fréquentes attendues.
+
+Stratégie de gestion des erreurs complète :
+1. Error boundaries React : composants ErrorBoundary par section de l'app (layout, page, composant). Fallback UI adapté (pas un écran blanc, mais un message utile avec action de recovery). Logging automatique vers Sentry ou équivalent.
+2. Gestion des erreurs API : intercepteur global (middleware Next.js ou wrapper fetch). Catégorisation : erreur réseau (retry automatique avec backoff exponentiel), erreur 4xx (feedback utilisateur), erreur 5xx (fallback + alerte). Format d'erreur standardisé (code, message user-friendly, message technique pour les logs).
+3. Retry patterns : pour les opérations idempotentes (GET, lecture), retry automatique (3 tentatives, backoff exponentiel 1s-2s-4s). Pour les mutations (POST, PUT), pas de retry automatique (risque de doublon), mais bouton "Réessayer" dans l'UI.
+4. États de chargement : skeleton screens (pas de spinners), optimistic updates pour les actions rapides, progress bars pour les opérations longues (upload, génération IA).
+5. Offline handling : détection de la perte de connexion, queue des actions en attente, synchronisation au retour, notification utilisateur.
+6. Logging structuré : chaque erreur loggée avec contexte (userId, route, action, stack trace, timestamp). Pas de données sensibles dans les logs (PII, tokens, mots de passe).
+
+Livrable : docs/dev-decisions.md (section "Stratégie erreurs") + code des error boundaries et intercepteurs dans src/.
+
+Puis @ux : lis docs/dev-decisions.md section erreurs. Définis les messages d'erreur pour chaque cas (réseau, validation, permission, serveur, not found). Chaque message doit : expliquer ce qui s'est passé (en langage humain, pas de code technique), proposer une action (réessayer, vérifier la connexion, contacter le support). Ton aligné avec docs/copy/brand-voice.md si disponible. Livrable : docs/ux/error-messages.md.
+
+Puis @design : lis docs/ux/error-messages.md et conçois les composants d'erreur (toast notifications, inline errors, full-page errors, empty states). Respecte les tokens de docs/design/design-tokens.json. Les erreurs critiques en rouge, les warnings en orange, les infos en bleu. Livrable : mise à jour de docs/design/design-system.md section "Error states".
+
+Critères de validation : aucun écran blanc en cas d'erreur, chaque erreur API a un message user-friendly, les retry sont implémentés pour les opérations idempotentes, le logging est structuré et sans PII.`
+      },
+      {
+        title:"Performance budget & optimisation",
+        agents:["infrastructure","fullstack","design"],
+        quand:"Après le setup initial et les premiers composants — avant que la dette de performance ne s'accumule. Plus facile de maintenir un budget perf que de rattraper un site lent.",
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement). Lis docs/infra/infrastructure.md et docs/infra/performance-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur la stack (Next.js, framework CSS, libs lourdes), l'hébergeur, et les pays cibles (latence CDN).
+
+Performance budget et plan d'optimisation :
+1. Budget par route : définir les limites pour chaque route critique. Landing page : LCP < 1.5s, JS < 100KB gzipped, total < 500KB. App (dashboard) : LCP < 2.5s, JS < 200KB gzipped, total < 1MB. Les budgets doivent être mesurés sur mobile 4G (throttled).
+2. Bundle analysis : analyser le bundle actuel (next build + @next/bundle-analyzer). Identifier les dépendances lourdes (> 50KB gzipped), les imports non tree-shakés, le code mort. Pour chaque dépendance lourde : alternative plus légère ou stratégie de lazy loading.
+3. Image optimization : audit des images (format, taille, responsive). Convertir en WebP/AVIF, utiliser next/image avec sizes et priority. Lazy loading pour les images below the fold. Budget : aucune image > 200KB, hero image < 100KB.
+4. Lazy loading : code splitting par route (automatique Next.js), lazy loading des composants lourds (éditeurs, graphiques, maps) avec dynamic() et Suspense. Les composants above the fold ne sont JAMAIS lazy loaded.
+5. Caching : stratégie de cache par type de ressource (static assets : 1 an, API responses : selon fraîcheur, pages ISR : revalidate selon le contenu). Headers Cache-Control documentés. CDN : vérifier que les assets statiques sont servis depuis le CDN le plus proche.
+6. Monitoring continu : intégrer web-vitals pour mesurer LCP, CLS, INP en production. Alertes si dégradation > 20% sur 24h. Dashboard dans docs/analytics/dashboard-specs.md.
+7. CI/CD gate : ajouter un check de taille de bundle dans la CI (erreur si le budget est dépassé). Outil : bundlesize ou size-limit.
+
+Livrable : docs/infra/performance-budget.md + configuration bundle analyzer.
+
+Puis @fullstack : lis docs/infra/performance-budget.md et applique les optimisations identifiées : remplacer les dépendances lourdes, ajouter le lazy loading, configurer next/image, implémenter le code splitting. Un fichier par Edit. Ajoute le check de bundle size dans la CI.
+
+Puis @design : lis docs/infra/performance-budget.md et vérifie que les choix visuels sont compatibles avec le budget perf. Les animations CSS uniquement (pas de JS), les polices limitées à 2 variantes max (woff2), les icônes en SVG inline (pas de font icon). Signale les composants visuels qui risquent de dépasser le budget. Mets à jour docs/design/design-system.md section "Performance constraints".
+
+Critères de validation : chaque route critique a un budget défini et mesuré, le bundle JS principal est < 200KB gzipped, aucune image > 200KB, le check CI bloque les régressions de taille, les Core Web Vitals sont dans le vert sur mobile.`
+      },
+      {
+        title:"Plan de scalabilité technique",
+        agents:["infrastructure","fullstack","ia"],
+        quand:"Quand le produit atteint 1000+ utilisateurs actifs ou quand des pics de charge sont prévisibles (lancement, campagne marketing). Anticiper le scaling coûte 10x moins cher que le gérer en urgence.",
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget, nombre d'utilisateurs estimé). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions : stack actuelle, hébergeur, base de données, nombre d'utilisateurs actuels et cible à 6/12 mois, pics de charge prévisibles.
+
+Plan de scalabilité technique :
+1. Audit de la capacité actuelle : identifier les bottlenecks (base de données, API, compute, stockage). Estimer la charge max supportée actuellement (requêtes/seconde, connexions simultanées, taille DB).
+2. Caching multi-niveaux : CDN pour les assets et pages statiques, cache applicatif (Redis/Upstash) pour les requêtes fréquentes, cache de requêtes DB (query caching), cache navigateur (Service Worker si pertinent). Pour chaque niveau : TTL, invalidation strategy, taille estimée.
+3. Base de données : indexation (identifier les requêtes lentes, ajouter les index manquants), connection pooling (PgBouncer ou équivalent), read replicas si le ratio lecture/écriture le justifie (> 80% lectures), sharding si volume > 10M rows sur une table. Migration plan si changement de tier nécessaire.
+4. API et compute : rate limiting par utilisateur et par IP, queue pour les tâches longues (génération IA, emails, exports) avec BullMQ ou équivalent, autoscaling si l'hébergeur le supporte, serverless vs always-on selon le pattern de trafic.
+5. CDN et edge : servir les assets depuis l'edge (Vercel Edge, Cloudflare), edge functions pour la personnalisation géographique, optimisation des images à la volée.
+6. Load balancing : si multi-instance, stratégie de répartition (round-robin, least connections), health checks, sticky sessions si nécessaire (WebSocket, uploads).
+7. Coût de scaling : estimation du coût par palier (100, 1K, 10K, 100K utilisateurs). Identifier le palier où un changement d'architecture est nécessaire. Le scaling doit être progressif, pas un big bang.
+8. Monitoring de charge : métriques à surveiller (CPU, mémoire, connexions DB, queue depth, latence P95, P99). Alertes avant saturation (80% de la capacité).
+
+Livrable : docs/infra/scalability-plan.md.
+
+Puis @fullstack : lis docs/infra/scalability-plan.md et implémente les optimisations code identifiées : connection pooling, caching des requêtes fréquentes, queue pour les tâches longues, rate limiting. Code dans src/.
+
+Puis @ia : lis docs/infra/scalability-plan.md et évalue l'impact du scaling sur les coûts IA (plus d'utilisateurs = plus d'appels LLM). Mets à jour docs/ia/ai-cost-analysis.md avec les projections par palier d'utilisateurs. Recommande des optimisations (prompt caching, batching, modèle moins cher pour les requêtes simples).
+
+Critères de validation : les bottlenecks actuels sont identifiés et documentés, le plan de scaling est progressif avec des paliers clairs, le coût par palier est estimé, les optimisations prioritaires sont implémentées, le monitoring de charge est en place.`
       }
     ]
   },
