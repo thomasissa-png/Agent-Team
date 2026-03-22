@@ -1367,7 +1367,11 @@ Puis @ux : lis docs/dev-decisions.md section erreurs. Définis les messages d'er
 
 Puis @design : lis docs/ux/error-messages.md et conçois les composants d'erreur (toast notifications, inline errors, full-page errors, empty states). Respecte les tokens de docs/design/design-tokens.json. Les erreurs critiques en rouge, les warnings en orange, les infos en bleu. Livrable : mise à jour de docs/design/design-system.md section "Error states".
 
-Critères de validation : aucun écran blanc en cas d'erreur, chaque erreur API a un message user-friendly, les retry sont implémentés pour les opérations idempotentes, le logging est structuré et sans PII.`
+Conformité : les logs d'erreur ne doivent contenir aucune PII (RGPD article 25 — privacy by design). Vérifier que les messages d'erreur côté client ne révèlent pas d'informations techniques exploitables (stack traces, chemins serveur, versions). Les pages d'erreur (404, 500) doivent être crawlables et renvoyer le bon status code HTTP (pas un 200 avec un message d'erreur).
+
+SEO : les pages 404 custom doivent avoir un meta noindex, un lien vers la homepage, et un sitemap à jour pour éviter les pages orphelines. Les pages d'erreur doivent être légères (LCP < 2s).
+
+Critères de validation : aucun écran blanc en cas d'erreur, chaque erreur API a un message user-friendly, les retry sont implémentés pour les opérations idempotentes, le logging est structuré et sans PII, les pages d'erreur renvoient les bons status HTTP.`
       },
       {
         title:"Performance budget & optimisation",
@@ -1640,7 +1644,11 @@ Puis @product-manager : lis docs/growth/referral-program.md et intègre le progr
 
 Puis @fullstack : lis docs/growth/referral-program.md et docs/product/functional-specs.md. Implémente le système de referral : génération de liens uniques, tracking, attribution, interface in-app. Code dans src/.
 
-Critères de validation : le K-factor cible est défini, les anti-abus sont en place, le tracking est complet (de l'invitation à la conversion payante).`
+Conformité : le programme de referral doit respecter le RGPD — consentement du filleul avant tout traitement de ses données (l'email partagé par le parrain ne suffit pas comme base légale), politique anti-spam sur les emails d'invitation (pas d'envoi automatique sans action explicite du parrain), transparence sur les conditions de la récompense (pas de conditions cachées). Si le referral implique une récompense financière, vérifier les obligations fiscales.
+
+Performance : le système de referral (génération de liens, tracking) ne doit pas impacter les Core Web Vitals — les scripts de tracking doivent être chargés en async.
+
+Critères de validation : le K-factor cible est défini, les anti-abus sont en place, le tracking est complet (de l'invitation à la conversion payante), la conformité RGPD est vérifiée, les conditions sont transparentes.`
       },
       {
         title:"Réduire le churn et fidéliser les utilisateurs",
@@ -1728,7 +1736,11 @@ Puis @growth : lis docs/social/community-strategy.md et intègre la communauté 
 
 Puis @copywriter : lis docs/social/community-strategy.md et rédige : la charte communautaire (ton accueillant mais cadré), les templates de posts d'animation (AMA, sondage, annonce feature, welcome message), les réponses types aux questions fréquentes. Livrable : docs/copy/community-templates.md.
 
-Critères de validation : maximum 2 plateformes retenues avec justification, la charte est rédigée, le calendrier d'animation couvre les 4 premières semaines, les métriques de succès sont définies avec des seuils.`
+Conformité : la communauté doit respecter le RGPD — politique de confidentialité accessible, consentement pour les communications marketing, modération conforme au DSA (Digital Services Act) si la communauté est hébergée par la marque. Les données communautaires (emails, messages) doivent être traitées conformément au registre des traitements.
+
+GEO : le contenu communautaire (FAQ, discussions, use cases) est une source de contenu citable par les LLM. Structurer les meilleures discussions en articles FAQ publics (avec claims vérifiables et entités nommées) pour alimenter la visibilité GEO. Les témoignages communautaires = social proof citable.
+
+Critères de validation : maximum 2 plateformes retenues avec justification, la charte est rédigée, le calendrier d'animation couvre les 4 premières semaines, les métriques de succès sont définies avec des seuils, la conformité RGPD/DSA est documentée.`
       },
       {
         title:"Monitoring UX (session replay & heatmaps)",
@@ -1806,9 +1818,9 @@ Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), zéro bl
       },
       {
         title:"Revue intermédiaire (mid-projet)",
-        agents:["reviewer"],
+        agents:["reviewer","legal"],
         quand:"Au moins 3 livrables produits, avant d'aller plus loin. La revue intermédiaire détecte les dérives avant qu'elles ne coûtent cher.",
-        prompt:`@reviewer Lis tous les fichiers dans docs/ produits jusqu'ici. Lis aussi project-context.md pour vérifier l'alignement.
+        prompt:`@reviewer Lis tous les fichiers dans docs/ produits jusqu'ici. Si aucun livrable n'existe dans docs/, signale-le et propose les 3 premiers prompts à lancer selon le stade du projet dans project-context.md. Lis aussi project-context.md pour vérifier l'alignement. S'il n'existe pas, signale-le comme blocker n.1.
 
 Vérifie la cohérence croisée sur ces axes :
 1. Specs ↔ code : docs/product/functional-specs.md ↔ src/. Features manquantes ou divergentes.
@@ -1817,12 +1829,17 @@ Vérifie la cohérence croisée sur ces axes :
 4. Design ↔ code : docs/design/design-tokens.json ↔ src/. Valeurs hardcodées vs tokens.
 5. Persona drift : le persona dans tous les livrables est-il celui de project-context.md ?
 6. Livrables manquants : quels livrables sont nécessaires pour continuer mais n'existent pas encore ?
+7. Conformité légale : si docs/legal/ existe, est-il cohérent avec le modèle économique et les données traitées ? Si docs/legal/ n'existe pas et que le projet traite des données personnelles ou du paiement, signaler comme blocker.
+8. Performance : les choix techniques et visuels documentés sont-ils compatibles avec un LCP < 2.5s ?
+9. GEO/SEO : le contenu existant est-il structuré pour le référencement (headings, meta, JSON-LD) et citable par les LLM (entités nommées, claims vérifiables) ?
 
 Signale : contradictions, dérives par rapport au project-context.md, livrables manquants bloquants.
 
 Livrable : docs/reviews/mid-review.md avec statut par axe (OK / Warning / Blocker) et actions correctives recommandées.
 
-Critères de validation : chaque axe a un verdict, les actions correctives sont assignées à un agent spécifique.`
+Puis @legal : si des livrables existent dans docs/legal/, vérifie qu'ils sont toujours alignés avec l'état actuel du projet (le projet a pu évoluer depuis l'audit juridique initial). Signale les mises à jour nécessaires.
+
+Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), les actions correctives sont assignées à un agent spécifique avec le chemin du livrable à corriger, les dimensions légale, performance et GEO sont couvertes.`
       },
       {
         title:"Audit qualité & tests complets",
@@ -2087,7 +2104,13 @@ Livrables : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section a
 
 Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement.
 
-Critères de validation : l'agent créé passe le test unitaire (lit project-context.md, refuse si champs manquants, produit un livrable spécifique), le fichier agent suit le standard des agents existants, CLAUDE.md et orchestrator.md sont mis à jour.`
+7. Dimensions transversales : le nouvel agent doit intégrer les dimensions transversales dans son protocole quand pertinent — conformité légale (RGPD, accessibilité), performance (impact sur les Core Web Vitals), GEO/SEO (contenu structuré pour les LLM). Ne pas créer d'agents "en silo" qui ignorent ces dimensions.
+
+Livrables : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents, convention d'appel, tableau d'ordre de priorité) + mise à jour de .claude/agents/orchestrator.md (section pipeline, phase d'insertion).
+
+Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement.
+
+Critères de validation : l'agent créé passe le test unitaire (lit project-context.md, refuse si champs manquants, produit un livrable spécifique), le fichier agent suit le standard des agents existants, CLAUDE.md et orchestrator.md sont mis à jour, les dimensions transversales sont intégrées quand pertinent.`
       },
       {
         title:"Migrer la stack technique",
@@ -2230,7 +2253,11 @@ Livrable : docs/analytics/investor-reporting.md + docs/analytics/dashboard-specs
 
 Puis @product-manager : lis docs/analytics/investor-reporting.md et complète avec la narrative produit : roadmap highlights pour le prochain trimestre, milestones atteints, decisions clés et leur rationale. Ajoute dans docs/product/investor-narrative.md. Le deck investisseur doit raconter une histoire cohérente entre les métriques et la vision produit.
 
-Critères de validation : toutes les métriques SaaS essentielles sont définies avec leur formule de calcul, le template de reporting mensuel est prêt à remplir, le dashboard a un layout défini, la narrative est alignée avec les métriques.`
+Conformité : si le reporting est destiné à des investisseurs dans le cadre d'une levée de fonds, vérifier les obligations de transparence (pas de métriques trompeuses, définitions cohérentes d'un mois à l'autre, distinction entre MRR contractuel et MRR réalisé). Les projections doivent être identifiées comme telles (pas présentées comme des faits). Les données personnelles des utilisateurs ne doivent pas apparaître dans le reporting (pas de noms, pas d'emails — uniquement des métriques agrégées).
+
+Performance du dashboard : si le reporting est intégré à l'app (admin dashboard), vérifier que les requêtes analytics ne dégradent pas les performances de l'app principale (requêtes lourdes en background, cache des métriques, read replicas si nécessaire).
+
+Critères de validation : toutes les métriques SaaS essentielles sont définies avec leur formule de calcul, le template de reporting mensuel est prêt à remplir, le dashboard a un layout défini, la narrative est alignée avec les métriques, les projections sont clairement identifiées comme telles.`
       },
       {
         title:"Veille concurrentielle automatisée",
@@ -2252,7 +2279,11 @@ Puis @data-analyst : lis docs/strategy/competitive-watch.md et configure les out
 
 Puis @growth : lis docs/strategy/competitive-watch.md et identifie les opportunités d'acquisition exploitables : mots-clés où les concurrents sont faibles, canaux sous-exploités par la concurrence, audiences des concurrents à cibler (audiences lookalike, comparatif content). Mets à jour docs/growth/growth-strategy.md section "Opportunités concurrentielles".
 
-Critères de validation : au moins 3 concurrents directs cartographiés avec données réelles (pas inventées), les outils de monitoring sont configurés, les axes de différenciation sont documentés, le template de rapport mensuel est prêt, les alertes critiques sont définies.`
+GEO : surveiller la visibilité des concurrents sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity). Interroger les LLM sur les requêtes clés du secteur — si un concurrent est cité et pas nous, c'est un signal d'action. Ajouter un axe "visibilité LLM" dans le rapport mensuel.
+
+Conformité : la veille concurrentielle doit rester dans le cadre légal — pas de scraping de données personnelles, pas d'accès non autorisé à des informations confidentielles. La surveillance des prix et des features publiques est légale. La surveillance des marques déposées (contrefaçon, usage abusif du nom) est recommandée.
+
+Critères de validation : au moins 3 concurrents directs cartographiés avec données réelles (pas inventées), les outils de monitoring sont configurés, les axes de différenciation sont documentés, le template de rapport mensuel est prêt, les alertes critiques sont définies, la visibilité LLM est surveillée.`
       }
     ]
   }
@@ -2325,7 +2356,7 @@ const CHANGELOG = [
   <p class="hero-sub">Une équipe de 19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement.</p>
   <div class="hero-stats">
     <div class="hero-stat"><span class="stat-num">19</span><span class="stat-label">Agents</span></div>
-    <div class="hero-stat"><span class="stat-num">59</span><span class="stat-label">Prompts</span></div>
+    <div class="hero-stat"><span class="stat-num">75</span><span class="stat-label">Prompts</span></div>
     <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
   </div>
 </div>
