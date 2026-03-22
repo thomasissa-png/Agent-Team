@@ -20,7 +20,7 @@ Lourde — 18 agents, mission unique d'audit
 - @creative-strategy : positionnement, personas, branding dans les prompts
 - @product-manager : specs, user stories, priorisation, completude fonctionnelle
 - @copywriter : qualite redactionnelle, clarte, persuasion
-- Statut : EN ATTENTE
+- Statut : EN COURS
 
 ### Groupe 2 (technique)
 - @fullstack : qualite technique, faisabilite, architecture code
