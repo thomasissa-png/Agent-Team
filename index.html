@@ -1047,6 +1047,56 @@ Puis @ux : vérifie que les adaptations mobiles respectent les parcours utilisat
 Puis @infrastructure : lis la section responsive et vérifie la compatibilité avec les images responsive (srcset, format WebP/AVIF), le lazy loading, et les Core Web Vitals mobiles. Note dans docs/infra/infrastructure.md.
 
 Critères de validation : chaque breakpoint est documenté, les touch targets font 44x44px minimum, aucun parcours critique n'est dégradé sur mobile.`
+      },
+      {
+        title:"Design responsive avancé",
+        agents:["design","ux","fullstack","infrastructure"],
+        quand:"Au-delà des breakpoints basiques — pour les cas complexes : tableaux de données, dashboards, formulaires longs, navigation riche, contenu dense. À lancer après le design system de base.",
+        prompt:`@design Lis docs/design/design-system.md (tokens, composants) et docs/ux/user-flows.md (parcours). S'ils n'existent pas, pose-moi les questions pour les créer et génère-les avant de continuer. Lis project-context.md (persona, devices cibles).
+
+Définis les patterns responsive avancés :
+1. Composants complexes : pour chaque composant complexe (tableaux de données, formulaires multi-étapes, dashboards, sidebars, modales, carousels), définir le comportement par breakpoint — pas juste "empiler", mais repenser l'interaction (tableau → cards sur mobile, sidebar → bottom sheet, formulaire long → stepper).
+2. Navigation adaptative : hamburger menu, bottom navigation bar (mobile), sidebar (desktop), breadcrumbs, tabs — définir quel pattern à quel breakpoint et pourquoi. Navigation au pouce sur mobile (zone de confort : bas de l'écran).
+3. Typographie fluide : échelle de taille responsive (clamp() CSS), line-height adaptatif, longueur de ligne optimale (45-75 caractères par ligne).
+4. Grille et espacements : système de grille responsive (12 colonnes desktop → 4 colonnes mobile), gouttières adaptatives, marges de sécurité par breakpoint.
+5. Images et médias : art direction (cadrage différent par device), srcset avec tailles exactes, aspect ratios préservés, placeholder LQIP (Low Quality Image Placeholder).
+6. Interactions tactiles : touch targets 44x44px minimum, swipe gestures, pull-to-refresh si pertinent, long press alternatives aux hover states.
+7. Performance mobile : budget spécifique mobile (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset par device.
+
+Livrable : docs/design/responsive-specs.md (avec wireframes textuels par breakpoint pour chaque composant complexe).
+
+Puis @ux : lis docs/design/responsive-specs.md et vérifie que chaque parcours critique reste fluide sur mobile 375px. Teste mentalement les edge cases : clavier virtuel ouvert (réduit la hauteur visible de 50%), mode paysage, grand texte (accessibilité). Vérifie la navigation au pouce. Ajoute les corrections dans docs/ux/ux-audit.md.
+
+Puis @fullstack : lis docs/design/responsive-specs.md et évalue la faisabilité technique. Propose l'implémentation CSS (container queries vs media queries, CSS Grid vs Flexbox, aspect-ratio). Identifie les composants qui nécessitent du JS pour le responsive (resize observers, intersection observers). Livrable : docs/dev-decisions.md section "Responsive".
+
+Puis @infrastructure : vérifie la compatibilité avec le CDN (images responsive servies par le CDN), le cache (variation par device), et les Core Web Vitals mobiles. Livrable : docs/infra/infrastructure.md section "Mobile performance".
+
+Critères de validation : chaque composant complexe a un comportement défini par breakpoint, les touch targets sont > 44x44px, la performance mobile respecte le budget (LCP < 3s sur 3G), la navigation au pouce est optimisée.`
+      },
+      {
+        title:"Onboarding utilisateur gamifié",
+        agents:["ux","design","copywriter","data-analyst"],
+        quand:"Après les parcours utilisateur — pour concevoir un onboarding qui maximise l'activation et la rétention. Complémentaire au raccourci 'Optimiser l'onboarding' (celui-ci est plus axé conception, l'autre est un audit).",
+        prompt:`@ux Lis docs/ux/user-flows.md (parcours existants ou à créer) et docs/strategy/brand-platform.md (persona). S'ils n'existent pas, pose-moi les questions (persona principal, action d'activation, job-to-be-done principal) et génère-les avant de continuer.
+
+Conçois le système d'onboarding complet :
+1. Parcours d'activation : du signup au "aha moment" en < 3 minutes. Identifier l'action unique qui prédit la rétention (ex : "créer son premier dashboard", "inviter un collègue", "connecter sa source de données"). Tout l'onboarding doit guider vers cette action.
+2. Progressive profiling : ne demander que l'email au signup. Collecter les informations supplémentaires au fil de l'usage (nom, entreprise, rôle — quand elles deviennent utiles). Chaque champ supplémentaire au signup = ~5% d'abandon.
+3. Guided tour : checklist de démarrage (3-5 items max), tooltips contextuels (pas un tour linéaire imposé), hotspots sur les fonctionnalités clés. L'utilisateur doit pouvoir skipper et revenir.
+4. Empty states : chaque écran vide est une opportunité d'engagement — template de données, appel à l'action contextuel, tutoriel intégré. Jamais d'écran blanc sans guide.
+5. Gamification (si cohérent avec la marque) : barre de progression, célébrations au milestone, streaks, badges — uniquement si aligné avec le persona (éviter sur du B2B enterprise sérieux).
+6. Réengagement : emails automatiques si onboarding incomplet (J+1, J+3, J+7), notification in-app au retour, sauvegarde de la progression.
+7. Accessibilité : le parcours doit être navigable au clavier, les tooltips accessibles, les animations désactivables (prefers-reduced-motion).
+
+Livrable : docs/ux/onboarding-flow.md (avec wireframes textuels de chaque écran et métriques de conversion cibles par étape).
+
+Puis @design : lis docs/ux/onboarding-flow.md et docs/design/design-system.md. Conçois les composants visuels de l'onboarding : checklist UI, tooltips, barre de progression, empty states, écrans de célébration. Les animations doivent être compatibles avec un LCP < 2.5s. Livrable : docs/design/component-library.md section "Onboarding".
+
+Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. Rédige le microcopy de chaque étape : welcome message personnalisé, labels de checklist motivants (pas "Étape 1" mais "Crée ton premier X"), tooltips concis, messages de succès engageants, emails de réengagement (sujet + corps). Livrable : docs/copy/ux-writing-guide.md section "Onboarding".
+
+Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel d'activation : event par étape, taux de complétion cible, cohorte analysis par semaine, alerte si drop > 20% entre deux étapes. Définis le "activation rate" comme KPI clé de l'onboarding. Livrable : docs/analytics/tracking-plan.md section "Onboarding funnel".
+
+Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'action, les emails de réengagement sont rédigés, le funnel d'activation est trackable.`
       }
     ]
   },
