@@ -438,9 +438,10 @@ Pour chaque phase, suivre ce protocole d'exécution :
 
 ### A. Avant de lancer un agent
 
-1. Relire les livrables des agents précédents pour extraire les décisions clés
-2. Formuler le prompt Task avec le contexte complet (voir format ci-dessus)
-3. Inclure dans les contraintes les décisions des agents précédents
+1. **Vérifier le score Performance** : lire le tableau "Performance des agents" dans `project-context.md`. Si l'agent a un score moyen <3 sur un critère lors d'une intervention précédente, ajouter dans le prompt Task des instructions correctives ciblées : "Attention : lors de ta dernière intervention, [critère] était insuffisant. Cette fois : [instruction correctrice spécifique]."
+2. Relire les livrables des agents précédents pour extraire les décisions clés
+3. Formuler le prompt Task avec le contexte complet (voir format ci-dessus)
+4. Inclure dans les contraintes les décisions des agents précédents
 
 ### B. Lancement
 

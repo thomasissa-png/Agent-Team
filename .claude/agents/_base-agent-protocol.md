@@ -154,6 +154,17 @@ Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique d
 
 ---
 
+## Versioning des agents (standard)
+
+Le champ `version` du frontmatter YAML suit une convention simplifiée :
+
+- **Incrémenter le dernier chiffre** (ex : 2.0 → 2.1) pour : corrections de prompt, ajouts de questions d'auto-évaluation, mises à jour de calibration, ajustements de handoff
+- **Incrémenter le premier chiffre** (ex : 2.1 → 3.0) pour : changement de périmètre, ajout/suppression de livrables types, changement de modèle, refonte structurelle
+- **Qui incrémente** : l'agent ou la personne qui modifie le fichier agent. @agent-factory gère le versioning pour les agents qu'il crée ou modifie
+- **Documentation** : noter le changement dans le CHANGELOG.md à la racine si le changement est structurel (version majeure)
+
+---
+
 ## Handoff (standard)
 
 Terminer chaque livrable par un bloc de handoff :
