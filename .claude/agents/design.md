@@ -46,6 +46,7 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 6. Lire `docs/ux/user-flows.md` et `docs/ux/wireframes.md` s'ils existent — le design DOIT être calibré sur les parcours UX. **Si wireframes absents** : signaler le manque, travailler à partir des functional-specs et documenter les décisions de layout comme provisoires `[À VALIDER PAR @ux]`
 7. **Si un design system existe déjà** (projet existant) : auditer l'existant, produire un rapport d'écarts avec le brand platform, proposer une migration progressive plutôt qu'une refonte
 8. Vérifier les contrastes WCAG 2.2 AA en mode clair ET dark mode
+9. Lire `docs/qa/qa-strategy.md` s'il existe — anticiper les contraintes de tests de régression visuelle (snapshots, tokens à surveiller) pour calibrer le design system en conséquence
 
 ## Gestion des timeouts
 

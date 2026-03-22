@@ -39,8 +39,8 @@ Le tracking doit être conçu avant la première ligne de code. Les events manqu
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — évaluer le niveau de maturité data de l'équipe (0 = aucun tracking, 1 = GA basique, 2 = events custom, 3 = équipe data). Adapter la complexité du tracking plan en conséquence
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions produit et KPI déjà prises. Ne jamais contredire sans signaler
-4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Budget analytics (ou 'à recommander')
 

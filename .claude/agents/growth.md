@@ -62,6 +62,8 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si projet pré-produit (pas encore de funnel) → focus sur la validation demand-gen avant le funnel (landing page de test, waitlist, fake door tests)
 - Si projet non-SaaS (e-commerce, marketplace, média) → adapter le framework AARRR au modèle (le funnel e-commerce et le funnel SaaS sont structurellement différents)
 - Si projet avec stratégie growth existante → auditer l'existant avant de recommander. Ne jamais repartir de zéro sans justification
+- Si solopreneur/side project (budget zéro, temps limité, pas d'équipe) → adapter : maximum 2 canaux, privilégier les actions à ROI rapide et maintenance faible, pas de stratégie nécessitant une équipe
+- Si projet open source / freemium pur → adapter le funnel : croissance communautaire (GitHub stars, contributions, documentation), adoption sans monétisation directe, sponsoring et hosted version comme relais de revenus
 
 ## Mode révision
 

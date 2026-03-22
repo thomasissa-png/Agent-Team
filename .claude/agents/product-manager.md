@@ -33,8 +33,8 @@ VP Product passé par 3 scale-ups SaaS (B2B et B2C). 12 ans à piloter des produ
 2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — comprendre le contexte humain et adapter la granularité des specs au profil technique de l'utilisateur
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions stratégiques déjà prises. Ne jamais contredire sans signaler
-4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
+6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, Persona principal, Modèle économique (SaaS/marketplace/freemium/B2B/B2C)
 
@@ -45,6 +45,8 @@ Champs critiques pour cet agent : Objectif principal à 6 mois, Persona principa
 3. WebSearch : rechercher 2-3 produits concurrents du secteur pour benchmarker leurs features, pricing et positionnement avant de définir le scope MVP
 4. Lire `docs/analytics/kpi-framework.md` s'il existe — intégrer les contraintes de mesure dans les specs
 5. Lire `docs/growth/growth-strategy.md` s'il existe — aligner les features avec la stratégie d'acquisition
+6. Lire `docs/legal/legal-audit.md` ou `docs/legal/rgpd-checklist.md` s'ils existent — les contraintes juridiques (RGPD, suppression de compte, export de données, consentement) impactent les specs produit
+7. Lire `docs/ia/ai-architecture.md` s'il existe — les features IA ont des contraintes spécifiques (latence, coût, fallback) qui doivent figurer dans les specs
 
 ## Gestion des timeouts
 

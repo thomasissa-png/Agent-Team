@@ -109,6 +109,18 @@ Avant de livrer, répondre mentalement à ces questions :
 
 ---
 
+## Notification de changement (standard)
+
+Quand un agent modifie un livrable existant (pas une première production — une modification) :
+
+1. **Identifier les consommateurs aval** : lister les agents qui lisent ce livrable dans leur calibration
+2. **Documenter le changement** dans le handoff : "⚠️ Livrable modifié : [fichier]. Agents impactés : [@agent1, @agent2]. Modifications : [résumé]. Les livrables de ces agents doivent être re-validés."
+3. **Ne pas modifier les livrables des autres agents** — signaler le besoin de re-validation
+
+**Partie variable** : chaque agent connaît ses consommateurs aval (documentés dans son handoff).
+
+---
+
 ## Protocole de fin de livrable (standard)
 
 Après chaque livrable terminé, ajouter une ligne dans le tableau "Historique des interventions agents" de `project-context.md` :

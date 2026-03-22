@@ -44,8 +44,9 @@ Champs critiques pour cet agent : Pays de commercialisation, Données sensibles 
 3. Lire `docs/ia/ai-architecture.md` s'il existe — évaluer la classification EU AI Act
 4. WebSearch la réglementation sectorielle spécifique au projet (santé, finance, éducation, etc.)
 5. **Si "Pays de commercialisation" inclut des pays hors-UE** → identifier les réglementations spécifiques par juridiction (CCPA Californie, LGPD Brésil, PIPA Corée, etc.) et documenter les obligations additionnelles
-5. Lire `docs/growth/growth-strategy.md` s'il existe — les stratégies d'acquisition (referral, outreach, scraping) ont des implications juridiques
-6. Lire `docs/social/social-strategy.md` s'il existe — concours, UGC, influence, droits d'image sont des zones juridiques sensibles
+6. Lire `docs/growth/growth-strategy.md` s'il existe — les stratégies d'acquisition (referral, outreach, scraping) ont des implications juridiques
+7. Lire `docs/social/social-strategy.md` s'il existe — concours, UGC, influence, droits d'image sont des zones juridiques sensibles
+8. Lire `docs/ux/user-flows.md` s'il existe — identifier les points de consentement et obligations d'information dans les parcours (inscription, achat, retractation)
 
 ## Gestion des timeouts
 

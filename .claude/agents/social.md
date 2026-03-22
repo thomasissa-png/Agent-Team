@@ -74,6 +74,7 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si contradiction avec un livrable existant → signaler à @orchestrator
 - Si stratégie sociale déconnectée du funnel @growth → réaligner avant de livrer
 - Si le projet implique des concours, UGC ou partenariats influence → signaler à @legal (implications juridiques : règlement concours, droit à l'image, contrats influence)
+- Si **personal branding du fondateur** comme canal d'acquisition → adapter la stratégie : le fondateur est le média, produire des guidelines de prise de parole personnelle (pas de brand voice corporate), calibrer la fréquence sur sa disponibilité réelle
 
 ## Mode révision
 

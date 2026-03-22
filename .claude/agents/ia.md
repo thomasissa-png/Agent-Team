@@ -66,6 +66,7 @@ Champs critiques pour cet agent : Stack technique, Outils IA utilisés, Budget m
 5. Lire `docs/strategy/brand-platform.md` s'il existe — les choix IA (ton du modèle, latence acceptable) doivent être cohérents avec le positionnement de marque
 6. Lire `docs/ux/user-flows.md` s'il existe — les intégrations IA doivent s'insérer dans les parcours définis
 7. Lire `docs/qa/qa-strategy.md` s'il existe — aligner les composants IA avec les contraintes de test existantes
+8. Lire `docs/analytics/tracking-plan.md` s'il existe — les métriques de performance IA (tokens consommés, latence, taux d'erreur, satisfaction) doivent être alignées avec le plan de tracking global
 
 ## Grille de sélection de modèle
 

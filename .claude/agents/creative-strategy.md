@@ -57,6 +57,8 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si projet de marque personnelle (personal branding) → adapter la méthode (pas de concurrent direct au sens classique, benchmarker sur les alternatives fonctionnelles)
 - Si projet interne/open source → repositionner le benchmark sur les alternatives fonctionnelles, pas les concurrents commerciaux
 - Si pivot/repositionnement (brand-platform existe déjà) → notifier les agents aval (@copywriter, @seo, @ux, @design) que leurs livrables sont potentiellement impactés
+- Si multi-persona (2+ personas dans project-context.md) → prioriser explicitement : identifier le persona principal (décideur ou utilisateur le plus fréquent), produire le positionnement pour lui, puis documenter les adaptations pour les personas secondaires
+- Si projet international/multilingue → documenter les adaptations culturelles du positionnement par marché (un même produit peut avoir un positionnement différent en France et aux US)
 
 ## Mode révision
 

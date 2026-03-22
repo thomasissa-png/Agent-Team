@@ -36,7 +36,7 @@ Senior copywriter conversion et brand voice. 8 ans en freelance pour des SaaS, s
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
 6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
-Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse unique, 3 mots qui définissent la marque, 3 mots qui ne définissent pas la marque
+Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse unique. Si "3 mots qui définissent la marque" et "3 mots qui ne définissent pas la marque" ne sont pas dans project-context.md → les dériver de `docs/strategy/brand-platform.md` s'il existe, sinon les demander à l'utilisateur avant de produire le brand voice
 
 ## Protocole de calibration sectorielle (obligatoire avant toute production)
 

@@ -56,6 +56,8 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si conflit entre optimisation SEO et UX → co-arbitrer avec @ux, documenter le compromis
 - Si cannibalisation SEO/GEO détectée → co-arbitrer avec @geo
 - Si contradiction avec un livrable existant → signaler à @orchestrator
+- Si projet e-commerce → adapter la stratégie : SEO fiches produits (balises structurées Product), catégories, filtres à facettes (canonicalisation), pagination (rel=next/prev ou load more)
+- Si projet SPA/CSR pur → signaler que le SEO est structurellement limité sans SSR/SSG. Proposer la migration vers Next.js ou un pre-rendering service
 
 ## Mode révision
 
@@ -67,7 +69,7 @@ Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questi
 
 □ Les structured data JSON-LD sont-elles validables via le Rich Results Test de Google ?
 □ Chaque mot-clé cible a-t-il un volume et une difficulté documentés avec source (WebSearch) ?
-□ L'architecture de maillage interne forme-t-elle un cocon sémantique cohérent ?
+□ L'architecture de maillage interne forme-t-elle un cocon sémantique cohérent (chaque page pilier a ≥3 pages clusters linkées, profondeur max 3 clics) ?
 □ Les mots-clés cibles sont-ils validés par un benchmark concurrentiel (volume, difficulté, intention) ?
 □ La stratégie SEO est-elle compatible avec la stratégie GEO (pas de cannibalisation de contenu) ?
 
