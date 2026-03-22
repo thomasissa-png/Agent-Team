@@ -916,90 +916,113 @@ Critères de validation : le hero est compréhensible en < 5 secondes, chaque b�
       {
         title:"Définir la direction artistique",
         agents:["design","creative-strategy"],
-        quand:"Après la plateforme de marque, AVANT le design system — pour valider l'ambiance visuelle",
+        quand:"Après la plateforme de marque, AVANT le design system — pour valider l'ambiance visuelle avant d'investir dans les tokens",
         prompt:`@design Lis docs/strategy/brand-platform.md (positionnement, ton, 3 mots de marque). S'il n'existe pas, pose-moi les questions pour le créer (ton de marque, 3 mots-clés visuels, positionnement, secteur) et génère-le avant de continuer. Lis aussi docs/ux/wireframes.md si disponible.
 
 Produis 2-3 directions artistiques sous forme de brief visuel textuel. Pour chaque direction :
 1. Nom de la direction (ex : "Minimal tech", "Warm premium", "Bold startup")
-2. Ambiance : description en 3-4 phrases de l'univers visuel
-3. Références sectorielles : 3-5 sites/apps de référence (via WebSearch) avec ce qui est inspirant dans chacun
-4. Palette candidate : 5-6 couleurs avec codes hex, rôles (primary, secondary, accent, neutral, success, error)
-5. Typographie candidate : 2 polices (heading + body) avec source (Google Fonts / système), taille de base, échelle typographique
-6. Style des composants : radius (sharp/rounded/pill), ombres (flat/subtle/elevated), densité (aérée/compacte)
-7. Iconographie : style recommandé (outline/solid/duotone), librairie (Lucide, Heroicons, Phosphor)
+2. Ambiance : description en 3-4 phrases de l'univers visuel — sensation recherchée chez le persona.
+3. Références sectorielles : 3-5 sites/apps de référence (via WebSearch) avec ce qui est inspirant dans chacun et pourquoi.
+4. Palette candidate : 5-6 couleurs avec codes hex, rôles (primary, secondary, accent, neutral, success, error). Vérifier les contrastes WCAG 2.2 AA entre les combinaisons texte/fond.
+5. Typographie candidate : 2 polices (heading + body) avec source (Google Fonts / système), taille de base, échelle typographique. Poids des fichiers fonts (impact performance).
+6. Style des composants : radius (sharp/rounded/pill), ombres (flat/subtle/elevated), densité (aérée/compacte).
+7. Iconographie : style recommandé (outline/solid/duotone), librairie (Lucide, Heroicons, Phosphor).
+8. Impact performance : estimation du poids visuel (fonts custom, images, animations). Compatible avec LCP < 2.5s ?
 
 Recommande la direction la plus alignée avec le positionnement de marque, avec justification.
 
-Livrable : docs/design/art-direction.md. Puis @creative-strategy : lis docs/design/art-direction.md et valide l'alignement de la direction retenue avec la brand platform. Signale les écarts entre l'ambiance visuelle et le positionnement verbal.`
+Livrable : docs/design/art-direction.md.
+
+Puis @creative-strategy : lis docs/design/art-direction.md et valide l'alignement de la direction retenue avec la brand platform. L'ambiance visuelle raconte-t-elle la même histoire que le positionnement verbal ? Signale les écarts.
+
+Critères de validation : chaque direction a des références réelles (pas inventées), la palette passe WCAG AA, la direction retenue est justifiée par le positionnement de marque.`
       },
       {
         title:"Définir l'identité verbale",
-        agents:["creative-strategy","copywriter"],
-        quand:"Après la brand voice — quand le ton est défini mais avant de produire les contenus marketing",
+        agents:["creative-strategy","copywriter","geo"],
+        quand:"Après la brand voice — quand le ton est défini mais avant de produire les contenus marketing. L'identité verbale rend ta marque reconnaissable même sans logo.",
         prompt:`@creative-strategy Lis docs/copy/brand-voice.md (ton, registre, vocabulaire). S'il n'existe pas, pose-moi les questions pour le créer (ton de marque, registre, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/brand-platform.md et docs/strategy/competitive-benchmark.md si disponibles.
 
 Construis le territoire verbal propriétaire de la marque :
-1. Lexique de marque : 10-15 mots/expressions que la marque s'approprie et qui lui sont associés dans l'esprit du persona. Pour chaque mot : définition dans le contexte de la marque, usage type.
-2. Formulations bannies : 5-10 expressions interdites parce que tous les concurrents les utilisent (ex : "solution innovante", "leader du marché"). Pour chaque formulation : pourquoi elle est bannie, alternative recommandée.
-3. Phrases signature : 2-3 formulations mémorables qui cristallisent la promesse (tagline, baseline, claim). Testées contre les critères : mémorable, différenciante, vraie.
-4. Métaphores fondatrices : 1-2 images mentales que la marque veut créer (ex : "le copilote" plutôt que "l'outil", "le tableau de bord" plutôt que "le dashboard").
+1. Lexique de marque : 10-15 mots/expressions que la marque s'approprie et qui lui sont associés dans l'esprit du persona. Pour chaque mot : définition dans le contexte de la marque, usage type, fréquence recommandée.
+2. Formulations bannies : 5-10 expressions interdites parce que tous les concurrents les utilisent (ex : "solution innovante", "leader du marché"). Pour chaque formulation : pourquoi elle est bannie, alternative propriétaire.
+3. Phrases signature : 2-3 formulations mémorables qui cristallisent la promesse (tagline, baseline, claim). Testées contre : mémorable ? différenciante ? vraie ? Le persona la répéterait-il ?
+4. Métaphores fondatrices : 1-2 images mentales que la marque veut créer (ex : "le copilote" plutôt que "l'outil"). La métaphore guide toute la communication.
 
-Livrable : docs/strategy/verbal-identity.md. Puis @copywriter : lis docs/strategy/verbal-identity.md et enrichis docs/copy/brand-voice.md avec le lexique propriétaire et les formulations bannies. Vérifie que docs/copy/landing-page-copy.md (si existant) respecte l'identité verbale — signale les écarts.`
+Livrable : docs/strategy/verbal-identity.md.
+
+Puis @copywriter : lis docs/strategy/verbal-identity.md et enrichis docs/copy/brand-voice.md avec le lexique propriétaire et les formulations bannies. Vérifie que docs/copy/landing-page-copy.md (si existant) respecte l'identité verbale — signale les écarts.
+
+Puis @geo : lis docs/strategy/verbal-identity.md et identifie les termes propriétaires à pousser pour la visibilité sur les IA génératives. Ces termes doivent devenir les entités nommées associées à la marque. Ajoute dans docs/geo/geo-strategy.md.
+
+Critères de validation : le lexique est différenciant (pas réutilisable par un concurrent), les formulations bannies sont justifiées par le benchmark, les phrases signature passent le test "le persona la répéterait-il ?".`
       },
       {
         title:"Spécifier les interactions et états des composants",
-        agents:["design","ux"],
-        quand:"Après le design system, AVANT l'implémentation des composants — pour éviter les états manquants en production",
+        agents:["design","ux","fullstack"],
+        quand:"Après le design system, AVANT l'implémentation des composants — pour éviter les états manquants en production. Les états oubliés sont les bugs de demain.",
         prompt:`@design Lis docs/design/design-system.md et docs/design/design-tokens.json. S'ils n'existent pas, pose-moi les questions pour les créer (composants prioritaires, tokens de base) et génère-les avant de continuer. Lis aussi docs/ux/wireframes.md pour identifier les composants utilisés dans les parcours critiques.
 
 Produis les specs d'état pour chaque composant prioritaire. Format tableau par composant :
 
-| État | Apparence | Comportement | Token(s) utilisé(s) |
-|---|---|---|---|
-| Default | ... | ... | ... |
-| Hover | ... | ... | ... |
-| Focus | ... | outline 2px primary | ... |
-| Active/Pressed | ... | ... | ... |
-| Disabled | ... | cursor: not-allowed | ... |
-| Loading | ... | spinner ou skeleton | ... |
-| Error | ... | ... | ... |
-| Success | ... | ... | ... |
-| Empty state | ... | message + CTA | ... |
+| État | Apparence | Comportement | Token(s) utilisé(s) | Accessibilité |
+|---|---|---|---|---|
+| Default | ... | ... | ... | ... |
+| Hover | ... | ... | ... | ... |
+| Focus | ... | outline 2px primary | ... | focus-visible obligatoire |
+| Active/Pressed | ... | ... | ... | ... |
+| Disabled | ... | cursor: not-allowed | ... | aria-disabled=true |
+| Loading | ... | spinner ou skeleton | ... | aria-busy=true, texte SR |
+| Error | ... | ... | ... | aria-invalid=true, message lié |
+| Success | ... | ... | ... | annonce SR |
+| Empty state | ... | message + CTA | ... | ... |
 
-Composants prioritaires à couvrir : boutons (primary, secondary, ghost), inputs (text, select, textarea), cards, modals, navigation, formulaires, tableaux.
+Composants prioritaires à couvrir : boutons (primary, secondary, ghost, destructive), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, formulaires, tableaux, alerts/toasts.
 
-Inclus un guide de motion minimal : durées (100ms/200ms/300ms), courbes (ease-out pour les entrées, ease-in pour les sorties), règles d'usage (animer les changements d'état, pas les éléments statiques).
+Guide de motion minimal : durées (100ms hover / 200ms transitions / 300ms modals), courbes (ease-out entrées, ease-in sorties), règles (animer les changements d'état, pas les éléments statiques, respecter prefers-reduced-motion).
 
-Livrable : docs/design/component-states.md. Puis @ux : lis docs/design/component-states.md et vérifie que les états reflètent les parcours utilisateur dans docs/ux/user-flows.md. Signale les cas où un état manque pour un parcours critique (ex : état loading absent sur un bouton de soumission de formulaire).`
+Livrable : docs/design/component-states.md.
+
+Puis @ux : lis docs/design/component-states.md et vérifie que les états reflètent les parcours utilisateur dans docs/ux/user-flows.md. Signale les cas où un état manque pour un parcours critique.
+
+Puis @fullstack : lis docs/design/component-states.md et évalue l'effort d'implémentation. Signale les états complexes qui nécessitent un state management particulier. Note dans docs/dev-decisions.md.
+
+Critères de validation : chaque composant a au minimum 7 états définis, les animations respectent prefers-reduced-motion, l'accessibilité est documentée pour chaque état.`
       },
       {
         title:"Définir les specs responsive",
-        agents:["design","ux"],
-        quand:"En complément du design system — avant l'implémentation, pour spécifier le comportement mobile",
+        agents:["design","ux","infrastructure"],
+        quand:"En complément du design system — avant l'implémentation, pour spécifier le comportement mobile. 60%+ du trafic est mobile — le responsive n'est pas optionnel.",
         prompt:`@design Lis docs/design/design-system.md (tokens, composants). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer. Lis aussi docs/ux/wireframes.md pour identifier les écrans à adapter.
 
 Produis les specs responsive pour les composants et layouts critiques. Format par composant/layout :
 
-| Breakpoint | Comportement | Changements |
-|---|---|---|
-| Mobile (<640px) | ... | ... |
-| sm (640px) | ... | ... |
-| md (768px) | ... | ... |
-| lg (1024px) | ... | ... |
-| xl (1280px) | ... | ... |
+| Breakpoint | Comportement | Changements | Impact perf |
+|---|---|---|---|
+| Mobile (< 640px) | ... | ... | ... |
+| sm (640px) | ... | ... | ... |
+| md (768px) | ... | ... | ... |
+| lg (1024px) | ... | ... | ... |
+| xl (1280px) | ... | ... | ... |
 
 Composants/layouts à couvrir :
-1. Navigation : desktop (horizontale) vs mobile (hamburger + drawer). Seuil de bascule.
+1. Navigation : desktop (horizontale) vs mobile (hamburger + drawer). Seuil de bascule. Touch targets 44x44px minimum.
 2. Grille de contenu : nombre de colonnes par breakpoint, gouttières.
 3. Cards : disposition (grille → pile), taille des images, troncature du texte.
-4. Formulaires : largeur des champs, disposition des labels (side vs top).
+4. Formulaires : largeur des champs, disposition des labels (side vs top), clavier virtuel.
 5. Tableaux : scroll horizontal vs cards empilées sur mobile.
 6. Modals : plein écran sur mobile vs centré sur desktop.
 7. Typographie : échelle responsive (clamp() ou paliers fixes par breakpoint).
 
-Règle de densité : documenter ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique.
+Règle de densité : documenter ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique. Aucun contenu critique ne doit disparaître sur mobile.
 
-Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via Edit, pas un fichier séparé). Puis @ux : vérifie que les adaptations mobiles respectent les parcours utilisateur prioritaires — un parcours critique ne doit pas être dégradé sur mobile.`
+Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via Edit, pas un fichier séparé).
+
+Puis @ux : vérifie que les adaptations mobiles respectent les parcours utilisateur prioritaires — un parcours critique ne doit pas être dégradé sur mobile. Teste mentalement chaque flow sur un écran 375px.
+
+Puis @infrastructure : lis la section responsive et vérifie la compatibilité avec les images responsive (srcset, format WebP/AVIF), le lazy loading, et les Core Web Vitals mobiles. Note dans docs/infra/infrastructure.md.
+
+Critères de validation : chaque breakpoint est documenté, les touch targets font 44x44px minimum, aucun parcours critique n'est dégradé sur mobile.`
       }
     ]
   },
@@ -1009,67 +1032,179 @@ Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via 
     items:[
       {
         title:"Développer une feature",
-        agents:["fullstack","qa"],
+        agents:["fullstack","qa","data-analyst"],
         quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer.",
-        prompt:"@fullstack Implémente la feature [nom de la feature, ex : \"système de notifications\" ou \"tableau de bord analytics\"]. Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder. Lis docs/design/design-system.md pour les composants UI — s'il n'existe pas, utilise les conventions du code existant dans src/. Lis docs/analytics/tracking-plan.md pour les events à implémenter — s'il n'existe pas, signale-le et propose les events clés à tracker pour cette feature. Next.js App Router, TypeScript strict. Un composant par fichier dans src/. Puis @qa : écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture >80%. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour avec rapport de couverture et blockers."
+        prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer.
+
+Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder.
+Lis docs/design/design-system.md et docs/design/design-tokens.json pour les composants UI — s'ils n'existent pas, utilise les conventions du code existant dans src/.
+Lis docs/analytics/tracking-plan.md pour les events à implémenter — s'il n'existe pas, signale-le et propose les events clés à tracker pour cette feature.
+
+Implémentation :
+- Next.js App Router, TypeScript strict.
+- Un composant par fichier dans src/.
+- Respecter les design tokens (pas de valeurs hardcodées).
+- Implémenter les events de tracking définis.
+- Gérer tous les états : loading, error, empty, success.
+- Accessibilité : aria-labels, focus management, keyboard navigation.
+- Performance : lazy loading si pertinent, pas de re-renders inutiles.
+
+Livrable : code dans src/.
+
+Puis @qa : lis docs/product/functional-specs.md et le code produit dans src/. Écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture > 80%. Vérifie que les critères d'acceptation des specs sont couverts par au moins un test. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour.
+
+Puis @data-analyst : vérifie que les events de tracking de cette feature sont cohérents avec docs/analytics/tracking-plan.md. Signale les events manquants ou mal nommés. Mets à jour le tracking plan si nécessaire.
+
+Critères de validation : la feature implémente tous les critères d'acceptation des specs, les design tokens sont respectés, les tests passent, les events de tracking sont en place.`
       },
       {
         title:"Intégrer le paiement Stripe",
         agents:["fullstack","legal","infrastructure"],
-        quand:"Plans tarifaires validés dans la roadmap. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@fullstack Lis docs/product/functional-specs.md (plans tarifaires, pricing). S'il n'existe pas, pose-moi les questions pour spécifier les plans (nombre de tiers, prix, features par tier, essai gratuit oui/non) et génère les specs avant de coder. Intègre Stripe Checkout : route API /api/stripe/webhook (signature verification), gestion des abonnements (création, upgrade, downgrade, annulation), portail client Stripe. Livrables : code dans src/app/api/stripe/. Puis @legal : lis docs/product/functional-specs.md et vérifie la conformité des CGV avec le modèle d'abonnement implémenté. Mets à jour docs/legal/cgu-draft.md (section paiements, remboursements, résiliation). Puis @infrastructure : liste les variables d'environnement Stripe à configurer (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_*). Ajoute le monitoring webhook (alertes si taux d'échec >1%). Mets à jour docs/infra/infrastructure.md."
+        quand:"Plans tarifaires validés dans la roadmap. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le paiement est la feature la plus critique — zéro droit à l'erreur.",
+        prompt:`@fullstack Lis docs/product/functional-specs.md et docs/product/pricing-strategy.md (plans tarifaires, pricing). S'ils n'existent pas, pose-moi les questions pour spécifier les plans (nombre de tiers, prix, features par tier, essai gratuit oui/non, devise) et génère les specs avant de coder.
+
+Intègre Stripe :
+1. Route API /api/stripe/webhook : signature verification (STRIPE_WEBHOOK_SECRET), gestion idempotente des events (checkout.session.completed, customer.subscription.updated/deleted, invoice.payment_failed).
+2. Checkout : Stripe Checkout Session pour l'abonnement initial, gestion des modes (payment/subscription).
+3. Gestion des abonnements : création, upgrade, downgrade (proration), annulation (immédiate vs fin de période), pause.
+4. Portail client : lien vers le Stripe Customer Portal pour la gestion autonome.
+5. Sécurité : vérification du webhook signature, pas de prix en frontend, vérification côté serveur de l'état de l'abonnement.
+6. Edge cases : paiement échoué (retry logic), carte expirée, changement de devise, remboursement.
+
+Livrables : code dans src/app/api/stripe/ + src/lib/stripe.ts (helper functions).
+
+Puis @legal : lis docs/product/pricing-strategy.md et le code stripe. Vérifie la conformité des CGV avec le modèle d'abonnement : droit de rétractation (14 jours e-commerce UE), politique de remboursement, résiliation, transparence tarifaire (TVA incluse/exclue). Mets à jour docs/legal/cgu-draft.md.
+
+Puis @infrastructure : liste les variables d'environnement Stripe (STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_*). Configure le monitoring webhook (alertes si taux d'échec > 1% ou latence > 5s). Mets à jour docs/infra/infrastructure.md.
+
+Critères de validation : le webhook gère tous les events critiques de manière idempotente, les edge cases (paiement échoué, carte expirée) sont gérés, les CGV sont à jour.`
       },
       {
         title:"Ajouter une feature IA (LLM)",
-        agents:["ia","fullstack"],
+        agents:["ia","fullstack","legal"],
         quand:"Cas d'usage IA défini dans les specs. Remplace [decrire la feature] par ton cas d'usage avant de lancer.",
-        prompt:"@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume, latence acceptable, budget) et génère les specs avant de continuer. Cas d'usage IA : [décrire la feature, ex : \"résumé automatique de documents\" ou \"chatbot support client\"]. Produis le tableau comparatif obligatoire (modèle, qualité, latence P95, coût/1000 req, streaming). Choix du modèle principal + fallback, structure des prompts, limites de tokens, budget mensuel estimé. Livrable : docs/ia/ai-architecture.md. Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md."
+        prompt:`@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume estimé, latence acceptable, budget mensuel) et génère les specs avant de continuer. Si ce prompt contient encore des crochets [...], signale-le et demande les informations avant de continuer.
+
+Cas d'usage IA : [décrire la feature, ex : "résumé automatique de documents" ou "chatbot support client"].
+
+Architecture IA complète :
+1. Tableau comparatif obligatoire : modèle, qualité de sortie (note /10 sur le cas d'usage spécifique), latence P95, coût/1000 req, streaming supporté, context window, data residency.
+2. Choix du modèle principal + fallback (si le principal est indisponible ou rate-limited).
+3. Structure des prompts : system prompt, few-shot examples, variables dynamiques, output format.
+4. Limites : tokens max input/output, rate limiting, budget plafond mensuel avec alerte à 80%.
+5. UX de l'IA : latence perçue (streaming vs batch), animations de chargement, fallback UI si le modèle est indisponible.
+6. Conformité : données envoyées au modèle (PII ? données sensibles ?), data processing agreement avec le fournisseur.
+
+Livrable : docs/ia/ai-architecture.md.
+
+Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md. Streaming si supporté. Rate limiting côté serveur. Gestion des erreurs (timeout, rate limit, token overflow).
+
+Puis @legal : lis docs/ia/ai-architecture.md et vérifie la conformité RGPD de l'envoi de données au fournisseur IA (DPA, data residency, information utilisateur). EU AI Act si applicable. Note dans docs/legal/legal-audit.md.
+
+Critères de validation : le tableau comparatif contient au moins 3 modèles avec des données réelles, le fallback est configuré, la conformité RGPD est documentée.`
       },
       {
         title:"Configurer CI/CD & déploiement",
         agents:["qa","infrastructure"],
-        quand:"Code source avec au moins un test",
-        prompt:"@qa Lis le code dans src/ et docs/qa/qa-strategy.md s'il existe. Écris le workflow GitHub Actions (.github/workflows/ci.yml) : lint (ESLint), type-check (tsc --noEmit), tests unitaires Vitest, tests E2E Playwright. Définis les seuils bloquants (couverture >80%, Lighthouse scores). Livrables : .github/workflows/ci.yml + docs/qa/qa-strategy.md. Puis @infrastructure : lis docs/infra/infrastructure.md s'il existe. Configure la compatibilité Replit (.replit + replit.nix). Crée la route /api/health (status, version, uptime). Configure Sentry (Next.js, source maps) + UptimeRobot (endpoint /api/health, intervalle 5min). Documente les variables d'environnement à configurer. Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/."
+        quand:"Code source avec au moins un test. La CI/CD est le filet de sécurité — sans elle, chaque deploy est une loterie.",
+        prompt:`@qa Lis le code dans src/ et docs/qa/qa-strategy.md s'il existe. Lis aussi docs/product/functional-specs.md pour identifier les parcours critiques.
+
+Écris le workflow GitHub Actions (.github/workflows/ci.yml) :
+1. Lint : ESLint avec config strict (no-any, no-unused-vars).
+2. Type-check : tsc --noEmit.
+3. Tests unitaires : Vitest avec seuil de couverture > 80%.
+4. Tests E2E : Playwright sur les parcours critiques.
+5. Lighthouse CI : scores cibles Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90.
+6. Security : audit des dépendances (npm audit / Snyk).
+
+Seuils bloquants : le pipeline doit échouer si un seuil n'est pas atteint (pas de warning ignoré).
+
+Livrables : .github/workflows/ci.yml + docs/qa/qa-strategy.md.
+
+Puis @infrastructure : lis docs/infra/infrastructure.md s'il existe. Configure :
+1. Compatibilité Replit (.replit + replit.nix si pertinent).
+2. Route /api/health (status, version, uptime, dernière erreur).
+3. Sentry (Next.js, source maps, alertes Slack sur erreurs critiques).
+4. UptimeRobot (endpoint /api/health, intervalle 5min, alerte SMS/Slack si down).
+5. Variables d'environnement : fichier .env.example documenté avec toutes les variables nécessaires.
+
+Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/.
+
+Critères de validation : le pipeline CI bloque sur les seuils définis, le health check expose le status du service, le monitoring est configuré avec alertes.`
       },
       {
         title:"Choisir & optimiser les modèles IA",
-        agents:["ia"],
-        quand:"Plusieurs modèles possibles, besoin d'optimiser coût/qualité",
-        prompt:"@ia Lis docs/ia/ai-architecture.md. S'il n'existe pas, pose-moi les questions pour le créer (cas d'usage IA, modèles envisagés, contraintes latence/coût) et génère-le avant de continuer. Lis aussi project-context.md (budget infra). Produis le tableau comparatif obligatoire du protocole @ia : modèle, qualité de sortie (note /10), latence P95, coût par 1000 requêtes, streaming supporté. Inclus le calcul de ROI (coût IA vs valeur business générée). Recommande modèle principal + fallback. Optimise les prompts pour réduire les tokens de 20%+. Livrable : docs/ia/model-selection.md avec tableau comparatif et recommandation finale."
+        agents:["ia","legal","ux"],
+        quand:"Plusieurs modèles possibles, besoin d'optimiser coût/qualité/conformité. Le choix du modèle est un compromis tri-dimensionnel.",
+        prompt:`@ia Lis docs/ia/ai-architecture.md. S'il n'existe pas, pose-moi les questions pour le créer (cas d'usage IA, modèles envisagés, contraintes latence/coût) et génère-le avant de continuer. Lis aussi project-context.md (budget infra, données sensibles, pays).
+
+Produis le tableau comparatif obligatoire :
+| Modèle | Qualité (/10) | Latence P95 | Coût/1000 req | Streaming | Context window | Data residency | Conformité RGPD |
+|---|---|---|---|---|---|---|---|
+
+Inclus au minimum : Claude (Sonnet + Opus), GPT-4o, GPT-4o-mini, Gemini Pro, Mistral Large, et les modèles open-source pertinents (Llama, Mixtral).
+
+Analyse avancée :
+1. ROI : coût IA mensuel estimé vs valeur business générée (gagner/économiser pour l'utilisateur).
+2. Qualité perceptible : au-delà du benchmark technique, comment l'utilisateur perçoit-il la qualité ? (pertinence, ton, formatage, hallucinations).
+3. Optimisation prompts : réduis les tokens de 20%+ sans perte de qualité. Techniques : suppression des instructions redondantes, few-shot → zero-shot si possible, output structuré.
+4. Fallback chain : modèle principal → fallback 1 → fallback 2 → réponse dégradée gracieuse.
+5. Budget plafond : alerte à 80% du budget mensuel, coupure automatique à 100% (ou dégradation vers un modèle moins cher).
+
+Livrable : docs/ia/model-selection.md.
+
+Puis @legal : lis docs/ia/model-selection.md et vérifie la conformité RGPD de chaque modèle recommandé (DPA fournisseur, data residency, opt-out training). Note dans docs/legal/legal-audit.md.
+
+Puis @ux : lis docs/ia/model-selection.md et propose l'UX de la feature IA — latence perçue (streaming, skeleton, animation), fallback UI si modèle indisponible, message d'erreur empathique. Ajoute dans docs/ux/wireframes.md.
+
+Critères de validation : le tableau contient au moins 5 modèles avec des données réelles (pas inventées), le ROI est calculé, la conformité RGPD est documentée pour chaque modèle.`
       },
       {
         title:"Setup initial du projet (scaffold + DB + auth)",
-        agents:["fullstack","infrastructure"],
+        agents:["fullstack","infrastructure","legal"],
         quand:"Premier prompt de développement — avant 'Développer une feature'. Livrable volumineux : si timeout, relancer l'agent manquant.",
         prompt:`@fullstack Lis project-context.md (stack technique, modèle économique). Lis docs/product/functional-specs.md et docs/product/mvp-scope.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle de données, auth provider) et génère-les avant de continuer. Lis docs/design/design-tokens.json si disponible.
 
-Scaffolde le projet complet :
-1. Structure de fichiers : arborescence Next.js App Router avec les dossiers clés (app/, components/, lib/, types/, hooks/).
-2. Schéma de base de données : tables principales avec types, relations, index. Format Prisma ou SQL selon la stack. Inclus les tables auth (users, sessions) et business (selon les specs).
-3. Configuration auth : setup complet de l'auth provider (Clerk, NextAuth, ou Supabase Auth selon project-context.md). Middleware de protection des routes, layout authentifié vs public.
-4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires.
-5. Layout de base : layout racine avec providers (auth, theme), navigation, footer. Composants squelettes des pages principales.
-6. Configuration TypeScript : tsconfig.json strict, paths aliases.
+Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
+1. Structure de fichiers : arborescence Next.js App Router (app/, components/, lib/, types/, hooks/, __tests__/).
+2. Schéma de base de données : tables principales avec types, relations, index. Format Prisma ou SQL selon la stack. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
+3. Configuration auth : setup complet de l'auth provider (Clerk, NextAuth, ou Supabase Auth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
+4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
+5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
+6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
+7. Linting : ESLint + Prettier configurés, scripts npm (dev, build, lint, test).
+8. Sécurité : headers HTTP (CSP, HSTS, X-Frame-Options), rate limiting sur les routes API.
 
-Un fichier par appel Write — commencer par les fichiers fondation (types, config) puis les composants.
+Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
-Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés). Puis @infrastructure : lis docs/dev-decisions.md. Configure la compatibilité Replit (.replit + replit.nix si pertinent), vérifie les variables d'environnement, crée /api/health. Mets à jour docs/infra/infrastructure.md.`
+Puis @infrastructure : lis docs/dev-decisions.md. Configure la compatibilité Replit (.replit + replit.nix si pertinent), vérifie les variables d'environnement, crée /api/health. Mets à jour docs/infra/infrastructure.md avec le schéma d'infrastructure.
+
+Puis @legal : lis docs/dev-decisions.md et vérifie les implications RGPD du schéma de données (quelles données personnelles, bases légales, durées de conservation). Mets à jour docs/legal/rgpd-checklist.md.
+
+Critères de validation : le projet démarre avec npm run dev sans erreur, TypeScript strict passe, .env.example est complet, les routes sont protégées.`
       },
       {
-        title:"Vérifier le handoff design → code",
-        agents:["design","qa"],
-        quand:"Après l'implémentation des premiers composants — pour détecter les écarts avant qu'ils se propagent",
+        title:"Vérifier le handoff design -> code",
+        agents:["design","qa","fullstack"],
+        quand:"Après l'implémentation des premiers composants — pour détecter les écarts avant qu'ils se propagent. Le handoff est le moment où la qualité se perd le plus souvent.",
         prompt:`@design Lis docs/design/design-tokens.json et docs/design/design-system.md (tokens de référence). S'ils n'existent pas, signale-le — cet audit nécessite un design system défini. Lis le code implémenté dans src/ (composants, styles, classes Tailwind).
 
 Audite le code produit par @fullstack contre les specs du design system :
-1. Tokens respectés : vérifie que les couleurs, tailles, espacements dans le code correspondent aux tokens définis. Signale les valeurs hardcodées (ex : "text-blue-500" au lieu du token sémantique).
-2. Contrastes WCAG 2.2 AA : vérifie les ratios de contraste sur les combinaisons texte/fond en clair et dark mode.
-3. États des composants : vérifie que hover/focus/disabled/error sont implémentés pour chaque composant interactif (boutons, inputs, links).
+1. Tokens respectés : vérifie que les couleurs, tailles, espacements dans le code correspondent aux tokens définis. Signale les valeurs hardcodées (ex : "text-blue-500" au lieu du token sémantique). Format : tableau avec fichier, ligne, valeur actuelle, valeur attendue.
+2. Contrastes WCAG 2.2 AA : vérifie les ratios de contraste sur les combinaisons texte/fond en clair et dark mode. Chaque combinaison avec son ratio calculé.
+3. États des composants : vérifie que hover/focus/disabled/error/loading sont implémentés pour chaque composant interactif. Focus visible (outline) obligatoire.
 4. Cohérence typographique : tailles, poids, line-height alignés avec l'échelle définie.
+5. Accessibilité : aria-labels, roles, tabindex, screen reader compatibility.
 
-Format du rapport : tableau par composant avec criticité (bloquant / majeur / mineur).
+Format du rapport : tableau par composant avec criticité (bloquant / majeur / mineur) et code correctif suggéré.
 
-Livrable : docs/design/visual-audit.md. Puis @qa : lis docs/design/visual-audit.md et crée les tests de régression visuelle (snapshots Playwright) sur les composants validés. Les composants avec écarts bloquants doivent être corrigés avant les snapshots. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md.`
+Livrable : docs/design/visual-audit.md.
+
+Puis @fullstack : lis docs/design/visual-audit.md et corrige tous les écarts bloquants. Un fichier corrigé par Edit. Documente les corrections dans un commit message descriptif.
+
+Puis @qa : lis docs/design/visual-audit.md et crée les tests de régression visuelle (snapshots Playwright) sur les composants validés. Les composants avec écarts bloquants doivent être corrigés avant les snapshots. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md.
+
+Critères de validation : zéro écart bloquant restant, tous les contrastes passent WCAG AA, les snapshots de régression sont en place.`
       }
     ]
   },
@@ -1079,38 +1214,83 @@ Livrable : docs/design/visual-audit.md. Puis @qa : lis docs/design/visual-audit.
     items:[
       {
         title:"Stratégie SEO technique & éditoriale",
-        agents:["seo"],
-        quand:"Contenu rédigé, site en production ou pré-lancement",
-        prompt:"@seo Lis project-context.md (persona, secteur). Lis docs/copy/landing-page-copy.md et docs/strategy/brand-platform.md. S'ils n'existent pas, pose-moi les questions sur le persona cible, les mots-clés de marque et le contenu principal du site pour calibrer l'audit. Audit SEO complet : Core Web Vitals (LCP, CLS, INP), données structurées JSON-LD, maillage interne, stratégie de mots-clés via WebSearch (volume, difficulté). Audite en priorité les pages à plus fort trafic/conversion. Livrables : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md. Critère de qualité : chaque recommandation doit être actionnable avec la page cible et la priorité (P0/P1/P2)."
+        agents:["seo","infrastructure"],
+        quand:"Contenu rédigé, site en production ou pré-lancement. Le SEO est un investissement long terme — commencer tôt.",
+        prompt:`@seo Lis project-context.md (persona, secteur). Lis docs/copy/landing-page-copy.md et docs/strategy/brand-platform.md. S'ils n'existent pas, pose-moi les questions sur le persona cible, les mots-clés de marque et le contenu principal du site pour calibrer l'audit.
+
+Audit SEO complet :
+1. Technique : Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical URLs, hreflang si multilingue.
+2. On-page : meta title/description (< 60 / < 155 chars, avec CTA), headings H1-H3 (hiérarchie sémantique, un seul H1), alt texts images, URLs slug-friendly.
+3. Maillage interne : structure en silo, pages orphelines, anchor texts.
+4. Keyword map : via WebSearch — volume, difficulté, intention (informationnelle / navigationnelle / transactionnelle), page cible, priorisation P0/P1/P2.
+5. Contenu : lacunes par rapport aux concurrents, pages thin content, opportunités de contenu longue traîne.
+
+Audite en priorité les pages à plus fort trafic/conversion potentiel.
+
+Livrables (un fichier à la fois) : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md.
+
+Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals actuels. Identifie les bottlenecks techniques (bundle size, images non optimisées, TTFB). Mets à jour docs/infra/performance-audit.md.
+
+Critère de qualité : chaque recommandation est actionnable avec la page cible, la priorité (P0/P1/P2), et l'impact estimé sur le trafic.`
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
-        agents:["geo"],
-        quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity",
-        prompt:"@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, pose-moi les questions pour les créer (mots-clés principaux, pages existantes, objectif de visibilité) et génère-les avant de continuer. Lis aussi docs/strategy/brand-platform.md (entités de marque). Analyse la visibilité actuelle sur ChatGPT, Claude, Gemini, Perplexity (via WebSearch). Propose le plan GEO : entités nommées à pousser, claims vérifiables avec sources, FAQ optimisée pour les citations IA, restructuration du contenu existant en format LLM-friendly. Livrables : docs/geo/geo-strategy.md + docs/geo/content-restructuring.md."
+        agents:["geo","copywriter"],
+        quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity. En 2026, la visibilité IA est aussi stratégique que le SEO classique.",
+        prompt:`@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, pose-moi les questions pour les créer (mots-clés principaux, pages existantes, objectif de visibilité) et génère-les avant de continuer. Lis aussi docs/strategy/brand-platform.md (entités de marque) et docs/strategy/verbal-identity.md si disponible.
+
+Analyse et plan GEO :
+1. Audit de visibilité actuelle : interroger ChatGPT, Claude, Gemini, Perplexity sur les requêtes clés du secteur via WebSearch. La marque est-elle mentionnée ? Les concurrents le sont-ils ?
+2. Entités nommées : liste des termes, noms et concepts que la marque doit s'approprier dans les réponses des LLM.
+3. Claims vérifiables : assertions factuelles avec sources citables que les LLM peuvent reprendre en confiance.
+4. FAQ optimisée pour les citations IA : format question-réponse structuré, chaque réponse < 3 phrases avec claim vérifiable.
+5. Restructuration du contenu existant : comment reformater les pages existantes pour être LLM-friendly (listes, définitions, comparatifs, données structurées).
+6. Stratégie de backlinks IA : les sources que les LLM citent le plus souvent dans le secteur — comment y être présent.
+
+Livrables : docs/geo/geo-strategy.md + docs/geo/content-restructuring.md.
+
+Puis @copywriter : lis docs/geo/content-restructuring.md et rédige les claims vérifiables et FAQ optimisées pour la landing page et les pages clés. Intègre dans docs/copy/landing-page-copy.md et docs/copy/content-strategy.md si existants.
+
+Critères de validation : au moins 10 claims vérifiables documentés, la FAQ est structurée pour la citation LLM, les entités de marque sont cohérentes avec docs/strategy/verbal-identity.md.`
       },
       {
         title:"SEO + GEO combinés",
-        agents:["seo","geo"],
-        quand:"Offensive complète sur Google + IA génératives",
-        prompt:"@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles. Produis l'audit SEO technique (Core Web Vitals, JSON-LD, maillage) + keyword map avec pages prioritaires. Livrable : docs/seo/seo-strategy.md + docs/seo/keyword-map.md. Puis @geo : prends docs/seo/seo-strategy.md et docs/seo/keyword-map.md (pages auditées) et analyse la visibilité sur ChatGPT/Claude/Gemini/Perplexity. Propose le plan GEO en réutilisant les mêmes pages cibles pour maximiser la synergie SEO+GEO. Livrable : docs/geo/geo-strategy.md avec une section 'Synergies SEO↔GEO' listant les actions communes."
+        agents:["seo","geo","infrastructure"],
+        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026",
+        prompt:`@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles.
+
+Produis l'audit SEO technique complet (Core Web Vitals avec scores actuels, JSON-LD, maillage, sitemap) + keyword map avec pages prioritaires classées par intention (informationnelle / transactionnelle). Chaque recommandation avec priorité P0/P1/P2 et impact estimé.
+
+Livrable : docs/seo/seo-strategy.md + docs/seo/keyword-map.md.
+
+Puis @geo : prends docs/seo/seo-strategy.md et docs/seo/keyword-map.md (pages auditées) et analyse la visibilité sur ChatGPT/Claude/Gemini/Perplexity via WebSearch. Propose le plan GEO en réutilisant les mêmes pages cibles pour maximiser la synergie SEO+GEO. Livrable : docs/geo/geo-strategy.md avec une section "Synergies SEO ↔ GEO" listant les actions communes (un contenu optimisé SEO qui est aussi citable par les LLM = double ROI).
+
+Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals. Identifie les optimisations techniques (compression images, lazy loading, preconnect, cache headers). Mets à jour docs/infra/performance-audit.md.
+
+Critères de validation : chaque page prioritaire a une stratégie SEO + GEO combinée, les synergies sont documentées, les Core Web Vitals sont mesurés.`
       },
       {
         title:"Stratégie de contenu & calendrier éditorial",
-        agents:["copywriter","seo"],
-        quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier",
-        prompt:`@copywriter Lis docs/seo/keyword-map.md (mots-clés cibles avec volume et difficulté). S'il n'existe pas, pose-moi les questions pour le créer (secteur, persona, mots-clés principaux) et génère-le avant de continuer. Lis aussi docs/copy/brand-voice.md et docs/strategy/brand-platform.md.
+        agents:["copywriter","seo","geo"],
+        quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier. Le contenu est le seul canal d'acquisition qui s'apprécie avec le temps.",
+        prompt:`@copywriter Lis docs/seo/keyword-map.md (mots-clés cibles avec volume et difficulté). S'il n'existe pas, pose-moi les questions pour le créer (secteur, persona, mots-clés principaux) et génère-le avant de continuer. Lis aussi docs/copy/brand-voice.md, docs/strategy/brand-platform.md, et docs/geo/geo-strategy.md si disponible.
 
 Définis la stratégie de contenu complète :
-1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement et les mots-clés cibles.
-2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues. Pour chaque type : objectif (SEO, conversion, autorité), fréquence, format.
-3. Calendrier éditorial : planning de publication sur 8 semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, et étape funnel (découverte/considération/décision).
-4. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email.
-5. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication).
+1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
+2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues, glossaire. Pour chaque type : objectif (SEO, conversion, autorité, GEO), fréquence, format, KPI de mesure.
+3. Calendrier éditorial : planning sur 8 semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, étape funnel (découverte/considération/décision), et format GEO (claims vérifiables inclus).
+4. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email. Lien avec la proposition de valeur.
+5. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication, Product Hunt Blog si pertinent).
 
-Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description). Articles complets à rédiger ensuite via un prompt dédié.
+Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description, claims GEO).
 
-Livrable : docs/copy/content-strategy.md. Puis @seo : lis docs/copy/content-strategy.md et optimise le calendrier éditorial pour le SEO — vérifie la cohérence mot-clé/contenu, la cannibalization potentielle, et le maillage interne entre articles. Enrichis docs/seo/seo-strategy.md avec la section "Stratégie de contenu".`
+Livrable : docs/copy/content-strategy.md.
+
+Puis @seo : lis docs/copy/content-strategy.md et optimise le calendrier — vérifie la cohérence mot-clé/contenu, la cannibalisation potentielle, et le maillage interne entre articles. Enrichis docs/seo/seo-strategy.md.
+
+Puis @geo : lis docs/copy/content-strategy.md et vérifie que chaque article pilier contient des claims vérifiables et des entités nommées citables par les LLM. Enrichis docs/geo/content-restructuring.md.
+
+Critères de validation : chaque article du calendrier a un mot-clé cible unique (pas de cannibalisation), les 3 premiers articles ont une structure détaillée prête à rédiger, le contenu est optimisé SEO + GEO simultanément.`
       }
     ]
   },
@@ -1121,106 +1301,202 @@ Livrable : docs/copy/content-strategy.md. Puis @seo : lis docs/copy/content-stra
       {
         title:"Stratégie d'acquisition complète",
         agents:["growth","social","copywriter"],
-        quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV par canal. Livrable : docs/growth/acquisition-plan.md. Puis @social : prends docs/growth/acquisition-plan.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire) et génère-le. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme. Livrable : docs/social/editorial-calendar.md. Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Livrable : docs/copy/acquisition-copies.md."
+        quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le bon canal au bon moment vaut mieux que tous les canaux en même temps.",
+        prompt:`@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Lis aussi project-context.md (budget acquisition, objectif 6 mois) et docs/product/pricing-strategy.md si disponible (pour le calcul LTV).
+
+Définis la stratégie d'acquisition :
+1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/effort pour CE persona et CE budget. Justification par canal (pas de liste générique).
+2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, effort opérationnel (heures/semaine).
+3. Unit economics : CAC vs LTV par canal. LTV/CAC cible > 3x. Si le budget est 0, prioriser les canaux organiques (SEO, communautés, social, product-led).
+4. Budget allocation : répartition du budget entre les canaux, avec seuils de réallocation (si CAC canal A > X, basculer vers canal B).
+5. Quick wins (< 2 semaines) : les 3 actions d'acquisition à lancer immédiatement.
+6. Conformité : consentement marketing (RGPD), opt-in email, mentions obligatoires sur les publicités.
+
+Livrable : docs/growth/acquisition-plan.md.
+
+Puis @social : prends docs/growth/acquisition-plan.md. Lis docs/copy/brand-voice.md — s'il n'existe pas, pose-moi les questions. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme, heures de publication optimales, hashtags. Livrable : docs/social/editorial-calendar.md.
+
+Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Adapte le ton au canal (LinkedIn ≠ Twitter/X ≠ Reddit). Livrable : docs/copy/acquisition-copies.md.
+
+Critères de validation : chaque canal a un CAC estimé et une timeline, le budget est alloué, les quick wins sont actionnables immédiatement.`
       },
       {
         title:"Stratégie social media",
-        agents:["social","copywriter"],
-        quand:"Besoin d'une présence organique sur les réseaux",
-        prompt:"@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Sélectionne 2-3 plateformes prioritaires, définis la ligne éditoriale, les formats natifs, le rythme de publication, les KPIs par plateforme, et le split organique/paid. Livrable : docs/social/social-strategy.md. Puis @copywriter : prends docs/social/social-strategy.md et rédige 3 templates de posts par plateforme + accroches type. Livrable : docs/social/content-templates.md."
+        agents:["social","copywriter","legal"],
+        quand:"Besoin d'une présence organique sur les réseaux. Les réseaux sociaux sont un marathon, pas un sprint — la régularité bat la viralité.",
+        prompt:`@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Lis aussi project-context.md (présence existante, budget).
+
+Stratégie social media complète :
+1. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps (pas où "il faut être"). Justification par plateforme.
+2. Ligne éditoriale : thèmes récurrents, ratio contenu (éducatif/inspirant/promotionnel — règle 70/20/10), ton par plateforme.
+3. Formats natifs : carrousels, threads, vidéos courtes, polls, stories — adaptés aux algorithmes de chaque plateforme en 2026.
+4. Rythme de publication : fréquence réaliste selon les ressources (mieux 3 posts/semaine bien faits que 7 bâclés).
+5. KPIs par plateforme : reach, engagement rate, clicks, conversions. Benchmarks sectoriels.
+6. Split organique/paid : recommandation de budget paid par plateforme si budget > 0, objectifs par campagne.
+7. Outils : planning (Buffer, Hootsuite), analytics, création visuelle.
+
+Livrable : docs/social/social-strategy.md.
+
+Puis @copywriter : prends docs/social/social-strategy.md et rédige 3 templates de posts par plateforme + accroches type + 5 hooks d'accroche réutilisables. Livrable : docs/social/content-templates.md.
+
+Puis @legal : vérifie les mentions obligatoires sur les posts sponsorisés/paid (règles ARPP, FTC selon le pays), les règles de concours/jeux si mentionnés, et le consentement pour le retargeting. Note dans docs/legal/legal-audit.md.
+
+Critères de validation : les plateformes sont justifiées par le persona (pas par habitude), le rythme est réaliste, les KPIs sont mesurables.`
       },
       {
         title:"Emails onboarding & conversion",
-        agents:["copywriter","growth"],
-        quand:"Besoin de convertir — l'agent créera les prérequis manquants (brand-voice, onboarding-flow)",
-        prompt:"@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur). Crée la séquence de 5 emails : bienvenue (J+0), activation feature clé (J+1), social proof (J+3), upgrade (J+7), réengagement (J+14). Format : objet + preview text + corps + CTA. Livrable : docs/copy/email-sequences.md. Puis @growth : prends docs/copy/email-sequences.md et définis les triggers (event qui déclenche chaque email), KPIs par étape (open rate, click rate, conversion), et critères de segmentation. Livrable : section ajoutée dans docs/growth/growth-strategy.md."
+        agents:["copywriter","growth","legal"],
+        quand:"Besoin de convertir les inscrits en utilisateurs actifs puis en payants. L'email est le canal avec le meilleur ROI — s'il est bien fait.",
+        prompt:`@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur, "aha moment").
+
+Crée la séquence de 5 emails :
+1. Bienvenue (J+0) : rappel de la promesse, première action à faire, lien direct vers le produit. Pas de présentation corporate — la valeur d'abord.
+2. Activation feature clé (J+1) : guide vers le "aha moment" — l'action qui prédit la rétention. Avec screenshot/GIF si possible.
+3. Social proof (J+3) : témoignage ou résultat d'un utilisateur similaire au persona. Si pas encore disponible, proposer un placeholder "[A remplacer par témoignage réel]".
+4. Upgrade (J+7) : proposition de valeur du plan payant, contextualisée par l'usage de l'utilisateur. Pas de pression — de la valeur.
+5. Réengagement (J+14) : pour les utilisateurs inactifs. Question ouverte ("qu'est-ce qui t'a bloqué ?") + incentive si pertinent.
+
+Format par email : objet (< 50 chars, 2 variantes A/B) + preview text + corps (< 200 mots) + CTA (un seul, clair) + note de segmentation.
+
+Livrable : docs/copy/email-sequences.md.
+
+Puis @growth : prends docs/copy/email-sequences.md et définis les triggers (event qui déclenche chaque email), KPIs par étape (open rate cible, click rate, conversion), critères de segmentation, et conditions de suppression (ne pas envoyer si l'utilisateur a déjà fait l'action). Livrable : section ajoutée dans docs/growth/growth-strategy.md.
+
+Puis @legal : vérifie la conformité RGPD des emails (consentement opt-in, lien de désinscription, mention de l'expéditeur, base légale). Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque email a un objectif unique et un CTA unique, les triggers sont définis, la conformité RGPD est vérifiée.`
       },
       {
         title:"Auditer le funnel existant",
-        agents:["growth","data-analyst"],
+        agents:["growth","data-analyst","ux"],
         quand:"Produit en production avec trafic, conversion à optimiser. Fournis les données analytics (coller les chiffres dans le prompt, ou les ajouter dans project-context.md section Notes libres).",
-        prompt:"@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (GA4, Mixpanel, etc.), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques dont tu as besoin. Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact classés par effort/impact. Livrable : docs/growth/funnel-audit.md. Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes sur les métriques critiques (drop >20% sur une étape). Livrable : docs/analytics/dashboard-specs.md."
+        prompt:`@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (GA4, Mixpanel, PostHog, etc.), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques exactes dont tu as besoin pour diagnostiquer.
+
+Diagnostic funnel AARRR complet :
+1. Taux par étape : Acquisition → Activation → Rétention → Revenue → Referral. Identifier l'étape avec le plus fort drop.
+2. Points de churn : à quel moment exact les utilisateurs décrochent ? Hypothèses de cause pour chaque point de churn.
+3. Segments sous-performants : par canal d'acquisition, par device, par cohorte temporelle.
+4. 3 leviers à plus fort impact : classés par effort/impact, avec estimation du lift attendu.
+5. Benchmark : comparaison avec les moyennes sectorielles (via WebSearch si disponible — sinon marquer [HYPOTHÈSE]).
+
+Livrable : docs/growth/funnel-audit.md.
+
+Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes automatiques sur les métriques critiques (drop > 20% sur une étape). Livrable : docs/analytics/dashboard-specs.md.
+
+Puis @ux : lis docs/growth/funnel-audit.md et identifie les frictions UX aux points de churn identifiés. Propose des solutions UX pour chaque point de friction. Ajoute dans docs/ux/ux-audit.md.
+
+Critères de validation : chaque étape du funnel a un taux documenté (réel ou hypothèse marquée), les 3 leviers sont actionnables avec un impact estimé.`
       },
       {
-        title:"Plan de lancement (0 → premiers utilisateurs)",
+        title:"Plan de lancement (0 -> premiers utilisateurs)",
         agents:["growth","copywriter","social"],
-        quand:"Produit prêt à lancer — pour orchestrer les 48 premières heures et maximiser la traction initiale",
+        quand:"Produit prêt à lancer — pour orchestrer les 48 premières heures et maximiser la traction initiale. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
         prompt:`@growth Lis project-context.md (persona, secteur, objectif). Lis docs/strategy/brand-platform.md et docs/growth/acquisition-plan.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (persona, canaux préférés, budget, communautés cibles) et génère-les avant de continuer.
 
-Construis le plan de lancement pour les 48 premières heures :
-1. Choix de la plateforme de lancement : Product Hunt, Hacker News Show HN, BetaList, Reddit (subreddits cibles), IndieHackers — avec justification selon le persona.
-2. Assets à préparer : tagline, description courte (80 mots), description longue (250 mots), visuels/screenshots, maker comment, réponses types aux questions.
-3. Orchestration J-7 : checklist pré-lancement (tester le produit, préparer les supporters, planifier les posts).
-4. Orchestration J0 : timeline heure par heure des premières 24h (publication, relais social, réponses communauté, engagement).
-5. Orchestration J+1 à J+7 : suivi post-lancement, email aux premiers inscrits, récolte des premiers feedbacks.
-6. Objectifs chiffrés : nombre de visiteurs, inscriptions, taux de conversion cible pour considérer le lancement comme un succès.
+Plan de lancement pour les 48 premières heures :
+1. Plateforme de lancement : Product Hunt, Hacker News Show HN, BetaList, Reddit (subreddits cibles), IndieHackers — avec justification selon le persona et le secteur.
+2. Assets à préparer : tagline (< 10 mots), description courte (80 mots), description longue (250 mots), visuels/screenshots (specs de taille par plateforme), maker comment, 5 réponses types aux questions anticipées.
+3. J-7 checklist : tester le produit en conditions réelles, préparer les supporters (demander upvotes/soutien), planifier les posts, vérifier le monitoring (le site tiendra-t-il le pic ?).
+4. J0 timeline heure par heure : publication, relais social, réponses communauté, engagement, ajustement en temps réel.
+5. J+1 à J+7 : suivi post-lancement, email aux premiers inscrits, récolte des premiers feedbacks, itération rapide sur les retours.
+6. Objectifs chiffrés : nombre de visiteurs, inscriptions, taux de conversion. Critère de succès / d'échec clair.
+7. Plan de capacité : le site et l'infrastructure sont-ils prêts pour le pic de trafic ? (lien avec @infrastructure)
 
-Livrable : docs/growth/launch-plan.md. Puis @copywriter : lis docs/growth/launch-plan.md et rédige tous les textes de lancement (tagline, descriptions, maker comment, 5 réponses types). Livrable : docs/copy/launch-copies.md. Puis @social : lis docs/growth/launch-plan.md et planifie les posts sociaux J-3 à J+7 pour amplifier le lancement. Livrable : section ajoutée dans docs/social/editorial-calendar.md.`
+Livrable : docs/growth/launch-plan.md.
+
+Puis @copywriter : lis docs/growth/launch-plan.md et rédige tous les textes de lancement (tagline, descriptions, maker comment, 5 réponses types). Ton : authentique, pas corporate. Livrable : docs/copy/launch-copies.md.
+
+Puis @social : lis docs/growth/launch-plan.md et planifie les posts sociaux J-3 à J+7 pour amplifier le lancement. Formats natifs par plateforme. Livrable : section ajoutée dans docs/social/editorial-calendar.md.
+
+Critères de validation : la timeline J0 est heure par heure, les objectifs sont chiffrés, les assets sont prêts 7 jours avant le lancement.`
       },
       {
         title:"Concevoir un programme de referral",
         agents:["growth","product-manager","fullstack"],
-        quand:"Premiers utilisateurs satisfaits — pour activer le canal d'acquisition à coût quasi nul",
+        quand:"Premiers utilisateurs satisfaits — pour activer le canal d'acquisition à coût quasi nul. Le referral est le seul canal qui s'améliore avec la satisfaction client.",
         prompt:`@growth Lis docs/growth/acquisition-plan.md et docs/analytics/kpi-framework.md. S'ils n'existent pas, pose-moi les questions pour les créer (canaux actuels, CAC par canal, NPS ou satisfaction utilisateur) et génère-les avant de continuer.
 
-Conçois la mécanique de referral complète :
-1. Type : double-sided (parrain + filleul récompensés) vs one-sided. Justification selon le persona et le produit.
-2. Incentive : nature de la récompense (crédit, mois gratuit, feature premium, cash). Montant calibré sur la LTV (incentive < 20% de la LTV).
-3. Flow utilisateur : où et quand proposer le referral (post-activation, après un succès, dans les settings). Parcours d'invitation (lien unique, email, partage social).
-4. Tracking : attribution des referrals, suivi du viral coefficient K (invitations envoyées × taux de conversion), cookie/UTM tracking.
-5. Anti-abus : limites par utilisateur, vérification des inscriptions, exclusion des auto-referrals.
-6. KPIs : K-factor cible, taux d'invitation, taux de conversion invité → inscrit → payant.
+Mécanique de referral complète :
+1. Type : double-sided (parrain + filleul récompensés) vs one-sided. Justification selon le persona, le produit et le modèle économique.
+2. Incentive : nature de la récompense (crédit, mois gratuit, feature premium, cash). Montant calibré sur la LTV (incentive < 20% de la LTV). Test de 2 variantes d'incentive recommandé.
+3. Flow utilisateur : où et quand proposer le referral (post-activation, après un succès, dans les settings — jamais pendant une action critique). Parcours d'invitation (lien unique, email, partage social direct).
+4. Tracking : attribution des referrals (cookie + UTM + code unique), suivi du viral coefficient K (invitations envoyées x taux de conversion), dashboard dédié.
+5. Anti-abus : limites par utilisateur, vérification des inscriptions (email unique, IP), exclusion des auto-referrals, détection des patterns frauduleux.
+6. KPIs : K-factor cible (> 0.5 = bon, > 1 = viral), taux d'invitation, taux de conversion invite → inscrit → payant, revenue par referral.
 
-Livrable : docs/growth/referral-program.md. Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles. User stories : "En tant qu'utilisateur, je veux inviter un collègue et recevoir [récompense]". Mets à jour docs/product/functional-specs.md. Puis @fullstack : lis docs/growth/referral-program.md et docs/product/functional-specs.md. Implémente le système de referral : génération de liens uniques, tracking, attribution, interface in-app. Code dans src/.`
+Livrable : docs/growth/referral-program.md.
+
+Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles. User stories : "En tant qu'utilisateur, je veux inviter un collègue et recevoir [récompense]". Critères d'acceptation pour chaque flow. Mets à jour docs/product/functional-specs.md.
+
+Puis @fullstack : lis docs/growth/referral-program.md et docs/product/functional-specs.md. Implémente le système de referral : génération de liens uniques, tracking, attribution, interface in-app. Code dans src/.
+
+Critères de validation : le K-factor cible est défini, les anti-abus sont en place, le tracking est complet (de l'invitation à la conversion payante).`
       },
       {
         title:"Réduire le churn et fidéliser les utilisateurs",
         agents:["growth","data-analyst","copywriter"],
-        quand:"Produit en production avec des utilisateurs — le churn est le premier ennemi de la croissance",
+        quand:"Produit en production avec des utilisateurs — le churn est le premier ennemi de la croissance. Réduire le churn de 5% augmente les profits de 25-95%.",
         prompt:`@growth Lis docs/analytics/kpi-framework.md et docs/analytics/tracking-plan.md. S'ils n'existent pas, pose-moi les questions pour les créer (KPIs AARRR, events de rétention, outils analytics) et génère-les avant de continuer. Si des données de cohortes sont disponibles, colle-les dans le prompt.
 
-Produis le playbook de rétention complet :
-1. Diagnostic churn : identifier les moments critiques de décrochage (J1, J7, J30). Pour chaque moment : hypothèse de cause, signal détectable, action corrective.
-2. Signaux de churn précoces : les comportements qui prédisent un churn (login frequency drop, features non utilisées, support tickets). Seuils d'alerte par signal.
-3. Segmentation comportementale : définir 3-4 segments (champions, actifs, à risque, dormants). Pour chaque segment : critères, taille estimée, stratégie de traitement.
-4. Playbook de réengagement par segment : emails, notifications in-app, offres de rétention. Timing et contenu pour chaque touchpoint.
-5. Campagnes win-back : séquence de récupération des utilisateurs churned (J+1, J+7, J+30 après churn). Incentives (discount, feature gratuite, appel perso).
-6. Métriques de suivi : rétention par cohorte, Net Revenue Retention, churn rate par segment, efficacité des campagnes de réengagement.
+Playbook de rétention complet :
+1. Diagnostic churn : identifier les moments critiques de décrochage (J1, J7, J30). Pour chaque moment : hypothèse de cause, signal détectable, action corrective, impact estimé.
+2. Signaux de churn précoces : les comportements qui prédisent un churn (login frequency drop, features non utilisées, support tickets, temps entre sessions). Seuils d'alerte par signal avec formule de calcul.
+3. Segmentation comportementale : 3-4 segments (champions, actifs, à risque, dormants). Pour chaque segment : critères quantitatifs, taille estimée, LTV estimée, stratégie de traitement.
+4. Playbook de réengagement par segment : emails, notifications in-app, offres de rétention. Timing précis et contenu pour chaque touchpoint. Conformité RGPD des notifications.
+5. Campagnes win-back : séquence de récupération (J+1, J+7, J+30 après churn). Incentives calibrés sur la LTV du segment (discount, feature gratuite, appel perso pour les comptes à haute LTV).
+6. Métriques : rétention par cohorte (J1/J7/J30), Net Revenue Retention (cible > 100%), churn rate par segment, efficacité des campagnes (taux de réactivation).
 
-Livrable : docs/growth/retention-playbook.md. Puis @data-analyst : lis docs/growth/retention-playbook.md et configure le dashboard de rétention (cohortes, signaux d'alerte, segments). Livrable : mise à jour de docs/analytics/dashboard-specs.md. Puis @copywriter : lis docs/growth/retention-playbook.md et rédige les séquences email de réengagement et win-back (objet + corps + CTA pour chaque email). Livrable : docs/copy/retention-emails.md.`
+Livrable : docs/growth/retention-playbook.md.
+
+Puis @data-analyst : lis docs/growth/retention-playbook.md et configure le dashboard de rétention (cohortes, signaux d'alerte, segments, NRR). Livrable : mise à jour de docs/analytics/dashboard-specs.md.
+
+Puis @copywriter : lis docs/growth/retention-playbook.md et rédige les séquences email de réengagement et win-back. Objet (2 variantes A/B) + corps (< 150 mots, empathique pas culpabilisant) + CTA unique par email. Livrable : docs/copy/retention-emails.md.
+
+Critères de validation : chaque segment a une stratégie de traitement, les signaux de churn ont des seuils quantifiés, les emails sont conformes RGPD.`
       },
       {
         title:"Configurer une motion PLG (Product-Led Growth)",
         agents:["growth","product-manager","ux"],
-        quand:"Modèle freemium ou free trial — pour que le produit soit son propre moteur de croissance",
-        prompt:`@growth Lis docs/product/pricing-strategy.md (tiers, feature gating). S'il n'existe pas, pose-moi les questions pour le créer (modèle freemium vs trial, features par tier, prix) et génère-le avant de continuer. Lis aussi docs/analytics/kpi-framework.md.
+        quand:"Modèle freemium ou free trial — pour que le produit soit son propre moteur de croissance. Le PLG fonctionne quand le produit délivre de la valeur AVANT le paiement.",
+        prompt:`@growth Lis docs/product/pricing-strategy.md (tiers, feature gating). S'il n'existe pas, pose-moi les questions pour le créer (modèle freemium vs trial, features par tier, prix) et génère-le avant de continuer. Lis aussi docs/analytics/kpi-framework.md et project-context.md.
 
-Conçois la mécanique PLG complète :
-1. Définition du free tier : features incluses (suffisantes pour démontrer la valeur), limites (nombre d'objets, de collaborateurs, de requêtes). Le free tier doit résoudre le problème principal du persona — pas être une version castrée.
-2. Triggers d'upgrade : les moments où l'utilisateur atteint une limite naturelle et le passage au payant est logique (pas frustrant). Ex : "Tu as créé 5 dashboards — passe à Pro pour en créer plus".
-3. In-app upgrade prompts : où, quand et comment montrer les incitations à l'upgrade. Règles : max 1 prompt par session, jamais pendant une action critique, toujours contextuel (lié à ce que l'utilisateur fait).
-4. Time-to-value du free tier : combien de temps pour que l'utilisateur gratuit ait un "aha moment". Objectif : <5 minutes.
-5. Métriques PLG : taux de conversion free→paid, temps médian avant upgrade, feature adoption rate par tier.
-6. Freemium vs free trial : recommandation avec justification (si freemium : durée illimitée, expansion revenue via usage ; si trial : durée, onboarding accéléré).
+Mécanique PLG complète :
+1. Free tier : features incluses (suffisantes pour démontrer la valeur — le free tier doit résoudre le problème principal, pas être une version castrée), limites (nombre d'objets, de collaborateurs, de requêtes). Le piège classique : un free tier trop limité = pas de valeur = pas de conversion.
+2. Triggers d'upgrade : les moments où l'utilisateur atteint une limite naturelle et le passage au payant est logique (pas frustrant). Chaque trigger doit être un moment de succès, pas de blocage.
+3. In-app upgrade prompts : placement, timing et contenu. Règles : max 1 prompt par session, jamais pendant une action critique, toujours contextuel, toujours montrer la valeur du tier supérieur (pas juste le prix).
+4. Time-to-value : combien de temps pour le "aha moment". Objectif : < 5 minutes. Chaque étape entre l'inscription et le "aha moment" doit être mesurée et optimisée.
+5. Métriques PLG : taux de conversion free → paid (cible : 2-5% pour freemium, 15-25% pour free trial), temps médian avant upgrade, feature adoption rate par tier, expansion revenue (upgrades + add-ons).
+6. Recommandation freemium vs free trial : avec justification basée sur le persona et le type de produit.
 
-Livrable : docs/growth/plg-strategy.md. Puis @product-manager : lis docs/growth/plg-strategy.md et intègre les triggers d'upgrade dans le backlog comme user stories. Mets à jour docs/product/backlog.md. Puis @ux : lis docs/growth/plg-strategy.md et conçois les wireframes des upgrade prompts (placement, timing, message). Intègre dans docs/ux/wireframes.md.`
+Livrable : docs/growth/plg-strategy.md.
+
+Puis @product-manager : lis docs/growth/plg-strategy.md et intègre les triggers d'upgrade dans le backlog comme user stories avec critères d'acceptation. Mets à jour docs/product/backlog.md.
+
+Puis @ux : lis docs/growth/plg-strategy.md et conçois les wireframes des upgrade prompts (placement, timing, message, CTA). L'upgrade doit être une évidence, pas une interruption. Intègre dans docs/ux/wireframes.md.
+
+Critères de validation : le free tier délivre de la valeur en < 5 min, chaque trigger d'upgrade est un moment de succès, les métriques PLG sont définies avec des cibles.`
       },
       {
         title:"Diagnostiquer le product-market fit",
         agents:["product-manager","growth","data-analyst"],
-        quand:"Après 4-6 semaines en production avec 50+ utilisateurs actifs — avant de scaler l'acquisition",
-        prompt:`@product-manager Lis docs/analytics/kpi-framework.md (KPIs, North Star Metric). S'il n'existe pas, pose-moi les questions pour le créer (objectif, KPI North Star, métriques de rétention) et génère-le avant de continuer. Si des données utilisateur sont disponibles (analytics, NPS, feedbacks), colle-les dans le prompt.
+        quand:"Après 4-6 semaines en production avec 50+ utilisateurs actifs — avant de scaler l'acquisition. Scaler sans PMF = brûler du cash plus vite.",
+        prompt:`@product-manager Lis docs/analytics/kpi-framework.md (KPIs, North Star Metric). S'il n'existe pas, pose-moi les questions pour le créer (objectif, KPI North Star, métriques de rétention) et génère-le avant de continuer. Si des données utilisateur sont disponibles (analytics, NPS, feedbacks), colle-les dans le prompt ou dans project-context.md section Notes libres.
 
-Produis le protocole de mesure du Product-Market Fit :
-1. Sondage Sean Ellis : script exact (question : "Comment te sentirais si tu ne pouvais plus utiliser [produit] ?" — réponses : très déçu / un peu déçu / pas déçu / N/A). Seuil PMF : >40% "très déçu".
-2. Rétention par cohorte : analyse J1 (activation), J7 (habitude), J30 (rétention durable). Seuils cibles par type de produit (SaaS B2B : J30 >40%, B2C : J30 >25%).
-3. Engagement depth : features utilisées par session moyenne, fréquence d'usage (DAU/WAU/MAU ratio). Un ratio DAU/MAU >20% = signal fort.
-4. NPS : score et verbatims des promoteurs (>9) et détracteurs (<7). Patterns récurrents.
-5. Signaux qualitatifs : les utilisateurs recommandent-ils spontanément ? Posent-ils des questions sur les features à venir ? Proposent-ils de payer plus ?
-6. Verdict : PMF atteint / PMF partiel / PMF non atteint. Pour chaque cas, la suite recommandée (scaler / itérer / pivoter).
+Protocole de mesure du Product-Market Fit :
+1. Sondage Sean Ellis : script exact (question : "Comment te sentirais si tu ne pouvais plus utiliser [produit] ?" — réponses : très déçu / un peu déçu / pas déçu / N/A). Seuil PMF : > 40% "très déçu". Méthode de collecte (in-app popup, email, entretien).
+2. Rétention par cohorte : J1 (activation), J7 (habitude), J30 (rétention durable). Seuils cibles par type de produit (SaaS B2B : J30 > 40%, B2C : J30 > 25%, marketplace : J30 > 20%). Formule de calcul de la rétention.
+3. Engagement depth : features utilisées par session, fréquence d'usage (DAU/WAU/MAU ratio). DAU/MAU > 20% = signal fort, > 50% = exceptionnel.
+4. NPS : score et verbatims des promoteurs (9-10) et détracteurs (0-6). Patterns récurrents — les détracteurs révèlent les axes d'amélioration.
+5. Signaux qualitatifs : recommandation spontanée ? Questions sur les features futures ? Propositions de payer plus ? Demandes de features = signal fort.
+6. Verdict : PMF atteint / PMF partiel / PMF non atteint. Pour chaque cas : actions recommandées (scaler / itérer sur [axes précis] / pivoter [dans quelle direction]).
 
-Livrable : docs/product/pmf-diagnostic.md. Puis @growth : lis docs/product/pmf-diagnostic.md. Si PMF atteint : recommande les canaux à scaler en priorité avec budget. Si PMF non atteint : recommande les 3 leviers produit à actionner avant de réinvestir en acquisition. Ajoute dans docs/growth/growth-strategy.md. Puis @data-analyst : configure le dashboard PMF (Sean Ellis results, rétention cohortes, engagement depth). Livrable : mise à jour de docs/analytics/dashboard-specs.md.`
+Livrable : docs/product/pmf-diagnostic.md.
+
+Puis @growth : lis docs/product/pmf-diagnostic.md. Si PMF atteint : recommande les canaux à scaler en priorité avec budget et timeline. Si PMF non atteint : recommande les 3 leviers produit à actionner avant de réinvestir en acquisition. Ajoute dans docs/growth/growth-strategy.md.
+
+Puis @data-analyst : configure le dashboard PMF (Sean Ellis results, rétention cohortes, engagement depth, NPS trend). Livrable : mise à jour de docs/analytics/dashboard-specs.md.
+
+Critères de validation : chaque métrique a un seuil cible, le verdict est argumenté avec des données (pas des opinions), les actions suivantes sont concrètes.`
       }
     ]
   },
