@@ -89,12 +89,13 @@
   .prompt-filter-wrap select:focus{border-color:var(--accent)}
 
   /* ── INSTALLATION ── */
-  .install-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+  .install-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:32px}
   .install-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column}
   .install-card h3{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
   .install-card h3 .label-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:4px}
   .label-new{background:var(--accent);color:#000}
   .label-existing{border:1px solid var(--accent);color:var(--accent)}
+  .label-update{background:var(--blue, #3b82f6);color:#fff}
   .install-card .install-sub{font-size:13px;color:var(--text-muted);margin-bottom:16px}
   .install-card .install-prompt{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-size:13px;color:var(--text);line-height:1.6;margin-bottom:16px;position:relative}
   .install-card .install-prompt em{color:var(--accent);font-style:normal;font-weight:600}
@@ -124,7 +125,8 @@
   .install-btn-copy{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);font-size:11px;padding:3px 10px;cursor:pointer;transition:all .2s;position:absolute;top:8px;right:8px}
   .install-btn-copy:hover{border-color:var(--accent);color:var(--accent)}
   .install-btn-copy.copied{border-color:var(--accent);color:var(--accent)}
-  @media(max-width:900px){.install-grid{grid-template-columns:1fr}}
+  @media(max-width:1100px){.install-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:700px){.install-grid{grid-template-columns:1fr}}
 
   /* ── CHANGELOG ── */
   .changelog-controls{margin-bottom:20px}
@@ -689,6 +691,26 @@ const CHANGELOG = [
       </div>
     </div>
 
+    <!-- Scénario C -->
+    <div class="install-card">
+      <h3><span class="label-tag label-update">Mise à jour</span> Équipe déjà installée</h3>
+      <p class="install-sub">Les agents évoluent — mettez à jour sans perdre vos livrables</p>
+      <div class="install-steps-numbered">
+        <div class="install-step"><span class="step-num">1</span> Ouvrez Claude Code <strong>sur votre projet existant</strong></div>
+        <div class="install-step"><span class="step-num">2</span> Copiez ce prompt :
+          <div class="install-prompt">
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents depuis https://github.com/thomasissa-png/Agent-Team. Clone dans /tmp, écrase les agents dans .claude/agents/ et le CLAUDE.md, mais ne touche pas à project-context.md, docs/, src/ ni au code existant.">Copier</button>
+            <em>"Mets à jour l'équipe Gradient Agents depuis <code>https://github.com/thomasissa-png/Agent-Team</code>. Écrase les agents et CLAUDE.md, ne touche pas au reste."</em>
+          </div>
+        </div>
+        <div class="install-step"><span class="step-num">3</span> Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir</div>
+      </div>
+      <div class="install-result">
+        <div class="install-result-label">Préservé :</div>
+        <code>project-context.md</code> + <code>docs/</code> (livrables) + <code>src/</code> (code) + agents custom
+      </div>
+    </div>
+
   </div>
 
   <!-- Tableau comparatif -->
@@ -696,28 +718,32 @@ const CHANGELOG = [
     <h3>Différences clés</h3>
     <table class="diff-table">
       <thead>
-        <tr><th>Fichier / Dossier</th><th>Nouveau projet</th><th>Projet existant</th></tr>
+        <tr><th>Fichier / Dossier</th><th>Nouveau projet</th><th>Projet existant</th><th>Mise à jour</th></tr>
       </thead>
       <tbody>
         <tr>
           <td>CLAUDE.md</td>
           <td class="diff-yes">Copié tel quel</td>
           <td class="diff-yes">Fusionné — ajouté en fin de fichier</td>
+          <td class="diff-yes">Écrasé (ou re-fusionné)</td>
         </tr>
         <tr>
           <td>.claude/agents/</td>
           <td class="diff-yes">Créé de zéro</td>
           <td class="diff-yes">Agents ajoutés, custom préservés</td>
+          <td class="diff-yes">Agents Gradient écrasés, custom préservés</td>
         </tr>
         <tr>
           <td>src/ + docs/</td>
           <td class="diff-yes">Créés vides</td>
+          <td class="diff-no">Pas touchés</td>
           <td class="diff-no">Pas touchés</td>
         </tr>
         <tr>
           <td>project-context.md</td>
           <td class="diff-yes">Template vierge</td>
           <td class="diff-yes">Template — documentez l'existant</td>
+          <td class="diff-no">Pas touché — vérifier nouveaux champs</td>
         </tr>
       </tbody>
     </table>

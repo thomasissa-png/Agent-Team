@@ -47,6 +47,53 @@ Claude Code va :
 
 **Important :** sur un projet existant, le premier réflexe n'est généralement pas `@orchestrator` (qui planifie un projet complet), mais l'agent spécifique au besoin : `@fullstack` pour du code, `@qa` pour des tests, `@seo` pour du référencement, etc.
 
+## Scénario C — Mise à jour (l'équipe est déjà installée)
+
+L'équipe Gradient Agents évolue régulièrement. Pour mettre à jour les agents dans un projet où ils sont déjà installés :
+
+Ouvrir une session Claude Code **sur le projet cible** et dire :
+
+> "Mets à jour l'équipe Gradient Agents depuis `https://github.com/thomasissa-png/Agent-Team`. Clone dans /tmp, écrase les agents dans `.claude/agents/` et le `CLAUDE.md`, mais ne touche pas à `project-context.md`, `docs/`, `src/` ni au code existant."
+
+Claude Code va :
+1. Cloner la dernière version du repo Agent-Team dans `/tmp`
+2. **Écraser** tous les fichiers `.claude/agents/*.md` avec les versions à jour
+3. **Remplacer** le `CLAUDE.md` par la nouvelle version (ou fusionner si le projet a un `CLAUDE.md` custom)
+4. **Mettre à jour** le template dans `templates/project-context.md` (le template de référence, pas le vôtre)
+5. **Ne PAS toucher** à `project-context.md` (historique du projet), `docs/` (livrables), `src/` (code), `package.json`
+
+> **Ce qui est préservé :** tout ce qui est spécifique à votre projet — `project-context.md`, les livrables dans `docs/`, le code dans `src/`, les agents custom que vous avez créés (s'ils ont un nom différent des agents Gradient).
+
+> **Ce qui est écrasé :** les 19 agents Gradient (prompts améliorés), `CLAUDE.md` (nouvelles règles), le template `project-context.md`.
+
+**Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés au template, les remplir dans votre `project-context.md`.
+
+### Méthode manuelle
+
+```bash
+# 0. Se placer à la racine du repo git du projet cible
+cd $(git rev-parse --show-toplevel)
+
+# 1. Récupérer la dernière version
+git clone https://github.com/thomasissa-png/Agent-Team /tmp/Agent-Team 2>/dev/null || \
+  (cd /tmp/Agent-Team && git pull)
+
+# 2. Écraser les agents
+cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
+
+# 3. Mettre à jour CLAUDE.md
+#    → Si CLAUDE.md est celui de Gradient (non fusionné) :
+cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
+#    → Si CLAUDE.md a été fusionné avec des instructions custom :
+#    Remplacer manuellement la section Gradient Agents
+
+# 4. Mettre à jour le template (pas votre project-context.md !)
+cp /tmp/Agent-Team/templates/project-context.md templates/
+
+# 5. Vérifier les nouveaux champs du template
+diff templates/project-context.md project-context.md
+```
+
 ## Variante — Si le repo Agent-Team n'est pas cloné localement
 
 > "Clone `<url-du-repo-agent-team>` dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un [nouveau projet / projet existant]."
@@ -103,4 +150,4 @@ Dans une session Claude Code sur ton projet :
 
 ## Mise à jour des agents
 
-Si l'équipe Gradient Agents évolue dans ce repo source, re-copier les fichiers `.claude/agents/*.md` dans les projets cibles. Le `project-context.md` de chaque projet reste intact — il est spécifique à chaque projet. Pour le `CLAUDE.md`, vérifier les diff avant de re-fusionner.
+Voir **Scénario C** ci-dessus pour la procédure complète (prompt à copier, méthode manuelle, ce qui est préservé vs écrasé).
