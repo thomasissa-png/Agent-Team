@@ -20,7 +20,7 @@ Pour une tâche ciblée sur un projet existant, invoque directement l'agent conc
 
 Les agents sont dans `.claude/agents/`. Chaque agent est un expert autonome.
 Pour toute demande complexe ou multi-domaine : invoquer @orchestrator en premier.
-Pour une demande ciblée : invoquer directement l'agent concerné.
+Pour une tâche ciblée : invoquer directement l'agent concerné.
 
 ## Ordre de priorité des agents par type de demande
 

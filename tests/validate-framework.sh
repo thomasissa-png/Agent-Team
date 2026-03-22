@@ -150,6 +150,44 @@ if [ -f "$ORCH" ]; then
   done
 fi
 
+# 7. Vérification des références croisées (calibration amont/aval)
+echo ""
+echo "--- Références croisées ---"
+for agent in "$AGENTS_DIR"/*.md; do
+  basename_agent=$(basename "$agent" .md)
+  [ "$basename_agent" = "_base-agent-protocol" ] && continue
+
+  # Check if agent references docs/ files that should exist in their livrable path
+  LIVRABLE_DIR=$(grep -o 'docs/[a-z-]*/' "$agent" 2>/dev/null | head -1 || true)
+  if [ -n "$LIVRABLE_DIR" ]; then
+    ok "$basename_agent: chemin livrable défini ($LIVRABLE_DIR)"
+  fi
+done
+
+# 8. Vérification YAML frontmatter — name matches filename
+echo ""
+echo "--- Cohérence nom fichier / frontmatter ---"
+for agent in "$AGENTS_DIR"/*.md; do
+  basename_agent=$(basename "$agent" .md)
+  [ "$basename_agent" = "_base-agent-protocol" ] && continue
+
+  YAML_NAME=$(grep "^name:" "$agent" 2>/dev/null | head -1 | sed 's/^name: *//' || true)
+  if [ -n "$YAML_NAME" ] && [ "$YAML_NAME" != "$basename_agent" ]; then
+    err "$basename_agent: le name YAML '$YAML_NAME' ne correspond pas au nom de fichier"
+  fi
+done
+
+# 9. Vérification fichiers support
+echo ""
+echo "--- Fichiers support ---"
+for f in "$ROOT/INSTALL.md" "$ROOT/CHANGELOG.md"; do
+  if [ -f "$f" ]; then
+    ok "$(basename "$f") existe"
+  else
+    warn "$(basename "$f") manquant"
+  fi
+done
+
 # Résumé
 echo ""
 echo "=== Résumé ==="
