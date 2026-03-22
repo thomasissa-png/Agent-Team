@@ -10,7 +10,7 @@ Ouvrir une session Claude Code **sur le dossier du nouveau projet** et dire :
 
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — installer `.claude/agents/` là, pas dans un sous-dossier
-2. Copier les 18 agents dans `.claude/agents/` à la racine du repo git
+2. Copier les 19 agents dans `.claude/agents/` à la racine du repo git
 3. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
 4. Copier le template et créer `project-context.md` à la racine du repo git
 5. Créer la structure `docs/` et `src/` si absentes
@@ -25,7 +25,7 @@ Ouvrir une session Claude Code **sur le projet existant** et dire :
 
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — c'est là que `.claude/agents/` DOIT être installé, PAS dans un sous-dossier du repo
-2. Copier les 18 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
+2. Copier les 19 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
 3. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
 4. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
 5. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
@@ -84,7 +84,7 @@ cp templates/project-context.md ./project-context.md
 ```
 ton-projet/
 ├── .claude/
-│   └── agents/          ← les 18 agents Gradient
+│   └── agents/          ← les 19 agents Gradient
 ├── templates/
 │   └── project-context.md  ← template vierge (référence)
 ├── project-context.md      ← contexte rempli pour CE projet

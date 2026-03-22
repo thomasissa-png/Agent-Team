@@ -383,7 +383,7 @@ L'ordre Phase 0→5 est le séquencement logique, mais toutes les phases ne sont
 
 **Phase 0 — Fondations (nouveau projet uniquement) :**
 `creative-strategy` → `product-manager` → `data-analyst`
-⚡ `legal` démarre en parallèle dès cette phase
+[PARALLELE] `legal` démarre en parallèle dès cette phase
 
 **Checkpoint Phase 0 — Validation utilisateur obligatoire :**
 Avant de passer à la Phase 1, l'orchestrateur DOIT :
@@ -395,14 +395,14 @@ Avant de passer à la Phase 1, l'orchestrateur DOIT :
 
 **Phase 1 — Expérience :**
 `ux` → `design`
-⚡ `copywriter` peut démarrer en parallèle de `ux` si `brand-platform.md` existe
+[PARALLELE] `copywriter` peut démarrer en parallèle de `ux` si `brand-platform.md` existe
 
 **Phase 2 — Développement :**
 `infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires) → `qa` → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
 
 **Phase 3 — Contenu :**
 `copywriter` → `seo` → `geo`
-⚡ Si `copywriter` a déjà livré en Phase 1, passer directement à `seo`
+[PARALLELE] Si `copywriter` a déjà livré en Phase 1, passer directement à `seo`
 
 **Phase 4 — Acquisition :**
 `growth` → `social`
