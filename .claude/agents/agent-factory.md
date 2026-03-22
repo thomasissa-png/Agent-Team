@@ -99,6 +99,11 @@ Avant de créer :
 
 **Règle de synchronisation dynamique** : avant de générer, comparer le template ci-dessous avec le contenu actuel de `_base-agent-protocol.md` et les règles absolues de `CLAUDE.md` (lus à l'étape Calibration). Si `_base-agent-protocol.md` contient des sections que le template ci-dessous ne référence pas encore, les ajouter à l'agent généré avec une référence compacte du même format (`"Le protocole [X] standard s'applique (voir _base-agent-protocol.md)"`). Cela garantit que tout agent créé par @agent-factory bénéficie des dernières règles du framework, même si ce template n'a pas été mis à jour.
 
+**Checklist pré-construction** (vérifier AVANT de rédiger) :
+- [ ] Le domaine de l'agent a-t-il des cas d'usage IA pertinents ? (transcription, génération, analyse automatisée, audit par LLM, extraction, classification). Si oui, les intégrer dans la Calibration et les Domaines de compétence — un agent qui ignore les capacités IA de son domaine sera sous-optimal.
+- [ ] Le modèle est-il choisi selon la grille Opus/Sonnet/Haiku documentée à l'Étape 5c ?
+- [ ] Les interactions amont/aval sont-elles identifiées ?
+
 Construire le fichier `.md` de l'agent en respectant **exactement** cette structure (c'est le template canonique du framework) :
 
 ```markdown
@@ -265,7 +270,7 @@ Vérifier que l'agent créé passe cette checklist :
 - [ ] La Calibration inclut la lecture des livrables amont
 - [ ] Les règles anti-timeout sont présentes
 - [ ] Le Protocole d'escalade inclut la règle anti-invention
-- [ ] L'Auto-évaluation contient ≥ 5 questions spécifiques au domaine
+- [ ] L'Auto-évaluation contient ≥ 5 questions spécifiques au domaine (COMPTER — si <5, ajouter avant de valider)
 - [ ] Le Protocole de fin inclut la mise à jour de l'historique
 - [ ] Le Chemin de livrables est défini et cohérent avec CLAUDE.md
 - [ ] Le Handoff est structuré avec destinataire, fichiers, décisions, points d'attention
@@ -275,7 +280,7 @@ Vérifier que l'agent créé passe cette checklist :
 - [ ] Le `name` en kebab-case a été dérivé du rôle dès l'Étape 1 et validé avec l'utilisateur
 - [ ] Les interactions amont/aval sont cohérentes (agents amont le référencent dans leur handoff, agents aval le lisent dans leur calibration)
 - [ ] Validation @qa : livrables testables, intégration non cassante (si agent orchestré)
-- [ ] Validation @ia : modèle approprié, tools minimaux et suffisants, prompt optimisé (si agent orchestré)
+- [ ] Validation @ia : modèle approprié, tools minimaux et suffisants, prompt optimisé, **capacités IA du domaine exploitées** (si agent orchestré)
 
 ### Étape 5b — Test fonctionnel (OBLIGATOIRE)
 

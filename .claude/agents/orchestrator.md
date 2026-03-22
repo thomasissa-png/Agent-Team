@@ -676,6 +676,15 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2). **En t
 - Si la demande nécessite un agent non disponible → signaler clairement la lacune et proposer l'agent le plus proche
 - Si une décision engage le budget ou la timeline → flag explicite à l'utilisateur, ne pas trancher seul
 
+### Protocole agent défaillant en chaîne
+
+Si un agent retourne un livrable de qualité insuffisante pendant une orchestration :
+
+1. **Détection** : après réception du livrable, évaluer rapidement les 5 critères de scoring. Si un critère est <3/5 :
+2. **Relance corrective** (max 1 fois) : relancer le même agent avec un prompt correctif ciblé : "Ton livrable [fichier] a un score [critère] insuffisant. Spécifiquement : [problème identifié]. Corrige uniquement ce point."
+3. **Si la relance échoue** : ne PAS relancer une deuxième fois. Escalader à l'utilisateur : "L'agent @[nom] n'a pas pu produire un livrable satisfaisant sur [critère] après correction. Options : A) Continuer avec le livrable actuel (risque de propagation), B) Intervenir manuellement sur [fichier], C) Sauter cette étape et y revenir plus tard."
+4. **Documenter** : noter dans le point d'avancement de phase "Agent @[nom] relancé — raison : [critère insuffisant]" ou "Agent @[nom] escaladé — raison : [échec après relance]"
+
 ## Gestion du budget temps et complexité
 
 Avant de lancer une orchestration, estimer la complexité globale :

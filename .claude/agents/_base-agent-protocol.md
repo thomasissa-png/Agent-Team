@@ -2,7 +2,7 @@
 
 Ce fichier est la **référence unique** des sections communes à tous les agents. Il n'est PAS un agent — il n'a pas de frontmatter YAML. Il sert de documentation pour :
 - **@agent-factory** : le template canonique de l'Étape 3 référence ce fichier
-- **Maintenance** : modifier une règle commune ici, pas dans 18 fichiers
+- **Maintenance** : modifier une règle commune ici, pas dans 19 fichiers
 
 Les règles ci-dessous sont AUSSI présentes dans `CLAUDE.md` (qui est toujours chargé en contexte). Les agents n'ont donc PAS besoin de les dupliquer — ils héritent automatiquement des règles via CLAUDE.md. Chaque agent ne contient que ses **spécificités**.
 
@@ -66,6 +66,17 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie de tout prod
 
 **Partie variable** : chaque agent peut ajouter des règles anti-timeout spécifiques à son type de production (code, contenu, stratégie).
 
+### Résumé exécutif pour livrables longs
+
+Si un livrable dépasse 300 lignes, inclure une section **"Résumé exécutif"** (max 20 lignes) en tête de fichier. Ce résumé permet aux agents aval de comprendre l'essentiel sans lire l'intégralité du document, préservant leur context window. Format :
+
+```
+## Résumé exécutif
+- **Objectif** : [1 phrase]
+- **Décisions clés** : [2-3 bullets]
+- **Dépendances** : [agents/livrables impactés]
+```
+
 ### Fallback context-window
 
 Si un agent reçoit trop de livrables amont à lire et risque de dépasser sa fenêtre de contexte :
@@ -73,6 +84,29 @@ Si un agent reçoit trop de livrables amont à lire et risque de dépasser sa fe
 1. **Prioriser** : lire d'abord les livrables directement liés à sa mission (listés dans sa Calibration), ignorer les livrables indirectement liés
 2. **Résumer** : si un livrable amont dépasse ~200 lignes, lire uniquement les sections pertinentes (table des matières, conclusions, décisions)
 3. **Signaler** : documenter dans le handoff quels livrables n'ont pas été lus intégralement : `[LECTURE PARTIELLE : {fichier} — seules les sections {X, Y} ont été consultées]`
+
+---
+
+## Calibration IA par domaine (standard)
+
+Tout agent — y compris non-technique — DOIT identifier les capacités IA pertinentes à son domaine et les intégrer dans ses processus. Ce template aide @agent-factory à ne pas oublier cette dimension :
+
+### Pour agents créatifs/contenu (copywriter, social, podcast, etc.)
+- Génération assistée (drafts, variations, reformulations)
+- Analyse de ton/sentiment sur le contenu existant
+- Transcription et résumé de contenus audio/vidéo
+
+### Pour agents stratégie/analyse (creative-strategy, data-analyst, growth, etc.)
+- Extraction et structuration de données non-structurées
+- Détection de patterns dans les données utilisateur
+- Benchmarking automatisé via WebSearch
+
+### Pour agents conformité/qualité (legal, qa, reviewer, accessibility, etc.)
+- Audit automatisé par checklist (RGPD, WCAG, SEO technique)
+- Classification de risques/priorités
+- Vérification de cohérence croisée entre livrables
+
+**Règle** : si un agent n'exploite aucune capacité IA dans son domaine, @agent-factory doit justifier pourquoi (cas rare). Cette section est un guide pour @agent-factory, pas une obligation pour chaque agent de tout implémenter.
 
 ---
 

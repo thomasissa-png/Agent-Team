@@ -5,9 +5,19 @@
 
 set -euo pipefail
 
-FILE="${1:-}"
+FILE=""
+AGENT_NAME=""
 ERRORS=0
 WARNINGS=0
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --agent) AGENT_NAME="$2"; shift 2 ;;
+    --agent=*) AGENT_NAME="${1#--agent=}"; shift ;;
+    *) [ -z "$FILE" ] && FILE="$1"; shift ;;
+  esac
+done
 
 red()    { printf "\033[31m%s\033[0m\n" "$1"; }
 yellow() { printf "\033[33m%s\033[0m\n" "$1"; }
@@ -36,25 +46,47 @@ echo ""
 
 # 1. Taille minimale
 echo "--- Structure ---"
-if [ "$LINE_COUNT" -lt 20 ]; then
-  err "Livrable trop court ($LINE_COUNT lignes, minimum 20). Probable timeout ou échec."
+if [ "$LINE_COUNT" -lt 30 ]; then
+  err "Livrable trop court ($LINE_COUNT lignes, minimum 30). Probable timeout ou échec."
 elif [ "$LINE_COUNT" -lt 50 ]; then
-  warn "Livrable court ($LINE_COUNT lignes). Vérifier que le contenu est complet."
+  warn "Livrable court ($LINE_COUNT lignes). Fichier probablement incomplet."
 else
   ok "Taille acceptable ($LINE_COUNT lignes)"
 fi
 
-# 2. Handoff présent
+# 2. Handoff présent + sous-éléments
 if grep -qi "Handoff" "$FILE"; then
   ok "Bloc Handoff présent"
+  # Vérifier les sous-éléments du Handoff
+  HANDOFF_SUBS=0
+  grep -qi "Fichiers produits" "$FILE" && HANDOFF_SUBS=$((HANDOFF_SUBS + 1))
+  grep -qi "Décisions prises" "$FILE" && HANDOFF_SUBS=$((HANDOFF_SUBS + 1))
+  grep -qi "Points d'attention" "$FILE" && HANDOFF_SUBS=$((HANDOFF_SUBS + 1))
+  grep -qi "Interactions validées" "$FILE" && HANDOFF_SUBS=$((HANDOFF_SUBS + 1))
+  if [ "$HANDOFF_SUBS" -ge 2 ]; then
+    ok "Handoff structuré ($HANDOFF_SUBS/4 sous-éléments présents)"
+  else
+    warn "Handoff incomplet ($HANDOFF_SUBS/4 sous-éléments — minimum 2 attendus parmi: Fichiers produits, Décisions prises, Points d'attention, Interactions validées)"
+  fi
 else
   err "Pas de bloc Handoff en fin de livrable"
+fi
+
+# 2b. Vérification --agent : fichier dans le bon dossier
+if [ -n "$AGENT_NAME" ]; then
+  FILE_DIR=$(dirname "$FILE")
+  if echo "$FILE_DIR" | grep -q "docs/$AGENT_NAME"; then
+    ok "Fichier dans le bon dossier (docs/$AGENT_NAME/)"
+  else
+    err "Fichier attendu dans docs/$AGENT_NAME/ mais trouvé dans $FILE_DIR"
+  fi
 fi
 
 # 3. Placeholders non remplis
 PLACEHOLDER_COUNT=0
 for pattern in '\[TODO\]' '\[A COMPLETER\]' '\[À COMPLÉTER\]' '\[PLACEHOLDER\]' '\[INSERT\]' '\[XXX\]'; do
-  MATCHES=$(grep -ci "$pattern" "$FILE" 2>/dev/null || echo 0)
+  MATCHES=$(grep -ci "$pattern" "$FILE" 2>/dev/null | tr -d '\n' || echo 0)
+  MATCHES=${MATCHES:-0}
   PLACEHOLDER_COUNT=$((PLACEHOLDER_COUNT + MATCHES))
 done
 if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then
@@ -64,7 +96,8 @@ else
 fi
 
 # 4. Hypothèses marquées correctement
-HYPO_COUNT=$(grep -c '\[HYPOTHÈSE' "$FILE" 2>/dev/null || echo 0)
+HYPO_COUNT=$(grep -c '\[HYPOTHÈSE' "$FILE" 2>/dev/null | tr -d '\n' || echo 0)
+HYPO_COUNT=${HYPO_COUNT:-0}
 if [ "$HYPO_COUNT" -gt 0 ]; then
   # Vérifier qu'il y a un bloc "Hypothèses à valider" en fin de document
   if grep -qi "Hypothèses à valider" "$FILE"; then

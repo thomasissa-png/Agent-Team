@@ -44,6 +44,8 @@ IMPORTANT_FIELDS=(
   "Frontend"
   "Hébergement"
   "Modèle économique"
+  "Pays de commercialisation"
+  "Données sensibles collectées"
   "Budget mensuel infrastructure"
   "Timeline de lancement"
   "Ressources disponibles"
@@ -91,6 +93,31 @@ if grep -q "Dernière mise à jour" "$CONTEXT"; then
   else
     ok "Date de mise à jour : $DATE_VAL"
   fi
+fi
+
+# Validation conditionnelle : stade Production ou Croissance
+echo ""
+echo "--- Validation conditionnelle (stade avancé) ---"
+if grep -qP '\[x\]\s*(Production|Croissance)' "$CONTEXT" 2>/dev/null; then
+  # URL du site actuel
+  URL_LINE=$(grep -i "URL du site actuel" "$CONTEXT" 2>/dev/null | head -1 || true)
+  URL_VAL=$(echo "$URL_LINE" | sed 's/.*: *//' | sed 's/^ *//' | sed 's/ *$//')
+  if [ -z "$URL_VAL" ] || echo "$URL_VAL" | grep -qP '^\[.*\]$'; then
+    warn "Stade Production/Croissance mais 'URL du site actuel' non renseigné"
+  else
+    ok "URL du site actuel renseignée"
+  fi
+
+  # Outils analytics en place
+  ANALYTICS_LINE=$(grep -i "Outils analytics en place" "$CONTEXT" 2>/dev/null | head -1 || true)
+  ANALYTICS_VAL=$(echo "$ANALYTICS_LINE" | sed 's/.*: *//' | sed 's/^ *//' | sed 's/ *$//')
+  if [ -z "$ANALYTICS_VAL" ] || echo "$ANALYTICS_VAL" | grep -qP '^\[.*\]$'; then
+    warn "Stade Production/Croissance mais 'Outils analytics en place' non renseigné"
+  else
+    ok "Outils analytics renseignés"
+  fi
+else
+  ok "Stade pré-production — pas de vérification URL/analytics requise"
 fi
 
 # Résumé

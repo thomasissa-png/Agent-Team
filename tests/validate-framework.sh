@@ -6,12 +6,25 @@
 
 set -euo pipefail
 
+NEW_AGENT_FILE=""
 ROOT="${1:-.}"
 STRICT=false
-[ "${2:-}" = "--strict" ] && STRICT=true
+
+# Parse arguments
+for arg in "$@"; do
+  case "$arg" in
+    --strict) STRICT=true ;;
+    --new-agent=*) NEW_AGENT_FILE="${arg#--new-agent=}" ;;
+  esac
+done
+# If first arg is not a flag, treat as ROOT
+if [ "${1:-}" != "--strict" ] && [[ "${1:-}" != --new-agent=* ]]; then
+  ROOT="${1:-.}"
+fi
 
 AGENTS_DIR="$ROOT/.claude/agents"
 CLAUDE_MD="$ROOT/CLAUDE.md"
+ORCH="$AGENTS_DIR/orchestrator.md"
 ERRORS=0
 WARNINGS=0
 
@@ -98,6 +111,33 @@ for agent in "$AGENTS_DIR"/*.md; do
   # tools field
   if ! grep -q "^tools:" "$agent"; then
     err "$basename_agent: champ 'tools' manquant"
+  else
+    # Validation des tools valides
+    VALID_TOOLS="Read Write Edit Bash Glob Grep WebSearch WebFetch Task"
+    TOOLS_LINE=$(grep "^tools:" "$agent" | head -1 | sed 's/^tools: *//')
+    for tool in $(echo "$TOOLS_LINE" | tr -d '[],' | tr ' ' '\n' | sed 's/^ *//;s/ *$//'); do
+      [ -z "$tool" ] && continue
+      TOOL_VALID=false
+      for valid in $VALID_TOOLS; do
+        if [ "$tool" = "$valid" ]; then
+          TOOL_VALID=true
+          break
+        fi
+      done
+      if ! $TOOL_VALID; then
+        warn "$basename_agent: tool inconnu '$tool' (valides: $VALID_TOOLS)"
+      fi
+    done
+  fi
+
+  # version field
+  if ! grep -q "^version:" "$agent"; then
+    warn "$basename_agent: champ 'version' manquant dans le frontmatter"
+  else
+    VERSION_VAL=$(grep "^version:" "$agent" | head -1 | sed 's/^version: *//' | tr -d ' ')
+    if ! echo "$VERSION_VAL" | grep -qP '^"[0-9]+\.[0-9]+"$'; then
+      warn "$basename_agent: version '$VERSION_VAL' ne suit pas le format \"X.Y\""
+    fi
   fi
 
   # === Sections obligatoires (alignées avec checklist agent-factory étape 5) ===
@@ -212,7 +252,6 @@ fi
 # 6. Vérification orchestrator.md — mapping subagent_type
 echo ""
 echo "--- Mapping orchestrator ---"
-ORCH="$AGENTS_DIR/orchestrator.md"
 if [ -f "$ORCH" ]; then
   for agent in "$AGENTS_DIR"/*.md; do
     basename_agent=$(basename "$agent" .md)
@@ -269,6 +308,45 @@ elif [ "$ERRORS" -eq 0 ]; then
   yellow "$WARNINGS avertissement(s), 0 erreur."
 else
   red "$ERRORS erreur(s), $WARNINGS avertissement(s)."
+fi
+
+# 9. Mode --new-agent : validation spécifique d'un nouvel agent
+if [ -n "$NEW_AGENT_FILE" ]; then
+  echo ""
+  echo "=== Validation nouvel agent : $NEW_AGENT_FILE ==="
+  NA_CHECKS=0
+  NA_WARNINGS=0
+  NA_ERRORS=0
+
+  if [ ! -f "$NEW_AGENT_FILE" ]; then
+    red "Fichier $NEW_AGENT_FILE introuvable."
+    exit 1
+  fi
+
+  NA_NAME=$(basename "$NEW_AGENT_FILE" .md)
+
+  # Vérification référence dans CLAUDE.md
+  if grep -q "@$NA_NAME" "$CLAUDE_MD" 2>/dev/null; then
+    green "[OK] @$NA_NAME référencé dans CLAUDE.md"
+    NA_CHECKS=$((NA_CHECKS + 1))
+  else
+    red "[ERREUR] @$NA_NAME non référencé dans CLAUDE.md (convention d'appel)"
+    NA_ERRORS=$((NA_ERRORS + 1))
+    ERRORS=$((ERRORS + 1))
+  fi
+
+  # Vérification référence dans orchestrator.md
+  if [ -f "$ORCH" ] && grep -q "$NA_NAME" "$ORCH" 2>/dev/null; then
+    green "[OK] $NA_NAME référencé dans orchestrator.md"
+    NA_CHECKS=$((NA_CHECKS + 1))
+  else
+    red "[ERREUR] $NA_NAME non référencé dans orchestrator.md (mapping)"
+    NA_ERRORS=$((NA_ERRORS + 1))
+    ERRORS=$((ERRORS + 1))
+  fi
+
+  echo ""
+  echo "Nouvel agent : $NA_NAME — $NA_CHECKS checks passed, $NA_WARNINGS warnings, $NA_ERRORS errors"
 fi
 
 exit "$ERRORS"
