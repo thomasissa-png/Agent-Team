@@ -18,7 +18,7 @@ Ouvrir une session Claude Code **sur le dossier du nouveau projet** et dire :
 
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — installer `.claude/agents/` là, pas dans un sous-dossier
-2. Copier les 17 agents dans `.claude/agents/` à la racine du repo git
+2. Copier les 18 agents dans `.claude/agents/` à la racine du repo git
 3. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
 4. Copier le template et créer `project-context.md` à la racine du repo git
 5. Créer la structure `docs/` et `src/` si absentes
@@ -33,7 +33,7 @@ Ouvrir une session Claude Code **sur le projet existant** et dire :
 
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — c'est là que `.claude/agents/` DOIT être installé, PAS dans un sous-dossier du repo
-2. Copier les 17 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
+2. Copier les 18 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
 3. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
 4. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
 5. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
@@ -92,7 +92,7 @@ cp templates/project-context.md ./project-context.md
 ```
 ton-projet/
 ├── .claude/
-│   └── agents/          ← les 17 agents Gradient
+│   └── agents/          ← les 18 agents Gradient
 ├── templates/
 │   └── project-context.md  ← template vierge (référence)
 ├── project-context.md      ← contexte rempli pour CE projet
@@ -140,6 +140,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 | Revue croisée / cohérence | reviewer | orchestrator |
 | Juridique / conformité | legal | — |
 | Roadmap / backlog | product-manager | creative-strategy |
+| Création d'agents spécialisés | agent-factory | ia, orchestrator |
 
 ## Convention d'appel
 
@@ -160,6 +161,7 @@ Pour une demande ciblée : invoquer directement l'agent concerné.
 - `@social` : stratégie et contenu réseaux sociaux
 - `@reviewer` : revue croisée, cohérence inter-agents, validation finale
 - `@legal` : RGPD, CGU, conformité
+- `@agent-factory` : création d'agents spécialisés sur mesure pour le projet
 
 ## Convention de chemin des livrables
 
@@ -296,7 +298,7 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 
 **Ce qui a été fait :**
 
-1. **17 agents créés** dans `.claude/agents/` — chacun avec une structure homogène :
+1. **18 agents créés** dans `.claude/agents/` — chacun avec une structure homogène :
    - Identité (persona expert avec années d'expérience spécifiques)
    - Domaines de compétence détaillés
    - Protocole d'entrée obligatoire (lecture project-context.md, champs critiques)
@@ -308,7 +310,7 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
    - Protocole de fin de livrable (mise à jour historique)
    - Handoff standardisé
 
-2. **Agents disponibles :** orchestrator, fullstack, qa, design, ux, copywriter, seo, geo, ia, infrastructure, creative-strategy, product-manager, data-analyst, growth, social, reviewer, legal
+2. **Agents disponibles :** orchestrator, fullstack, qa, design, ux, copywriter, seo, geo, ia, infrastructure, creative-strategy, product-manager, data-analyst, growth, social, reviewer, legal, agent-factory
 
 3. **Template project-context.md** créé dans `templates/` — à remplir avant chaque nouveau projet
 
@@ -330,7 +332,7 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 
 **Ce qui a été fait :**
 
-1. **Règle absolue numéro 2 — Zéro invention de données** : ajoutée au CLAUDE.md et aux 17 agents. Les agents doivent signaler les données manquantes, demander l'autorisation avant de poser des hypothèses, et marquer `[HYPOTHÈSE : ...]`. @orchestrator vérifie que les sous-agents n'inventent pas. @reviewer flague NO-GO tout chiffre sans source.
+1. **Règle absolue numéro 2 — Zéro invention de données** : ajoutée au CLAUDE.md et aux 18 agents. Les agents doivent signaler les données manquantes, demander l'autorisation avant de poser des hypothèses, et marquer `[HYPOTHÈSE : ...]`. @orchestrator vérifie que les sous-agents n'inventent pas. @reviewer flague NO-GO tout chiffre sans source.
 
 2. **Enrichissement des agents** (cas d'usage manquants) :
    - @growth : rétention, churn, pricing & packaging, expansion revenue
@@ -358,3 +360,24 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 - Enrichir les agents existants plutôt que créer de nouveaux agents (éviter la complexité)
 - La règle anti-invention est la plus importante du framework — un livrable incomplet vaut mieux qu'un livrable faux
 - Les calibrations croisées sont le levier #1 de cohérence inter-agents
+
+### Session du 2026-03-22 — Ajout de @agent-factory
+
+**Ce qui a été fait :**
+
+1. **Nouvel agent `@agent-factory`** créé dans `.claude/agents/agent-factory.md` — agent capable de créer des agents spécialisés sur mesure pour chaque projet (architecte, directeur podcast, trader, SFX, etc.)
+
+2. **Processus en 5 étapes** intégré dans l'agent :
+   - Recueil du besoin (rôle, mission, livrables, interactions, outils, domaine)
+   - Vérification anti-doublon (pas de chevauchement avec agents existants)
+   - Construction selon le template canonique exact du framework
+   - Intégration dans le framework (CLAUDE.md + orchestrator.md)
+   - Validation via checklist de conformité (15 points)
+
+3. **Intégrations** : CLAUDE.md mis à jour (tableau priorité, convention d'appel, compteur 18 agents), orchestrator.md mis à jour (mapping subagent_type)
+
+**Décisions de conception :**
+- L'agent-factory lit TOUS les agents existants avant de créer (calibration complète) — évite les doublons
+- WebSearch obligatoire si le domaine est inconnu — l'agent ne fabrique jamais un expert sur un domaine qu'il ne comprend pas
+- Le template canonique est intégré dans le processus de création, pas dans un fichier séparé — évite la désynchronisation
+- L'agent-factory peut aussi modifier des agents existants (mode révision) — pas seulement en créer de nouveaux

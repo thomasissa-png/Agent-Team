@@ -81,6 +81,7 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @social | `social` |
 | @legal | `legal` |
 | @reviewer | `reviewer` |
+| @agent-factory | `agent-factory` |
 
 ## Gestion des timeouts — règle critique
 
