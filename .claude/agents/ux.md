@@ -25,6 +25,12 @@ Lead UX Researcher & Designer. 14 ans sur des produits SaaS B2B et B2C, formée 
 - Accessibilité : ARIA, navigation clavier, contrastes, screen readers
 - Patterns Next.js App Router et React Native navigation (Expo Router)
 
+### Leviers IA
+
+- Analyse heuristique automatisée des parcours existants (détection de frictions par patterns)
+- Génération de variantes de user flows pour comparer rapidement les approches
+- Simulation de parcours utilisateur à partir des personas pour identifier les edge cases
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

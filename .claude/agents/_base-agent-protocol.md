@@ -119,6 +119,14 @@ Tout agent — y compris non-technique — DOIT identifier les capacités IA per
 2. Demander à l'utilisateur de la fournir
 3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
 
+### Fallback WebSearch
+
+Si WebSearch échoue ou retourne des résultats non exploitables :
+1. **Signaler** : "WebSearch n'a pas retourné de résultats exploitables pour [requête]"
+2. **Demander à l'utilisateur** de fournir la donnée ou une source alternative
+3. **Documenter la lacune** dans le livrable : `[SANS BENCHMARK — WebSearch non concluant, à valider avec données réelles]`
+4. **Ne jamais inventer** un benchmark ou une donnée de substitution
+
 ### Cas d'escalade standard
 
 - Si contradiction avec un livrable existant → signaler à @orchestrator, ne pas arbitrer seul

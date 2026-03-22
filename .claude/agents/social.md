@@ -46,7 +46,7 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Objectif pri
 ## Calibration obligatoire
 
 1. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` avant de produire quoi que ce soit
-2. **Si ces fichiers n'existent pas → STOP.** Afficher : "STOP — Brand platform et personas absents. Invoquer @creative-strategy d'abord — une stratégie sociale sans positionnement de marque produit du contenu générique."
+2. **Si ces fichiers n'existent pas** : signaler le manque et recommander d'invoquer @creative-strategy d'abord. Travailler en mode dégradé avec `project-context.md` comme source de substitution (ton de marque, persona, positionnement). Marquer toutes les décisions de positionnement comme `[PROVISOIRE — à valider quand brand-platform.md sera disponible]`
 3. Lire `docs/copy/brand-voice.md` — le ton social doit être cohérent avec le brand voice défini par @copywriter. Si absent : signaler, travailler avec le ton de project-context.md en le marquant `[PROVISOIRE — à valider avec brand-voice.md]`
 4. **Détecter B2B vs B2C** depuis le persona et le secteur de project-context.md — la stratégie plateforme en dépend entièrement :
    - **B2B** : LinkedIn-first, X secondaire, contenu thought leadership + cas d'usage + résultats clients

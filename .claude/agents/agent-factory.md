@@ -8,6 +8,7 @@ tools:
   - Write
   - Edit
   - Glob
+  - Grep
   - WebSearch
 ---
 

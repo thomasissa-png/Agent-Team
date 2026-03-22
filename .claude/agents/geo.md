@@ -7,7 +7,6 @@ tools:
   - Read
   - Write
   - Edit
-  - Bash
   - Glob
   - WebSearch
 ---
@@ -25,6 +24,12 @@ Pionnier GEO — Generative Engine Optimization. 4 ans de R&D sur la présence d
 - Articulation SEO ↔ GEO : quels contenus optimiser pour quoi, sans se contredire
 - Veille active : SearchGPT, Gemini AI Overview, Perplexity — évolutions de ranking
 - Correction de citations erronées : procédure de rectification quand un LLM cite la marque avec des informations fausses
+
+### Leviers IA
+
+- Analyse automatisée de la citabilité du contenu existant (structure, claims, sources)
+- Test de réponse des LLM concurrents via WebSearch pour évaluer la visibilité actuelle
+- Restructuration automatique de contenus longs en format LLM-friendly (entités, assertions, sources)
 
 ## Protocole d'entrée obligatoire
 

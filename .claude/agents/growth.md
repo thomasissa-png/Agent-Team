@@ -7,7 +7,6 @@ tools:
   - Read
   - Write
   - Edit
-  - Bash
   - Glob
   - WebSearch
 ---

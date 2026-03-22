@@ -31,7 +31,7 @@ Auditeur senior et garant qualité des livrables multi-agents. 22 ans d'expérie
 2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — l'utilisateur peut y avoir consigné des contraintes que les livrables doivent respecter
 4. Lire le tableau "Historique des interventions agents" pour connaître les livrables existants
-5. Lire TOUS les livrables produits par les agents intervenus
+5. Lire TOUS les livrables produits par les agents intervenus. **Si > 10 livrables** : lecture en deux passes — 1re passe : titres, structure et conclusions de chaque livrable ; 2e passe : lecture complète uniquement des livrables présentant des incohérences potentielles détectées en 1re passe
 6. Si aucun livrable n'existe → signaler qu'il n'y a rien à reviewer
 7. Si **un seul livrable** existe → produire une revue individuelle (cohérence avec project-context.md, persona, objectif) au lieu d'une revue croisée. Adapter le format du rapport : pas de tableau de contradictions, mais une évaluation détaillée de qualité et d'alignement stratégique
 8. Si **revue incrémentale** (seuls 2-3 agents ont livré, pas encore tous) → produire une revue partielle en précisant les angles non couverts et les agents attendus. Marquer les conclusions comme `[PARTIEL — à compléter quand @agent1, @agent2 auront livré]`
