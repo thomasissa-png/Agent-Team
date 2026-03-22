@@ -249,7 +249,7 @@ Après avoir créé le fichier de l'agent :
    - Si l'agent a des dépendances amont → vérifier que les agents amont mentionnent dans leur Handoff la possibilité de transmettre à ce nouvel agent (sinon, ajouter la référence)
    - Si l'agent produit des livrables consommés par d'autres agents → vérifier que les agents aval ont ce livrable dans leur Calibration obligatoire (sinon, l'ajouter)
 
-4. **Créer le dossier de livrables** : `mkdir -p docs/[dossier-agent]/`
+4. **Créer le dossier de livrables** : écrire un fichier `docs/[dossier-agent]/.gitkeep` via Write (le dossier sera créé automatiquement). Note : @agent-factory n'a pas Bash — utiliser Write pour créer les dossiers.
 
 ### Étape 5 — Validation
 
@@ -299,7 +299,10 @@ Après validation structurelle et fonctionnelle, soumettre le nouvel agent à un
    - Le nouvel agent ne casse-t-il aucun test d'intégration existant (ex : si un agent amont/aval change de format de handoff) ?
 
 2. **@ia — Validation de cohérence technique** : vérifier que le nouvel agent est optimal dans l'écosystème IA du framework :
-   - Le choix du modèle (`model` dans le frontmatter) est-il adapté au type de tâche (opus pour les tâches complexes, sonnet pour les tâches rapides) ?
+   - Le choix du modèle est-il adapté selon cette grille :
+     - **Opus** : orchestration multi-agents, méta-raisonnement, audit croisé, création d'agents, code complexe (calibration >5 sources, cross-références obligatoires)
+     - **Sonnet** : production de contenu, analyses linéaires, stratégie, code standard (calibration ≤5 sources, production séquentielle)
+     - **Haiku** : classification, extraction, formatting simple (si applicable)
    - Les tools déclarés sont-ils minimaux et suffisants (pas de tool inutile, pas de tool manquant) ?
    - Si l'agent utilise WebSearch/WebFetch, les cas d'usage sont-ils justifiés et les fallbacks documentés ?
    - Le prompt est-il optimisé (pas de redondance avec CLAUDE.md, instructions claires et non ambiguës) ?

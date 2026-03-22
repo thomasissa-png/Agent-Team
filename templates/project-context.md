@@ -48,7 +48,10 @@
 - **Base de données** :
 - **Authentification** :
 - **Hébergement** :
-- **Outils IA utilisés** :
+- **Outils IA utilisés** : [Modèles en production, APIs, fine-tunes existants]
+- **Budget IA mensuel (tokens)** : [Montant dédié ou 'inclus dans infra' ou 'à définir']
+- **Volume d'usage IA prévu** : [Requêtes IA / jour ou / mois — estimation]
+- **Latence IA cible** : [Ex : <3s streaming, <10s batch — ou 'défauts framework']
 - **Outils d'analytics** :
 
 ---
