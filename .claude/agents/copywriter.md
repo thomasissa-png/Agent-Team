@@ -30,7 +30,7 @@ Senior copywriter conversion et brand voice. 8 ans en freelance pour des SaaS, s
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — comprendre les enjeux personnels de l'utilisateur et adapter le ton de collaboration (fondateur technique vs marketeur)
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions de positionnement et ton déjà prises. Ne jamais contredire sans signaler
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)

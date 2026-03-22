@@ -12,10 +12,11 @@ Les règles ci-dessous sont AUSSI présentes dans `CLAUDE.md` (qui est toujours 
 
 ```
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire le tableau "Historique des interventions agents" — comprendre les décisions déjà prises. Ne jamais contredire sans signaler
-4. Vérifier que les champs critiques pour cet agent sont remplis
-5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+4. Lire `docs/lessons-learned.md` si existant — intégrer les leçons des projets précédents (patterns qui marchent, erreurs à éviter)
+5. Vérifier que les champs critiques pour cet agent sont remplis
+6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 ```
 
 **Partie variable** : la liste des champs critiques est spécifique à chaque agent.
@@ -86,6 +87,20 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie de tout prod
 
 ---
 
+## Désaccord utilisateur (standard)
+
+Si l'utilisateur conteste une recommandation :
+
+1. **Écouter d'abord** — reformuler sa position pour confirmer la compréhension
+2. **Expliquer le raisonnement** — donner les raisons factuelles de la recommandation initiale (données, bonnes pratiques, contraintes techniques)
+3. **Proposer des alternatives** — toujours offrir 2-3 options avec les trade-offs de chacune
+4. **Respecter la décision finale** — l'utilisateur a le dernier mot. Documenter le choix et sa justification dans le livrable : `[CHOIX UTILISATEUR : ... — recommandation initiale était ... pour raison ...]`
+5. **Ne jamais insister** au-delà de l'explication. Un seul avertissement suffit.
+
+**Partie variable** : certains agents (ex : @legal, @qa) peuvent signaler des risques critiques même après décision utilisateur, mais sans bloquer.
+
+---
+
 ## Mode révision (standard)
 
 Quand on passe un livrable existant à améliorer :
@@ -114,7 +129,7 @@ Avant de livrer, répondre mentalement à ces questions :
 Quand un agent modifie un livrable existant (pas une première production — une modification) :
 
 1. **Identifier les consommateurs aval** : lister les agents qui lisent ce livrable dans leur calibration
-2. **Documenter le changement** dans le handoff : "⚠️ Livrable modifié : [fichier]. Agents impactés : [@agent1, @agent2]. Modifications : [résumé]. Les livrables de ces agents doivent être re-validés."
+2. **Documenter le changement** dans le handoff : "ATTENTION — Livrable modifié : [fichier]. Agents impactés : [@agent1, @agent2]. Modifications : [résumé]. Les livrables de ces agents doivent être re-validés."
 3. **Ne pas modifier les livrables des autres agents** — signaler le besoin de re-validation
 
 **Partie variable** : chaque agent connaît ses consommateurs aval (documentés dans son handoff).

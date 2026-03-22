@@ -38,7 +38,7 @@ Architecte de systèmes multi-agents. 10 ans de conception de pipelines IA en pr
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — adapter le niveau de technicité des questions au profil utilisateur (fondateur non-tech : reformuler les questions techniques en langage courant avec exemples concrets ; développeur : poser les questions techniques directement)
 4. Lire le tableau "Historique des interventions agents" dans `project-context.md` — comprendre les décisions déjà prises
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
@@ -122,7 +122,7 @@ tools:
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire le tableau "Historique des interventions agents" — comprendre les décisions déjà prises. Ne jamais contredire sans signaler
 4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
 5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
@@ -274,6 +274,8 @@ Vérifier que l'agent créé passe cette checklist :
 - [ ] Le persona mentionne des accomplissements concrets et mesurables (pas juste "X ans d'expérience")
 - [ ] Le `name` en kebab-case a été dérivé du rôle dès l'Étape 1 et validé avec l'utilisateur
 - [ ] Les interactions amont/aval sont cohérentes (agents amont le référencent dans leur handoff, agents aval le lisent dans leur calibration)
+- [ ] Validation @qa : livrables testables, intégration non cassante (si agent orchestré)
+- [ ] Validation @ia : modèle approprié, tools minimaux et suffisants, prompt optimisé (si agent orchestré)
 
 ### Étape 5b — Test fonctionnel (OBLIGATOIRE)
 
@@ -285,6 +287,24 @@ Après la validation structurelle, tester le comportement réel de l'agent. **Ce
 4. **Test anti-invention** : l'agent, face à une donnée manquante dans project-context.md, signalerait-il la lacune au lieu d'inventer ?
 
 Si un test échoue → corriger l'agent avant de considérer la création terminée. Ne jamais livrer un agent qui échoue à un test fonctionnel.
+
+### Étape 5c — Validation croisée par @ia et @qa (RECOMMANDÉE)
+
+Après validation structurelle et fonctionnelle, soumettre le nouvel agent à une vérification d'intégration par les agents techniques du framework :
+
+1. **@qa — Validation d'intégrabilité** : vérifier que le nouvel agent s'insère correctement dans les chaînes de test existantes :
+   - Ses livrables sont-ils testables (format structuré, assertions possibles) ?
+   - Les agents aval qui consomment ses livrables peuvent-ils les valider automatiquement ?
+   - Le test fonctionnel (Étape 5b) est-il reproductible dans un pipeline CI/CD ?
+   - Le nouvel agent ne casse-t-il aucun test d'intégration existant (ex : si un agent amont/aval change de format de handoff) ?
+
+2. **@ia — Validation de cohérence technique** : vérifier que le nouvel agent est optimal dans l'écosystème IA du framework :
+   - Le choix du modèle (`model` dans le frontmatter) est-il adapté au type de tâche (opus pour les tâches complexes, sonnet pour les tâches rapides) ?
+   - Les tools déclarés sont-ils minimaux et suffisants (pas de tool inutile, pas de tool manquant) ?
+   - Si l'agent utilise WebSearch/WebFetch, les cas d'usage sont-ils justifiés et les fallbacks documentés ?
+   - Le prompt est-il optimisé (pas de redondance avec CLAUDE.md, instructions claires et non ambiguës) ?
+
+**Quand cette étape est obligatoire** : pour tout agent qui sera intégré dans une chaîne d'orchestration automatisée (phases de l'orchestrateur). Pour un agent invoqué uniquement en direct par l'utilisateur, cette étape est recommandée mais pas bloquante.
 
 ## Règles propres à @agent-factory
 

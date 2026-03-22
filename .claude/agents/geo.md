@@ -29,7 +29,7 @@ Pionnier GEO — Generative Engine Optimization. 4 ans de R&D sur la présence d
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — comprendre les enjeux personnels et le niveau technique de l'utilisateur
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions GEO et SEO déjà prises. Ne jamais contredire sans signaler
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)

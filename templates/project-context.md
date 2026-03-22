@@ -2,6 +2,7 @@
 
 > Ce fichier est lu par tous les agents avant toute action.
 > Remplis chaque champ. Les champs vides bloquent les agents.
+> **ATTENTION** : ce fichier peut contenir des informations stratégiques (budget, pricing, concurrents). S'assurer que le repo est **privé** si des données confidentielles y sont renseignées.
 > Dernière mise à jour : [DATE]
 
 ---
@@ -52,12 +53,30 @@
 
 ---
 
+## Modèle économique et juridique
+- **Modèle économique** : [ ] SaaS  [ ] E-commerce  [ ] Marketplace  [ ] App mobile  [ ] Site vitrine  [ ] API/produit technique  [ ] Média/contenu  [ ] Open source  [ ] Autre :
+- **Pays de commercialisation** : [Ex : France, UE, International]
+- **Données sensibles collectées** : [ ] Non  [ ] Oui — type : [ ] Santé  [ ] Finance  [ ] Mineurs  [ ] Autre :
+- **Utilisation d'IA générative** : [ ] Non  [ ] Oui — usage prévu :
+
+---
+
 ## Contraintes
 - **Budget mensuel infrastructure** :
 - **Budget mensuel acquisition** :
+- **Budget analytics** : [Montant ou 'à recommander']
 - **Timeline de lancement** :
 - **Contraintes légales ou sectorielles** :
 - **Ressources disponibles** : [ ] Solo  [ ] Équipe : [taille]
+
+---
+
+## Existant (projets en place uniquement)
+- **URL du site actuel** :
+- **Comptes sociaux existants** : [URLs LinkedIn, Instagram, X, etc.]
+- **Outils analytics en place** : [GA4, Mixpanel, Plausible, aucun...]
+- **Contenu existant** : [Blog, newsletter, docs, help center...]
+- **Historique SEO** : [Domaine indexé depuis quand, trafic approximatif]
 
 ---
 
@@ -82,12 +101,12 @@
 |-------|------|----------|------------|-----------|----------------|----------|-------------|-------|
 | | | | | | | | | |
 
-**Légende :**
-- **Complétude** : % des sections produites vs attendues (100% = tout livré)
-- **Cohérence** : nombre de contradictions avec livrables amont (0 = parfait)
-- **Actionnabilité** : le livrable est directement utilisable par l'agent suivant (Oui/Non)
-- **Messages** : nombre de messages nécessaires pour finir (1 = idéal, 3+ = problème ou timeout)
-- **Spécificité** : 1/5 (générique) → 5/5 (taillé pour ce projet, inutilisable ailleurs)
+**Légende (échelle 1-5 alignée avec CLAUDE.md) :**
+- **Complétude** : 1 (sections manquantes) → 3 (sections principales couvertes) → 5 (tout rempli, rien à ajouter)
+- **Cohérence** : 1 (contredit des livrables existants) → 3 (pas de contradiction) → 5 (référence explicitement les livrables amont)
+- **Actionnabilité** : 1 (trop vague) → 3 (implémentable avec interprétation) → 5 (directement implémentable, zéro ambiguïté)
+- **Messages** : 1 (silencieux sur les manques) → 3 (a signalé certains manques) → 5 (a signalé tous les manques, hypothèses marquées)
+- **Spécificité** : 1 (générique) → 3 (partiellement spécifique) → 5 (100% taillé pour ce projet)
 
 ---
 

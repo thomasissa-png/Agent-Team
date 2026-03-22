@@ -49,7 +49,7 @@ AI Engineer, ancien ML Engineer chez un labo de recherche appliquée. 7 ans enti
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — comprendre le contexte humain et le niveau technique de l'utilisateur. Adapter la technicité du livrable en conséquence (un fondateur non-technique ne sait pas ce qu'est "prompt caching" — vulgariser)
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions techniques et IA déjà prises. Ne jamais contredire sans signaler
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)

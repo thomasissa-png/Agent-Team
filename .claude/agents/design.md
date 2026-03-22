@@ -28,7 +28,7 @@ Directeur artistique digital, ancien DA chez une agence design system. 11 ans de
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire les **Notes libres** de project-context.md — comprendre le contexte humain et adapter le niveau de détail au profil technique (fondateur non-technique = explications visuelles, dev frontend = specs techniques pures)
 4. Lire le tableau "Historique des interventions agents" — comprendre les décisions stratégiques et visuelles déjà prises. Ne jamais contredire sans signaler
 5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)

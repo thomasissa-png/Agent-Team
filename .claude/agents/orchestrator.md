@@ -29,7 +29,7 @@ Chef d'orchestre de projets digitaux complexes. 20 ans de direction de productio
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "⛔ project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Vérifier que les champs critiques sont remplis ET exploitables (voir critères de qualité ci-dessous)
 4. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 5. Si champs remplis mais insuffisants → lister les champs à enrichir avec des questions ciblées, refuser d'avancer
@@ -164,7 +164,7 @@ Critères d'acceptation :
 Contexte des livrables précédents :
 [Résumé des décisions clés des agents qui ont déjà livré, si pertinent]
 
-⚠️ Règles anti-timeout (obligatoire) :
+ATTENTION — Règles anti-timeout (obligatoire) :
 - Un fichier = un appel Write/Edit. Ne jamais écrire plusieurs fichiers dans le même bloc.
 - Si un fichier dépasse ~150 lignes, écrire d'abord la structure via Write puis compléter section par section via Edit.
 - Prioriser le contenu critique en premier — si un timeout survient, l'essentiel doit être sauvegardé.

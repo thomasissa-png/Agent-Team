@@ -1,117 +1,20 @@
 # Gradient Agents — Instructions globales
 
-## Règle absolue numéro 1
+## Règle absolue — Contexte obligatoire (n°1)
 
 Avant toute action dans ce projet, lire `project-context.md` à la racine.
 S'il est absent : s'arrêter, afficher le template et demander à l'utilisateur de le remplir.
 Ne jamais commencer un travail sans contexte projet validé.
 
-## Installer l'équipe dans un autre projet
+## Quick Start
 
-Ce repo est le **repo source** de l'équipe Gradient Agents. Pour utiliser l'équipe dans un projet existant :
+1. Remplis `project-context.md` à la racine (copie le template depuis `templates/`)
+2. Dis à Claude : `@orchestrator lance mon projet`
+3. Réponds aux questions des agents. C'est tout.
 
-### Scénario A — Nouveau projet (pas encore de code)
+Pour une tâche ciblée sur un projet existant, invoque directement l'agent concerné : `@fullstack`, `@seo`, `@qa`, etc.
 
-Ouvrir une session Claude Code **sur le dossier du nouveau projet** et dire :
-
-> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un nouveau projet."
-
-Claude Code va :
-1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — installer `.claude/agents/` là, pas dans un sous-dossier
-2. Copier les 18 agents dans `.claude/agents/` à la racine du repo git
-3. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
-4. Copier le template et créer `project-context.md` à la racine du repo git
-5. Créer la structure `docs/` et `src/` si absentes
-
-**Ensuite :** remplir `project-context.md` → invoquer `@orchestrator` pour lancer le projet complet.
-
-### Scénario B — Projet existant (code déjà en place)
-
-Ouvrir une session Claude Code **sur le projet existant** et dire :
-
-> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un projet existant, ne rien écraser."
-
-Claude Code va :
-1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — c'est là que `.claude/agents/` DOIT être installé, PAS dans un sous-dossier du repo
-2. Copier les 18 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
-3. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
-4. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
-5. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
-
-> **ATTENTION — Piège fréquent :** si le projet est un sous-dossier d'un repo git parent (ex : `monorepo/mon-projet/`), les agents DOIVENT être installés à la racine du repo git (`monorepo/.claude/agents/`), PAS dans le sous-dossier. Claude Code cherche `.claude/agents/` uniquement à la racine du repo git détectée par `git rev-parse --show-toplevel`.
-
-**Différences clés sur un projet existant :**
-
-| Aspect | Nouveau projet | Projet existant |
-|---|---|---|
-| `CLAUDE.md` | Copié tel quel | **Fusionné** — les instructions Gradient sont ajoutées au CLAUDE.md existant |
-| `.claude/agents/` | Créé de zéro | Agents ajoutés sans écraser les agents custom déjà présents |
-| `src/` | Créé vide | **Pas touché** — le code existant est préservé |
-| `docs/` | Créé vide | **Pas touché** — les agents créeront leurs sous-dossiers au fur et à mesure |
-| `project-context.md` | Template vierge | Template vierge — **mais il faut documenter l'existant** (stack, décisions déjà prises, code en place) |
-| `package.json` | N'existe pas encore | **Pas touché** — les agents respectent les dépendances existantes |
-
-**Ensuite :** remplir `project-context.md` en documentant ce qui existe déjà (stack actuelle, architecture, conventions de code, décisions passées) → invoquer l'agent adapté à la tâche ciblée.
-
-**Important :** sur un projet existant, le premier réflexe n'est généralement pas `@orchestrator` (qui planifie un projet complet), mais l'agent spécifique au besoin : `@fullstack` pour du code, `@qa` pour des tests, `@seo` pour du référencement, etc.
-
-### Variante — Si le repo Agent-Team n'est pas cloné localement
-
-> "Clone `<url-du-repo-agent-team>` dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un [nouveau projet / projet existant]."
-
-### Méthode manuelle — Copier les fichiers à la main
-
-Si tu préfères ne pas passer par Claude Code :
-
-```bash
-# 0. Se placer à la racine du repo git (IMPORTANT)
-cd $(git rev-parse --show-toplevel)
-
-# 1. Cloner le repo Agent-Team
-git clone <url-agent-team> /tmp/Agent-Team
-
-# 2. Copier les agents (à la RACINE du repo git, pas dans un sous-dossier)
-mkdir -p .claude/agents
-cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
-
-# 3. CLAUDE.md
-#    → Nouveau projet : copier directement
-cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
-#    → Projet existant : ajouter en fin de fichier
-cat /tmp/Agent-Team/CLAUDE.md >> ./CLAUDE.md
-
-# 4. Template et project-context
-mkdir -p templates
-cp /tmp/Agent-Team/templates/project-context.md templates/
-cp templates/project-context.md ./project-context.md
-# → Remplir project-context.md avant de lancer un agent
-```
-
-### Structure résultante
-
-```
-ton-projet/
-├── .claude/
-│   └── agents/          ← les 18 agents Gradient
-├── templates/
-│   └── project-context.md  ← template vierge (référence)
-├── project-context.md      ← contexte rempli pour CE projet
-├── CLAUDE.md               ← instructions Gradient (seul ou fusionné avec l'existant)
-├── docs/                   ← livrables des agents (créés au fur et à mesure)
-└── src/                    ← code existant ou à créer
-```
-
-### Invocation des agents dans Claude Code
-
-Dans une session Claude Code sur ton projet :
-
-- **Via le menu** : taper `/` puis sélectionner l'agent dans la liste
-- **Dans le prompt** : mentionner `@orchestrator`, `@fullstack`, `@design`, etc.
-- **Directement** : demander une tâche et Claude routera vers le bon agent si le CLAUDE.md est présent
-
-### Mise à jour des agents
-
-Si l'équipe Gradient Agents évolue dans ce repo source, re-copier les fichiers `.claude/agents/*.md` dans les projets cibles. Le `project-context.md` de chaque projet reste intact — il est spécifique à chaque projet. Pour le `CLAUDE.md`, vérifier les diff avant de re-fusionner.
+> **Installation dans un autre projet :** voir `INSTALL.md` pour les instructions complètes (scénario nouveau projet vs projet existant, méthode manuelle, structure résultante).
 
 ## Comment utiliser les agents
 
@@ -198,7 +101,7 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 
 **Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer (sauf les exceptions documentées ci-dessus).
 
-## Règle absolue numéro 2 — Zéro invention de données
+## Règle absolue — Zéro invention de données (n°2)
 
 **Ne JAMAIS inventer, deviner ou fabriquer une donnée manquante.** Si un chiffre, un fait, une métrique, un benchmark, un nom, un prix ou toute autre information factuelle n'est pas disponible (ni dans project-context.md, ni dans les livrables existants, ni trouvable via WebSearch), l'agent DOIT :
 
@@ -222,7 +125,7 @@ Dans certains cas, avancer nécessite de poser une hypothèse. C'est acceptable 
 - **OBLIGATOIRE** : "Je n'ai pas le taux de conversion de référence pour ce secteur. Peux-tu me le fournir, ou veux-tu que je recherche un benchmark via WebSearch ?"
 - **ACCEPTABLE** (avec autorisation) : "[HYPOTHÈSE : taux de conversion estimé à 2-4% — à valider avec données réelles]"
 
-## Règle absolue numéro 3 — Gestion des timeouts
+## Règle absolue — Anti-timeout (n°3)
 
 Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
 
