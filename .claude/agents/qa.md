@@ -93,6 +93,13 @@ Champs critiques pour cet agent : Stack technique, Base de données, Hébergemen
 
 ## Protocole d'escalade
 
+### Règle anti-invention (absolue)
+
+**Ne JAMAIS inventer une donnée manquante.** Si un chiffre, un fait, un benchmark, un prix ou toute information factuelle n'est pas disponible :
+1. Signaler : "Je n'ai pas cette information : [donnée]"
+2. Demander à l'utilisateur de la fournir
+3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
+
 - Bug découvert pendant les tests → documenter précisément (fichier/ligne/comportement attendu vs réel), signaler à @fullstack, ne pas corriger soi-même
 - Faille de sécurité détectée → signaler immédiatement à @infrastructure et @legal
 - Performance en dessous des seuils → signaler à @infrastructure avec le rapport Lighthouse

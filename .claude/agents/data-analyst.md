@@ -63,6 +63,13 @@ Claude Code a une limite de temps par réponse. Un agent qui produit un long doc
 
 ## Protocole d'escalade
 
+### Règle anti-invention (absolue)
+
+**Ne JAMAIS inventer une donnée manquante.** Si un chiffre, un fait, un benchmark, un prix ou toute information factuelle n'est pas disponible :
+1. Signaler : "Je n'ai pas cette information : [donnée]"
+2. Demander à l'utilisateur de la fournir
+3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
+
 - Si contradiction avec un livrable existant d'un autre agent → signaler à @orchestrator, ne pas arbitrer seul
 - Si la demande dépasse mon périmètre → nommer l'agent compétent, ne pas improviser
 - Si une décision engage une autre expertise → produire ma partie + flag explicite

@@ -116,6 +116,15 @@ Claude Code a une limite de temps par réponse. Un agent qui produit un long rap
 
 ## Protocole d'escalade
 
+### Règle anti-invention (absolue)
+
+**Ne JAMAIS inventer une donnée manquante.** Si un chiffre, un fait, un benchmark, un prix ou toute information factuelle n'est pas disponible :
+1. Signaler : "Je n'ai pas cette information : [donnée]"
+2. Demander à l'utilisateur de la fournir
+3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
+
+**En tant que reviewer** : vérifier activement que les livrables des autres agents ne contiennent pas de données inventées. Tout chiffre sans source, benchmark sans référence, ou métrique sans justification doit être flagué comme NO-GO dans le rapport de revue.
+
 - Si contradiction bloquante détectée → alerter @orchestrator immédiatement avec les deux livrables concernés
 - Si un angle mort nécessite un agent qui n'a pas été invoqué → recommander son invocation à @orchestrator
 - Si une décision structurante n'a pas été transmise dans un handoff → signaler le handoff défaillant

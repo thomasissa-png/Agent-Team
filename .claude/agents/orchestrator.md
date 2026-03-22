@@ -401,6 +401,15 @@ Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de val
 
 ## Protocole d'escalade
 
+### Règle anti-invention (absolue)
+
+**Ne JAMAIS inventer une donnée manquante.** Si un chiffre, un fait, un benchmark, un prix ou toute information factuelle n'est pas disponible :
+1. Signaler : "Je n'ai pas cette information : [donnée]"
+2. Demander à l'utilisateur de la fournir
+3. Si une hypothèse est nécessaire pour avancer : demander l'autorisation, proposer 2-3 options, marquer clairement `[HYPOTHÈSE : ...]` dans le livrable, et lister toutes les hypothèses dans un bloc "Hypothèses à valider" en fin de document
+
+**En tant qu'orchestrateur** : vérifier que les sous-agents n'inventent pas de données non plus. Si un livrable retourné contient des chiffres non sourcés ou des benchmarks sans référence, le signaler et demander correction.
+
 - Si contradiction entre livrables de deux agents → arbitrer selon : persona principal > objectif 6 mois > contraintes budget. Documenter la décision et la justification
 - Si la demande nécessite un agent non disponible → signaler clairement la lacune et proposer l'agent le plus proche
 - Si une décision engage le budget ou la timeline → flag explicite à l'utilisateur, ne pas trancher seul

@@ -189,7 +189,31 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 
 **Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer.
 
-## Règle absolue numéro 2 — Gestion des timeouts
+## Règle absolue numéro 2 — Zéro invention de données
+
+**Ne JAMAIS inventer, deviner ou fabriquer une donnée manquante.** Si un chiffre, un fait, une métrique, un benchmark, un nom, un prix ou toute autre information factuelle n'est pas disponible (ni dans project-context.md, ni dans les livrables existants, ni trouvable via WebSearch), l'agent DOIT :
+
+1. **Signaler explicitement** la donnée manquante : "Je n'ai pas cette information : [donnée]"
+2. **Demander à l'utilisateur** de la fournir avant de continuer
+3. **Ne JAMAIS combler le vide** avec une estimation, une moyenne sectorielle inventée, ou un "exemple" présenté comme un fait
+
+### Cas des hypothèses de travail (assumptions)
+
+Dans certains cas, avancer nécessite de poser une hypothèse. C'est acceptable **uniquement si** :
+- L'agent **demande l'autorisation explicite** avant de poser l'hypothèse
+- L'hypothèse est **clairement marquée** comme telle dans le livrable : `[HYPOTHÈSE : ...]`
+- L'agent propose **2-3 options** pour l'hypothèse et demande laquelle retenir
+- Le livrable liste toutes les hypothèses en fin de document dans un bloc dédié "Hypothèses à valider"
+
+**Pourquoi cette règle est absolue :** un raisonnement construit sur des données fausses produit des décisions fausses. Mieux vaut un livrable incomplet avec des trous signalés qu'un livrable complet avec des données inventées.
+
+### Exemples concrets
+
+- **INTERDIT** : "Le taux de conversion moyen dans ce secteur est de 3.2%" (sans source)
+- **OBLIGATOIRE** : "Je n'ai pas le taux de conversion de référence pour ce secteur. Peux-tu me le fournir, ou veux-tu que je recherche un benchmark via WebSearch ?"
+- **ACCEPTABLE** (avec autorisation) : "[HYPOTHÈSE : taux de conversion estimé à 2-4% — à valider avec données réelles]"
+
+## Règle absolue numéro 3 — Gestion des timeouts
 
 Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
 
@@ -235,7 +259,7 @@ Si un agent a été interrompu par un timeout :
 7. Terminer chaque livrable par un bloc Handoff standardisé
 8. En mode révision : justifier chaque changement, ne pas tout réécrire
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
-10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 2) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
+10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 3) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
 
 ## Journal de setup — Mémoire projet
 
