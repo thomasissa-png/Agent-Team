@@ -405,8 +405,8 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Vision produit & roadmap",
         agents:["product-manager"],
-        quand:"Après la stratégie de marque, pour cadrer ce qu'on construit",
-        prompt:"@product-manager Base-toi sur docs/strategy/brand-platform.md s'il existe (positionnement, personas), sinon utilise project-context.md (objectif à 6 mois, persona, positionnement). Définis la vision produit, la roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois], et le backlog initial avec user stories au format 'En tant que [persona], je veux [action], afin de [bénéfice]'. Livrables : docs/product/product-vision.md + docs/product/roadmap.md + docs/product/backlog.md."
+        quand:"Après la stratégie de marque — ou directement, l'agent créera les prérequis en posant des questions",
+        prompt:"@product-manager Lis docs/strategy/brand-platform.md (positionnement, personas). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (positionnement, personas détaillés, ton de marque, concurrents) et génère-le avant de continuer. Puis définis la vision produit, la roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois], et le backlog initial avec user stories au format 'En tant que [persona], je veux [action], afin de [bénéfice]'. Livrables : docs/product/product-vision.md + docs/product/roadmap.md + docs/product/backlog.md."
       },
       {
         title:"KPIs & tracking plan",
@@ -429,26 +429,26 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Parcours utilisateur & wireframes",
         agents:["ux"],
-        quand:"Après la stratégie, avant le design visuel",
-        prompt:"@ux Base-toi sur docs/strategy/brand-platform.md s'il existe (personas, jobs-to-be-done), sinon utilise project-context.md (persona, problème, positionnement). Conçois les parcours utilisateur complets : onboarding, activation, conversion, rétention. Produis les wireframes textuels (ASCII) des écrans clés avec l'architecture de navigation. Livrables attendus : docs/ux/user-flows.md + docs/ux/wireframes.md. Format : un schéma par parcours avec les écrans, actions, et points de décision."
+        quand:"Après la stratégie — ou directement, l'agent créera les prérequis manquants",
+        prompt:"@ux Lis docs/strategy/brand-platform.md (personas, jobs-to-be-done). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (personas détaillés, jobs-to-be-done, positionnement) et génère-le avant de continuer. Conçois les parcours utilisateur complets : onboarding, activation, conversion, rétention. Produis les wireframes textuels (ASCII) des écrans clés avec l'architecture de navigation. Livrables attendus : docs/ux/user-flows.md + docs/ux/wireframes.md. Format : un schéma par parcours avec les écrans, actions, et points de décision."
       },
       {
         title:"Design system complet",
         agents:["design","fullstack"],
-        quand:"Après les wireframes UX, avant le développement. Livrable volumineux : si timeout, relancer l'agent pour compléter les sections manquantes.",
-        prompt:"@design Base-toi sur docs/ux/wireframes.md et docs/strategy/brand-platform.md s'ils existent (ton de marque, 3 mots-clés), sinon utilise project-context.md (ton de marque, positionnement). Crée le design system : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), dark mode, accessibilité WCAG 2.2 AA. Livrable : docs/design/design-system.md + docs/design/design-tokens.json. Puis @fullstack : prends docs/design/design-tokens.json et implémente les tokens en CSS variables/Tailwind et les composants React dans src/. Un composant par fichier."
+        quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent.",
+        prompt:"@design Lis docs/ux/wireframes.md et docs/strategy/brand-platform.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (wireframes : écrans clés, navigation ; brand-platform : ton de marque, 3 mots-clés, positionnement). Crée le design system : tokens (couleurs, typographies, espacements, ombres), composants de base (boutons, inputs, cards, modals), dark mode, accessibilité WCAG 2.2 AA. Livrable : docs/design/design-system.md + docs/design/design-tokens.json. Puis @fullstack : prends docs/design/design-tokens.json et implémente les tokens en CSS variables/Tailwind et les composants React dans src/. Un composant par fichier."
       },
       {
         title:"Brand voice & guide d'écriture",
         agents:["copywriter"],
-        quand:"Après la plateforme de marque, avant toute rédaction",
-        prompt:"@copywriter Base-toi sur docs/strategy/brand-platform.md s'il existe, sinon utilise project-context.md (ton de marque, 3 mots, persona). Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy."
+        quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants",
+        prompt:"@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer. Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy."
       },
       {
         title:"Landing page complète",
         agents:["copywriter","seo"],
         quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul",
-        prompt:"@copywriter Base-toi sur docs/copy/brand-voice.md s'il existe (ton, vocabulaire autorisé/interdit), sinon utilise project-context.md (ton de marque, 3 mots). Lis docs/strategy/personas.md s'il existe, sinon utilise le persona de project-context.md. Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Calibre le ton sur le persona principal. Livrable : docs/copy/landing-page-copy.md. Puis @seo : prends docs/copy/landing-page-copy.md et optimise les meta title/description, headings H1-H3, et données structurées JSON-LD. Livrable : docs/seo/landing-metadata.md."
+        prompt:"@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs) et génère-le. Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Calibre le ton sur le persona principal. Livrable : docs/copy/landing-page-copy.md. Puis @seo : prends docs/copy/landing-page-copy.md et optimise les meta title/description, headings H1-H3, et données structurées JSON-LD. Livrable : docs/seo/landing-metadata.md."
       }
     ]
   },
@@ -460,7 +460,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Développer une feature",
         agents:["fullstack","qa"],
         quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md",
-        prompt:"@fullstack Implémente la feature [nom de la feature, ex : \"système de notifications\" ou \"tableau de bord analytics\"]. Lis docs/product/functional-specs.md s'il existe, sinon base-toi sur project-context.md et la description ci-dessus. Utilise les composants de docs/design/design-system.md et les events de docs/analytics/tracking-plan.md s'ils existent. Next.js App Router, TypeScript strict. Un composant par fichier dans src/. Puis @qa : écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture >80%. Livrable : rapport de couverture avec blockers."
+        prompt:"@fullstack Implémente la feature [nom de la feature, ex : \"système de notifications\" ou \"tableau de bord analytics\"]. Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder. Lis docs/design/design-system.md et docs/analytics/tracking-plan.md s'ils existent pour les composants et events. Next.js App Router, TypeScript strict. Un composant par fichier dans src/. Puis @qa : écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture >80%. Livrable : rapport de couverture avec blockers."
       },
       {
         title:"Intégrer le paiement Stripe",
@@ -472,7 +472,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Ajouter une feature IA (LLM)",
         agents:["ia","fullstack"],
         quand:"Cas d'usage IA défini dans les specs",
-        prompt:"@ia Lis docs/product/functional-specs.md s'il existe, sinon base-toi sur project-context.md. Cas d'usage IA : [décrire la feature, ex : \"résumé automatique de documents\" ou \"chatbot support client\"]. Produis le tableau comparatif obligatoire (modèle, qualité, latence P95, coût/1000 req, streaming). Choix du modèle principal + fallback, structure des prompts, limites de tokens, budget mensuel estimé. Livrable : docs/ia/ai-architecture.md. Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md."
+        prompt:"@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume, latence acceptable, budget) et génère les specs avant de continuer. Cas d'usage IA : [décrire la feature, ex : \"résumé automatique de documents\" ou \"chatbot support client\"]. Produis le tableau comparatif obligatoire (modèle, qualité, latence P95, coût/1000 req, streaming). Choix du modèle principal + fallback, structure des prompts, limites de tokens, budget mensuel estimé. Livrable : docs/ia/ai-architecture.md. Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md."
       },
       {
         title:"Configurer CI/CD & déploiement",
@@ -484,7 +484,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Choisir & optimiser les modèles IA",
         agents:["ia"],
         quand:"Plusieurs modèles possibles, besoin d'optimiser coût/qualité",
-        prompt:"@ia Base-toi sur docs/ia/ai-architecture.md s'il existe et project-context.md (budget infra). Produis le tableau comparatif obligatoire du protocole @ia : modèle, qualité de sortie (note /10), latence P95, coût par 1000 requêtes, streaming supporté. Inclus le calcul de ROI (coût IA vs valeur business générée). Recommande modèle principal + fallback. Optimise les prompts pour réduire les tokens de 20%+. Livrable : docs/ia/model-selection.md avec tableau comparatif et recommandation finale."
+        prompt:"@ia Lis docs/ia/ai-architecture.md. S'il n'existe pas, pose-moi les questions pour le créer (cas d'usage IA, modèles envisagés, contraintes latence/coût) et génère-le avant de continuer. Lis aussi project-context.md (budget infra). Produis le tableau comparatif obligatoire du protocole @ia : modèle, qualité de sortie (note /10), latence P95, coût par 1000 requêtes, streaming supporté. Inclus le calcul de ROI (coût IA vs valeur business générée). Recommande modèle principal + fallback. Optimise les prompts pour réduire les tokens de 20%+. Livrable : docs/ia/model-selection.md avec tableau comparatif et recommandation finale."
       }
     ]
   },
@@ -520,25 +520,25 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Stratégie d'acquisition complète",
         agents:["growth","social","copywriter"],
         quand:"Produit lancé, premiers utilisateurs à acquérir",
-        prompt:"@growth Base-toi sur docs/strategy/personas.md s'il existe, sinon utilise project-context.md (persona, budget acquisition). Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV par canal. Livrable : docs/growth/acquisition-plan.md. Puis @social : prends docs/growth/acquisition-plan.md et docs/copy/brand-voice.md s'il existe, sinon le ton de project-context.md. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme. Livrable : docs/social/editorial-calendar.md. Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Livrable : docs/copy/acquisition-copies.md."
+        prompt:"@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV par canal. Livrable : docs/growth/acquisition-plan.md. Puis @social : prends docs/growth/acquisition-plan.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire) et génère-le. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme. Livrable : docs/social/editorial-calendar.md. Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Livrable : docs/copy/acquisition-copies.md."
       },
       {
         title:"Stratégie social media",
         agents:["social","copywriter"],
         quand:"Besoin d'une présence organique sur les réseaux",
-        prompt:"@social Base-toi sur docs/copy/brand-voice.md s'il existe (ton de marque, vocabulaire) et docs/strategy/personas.md s'il existe, sinon utilise project-context.md (persona, ton de marque). Sélectionne 2-3 plateformes prioritaires, définis la ligne éditoriale, les formats natifs, le rythme de publication, les KPIs par plateforme, et le split organique/paid. Livrable : docs/social/social-strategy.md. Puis @copywriter : prends docs/social/social-strategy.md et rédige 3 templates de posts par plateforme + accroches type. Livrable : docs/social/content-templates.md."
+        prompt:"@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Sélectionne 2-3 plateformes prioritaires, définis la ligne éditoriale, les formats natifs, le rythme de publication, les KPIs par plateforme, et le split organique/paid. Livrable : docs/social/social-strategy.md. Puis @copywriter : prends docs/social/social-strategy.md et rédige 3 templates de posts par plateforme + accroches type. Livrable : docs/social/content-templates.md."
       },
       {
         title:"Emails onboarding & conversion",
         agents:["copywriter","growth"],
-        quand:"Parcours onboarding défini, besoin de convertir",
-        prompt:"@copywriter Base-toi sur docs/copy/brand-voice.md s'il existe et docs/ux/onboarding-flow.md s'il existe (étapes clés), sinon utilise project-context.md (persona, ton de marque). Crée la séquence de 5 emails : bienvenue (J+0), activation feature clé (J+1), social proof (J+3), upgrade (J+7), réengagement (J+14). Format : objet + preview text + corps + CTA. Livrable : docs/copy/email-sequences.md. Puis @growth : prends docs/copy/email-sequences.md et définis les triggers (event qui déclenche chaque email), KPIs par étape (open rate, click rate, conversion), et critères de segmentation. Livrable : section ajoutée dans docs/growth/growth-strategy.md."
+        quand:"Besoin de convertir — l'agent créera les prérequis manquants (brand-voice, onboarding-flow)",
+        prompt:"@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur). Crée la séquence de 5 emails : bienvenue (J+0), activation feature clé (J+1), social proof (J+3), upgrade (J+7), réengagement (J+14). Format : objet + preview text + corps + CTA. Livrable : docs/copy/email-sequences.md. Puis @growth : prends docs/copy/email-sequences.md et définis les triggers (event qui déclenche chaque email), KPIs par étape (open rate, click rate, conversion), et critères de segmentation. Livrable : section ajoutée dans docs/growth/growth-strategy.md."
       },
       {
         title:"Auditer le funnel existant",
         agents:["growth","data-analyst"],
         quand:"Produit en production avec trafic, conversion à optimiser. Pré-requis : fournir les données analytics (export CSV, accès dashboard, ou screenshots) dans project-context.md ou en pièce jointe.",
-        prompt:"@growth Base-toi sur docs/analytics/kpi-framework.md s'il existe et les données analytics fournies, sinon utilise project-context.md (KPI North Star). Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact classés par effort/impact. Livrable : docs/growth/funnel-audit.md. Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes sur les métriques critiques. Livrable : docs/analytics/dashboard-specs.md."
+        prompt:"@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Utilise aussi les données analytics fournies. Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact classés par effort/impact. Livrable : docs/growth/funnel-audit.md. Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes sur les métriques critiques. Livrable : docs/analytics/dashboard-specs.md."
       }
     ]
   },
@@ -568,7 +568,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Audit UX & conversion",
         agents:["ux","data-analyst"],
         quand:"Produit en production avec trafic",
-        prompt:"@ux Base-toi sur docs/ux/user-flows.md s'il existe (parcours définis) et les données analytics fournies. Audite les parcours critiques : onboarding, conversion, rétention. Identifie les friction points, taux d'abandon par étape, et propose 3-5 quick wins priorisés. Livrable : docs/ux/ux-audit.md. Puis @data-analyst : prends docs/ux/ux-audit.md et configure les dashboards de conversion par cohorte (jour 1, 7, 30) + métriques de rétention. Livrable : docs/analytics/dashboard-specs.md."
+        prompt:"@ux Lis docs/ux/user-flows.md (parcours définis). S'il n'existe pas, pose-moi les questions pour le créer (parcours critiques, étapes, points de décision) et génère-le avant de continuer. Utilise aussi les données analytics fournies. Audite les parcours critiques : onboarding, conversion, rétention. Identifie les friction points, taux d'abandon par étape, et propose 3-5 quick wins priorisés. Livrable : docs/ux/ux-audit.md. Puis @data-analyst : prends docs/ux/ux-audit.md et configure les dashboards de conversion par cohorte (jour 1, 7, 30) + métriques de rétention. Livrable : docs/analytics/dashboard-specs.md."
       },
       {
         title:"Audit stratégique first principles",
@@ -604,13 +604,13 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Auditer la cohérence visuelle",
         agents:["design","ux"],
         quand:"Incohérences entre pages/composants",
-        prompt:"@design Base-toi sur docs/design/design-system.md s'il existe (tokens de référence). Audite la cohérence visuelle page par page : tokens respectés, typographies, espacements, contrastes WCAG 2.2 AA. Produis un rapport avec captures/exemples des écarts. Livrable : docs/design/visual-audit.md. Puis @ux : prends docs/design/visual-audit.md et vérifie que les parcours sont visuellement guidés, les CTA hiérarchisés (primaire/secondaire/tertiaire), et la navigation intuitive. Ajoute tes recommandations dans docs/ux/ux-audit.md."
+        prompt:"@design Lis docs/design/design-system.md (tokens de référence). S'il n'existe pas, pose-moi les questions pour le créer (couleurs, typographies, espacements, composants) et génère-le avant de continuer. Audite la cohérence visuelle page par page : tokens respectés, typographies, espacements, contrastes WCAG 2.2 AA. Produis un rapport avec captures/exemples des écarts. Livrable : docs/design/visual-audit.md. Puis @ux : prends docs/design/visual-audit.md et vérifie que les parcours sont visuellement guidés, les CTA hiérarchisés (primaire/secondaire/tertiaire), et la navigation intuitive. Ajoute tes recommandations dans docs/ux/ux-audit.md."
       },
       {
         title:"Optimiser l'onboarding",
         agents:["ux","copywriter","data-analyst"],
         quand:"Time-to-value trop long ou taux d'abandon élevé",
-        prompt:"@ux Base-toi sur docs/ux/user-flows.md s'il existe (parcours onboarding actuel) et docs/analytics/tracking-plan.md s'il existe (events onboarding), sinon utilise project-context.md. Réduis le time-to-value à <3 min, supprime les étapes non essentielles, ajoute les moments de succès. Livrable : docs/ux/onboarding-flow.md. Puis @copywriter : prends docs/ux/onboarding-flow.md et docs/copy/brand-voice.md s'il existe. Rédige le microcopy (welcome, tooltips, empty states, messages de succès). Livrable : docs/copy/ux-writing-guide.md. Puis @data-analyst : configure le funnel onboarding avec taux par étape et alertes sur les drops >20%. Livrable : docs/analytics/dashboard-specs.md."
+        prompt:"@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Réduis le time-to-value à <3 min, supprime les étapes non essentielles, ajoute les moments de succès. Livrable : docs/ux/onboarding-flow.md. Puis @copywriter : prends docs/ux/onboarding-flow.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Rédige le microcopy (welcome, tooltips, empty states, messages de succès). Livrable : docs/copy/ux-writing-guide.md. Puis @data-analyst : configure le funnel onboarding avec taux par étape et alertes sur les drops >20%. Livrable : docs/analytics/dashboard-specs.md."
       },
       {
         title:"Créer un agent spécialisé",
@@ -622,13 +622,13 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Migrer la stack technique",
         agents:["fullstack","infrastructure"],
         quand:"Changement de framework, base de données, ou hébergement",
-        prompt:"@fullstack Base-toi sur project-context.md (stack actuelle) et docs/product/functional-specs.md s'il existe. Évalue la migration de [stack actuelle, ex : \"Create React App\"] vers [stack cible, ex : \"Next.js App Router\"]. Produis : inventaire des fichiers impactés, plan de migration étape par étape (progressive, pas big bang), risques de régression, et estimation de la dette technique à résoudre. Livrable : docs/dev-decisions.md. Puis @infrastructure : prends docs/dev-decisions.md et adapte la configuration de déploiement (Replit/.replit, CI/CD, variables d'env) à la nouvelle stack. Livrable : docs/infra/infrastructure.md mis à jour."
+        prompt:"@fullstack Lis project-context.md (stack actuelle) et docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour le créer (features actuelles, dépendances, contraintes) et génère-le avant de continuer. Évalue la migration de [stack actuelle, ex : \"Create React App\"] vers [stack cible, ex : \"Next.js App Router\"]. Produis : inventaire des fichiers impactés, plan de migration étape par étape (progressive, pas big bang), risques de régression, et estimation de la dette technique à résoudre. Livrable : docs/dev-decisions.md. Puis @infrastructure : prends docs/dev-decisions.md et adapte la configuration de déploiement (Replit/.replit, CI/CD, variables d'env) à la nouvelle stack. Livrable : docs/infra/infrastructure.md mis à jour."
       },
       {
         title:"Internationaliser le produit (i18n)",
         agents:["fullstack","copywriter"],
         quand:"Expansion vers de nouveaux marchés/langues",
-        prompt:"@fullstack Base-toi sur project-context.md et le code dans src/. Prépare l'architecture i18n : choix de la librairie [next-intl, react-i18next, ou recommandation], extraction des strings hardcodées, structure des fichiers de traduction, routing par locale, gestion des formats (dates, nombres, devises). Livrable : docs/dev-decisions.md + fichiers i18n dans src/. Puis @copywriter : prends les fichiers de traduction source et adapte le contenu pour [langue(s) cible(s), ex : \"anglais, espagnol\"]. Respecte docs/copy/brand-voice.md s'il existe, adapté à chaque culture. Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md."
+        prompt:"@fullstack Base-toi sur project-context.md et le code dans src/. Prépare l'architecture i18n : choix de la librairie [next-intl, react-i18next, ou recommandation], extraction des strings hardcodées, structure des fichiers de traduction, routing par locale, gestion des formats (dates, nombres, devises). Livrable : docs/dev-decisions.md + fichiers i18n dans src/. Puis @copywriter : prends les fichiers de traduction source et adapte le contenu pour [langue(s) cible(s), ex : \"anglais, espagnol\"]. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Adapte le contenu à chaque culture. Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md."
       },
       {
         title:"Post-mortem incident production",
