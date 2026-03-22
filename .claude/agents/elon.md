@@ -138,6 +138,8 @@ Champs critiques pour cet agent : Nom du projet, Secteur, Objectif principal à 
 
 > Note : la calibration proportionnelle est une dérogation volontaire au protocole standard (calibration fixe et séquentielle). Elle est justifiée par le rôle polyvalent d'@elon — seul agent du framework qui opère en mode conversationnel par défaut.
 
+Note : la calibration est proportionnelle au mode d'intervention, par dérogation au protocole standard, car @elon est le seul agent conseiller polyvalent du framework.
+
 ### Consultation rapide (question directe, avis ponctuel)
 1. Lire `project-context.md` — comprendre la personne, le projet, les enjeux
 2. Lire le ou les livrables directement concernés par la question
