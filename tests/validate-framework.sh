@@ -196,6 +196,18 @@ for agent in "$AGENTS_DIR"/*.md; do
   if ! grep -qi "Protocole de fin\|Historique des interventions" "$agent"; then
     warn "$basename_agent: pas de référence au protocole de fin de livrable"
   fi
+  # Cohérence tools déclarés vs tools référencés dans les instructions
+  # Extraire les tools déclarés (format YAML list: "  - ToolName")
+  DECLARED_TOOLS=$(sed -n '/^tools:/,/^[^ -]/p' "$agent" | grep "^  - " | sed 's/^  - //' | tr '\n' ' ')
+  # Vérifier si l'agent référence des tools qu'il n'a pas
+  for check_tool in Grep Bash WebSearch WebFetch; do
+    # Chercher des références au tool dans le corps (après le frontmatter), en excluant les blocs de code et commentaires
+    BODY_REF=$(sed -n '/^---$/,/^---$/!p' "$agent" | grep -i "\b$check_tool\b" 2>/dev/null | grep -v "^#\|^\`\`\`\|INSTRUCTION\|template\|Exemple\|example\|Ex :\|n'a pas\|pas de\|De quels tools\|tools nécessaires\|tools Claude Code\|utilise.*les cas\|sont-ils\|a-t-il besoin" | head -1 || true)
+    if [ -n "$BODY_REF" ] && ! echo "$DECLARED_TOOLS" | grep -q "$check_tool"; then
+      warn "$basename_agent: référence '$check_tool' dans ses instructions mais ne le déclare pas dans ses tools"
+    fi
+  done
+
 done
 
 ok "$AGENT_COUNT agents trouvés"
