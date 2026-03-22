@@ -4,7 +4,24 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
-## Session du 2026-03-22 — Audit Elon Musk + implémentation
+## Session du 2026-03-22 — Compaction + @elon + audit 9/10
+
+**Ce qui a été fait :**
+
+1. **Compaction des 19 agents** : sections dupliquées (timeouts, escalade, mode révision, auto-éval, protocole de fin) remplacées par références à `CLAUDE.md` et `_base-agent-protocol.md` → ~900 lignes éliminées
+2. **Création de @elon** : agent stratégique incarnant Elon Musk — first principles thinking, audit brutal, scoring sur 10, modes Audit/Conseil/Challenge, communication structurée avec @orchestrator
+3. **Dashboard HTML** (`index.html`) : ajout de @agent-factory et @elon (17→19 agents)
+4. **Auto-évaluations enrichies** : tous les 19 agents ont maintenant 5+ questions spécifiques
+5. **Audit final @elon** : 9/10 sur les 10 dimensions (architecture, qualité agents, calibrations, orchestration, erreurs, tests, doc, versioning, cohérence, impact)
+
+**Décisions de conception :**
+- @elon est un agent hors-phase, invocable à tout moment pour auditer le framework ou les projets
+- @elon peut émettre des verdicts GO/PIVOT/KILL sur les projets et communiquer à @orchestrator
+- Le nombre d'agents reste à 19 (18 opérationnels + @elon advisory) — pas d'inflation
+
+---
+
+## Session du 2026-03-22 — Audit Elon Musk initial + implémentation
 
 **Ce qui a été fait :**
 
