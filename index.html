@@ -589,14 +589,14 @@ const CHANGELOG = [
     <div class="install-card">
       <h3><span class="label-tag label-new">Nouveau</span> Nouveau projet</h3>
       <p class="install-sub">Pas encore de code — vous partez de zéro</p>
-      <p class="install-context">Ouvrez Claude Code <strong>sur le dossier de votre nouveau projet</strong>, puis :</p>
+      <p class="install-context">Ouvrez Claude Code <strong>sur le dossier de votre nouveau projet</strong> (qui doit etre un repo git), puis :</p>
       <div class="install-prompt">
-        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet.">Copier</button>
-        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet."</em>
+        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
+        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe <code>.claude/agents/</code> à la racine du repo git."</em>
       </div>
       <ul class="install-steps">
-        <li>17 agents copiés dans <code>.claude/agents/</code></li>
-        <li><code>CLAUDE.md</code> copié à la racine</li>
+        <li>17 agents copiés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
+        <li><code>CLAUDE.md</code> copié à la racine du repo git</li>
         <li><code>project-context.md</code> créé (template vierge)</li>
         <li><code>docs/</code> et <code>src/</code> créés si absents</li>
         <li>Premier réflexe : <strong>@orchestrator</strong> pour planifier tout le projet</li>
@@ -607,13 +607,13 @@ const CHANGELOG = [
     <div class="install-card">
       <h3><span class="label-tag label-existing">Existant</span> Projet existant</h3>
       <p class="install-sub">Du code est déjà en place — rien n'est écrasé</p>
-      <p class="install-context">Ouvrez Claude Code <strong>sur votre projet existant</strong>, puis :</p>
+      <p class="install-context">Ouvrez Claude Code <strong>à la racine de votre repo git</strong> (pas dans un sous-dossier), puis :</p>
       <div class="install-prompt">
-        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser.">Copier</button>
-        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser."</em>
+        <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
+        <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe <code>.claude/agents/</code> à la racine du repo git, pas dans un sous-dossier."</em>
       </div>
       <ul class="install-steps">
-        <li>17 agents ajoutés sans écraser les agents custom</li>
+        <li>17 agents ajoutés dans <code>.claude/agents/</code> <strong>à la racine du repo git</strong></li>
         <li><code>CLAUDE.md</code> <strong>fusionné</strong> avec l'existant</li>
         <li><code>project-context.md</code> créé (documenter l'existant)</li>
         <li class="install-no"><code>src/</code>, <code>docs/</code>, <code>package.json</code> pas touchés</li>

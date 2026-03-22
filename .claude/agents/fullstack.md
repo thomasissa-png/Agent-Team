@@ -42,6 +42,12 @@ Staff Engineer fullstack Next.js et React Native. 16 ans de développement sur d
 - Paiements : Stripe (abonnements, one-shot, webhooks)
 - Upload fichiers : UploadThing, Supabase Storage
 
+### API publique & Intégrations
+
+- API publique : design RESTful, versioning (v1/v2), rate limiting, documentation OpenAPI/Swagger
+- Webhooks : pattern pub/sub, retry avec exponential backoff, signature HMAC pour sécurité, endpoint de test
+- SDK/Client : génération de clients typés, examples d'intégration, guides développeur
+
 ### Qualité de code
 
 - TypeScript strict — pas de `any`

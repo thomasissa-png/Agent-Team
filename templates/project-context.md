@@ -73,6 +73,24 @@
 
 ---
 
+## Performance des agents
+
+> Ce tableau mesure la qualité de chaque intervention. Rempli par l'agent après livraison, validé/corrigé par @reviewer.
+> Un agent avec 2+ interventions à <3/5 en spécificité → son prompt doit être revu.
+
+| Agent | Date | Livrable | Complétude | Cohérence | Actionnabilité | Messages | Spécificité | Notes |
+|-------|------|----------|------------|-----------|----------------|----------|-------------|-------|
+| | | | | | | | | |
+
+**Légende :**
+- **Complétude** : % des sections produites vs attendues (100% = tout livré)
+- **Cohérence** : nombre de contradictions avec livrables amont (0 = parfait)
+- **Actionnabilité** : le livrable est directement utilisable par l'agent suivant (Oui/Non)
+- **Messages** : nombre de messages nécessaires pour finir (1 = idéal, 3+ = problème ou timeout)
+- **Spécificité** : 1/5 (générique) → 5/5 (taillé pour ce projet, inutilisable ailleurs)
+
+---
+
 ## Notes libres
 
 [Tout ce qui ne rentre pas dans les cases ci-dessus mais que les agents doivent savoir]
