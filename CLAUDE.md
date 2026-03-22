@@ -261,6 +261,35 @@ Si un agent a été interrompu par un timeout :
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
 10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 3) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
 
+## Protocole de test du framework
+
+Pour valider que les agents fonctionnent correctement ensemble, utiliser ce protocole sur un projet fictif ou réel :
+
+### Test unitaire (1 agent)
+1. Remplir `project-context.md` avec un cas concret
+2. Invoquer un agent isolé (ex : `@creative-strategy`)
+3. Vérifier : lit-il bien project-context.md ? Refuse-t-il si champs manquants ? Le livrable est-il spécifique au projet ?
+
+### Test d'intégration (2-3 agents en chaîne)
+1. Lancer `@creative-strategy` → vérifier le handoff
+2. Lancer `@copywriter` → vérifie-t-il le brand-platform de creative-strategy ?
+3. Lancer `@design` → vérifie-t-il les wireframes UX ET le brand-platform ?
+4. Vérifier : les livrables sont-ils cohérents entre eux ? Pas de contradictions ?
+
+### Test E2E (orchestration complète)
+1. Invoquer `@orchestrator` sur un projet complet
+2. Vérifier : les phases s'exécutent-elles dans le bon ordre ? Les agents parallélisables sont-ils lancés ensemble ?
+3. Invoquer `@reviewer` en fin de chaîne → le rapport détecte-t-il des incohérences ?
+
+### Checklist de validation post-test
+- [ ] Chaque agent a lu project-context.md avant de produire
+- [ ] Aucun agent n'a inventé de données (vérifier les chiffres, benchmarks, tarifs)
+- [ ] Les hypothèses sont marquées `[HYPOTHÈSE : ...]`
+- [ ] Le tableau "Historique des interventions agents" est mis à jour par chaque agent
+- [ ] Le tableau "Performance des agents" est rempli
+- [ ] Tous les livrables sont dans le bon dossier `docs/[agent]/`
+- [ ] Le handoff de chaque agent pointe vers le bon destinataire
+
 ## Journal de setup — Mémoire projet
 
 ### Session du 2026-03-21 — Setup initial du framework Gradient Agents
@@ -296,3 +325,36 @@ Si un agent a été interrompu par un timeout :
 - Le framework est prêt, aucun projet n'a encore été lancé dessus
 - Premier test réel = premier `project-context.md` rempli + invocation de `@orchestrator`
 - Si un agent timeout, vérifier ses fichiers (Glob + Read) et reprendre via Edit, ne pas relancer de zéro
+
+### Session du 2026-03-22 — Enrichissements et audit qualité
+
+**Ce qui a été fait :**
+
+1. **Règle absolue numéro 2 — Zéro invention de données** : ajoutée au CLAUDE.md et aux 17 agents. Les agents doivent signaler les données manquantes, demander l'autorisation avant de poser des hypothèses, et marquer `[HYPOTHÈSE : ...]`. @orchestrator vérifie que les sous-agents n'inventent pas. @reviewer flague NO-GO tout chiffre sans source.
+
+2. **Enrichissement des agents** (cas d'usage manquants) :
+   - @growth : rétention, churn, pricing & packaging, expansion revenue
+   - @data-analyst : roadmap CRO, analyse rétention cohortes, attribution
+   - @product-manager : recherche utilisateur, pricing, feedback loops
+   - @copywriter : help center, knowledge base, changelog
+   - @fullstack : API publique RESTful, webhooks, SDK client
+
+3. **Tableau de performance des agents** ajouté au template project-context.md (complétude, cohérence, actionnabilité, messages, spécificité 1-5)
+
+4. **Audit complet par @ia** — note moyenne 8.47/10. Rapport dans `docs/ia/agent-audit-report.md`
+
+5. **Implémentation des 7 recommandations de l'audit** :
+   - P0-1 : Calibrations croisées complétées (13 agents — chaque agent lit désormais les livrables de ses prédécesseurs)
+   - P0-2 : Auto-évaluations uniformisées à 5 questions minimum (6 agents complétés : @ux, @design, @seo, @geo, @social, @legal)
+   - P1-3 : WebSearch ajouté dans calibration (@seo, @geo, @social, @reviewer, @infrastructure)
+   - P1-4 : Champs critiques corrigés (@product-manager : +modèle économique, @data-analyst : budget analytics, @legal : pays, données sensibles, IA générative)
+   - P2-5 : Budget temps/complexité ajouté à @orchestrator (estimation légère/moyenne/lourde avant lancement)
+   - P2-6 : @infrastructure renforcé (CI/CD avancé, backup/DR, stratégie cache)
+   - P2-7 : Protocole de test du framework ajouté au CLAUDE.md (test unitaire, intégration, E2E)
+
+6. **Fix installation** : instructions corrigées pour installer `.claude/agents/` à la racine du repo git (pas dans un sous-dossier). Piège monorepo documenté.
+
+**Décisions prises :**
+- Enrichir les agents existants plutôt que créer de nouveaux agents (éviter la complexité)
+- La règle anti-invention est la plus importante du framework — un livrable incomplet vaut mieux qu'un livrable faux
+- Les calibrations croisées sont le levier #1 de cohérence inter-agents

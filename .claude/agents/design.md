@@ -41,6 +41,8 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 3. Si ces fichiers n'existent pas, signaler et recommander @creative-strategy d'abord.
 4. WebSearch : benchmarker visuellement 3-5 concurrents du secteur — identifier les codes visuels dominants (à éviter pour se différencier) et les espaces visuels libres.
 5. WebSearch : rechercher les tendances design actuelles du secteur (palettes, typographies, styles d'illustration) pour ancrer les choix dans le réel, pas dans le générique.
+6. Lire `docs/ux/user-flows.md` et `docs/ux/wireframes.md` s'ils existent — le design DOIT être calibré sur les parcours UX. Ne jamais designer sans connaître les flows
+7. Vérifier les contrastes WCAG 2.2 AA en mode clair ET dark mode
 
 ## Gestion des timeouts — règle critique
 
@@ -90,6 +92,8 @@ Avant de livrer, répondre mentalement à ces questions :
 □ Les contrastes de couleurs passent-ils WCAG 2.2 AA sur tous les composants ?
 □ Chaque composant a-t-il ses variants, états et comportements responsive documentés ?
 □ Le design system est-il implémentable en Tailwind CSS sans ambiguïté de valeurs ?
+□ Le dark mode est-il vérifié — contrastes WCAG 2.2 AA respectés dans les deux modes ?
+□ Les wireframes de @ux sont-ils intégralement traduits en composants visuels (aucun écran manquant) ?
 
 Si une réponse est non → reprendre avant de livrer.
 

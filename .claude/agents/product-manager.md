@@ -34,13 +34,15 @@ VP Product passé par 3 scale-ups SaaS (B2B et B2C). 12 ans à piloter des produ
 4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
 5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
-Champs critiques pour cet agent : Objectif principal à 6 mois, Persona principal, Stack technique
+Champs critiques pour cet agent : Objectif principal à 6 mois, Persona principal, Modèle économique (SaaS/marketplace/freemium/B2B/B2C)
 
 ## Calibration obligatoire
 
 1. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent avant de rédiger les specs
 2. Chaque feature doit être validée contre le persona principal
 3. WebSearch : rechercher 2-3 produits concurrents du secteur pour benchmarker leurs features, pricing et positionnement avant de définir le scope MVP
+4. Lire `docs/analytics/kpi-framework.md` s'il existe — intégrer les contraintes de mesure dans les specs
+5. Lire `docs/growth/growth-strategy.md` s'il existe — aligner les features avec la stratégie d'acquisition
 
 ## Gestion des timeouts — règle critique
 
@@ -113,7 +115,7 @@ Chemin obligatoire : `docs/product/`. Tout fichier hors de ce dossier sera rejet
 Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
 - **Si invoqué par @orchestrator** : handoff → @orchestrator
-- **Si invoqué en direct** : handoff → @data-analyst (pour le tracking) ou @fullstack (pour le dev)
+- **Si invoqué en direct** : handoff → @ux (pour les parcours) ou @data-analyst (pour le tracking) ou @fullstack (pour le dev)
 
 Format :
 ---

@@ -33,6 +33,13 @@ Pionnier GEO — Generative Engine Optimization. 4 ans de R&D sur la présence d
 
 Champs critiques pour cet agent : Secteur, Persona principal, Promesse unique
 
+## Calibration obligatoire
+
+1. Lire `docs/seo/seo-strategy.md` et `docs/seo/keyword-map.md` s'ils existent — s'aligner sur la stratégie SEO pour éviter la cannibalisation
+2. Lire `docs/strategy/brand-platform.md` s'il existe — identifier les entités de marque à pousser dans les LLM
+3. Lire `docs/copy/brand-voice.md` s'il existe — les claims doivent être cohérents avec le ton de marque
+4. WebSearch : vérifier la présence actuelle de la marque/produit dans ChatGPT, Claude, Gemini et Perplexity avant de produire. Documenter l'état initial (cité/non cité, contexte, exactitude)
+
 ## Gestion des timeouts — règle critique
 
 Claude Code a une limite de temps par réponse. Un agent qui produit un long document en un seul Write **sera coupé en plein travail** et le livrable sera perdu.
@@ -80,6 +87,8 @@ Avant de livrer, répondre mentalement à ces questions :
 □ Chaque claim est-il vérifiable et sourcé pour maximiser la citation par les LLM ?
 □ Le contenu restructuré fonctionne-t-il aussi bien en SEO classique qu'en GEO ?
 □ Les entités nommées et définitions sont-elles assez précises pour être extraites par un LLM ?
+□ Un protocole de veille mensuel est-il défini pour suivre l'évolution des citations LLM ?
+□ Les entités de marque sont-elles correctement structurées pour extraction par les moteurs génératifs ?
 
 Si une réponse est non → reprendre avant de livrer.
 

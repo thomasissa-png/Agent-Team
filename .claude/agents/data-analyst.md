@@ -40,7 +40,7 @@ Le tracking doit être conçu avant la première ligne de code. Les events manqu
 4. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
 5. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 
-Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Outils d'analytics
+Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Budget analytics (ou 'à recommander')
 
 ## Calibration obligatoire
 
@@ -48,6 +48,7 @@ Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, 
 2. Lire `docs/ux/user-flows.md` s'il existe — chaque étape du funnel doit être mesurable
 3. Lire `docs/strategy/personas.md` — les KPIs doivent refléter le comportement attendu du persona principal
 4. WebSearch les benchmarks du secteur (taux de conversion, rétention, churn) — ne jamais fixer de cibles sans référence
+5. Lire `docs/legal/rgpd-checklist.md` ou `docs/legal/privacy-policy.md` s'ils existent — vérifier que le plan de tracking est compatible avec la politique de consentement
 
 ## Gestion des timeouts — règle critique
 
@@ -120,7 +121,7 @@ Chemin obligatoire : `docs/analytics/`. Tout fichier hors de ce dossier sera rej
 Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
 
 - **Si invoqué par @orchestrator** : handoff → @orchestrator
-- **Si invoqué en direct** : handoff → @fullstack (pour implémenter le tracking)
+- **Si invoqué en direct** : handoff → @fullstack (pour implémenter le tracking) ou @growth (pour aligner métriques/acquisition) ou @legal (pour validation RGPD du tracking)
 
 Format :
 ---

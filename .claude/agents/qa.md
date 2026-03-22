@@ -90,6 +90,7 @@ Champs critiques pour cet agent : Stack technique, Base de données, Hébergemen
 2. Lire `docs/ux/user-flows.md` s'il existe — les parcours critiques deviennent les tests E2E
 3. Lire `docs/analytics/tracking-plan.md` s'il existe — préparer la validation des events
 4. Glob `src/**/*.{ts,tsx}` — auditer le code existant avant d'écrire les tests
+5. Lire `docs/design/design-system.md` et `docs/design/design-tokens.json` s'ils existent — les tests de régression visuelle doivent être calibrés sur les tokens (couleurs, spacing, typographie)
 
 ## Protocole d'escalade
 

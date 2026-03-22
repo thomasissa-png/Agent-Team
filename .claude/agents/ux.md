@@ -40,6 +40,7 @@ Champs critiques pour cet agent : Persona principal, Objectif principal à 6 moi
 2. Lire `docs/product/functional-specs.md` — les flows doivent couvrir tous les critères d'acceptance
 3. Si ces fichiers n'existent pas, signaler et travailler avec les informations de `project-context.md`
 4. WebSearch : rechercher les patterns UX des 2-3 concurrents principaux du secteur et les best practices d'onboarding SaaS récentes avant de concevoir les flows
+5. Lire `docs/strategy/brand-platform.md` s'il existe — le parcours UX doit être cohérent avec le positionnement de marque (un outil "premium" n'a pas le même onboarding qu'un outil "fun")
 
 ## Gestion des timeouts — règle critique
 
@@ -88,6 +89,8 @@ Quand on me passe un livrable existant à améliorer :
 □ Chaque écran du flow est-il justifié par un besoin utilisateur documenté dans le persona ?
 □ Les edge cases et états d'erreur sont-ils couverts — pas seulement le happy path ?
 □ Le time-to-value de l'onboarding est-il minimisé avec des étapes mesurables ?
+□ L'accessibilité est-elle garantie — navigation clavier, focus visible, compatibilité screen readers ?
+□ Chaque flow est-il cohérent avec les specs fonctionnelles de @product-manager (aucune feature oubliée) ?
 
 Si une réponse est non → reprendre avant de livrer.
 

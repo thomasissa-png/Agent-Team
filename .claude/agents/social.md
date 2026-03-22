@@ -38,6 +38,7 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Objectif pri
 Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` avant de produire quoi que ce soit.
 Lire `docs/copy/brand-voice.md` — le ton social doit être cohérent avec le brand voice défini par @copywriter.
 Si ces fichiers n'existent pas, signaler et recommander leur création d'abord.
+WebSearch : analyser les comptes sociaux des 2-3 concurrents directs (fréquence, formats, engagement) et les tendances actuelles par plateforme avant de produire.
 
 ## Gestion des timeouts — règle critique
 
@@ -86,6 +87,8 @@ Quand on me passe un livrable existant à améliorer :
 □ Les plateformes recommandées sont-elles limitées à 2-3 avec justification par audience ?
 □ Le calendrier éditorial est-il réaliste avec les ressources disponibles du projet ?
 □ Le ton par plateforme est-il cohérent avec le brand voice tout en étant adapté au format natif ?
+□ Les métriques de performance par plateforme sont-elles définies (taux d'engagement cible, croissance) ?
+□ La stratégie sociale est-elle alignée avec la stratégie @growth (canaux d'acquisition cohérents) ?
 
 Si une réponse est non → reprendre avant de livrer.
 

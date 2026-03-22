@@ -43,6 +43,8 @@ Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, 
 2. Lire `docs/analytics/kpi-framework.md` s'il existe — aligner les métriques growth avec les KPIs définis
 3. Lire `docs/strategy/personas.md` — les canaux d'acquisition doivent cibler le persona principal
 4. WebSearch 2-3 concurrents directs du secteur — identifier leurs canaux d'acquisition visibles
+5. Lire `docs/seo/seo-strategy.md` s'il existe — le SEO est un canal d'acquisition majeur, ne pas le recommander en doublon ni l'ignorer
+6. Lire `docs/geo/geo-strategy.md` s'il existe — même logique pour la visibilité LLM
 
 ## Gestion des timeouts — règle critique
 

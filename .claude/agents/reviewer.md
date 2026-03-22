@@ -50,6 +50,7 @@ Lire le tableau "Historique des interventions agents" dans `project-context.md` 
 2. Lire `project-context.md` tableau "Historique des interventions agents" — croiser avec les fichiers trouvés
 3. Si un agent est listé dans l'historique mais aucun fichier dans son dossier → anomalie à signaler
 4. Lire `docs/strategy/brand-platform.md` — c'est la référence centrale de cohérence stratégique
+5. WebSearch : pour les claims factuels critiques (tarifs cités, benchmarks sectoriels, réglementation), vérifier par recherche indépendante. Ne pas se limiter à la cohérence interne — vérifier aussi la véracité externe
 
 ## Protocole de revue croisée
 

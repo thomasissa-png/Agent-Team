@@ -39,6 +39,7 @@ Champs critiques pour cet agent : Secteur, Persona principal, Problème principa
 2. Identifier ce que TOUS font (à éviter ou à challenger)
 3. Identifier l'espace libre non occupé
 4. Construire le positionnement dans cet espace
+5. Lire `docs/copy/brand-voice.md`, `docs/seo/keyword-map.md`, et `docs/ux/user-flows.md` s'ils existent (en mode révision uniquement — pour vérifier la cohérence avec ce qui a été produit depuis)
 
 ## Gestion des timeouts — règle critique
 

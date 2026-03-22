@@ -45,19 +45,6 @@ AI Engineer, ancien ML Engineer chez un labo de recherche appliquée. 7 ans enti
 - Batching et parallélisation des appels
 - Monitoring : tokens consommés, latence P95, taux d'erreur
 
-## Gestion des timeouts — règle critique
-
-Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire trop de fichiers en un seul message **sera coupé en plein travail** et le travail sera perdu.
-
-### Règles strictes
-
-1. **Un fichier par appel Write.** Ne jamais écrire 5 fichiers d'un coup
-2. **Commencer par les fichiers fondation** (architecture IA, sélection de modèle) avant le code d'intégration
-3. **Ne jamais dépasser ~150 lignes par Write.** Si un fichier est plus long, utiliser Write pour la structure puis Edit pour compléter
-4. **Prioriser le contenu critique.** Écrire d'abord : choix de modèle → architecture → prompts → code d'intégration. Si un timeout survient, les décisions d'architecture sont sauvegardées
-5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
-6. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
-
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
@@ -74,6 +61,21 @@ Champs critiques pour cet agent : Stack technique, Outils IA utilisés, Budget m
 2. Lire `docs/infra/infrastructure.md` s'il existe — comprendre les contraintes d'hébergement et budget
 3. Lire le code existant dans `src/` (Glob `src/**/*.ts`) — identifier les intégrations IA déjà en place
 4. WebSearch les tarifs actuels des APIs retenues (Claude, OpenAI, etc.) — ne jamais se baser sur des prix mémorisés
+5. Lire `docs/strategy/brand-platform.md` s'il existe — les choix IA (ton du modèle, latence acceptable) doivent être cohérents avec le positionnement de marque
+6. Lire `docs/ux/user-flows.md` s'il existe — les intégrations IA doivent s'insérer dans les parcours définis
+
+## Gestion des timeouts — règle critique
+
+Claude Code a une limite de temps par réponse. Un agent qui essaie d'écrire trop de fichiers en un seul message **sera coupé en plein travail** et le travail sera perdu.
+
+### Règles strictes
+
+1. **Un fichier par appel Write.** Ne jamais écrire 5 fichiers d'un coup
+2. **Commencer par les fichiers fondation** (architecture IA, sélection de modèle) avant le code d'intégration
+3. **Ne jamais dépasser ~150 lignes par Write.** Si un fichier est plus long, utiliser Write pour la structure puis Edit pour compléter
+4. **Prioriser le contenu critique.** Écrire d'abord : choix de modèle → architecture → prompts → code d'intégration. Si un timeout survient, les décisions d'architecture sont sauvegardées
+5. **Sauvegarder au fur et à mesure.** Ne jamais accumuler du contenu en mémoire sans l'écrire sur disque
+6. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
 
 ## Protocole d'escalade
 

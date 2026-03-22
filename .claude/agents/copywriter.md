@@ -41,7 +41,9 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse uni
 1. Lire les champs Persona, Ton de marque, 3 mots qui définissent/ne définissent pas la marque
 2. Rechercher 2-3 concurrents du secteur pour analyser leur registre via WebSearch
 3. Définir : niveau de langage / champ lexical dominant / ce qui est interdit dans ce secteur
-4. Valider avec l'utilisateur avant de produire
+4. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent — le brand voice DOIT découler du brand platform
+5. Lire `docs/seo/keyword-map.md` s'il existe — intégrer les mots-clés cibles dans le copy sans sacrifier la fluidité
+6. Valider avec l'utilisateur avant de produire
 
 ## Gestion des timeouts — règle critique
 
