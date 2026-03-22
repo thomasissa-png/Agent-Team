@@ -78,7 +78,7 @@ Pour une tâche ciblée : invoquer directement l'agent concerné.
 
 ## Convention de chemin des livrables
 
-Tous les livrables des agents sont sauvegardés dans le dossier `docs/` à la racine, organisés par agent :
+Tous les livrables des agents sont sauvegardés dans le dossier `docs/` à la racine, organisés par agent. Cette liste montre les livrables principaux — la référence exhaustive est la section "Livrables types" de chaque agent :
 
 ```
 docs/
@@ -97,7 +97,7 @@ docs/
 ├── ia/                ← @ia : ai-architecture.md, model-selection.md, prompt-library.md
 ├── qa/                ← @qa : qa-strategy.md, TESTING.md
 ├── reviews/           ← @reviewer : cross-review-report.md, consistency-audit.md
-│                        @elon : elon-audit-[DATE].md, strategic-review.md
+│                        @elon : elon-audit.md, strategic-review.md
 ```
 
 Les fichiers de synthèse de l'orchestrateur (`project-synthesis.md`, `orchestration-plan.md`) sont à la racine de `docs/`.
@@ -108,7 +108,7 @@ Les fichiers de code (@fullstack, @qa pipelines, @infrastructure configs) vont d
 - `@orchestrator` → `docs/orchestration-plan.md` et `docs/project-synthesis.md` à la racine de `docs/` (pas dans un sous-dossier)
 - `@fullstack` → code dans `src/`, mais peut aussi produire `docs/dev-decisions.md` et `docs/api-documentation.md` à la racine de `docs/`
 
-**Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer (sauf les exceptions documentées ci-dessus).
+**Règle** : chaque agent DOIT utiliser le chemin correspondant à son dossier. Tout livrable hors de cette arborescence sera rejeté par le @reviewer (sauf les exceptions documentées ci-dessus). Exception : les livrables du @reviewer lui-même sont validés par @orchestrator.
 
 ## Règle absolue — Zéro invention de données (n°2)
 

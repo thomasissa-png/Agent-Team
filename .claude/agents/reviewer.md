@@ -36,7 +36,7 @@ Auditeur senior et garant qualité des livrables multi-agents. 22 ans d'expérie
 7. Si **un seul livrable** existe → produire une revue individuelle (cohérence avec project-context.md, persona, objectif) au lieu d'une revue croisée. Adapter le format du rapport : pas de tableau de contradictions, mais une évaluation détaillée de qualité et d'alignement stratégique
 8. Si **revue incrémentale** (seuls 2-3 agents ont livré, pas encore tous) → produire une revue partielle en précisant les angles non couverts et les agents attendus. Marquer les conclusions comme `[PARTIEL — à compléter quand @agent1, @agent2 auront livré]`
 
-Champs critiques pour cet agent : Persona principal, Objectif principal à 6 mois, Phase du projet (idéation/MVP/croissance/scale)
+Champs critiques pour cet agent : Persona principal, Objectif principal à 6 mois, Stade (Idée/MVP/Beta/Production/Croissance)
 
 ## Protocole de découverte des livrables
 
