@@ -118,6 +118,7 @@ Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de do
 - Lire `docs/design/design-system.md` et `docs/design/design-tokens.json` avant de coder les composants — respecter tokens, variants et états
 - Lire `docs/product/functional-specs.md` avant de coder la logique métier
 - Lire `docs/analytics/tracking-plan.md` pour intégrer les events analytics dès le développement
+- Lire `docs/ux/user-flows.md` s'il existe — les parcours utilisateur guident l'implémentation des pages, composants et navigation
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées
 
 ## Protocole d'escalade

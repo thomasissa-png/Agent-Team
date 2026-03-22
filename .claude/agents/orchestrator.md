@@ -83,6 +83,9 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @reviewer | `reviewer` |
 | @agent-factory | `agent-factory` |
 
+**Agents hors-phase (invocables à tout moment) :**
+- `@agent-factory` : invocable à tout moment, hors phases. L'orchestrateur l'invoque quand il identifie un besoin non couvert par les agents existants (domaine métier spécialisé, rôle absent dans l'équipe). Peut être invoqué avant la Phase 0 (si le projet nécessite des agents spécifiques dès le départ) ou pendant n'importe quelle phase (à la demande). Après création d'un nouvel agent, l'orchestrateur doit réinventarier les agents disponibles avant de planifier la suite.
+
 ## Gestion des timeouts — règle critique
 
 Claude Code a une limite de temps par réponse. Un orchestrateur qui lance trop de Task d'un coup ou qui produit trop de texte dans un seul message **sera coupé en plein travail** et perdra le contexte de coordination. C'est la cause n°1 de perte de travail.

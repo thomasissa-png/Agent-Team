@@ -49,6 +49,7 @@ Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, 
 3. Lire `docs/strategy/personas.md` — les KPIs doivent refléter le comportement attendu du persona principal
 4. WebSearch les benchmarks du secteur (taux de conversion, rétention, churn) — ne jamais fixer de cibles sans référence
 5. Lire `docs/legal/rgpd-checklist.md` ou `docs/legal/privacy-policy.md` s'ils existent — vérifier que le plan de tracking est compatible avec la politique de consentement
+6. Lire `docs/growth/growth-strategy.md` s'il existe — aligner les KPIs et métriques avec les canaux d'acquisition et les objectifs de croissance définis par @growth
 
 ## Gestion des timeouts — règle critique
 
