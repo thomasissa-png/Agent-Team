@@ -358,7 +358,7 @@ const PROMPTS = [
         title:"KPIs & tracking plan",
         agents:["data-analyst"],
         quand:"Avant tout développement, pour mesurer dès le jour 1",
-        prompt:"@data-analyst Définis la North Star Metric et les KPIs AARRR. Produis le tracking plan complet : chaque event, sa source, son trigger. Specs de dashboard prêtes pour l'outil analytics choisi."
+        prompt:"@data-analyst Lis brand-platform.md (personas, objectifs business) et product-vision.md si existant. Définis la North Star Metric alignée sur l'objectif principal du projet et les KPIs AARRR. Produis le tracking plan complet : chaque event, sa source, son trigger, le type de données collectées. Specs de dashboard prêtes pour l'outil analytics choisi. Livrables : kpi-framework.md, tracking-plan.md, dashboard-specs.md."
       },
       {
         title:"Audit juridique & conformité",
@@ -388,13 +388,13 @@ const PROMPTS = [
         title:"Brand voice & guide d'écriture",
         agents:["copywriter"],
         quand:"Après la plateforme de marque, avant toute rédaction",
-        prompt:"@copywriter Produis le brand voice guide : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy."
+        prompt:"@copywriter Lis brand-platform.md (positionnement, personas, brief créatif). Produis le brand voice guide aligné sur le positionnement : ton, registre, vocabulaire autorisé/interdit, exemples par contexte (landing, email, in-app, notifications). Inclus le guide UX writing : messages d'erreur, empty states, tooltips, CTAs, microcopy, messages de succès. Livrables : brand-voice.md, ux-writing-guide.md."
       },
       {
         title:"Landing page complète",
         agents:["copywriter","seo"],
         quand:"Brand voice définie, personas validés",
-        prompt:"@copywriter Rédige le copy complet de la landing page : hero, bénéfices, social proof, CTA, FAQ. Calibre le ton sur le persona principal. @seo Optimise les meta title/description, headings, et données structurées."
+        prompt:"@copywriter Lis brand-voice.md (ton, registre) et brand-platform.md (persona principal, proposition de valeur). Rédige le copy complet de la landing page : hero (headline + sous-titre + CTA), bénéfices (3-5 avec preuves), social proof (témoignages, chiffres, logos), CTA secondaires, FAQ (5-8 questions). Calibre le ton sur le persona principal. @seo Lis keyword-map.md si existant. Optimise les meta title (<60 car)/description (<155 car), headings H1-H3 avec mots-clés cibles, et données structurées JSON-LD (Organization, FAQ). Livrables : landing-page-copy.md, metadata-templates.md."
       }
     ]
   },
@@ -466,7 +466,7 @@ const PROMPTS = [
         title:"Stratégie d'acquisition complète",
         agents:["growth","social","copywriter"],
         quand:"Produit lancé, premiers utilisateurs à acquérir",
-        prompt:"@growth Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV. @social Planifie le calendrier éditorial 4 semaines avec formats natifs. @copywriter Rédige les accroches et copies pour chaque canal."
+        prompt:"@growth Lis brand-platform.md (personas, positionnement), project-context.md (budget marketing), et kpi-framework.md (métriques cibles). Définis les 3 canaux prioritaires selon le persona et le budget, modélise CAC/LTV par canal, définis les objectifs chiffrés à 30/60/90 jours. @social Lis brand-voice.md et brand-platform.md. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme. @copywriter Lis brand-voice.md. Rédige les accroches et copies pour chaque canal (ads, posts, emails) en respectant le ton de marque. Livrables : growth-strategy.md, acquisition-plan.md, editorial-calendar.md, content-templates.md."
       },
       {
         title:"Stratégie social media",
@@ -478,7 +478,7 @@ const PROMPTS = [
         title:"Emails onboarding & conversion",
         agents:["copywriter","growth"],
         quand:"Parcours onboarding défini, besoin de convertir",
-        prompt:"@copywriter Crée la séquence de 5 emails : bienvenue, activation feature clé, social proof, upgrade, réengagement. @growth Définis les triggers et KPIs de conversion par étape."
+        prompt:"@copywriter Lis brand-voice.md (ton, registre) et user-flows.md (parcours onboarding). Crée la séquence de 5 emails alignée sur le parcours utilisateur : bienvenue (valeur promise + première action), activation feature clé (quick win), social proof (témoignage/chiffre concret), upgrade (bénéfices premium + urgence), réengagement (rappel de valeur + nouvelle raison). Chaque email : objet (<50 car), preview text, corps, CTA unique. @growth Lis tracking-plan.md et kpi-framework.md. Définis les triggers d'envoi (action utilisateur ou délai), les KPIs par étape (open rate, CTR, conversion), et les critères de segmentation. Livrables : email-sequences.md, growth-strategy.md (section email automation)."
       },
       {
         title:"Auditer le funnel existant",
@@ -538,19 +538,19 @@ const PROMPTS = [
         title:"Refondre un site existant",
         agents:["ux","design","fullstack"],
         quand:"Site en production avec problèmes UX/performance/dette technique",
-        prompt:"@ux Audite le parcours actuel : friction points, taux d'abandon, parcours critiques. @design Évalue la cohérence visuelle et propose le nouveau design system. @fullstack Évalue la dette technique et propose le plan de migration."
+        prompt:"@ux Lis user-flows.md si existant. Audite les parcours actuels : friction points, taux d'abandon par étape, parcours critiques (onboarding, conversion, rétention). Produis un rapport priorisé par impact. @design Lis brand-platform.md et design-system.md si existant. Évalue la cohérence visuelle (tokens, composants, accessibilité WCAG 2.2 AA) et propose le nouveau design system aligné sur le positionnement de marque. @fullstack Évalue la dette technique (dépendances obsolètes, couverture de tests, performance) et propose le plan de migration : stratégie [progressive (page par page) vs big bang], ordre de migration des pages, risques et rollback plan. Critères de qualité : chaque agent produit un rapport actionnable avec priorisation. Livrables : ux-audit.md, design-system.md, plan de migration dans docs/dev-decisions.md."
       },
       {
         title:"Diagnostiquer un problème de performance",
         agents:["infrastructure","seo"],
-        quand:"Le site est lent",
-        prompt:"@infrastructure Mesure les Core Web Vitals (LCP, CLS, INP), identifie les bottlenecks (bundle size, requêtes API, assets). @seo Vérifie l'impact sur le crawl budget et le ranking."
+        quand:"Le site est lent, Lighthouse score <90",
+        prompt:"@infrastructure Lis infrastructure.md si existant. Diagnostic performance complet : Core Web Vitals (LCP <2.5s, CLS <0.1, INP <200ms), bundle size (identifier les dépendances lourdes avec bundle analyzer), requêtes API (temps de réponse P50/P95, requêtes N+1), assets (images non optimisées, fonts bloquantes, lazy loading manquant). Outils recommandés : Lighthouse CI, WebPageTest, Chrome DevTools Performance. Pour chaque bottleneck identifié, propose la solution et le gain estimé. @seo Vérifie l'impact performance sur le crawl budget (pages lentes = mal crawlées), le ranking (Core Web Vitals comme facteur de classement), et l'indexation. Livrables : performance-audit.md, seo-strategy.md (section performance)."
       },
       {
         title:"Auditer la cohérence visuelle",
         agents:["design","ux"],
         quand:"Incohérences entre pages/composants",
-        prompt:"@design Audite la cohérence visuelle : tokens, typographies, espacements, contrastes WCAG 2.2 AA. @ux Vérifie que les parcours sont visuellement guidés et les CTA hiérarchisés."
+        prompt:"@design Lis design-system.md et design-tokens.json si existants. Audite la cohérence visuelle page par page : tokens (couleurs utilisées vs définies), typographies (hiérarchie H1-H6, tailles, line-height), espacements (grille respectée), contrastes WCAG 2.2 AA (ratio minimum 4.5:1 pour le texte, 3:1 pour les éléments interactifs). Produis un rapport avec captures des incohérences et la correction pour chacune. @ux Lis user-flows.md. Vérifie que les parcours sont visuellement guidés (hiérarchie visuelle claire, CTA principal identifiable en <3s), les CTA hiérarchisés (primaire/secondaire/tertiaire), et la navigation cohérente entre les pages. Critères de qualité : chaque incohérence a une sévérité (bloquant/mineur) et une correction proposée. Livrables : design-audit.md dans docs/design/, ux-audit.md dans docs/ux/."
       },
       {
         title:"Optimiser l'onboarding",
@@ -562,13 +562,37 @@ const PROMPTS = [
         title:"Créer un agent spécialisé",
         agents:["agent-factory"],
         quand:"Besoin d'un expert que l'équipe n'a pas encore",
-        prompt:"@agent-factory J'ai besoin d'un agent spécialisé en [domaine]. Vérifie qu'il n'existe pas déjà dans l'équipe, crée-le en respectant le framework, et intègre-le dans l'écosystème."
+        prompt:"@agent-factory J'ai besoin d'un agent spécialisé en [domaine, ex: \"cybersécurité\" ou \"accessibilité\" ou \"data engineering\"]. Contexte du besoin : [décrire le cas d'usage en 2-3 phrases, ex: \"notre app manipule des données sensibles et nous avons besoin d'un audit de sécurité régulier\"]. Vérifie qu'il n'existe pas déjà dans l'équipe (lis tous les agents dans .claude/agents/). Crée-le avec : 1) Identité : rôle, expérience, domaine d'expertise. 2) Champs critiques requis depuis project-context.md. 3) Livrables types avec chemins de fichiers (dans docs/[nom-agent]/). 4) Phase d'insertion dans le pipeline (Phase 0-5). 5) Coordination : quels agents existants il consulte (fichiers amont) et quels agents consomment ses livrables. 6) Critères de qualité spécifiques à son domaine. Livrables : fichier agent dans .claude/agents/, mise à jour de CLAUDE.md et orchestrator.md."
+      },
+      {
+        title:"Migrer de stack technique",
+        agents:["fullstack","infrastructure","qa"],
+        quand:"Changement de framework, de langage, ou de plateforme d'hébergement",
+        prompt:"@fullstack Lis le code existant dans src/ et project-context.md (stack actuelle → stack cible). Évalue la dette technique, identifie les dépendances à migrer, et produis le plan de migration : stratégie (progressive page par page vs big bang), ordre de migration (fondations → composants → pages), mapping ancien code → nouveau code, risques et points de non-retour. @infrastructure Lis infrastructure.md. Évalue l'impact sur le déploiement : compatibilité hébergement, variables d'environnement, CI/CD à adapter, performance attendue post-migration. @qa Définis la stratégie de test de non-régression : tests critiques à maintenir pendant la migration, critères d'acceptance pour chaque étape, rollback plan si les tests échouent. Critères de qualité : aucune fonctionnalité perdue, couverture de tests maintenue, plan de rollback documenté. Livrables : docs/dev-decisions.md (plan de migration), infrastructure.md mis à jour, qa-strategy.md (plan de test migration)."
+      },
+      {
+        title:"Internationalisation (i18n)",
+        agents:["fullstack","copywriter"],
+        quand:"Expansion vers de nouveaux marchés, besoin de supporter plusieurs langues",
+        prompt:"@fullstack Lis functional-specs.md et le code existant dans src/. Implémente l'infrastructure i18n : 1) Setup de la librairie i18n [ex: next-intl, react-i18next]. 2) Extraction de toutes les chaînes hardcodées dans des fichiers de traduction (JSON/YAML). 3) Routing par locale (/fr, /en, /es). 4) Gestion des formats (dates, nombres, devises) par locale. 5) SEO multilingue (hreflang, sitemap par langue). Code dans src/. @copywriter Lis brand-voice.md. Pour chaque langue cible [langues, ex: \"anglais, espagnol, allemand\"], adapte (ne traduis pas mot à mot) les contenus clés : landing page, onboarding, emails, messages d'erreur, CTAs. Respecte le ton de marque dans chaque langue. Critères de qualité : aucune chaîne hardcodée restante, fallback vers la langue par défaut, RTL supporté si applicable. Livrables : code i18n dans src/, fichiers de traduction, guide de localisation dans docs/copy/."
+      },
+      {
+        title:"Post-mortem incident production",
+        agents:["infrastructure","qa"],
+        quand:"Après un incident en production (downtime, bug critique, perte de données)",
+        prompt:"@infrastructure Lis les logs d'erreur et infrastructure.md. Produis le post-mortem structuré : 1) Timeline de l'incident (heure de détection, de diagnostic, de résolution). 2) Cause racine (root cause analysis — 5 Whys). 3) Impact : utilisateurs affectés, durée, données perdues. 4) Réponse : actions prises, efficacité, ce qui a ralenti la résolution. 5) Actions correctives : mesures immédiates (hotfix) + mesures de fond (prévention). 6) Monitoring à ajouter pour détecter plus tôt. @qa Identifie les tests manquants qui auraient pu prévenir l'incident : tests unitaires, tests d'intégration, tests de charge, tests de failover. Propose les tests à ajouter avec priorité. Critères de qualité : chaque action corrective a un responsable et une deadline, le post-mortem est blameless (pas de mise en cause personnelle). Livrables : docs/infra/post-mortem-[date].md, qa-strategy.md mis à jour."
       }
     ]
   }
 ];
 
 const CHANGELOG = [
+  {
+    date:"2026-03-22",
+    agent:"ia",
+    type:"mise à jour",
+    description:"Prompts optimisés suite à audit (7.6→9.5/10) — 20 prompts améliorés, 3 nouveaux (migration stack, i18n, post-mortem), références fichiers amont ajoutées, placeholders contextuels, critères de qualité systématiques"
+  },
   {
     date:"2026-03-22",
     agent:"tous",
