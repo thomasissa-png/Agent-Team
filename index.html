@@ -1645,99 +1645,195 @@ Critères de validation : chaque type de monitoring est configuré avec des seui
     items:[
       {
         title:"Refondre un site existant",
-        agents:["ux","design","fullstack"],
-        quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        agents:["ux","design","fullstack","legal"],
+        quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément. Recommandé via @orchestrator pour les projets > 20 pages.",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours existants), docs/analytics/kpi-framework.md (métriques actuelles) et docs/product/functional-specs.md (features). S'ils n'existent pas, audite directement le code dans src/ et pose-moi les questions sur les parcours critiques actuels (pages les plus visitées, taux de rebond, parcours d'achat/signup).
 
 Audit UX complet :
-1. Parcours critiques : mapping de chaque flow clé (signup, achat, recherche), identification des friction points avec sévérité (bloquant/majeur/mineur).
-2. Performance perçue : temps de chargement par page, Core Web Vitals (LCP, CLS, INP), impact sur l'abandon.
-3. Accessibilité : conformité WCAG 2.2 AA, navigation clavier, lecteurs d'écran — signaler les violations bloquantes.
-4. Mobile : audit responsive, touch targets, parcours mobile vs desktop.
-5. Benchmark : comparer 2-3 concurrents sur les mêmes parcours via WebSearch.
+1. Parcours critiques : mapping de chaque flow clé (signup, achat, recherche), identification des friction points avec sévérité (bloquant/majeur/mineur) et impact estimé sur la conversion.
+2. Performance perçue : temps de chargement par page, Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), impact sur l'abandon. Budget performance : JS < 200KB gzipped, page totale < 1MB.
+3. Accessibilité : conformité WCAG 2.2 AA (obligation légale en France pour de nombreux sites depuis 2025), navigation clavier, lecteurs d'écran, contrastes (4.5:1 texte normal, 3:1 texte large) — signaler les violations bloquantes avec référence au critère RGAA.
+4. Mobile : audit responsive, touch targets (min 44x44px), parcours mobile vs desktop, performance sur 3G lente.
+5. Benchmark : comparer 2-3 concurrents sur les mêmes parcours via WebSearch (données réelles, pas inventées).
+6. SEO & GEO : vérifier que la structure de contenu est compatible avec le référencement (headings hiérarchiques, meta, données structurées) et citable par les LLM (entités nommées, claims vérifiables).
 
-Livrable : docs/ux/ux-audit.md (avec matrice de priorisation des corrections).
+Livrable : docs/ux/ux-audit.md (avec matrice de priorisation des corrections par impact business).
 
-Puis @design : lis docs/ux/ux-audit.md + docs/design/design-system.md s'il existe + docs/strategy/brand-platform.md (positionnement). Évalue la cohérence visuelle page par page. Propose le nouveau design system aligné sur les problèmes identifiés : tokens corrigés, composants à refaire, hiérarchie visuelle des CTA. Vérifie les contrastes WCAG 2.2 AA. Livrable : docs/design/design-system.md.
+Puis @design : lis docs/ux/ux-audit.md + docs/design/design-system.md s'il existe + docs/strategy/brand-platform.md (positionnement). Évalue la cohérence visuelle page par page. Propose le nouveau design system aligné sur les problèmes identifiés : tokens corrigés, composants à refaire, hiérarchie visuelle des CTA. Vérifie les contrastes WCAG 2.2 AA. Les choix visuels doivent être compatibles avec un LCP < 2.5s — signaler les éléments lourds (images > 500KB, animations complexes, vidéos autoplay). Livrable : docs/design/design-system.md.
 
-Puis @fullstack : lis docs/ux/ux-audit.md + docs/design/design-system.md + docs/product/functional-specs.md (s'il n'existe pas, signale-le). Évalue la dette technique (fichiers > 300 lignes, dépendances obsolètes, code dupliqué). Produis le plan de migration progressive (big bang uniquement si dette < 20 fichiers) : étapes, fichiers impactés par étape, risques de régression, rollback possible, estimation effort. Inclus la migration du tracking analytics (events à préserver). Livrable : docs/dev-decisions.md.
+Puis @fullstack : lis docs/ux/ux-audit.md + docs/design/design-system.md + docs/product/functional-specs.md (s'il n'existe pas, signale-le). Évalue la dette technique (fichiers > 300 lignes, dépendances obsolètes, code dupliqué, failles de sécurité connues dans les dépendances). Produis le plan de migration progressive (big bang uniquement si dette < 20 fichiers) : étapes, fichiers impactés par étape, risques de régression, rollback possible, estimation effort. Inclus la migration du tracking analytics (events à préserver, GTM tags, pixels). Vérifie que la migration préserve les URLs existantes (pas de perte SEO). Livrable : docs/dev-decisions.md.
 
-Critères de validation : chaque friction point a une correction proposée avec priorité, le plan de migration a un chemin critique et un plan de rollback, l'accessibilité WCAG 2.2 AA est auditée.`
+Conformité : @legal vérifie si le site actuel a des obligations d'accessibilité (RGAA), si les mentions légales / CGV / politique de confidentialité doivent être mises à jour lors de la refonte. Note les obligations dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque friction point a une correction proposée avec priorité et impact business estimé, le plan de migration a un chemin critique et un plan de rollback, l'accessibilité WCAG 2.2 AA est auditée avec score de conformité, les URLs existantes sont préservées (redirections 301 si changement).`
       },
       {
         title:"Diagnostiquer un problème de performance",
-        agents:["infrastructure","seo","data-analyst"],
+        agents:["infrastructure","seo","data-analyst","ux"],
         quand:"Site lent, Core Web Vitals dans le rouge, ou plaintes utilisateurs sur la vitesse. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, hébergement, CDN) et project-context.md (budget). S'ils n'existent pas, pose-moi les questions (hébergeur, stack, trafic mensuel estimé).
+        prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, hébergement, CDN) et project-context.md (budget). S'ils n'existent pas, pose-moi les questions (hébergeur, stack, trafic mensuel estimé, pays cibles).
 
 Audit de performance complet :
-1. Core Web Vitals : LCP, CLS, INP — mesure via Lighthouse CI et WebPageTest sur mobile ET desktop. Objectifs : LCP < 2.5s, CLS < 0.1, INP < 200ms.
-2. Bundle analysis : taille totale JS/CSS, tree-shaking effectif, code splitting, chunks > 100KB à identifier (webpack-bundle-analyzer ou equivalent).
-3. Assets : images non optimisées (format, dimensions, lazy loading), fonts (subset, display swap, preload), scripts tiers bloquants.
-4. API : latence P50/P95/P99 par endpoint, requêtes N+1, absence de cache, réponses > 1MB.
-5. Infrastructure : TTFB, compression (gzip/brotli), CDN, HTTP/2-3, cache headers.
-6. Budget performance : définir un budget (JS < 200KB gzipped, total page < 1MB, LCP < 2.5s) et mesurer l'écart actuel.
+1. Core Web Vitals : LCP, CLS, INP — mesure via Lighthouse CI et WebPageTest sur mobile ET desktop. Objectifs : LCP < 2.5s, CLS < 0.1, INP < 200ms. Tester sur les 5 pages à plus fort trafic en priorité.
+2. Bundle analysis : taille totale JS/CSS, tree-shaking effectif, code splitting, chunks > 100KB à identifier (webpack-bundle-analyzer ou équivalent). Identifier les dépendances inutilisées ou surdimensionnées.
+3. Assets : images non optimisées (format WebP/AVIF, dimensions, lazy loading, srcset), fonts (subset, display swap, preload), scripts tiers bloquants (analytics, chat widgets, pixels pub — lister chacun avec son coût en ms).
+4. API : latence P50/P95/P99 par endpoint, requêtes N+1, absence de cache, réponses > 1MB. Identifier les endpoints critiques pour l'UX (ceux bloquant le rendu).
+5. Infrastructure : TTFB par région (tester depuis les pays cibles), compression (gzip/brotli), CDN (cache hit ratio), HTTP/2-3, cache headers (stratégie immutable vs revalidation).
+6. Sécurité liée à la performance : headers de sécurité (CSP, HSTS) qui peuvent impacter le chargement, scripts tiers non sécurisés.
+7. Budget performance : définir un budget (JS < 200KB gzipped, total page < 1MB, LCP < 2.5s, TTFB < 800ms) et mesurer l'écart actuel par page.
 
-Pour chaque problème : sévérité (critique/majeur/mineur), correction recommandée, effort estimé, impact attendu sur les Core Web Vitals.
+Pour chaque problème : sévérité (critique/majeur/mineur), correction recommandée, effort estimé (heures), impact attendu sur les Core Web Vitals, et ROI estimé (impact conversion vs effort de correction).
 
 Livrable : docs/infra/performance-audit.md.
 
-Puis @seo : lis docs/infra/performance-audit.md. Évalue l'impact sur le crawl budget (pages lentes = moins crawlées), le ranking (Core Web Vitals = signal de classement Google), et l'indexation. Vérifie aussi les ressources bloquées pour Googlebot. Ajoute une section "Impact SEO & priorités" dans docs/infra/performance-audit.md.
+Puis @seo : lis docs/infra/performance-audit.md. Évalue l'impact sur le crawl budget (pages lentes = moins crawlées par Google), le ranking (Core Web Vitals = signal de classement Google), l'indexation mobile-first, et la visibilité sur les IA génératives (pages lentes = moins scrapées). Vérifie les ressources bloquées pour Googlebot (robots.txt, noindex involontaires). Ajoute une section "Impact SEO & GEO" dans docs/infra/performance-audit.md.
 
-Puis @data-analyst : lis docs/infra/performance-audit.md et corrèle les problèmes de performance avec les métriques business (taux de rebond par page, conversion par vitesse de chargement si données disponibles). Livrable : section "Impact business" ajoutée à docs/infra/performance-audit.md.
+Puis @data-analyst : lis docs/infra/performance-audit.md et corrèle les problèmes de performance avec les métriques business : taux de rebond par page et par vitesse de chargement, taux de conversion segmenté par temps de chargement (si données disponibles), revenu perdu estimé par seconde de latence supplémentaire. Livrable : section "Impact business chiffré" ajoutée à docs/infra/performance-audit.md.
 
-Critères de validation : chaque bottleneck a une sévérité, une correction et un effort estimé ; le budget performance est défini ; l'impact SEO est quantifié.`
+Puis @ux : lis docs/infra/performance-audit.md et évalue l'impact sur l'expérience utilisateur perçue : squelettes de chargement manquants, absence d'optimistic UI, transitions abruptes, indicateurs de progression absents. Propose des améliorations UX qui réduisent la perception de lenteur même sans gain technique. Ajoute une section "Performance perçue" dans docs/infra/performance-audit.md.
+
+Critères de validation : chaque bottleneck a une sévérité, une correction, un effort estimé et un ROI ; le budget performance est défini avec seuils par page ; l'impact SEO est quantifié ; l'impact business est chiffré en revenu perdu estimé.`
       },
       {
         title:"Auditer la cohérence visuelle",
         agents:["design","ux","legal"],
-        quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité.",
+        quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité. Recommandé avant chaque release majeure.",
         prompt:`@design Lis docs/design/design-system.md (tokens de référence) et docs/strategy/brand-platform.md (positionnement, ton). S'ils n'existent pas, pose-moi les questions pour les créer (couleurs principales, typographies, espacements, composants existants, identité de marque) et génère-les avant de continuer.
 
 Audit de cohérence visuelle complet :
-1. Tokens : vérifier page par page que les couleurs, typographies, espacements et rayons de bordure respectent le design system. Lister chaque écart avec la page/composant concerné.
-2. Hiérarchie visuelle : les CTA sont-ils correctement hiérarchisés (primaire/secondaire/tertiaire) ? Les titres suivent-ils une hiérarchie H1 > H2 > H3 cohérente ?
-3. Contrastes WCAG 2.2 AA : vérifier les ratios de contraste texte/fond (minimum 4.5:1 pour le texte normal, 3:1 pour le texte large). Signaler chaque violation.
-4. Composants : identifier les composants dupliqués (même fonction, design différent), les variantes non documentées, les états manquants (hover, focus, disabled, loading, error).
-5. Responsive : vérifier la cohérence entre breakpoints (mobile/tablet/desktop). Les composants se comportent-ils de manière prévisible ?
-6. Dark mode (si applicable) : vérifier que tous les tokens ont leur équivalent dark.
-7. Performance visuelle : signaler les éléments potentiellement lourds (images > 500KB, animations complexes, vidéos autoplay) incompatibles avec un LCP < 2.5s.
+1. Tokens : vérifier page par page que les couleurs, typographies, espacements et rayons de bordure respectent le design system. Lister chaque écart avec la page/composant concerné et le fichier source (chemin dans src/).
+2. Hiérarchie visuelle : les CTA sont-ils correctement hiérarchisés (primaire/secondaire/tertiaire) ? Les titres suivent-ils une hiérarchie H1 > H2 > H3 cohérente et sémantique (pas juste visuelle) ?
+3. Contrastes WCAG 2.2 AA : vérifier les ratios de contraste texte/fond (minimum 4.5:1 pour le texte normal, 3:1 pour le texte large). Signaler chaque violation avec la valeur mesurée et la valeur cible. Conformité RGAA obligatoire si le site est dans le périmètre légal.
+4. Composants : identifier les composants dupliqués (même fonction, design différent), les variantes non documentées, les états manquants (hover, focus, disabled, loading, error, empty). Vérifier que les focus states sont visibles pour la navigation clavier.
+5. Responsive : vérifier la cohérence entre breakpoints (mobile 375px / tablet 768px / desktop 1280px). Touch targets minimum 44x44px sur mobile. Les composants se comportent-ils de manière prévisible ?
+6. Dark mode (si applicable) : vérifier que tous les tokens ont leur équivalent dark et que les contrastes sont respectés dans les deux modes.
+7. Performance visuelle : signaler les éléments potentiellement lourds (images > 500KB, animations complexes, vidéos autoplay, fonts multiples) incompatibles avec un LCP < 2.5s. Proposer des alternatives (format WebP/AVIF, sprites, CSS animations).
+8. Cohérence de marque pour le GEO : vérifier que les entités de marque (logo, nom, baseline) sont cohérentes partout — important pour la reconnaissance par les IA génératives.
 
-Livrable : docs/design/visual-audit.md (avec captures/exemples des écarts et matrice de corrections priorisées).
+Livrable : docs/design/visual-audit.md (avec pour chaque écart : page, composant, fichier source, capture/description, correction proposée, priorité par impact conversion).
 
-Puis @ux : lis docs/design/visual-audit.md. Vérifie que les parcours sont visuellement guidés, la navigation intuitive, et les affordances claires. Pour chaque problème visuel identifié, évalue l'impact sur la conversion (bloquant/friction/cosmétique). Livrable : docs/ux/ux-audit.md.
+Puis @ux : lis docs/design/visual-audit.md. Vérifie que les parcours sont visuellement guidés, la navigation intuitive, et les affordances claires. Pour chaque problème visuel identifié, évalue l'impact sur la conversion (bloquant/friction/cosmétique) et estime le gain potentiel si corrigé. Vérifie l'accessibilité des parcours critiques au clavier et au lecteur d'écran. Livrable : docs/ux/ux-audit.md.
 
-Critères de validation : chaque écart visuel est documenté avec page/composant/correction ; les contrastes WCAG 2.2 AA sont vérifiés ; les corrections sont priorisées par impact UX.`
+Conformité : @legal vérifie les obligations d'accessibilité numérique applicables (RGAA en France, EAA en Europe) et signale les violations à risque juridique. Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque écart visuel est documenté avec page/composant/fichier/correction ; les contrastes WCAG 2.2 AA sont vérifiés avec valeurs mesurées ; les corrections sont priorisées par impact conversion ; les obligations légales d'accessibilité sont identifiées.`
       },
       {
         title:"Optimiser l'onboarding",
-        agents:["ux","copywriter","data-analyst"],
-        quand:"Time-to-value trop long ou taux d'abandon élevé. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Réduis le time-to-value à <3 min, supprime les étapes non essentielles, ajoute les moments de succès. Livrable : docs/ux/onboarding-flow.md. Puis @copywriter : prends docs/ux/onboarding-flow.md. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Rédige le microcopy (welcome, tooltips, empty states, messages de succès). Livrable : docs/copy/ux-writing-guide.md. Puis @data-analyst : configure le funnel onboarding avec taux par étape et alertes sur les drops >20%. Livrable : docs/analytics/dashboard-specs.md."
+        agents:["ux","copywriter","data-analyst","legal"],
+        quand:"Time-to-value trop long, taux d'abandon élevé sur les premières sessions, ou NPS négatif des nouveaux utilisateurs. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        prompt:`@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). S'ils n'existent pas, pose-moi les questions nécessaires pour les créer (étapes actuelles, taux d'abandon par étape si connus, persona principal, action d'activation) et génère-les avant de continuer.
+
+Optimise le parcours d'onboarding :
+1. Audit de l'existant : mapper chaque étape actuelle avec son taux de complétion (si données disponibles). Identifier les étapes à plus fort abandon.
+2. Réduction du time-to-value : objectif < 3 minutes du signup à la première valeur. Pour chaque étape, justifier sa présence (supprimable ? reportable ? simplifiable ?). Appliquer le principe "show, don't ask" — pré-remplir au maximum via données existantes ou défauts intelligents.
+3. Moments de succès : ajouter une célébration/feedback positif à chaque micro-accomplissement. Le "aha moment" (l'action qui prédit la rétention) doit être atteint le plus vite possible.
+4. Progressive disclosure : ne demander les informations que quand elles sont nécessaires (email au signup, le reste plus tard). Chaque champ supplémentaire = ~5% d'abandon.
+5. Fallback & empty states : chaque écran vide doit guider vers l'action suivante (pas d'écran blanc). Prévoir le parcours de l'utilisateur qui abandonne en cours de route et revient.
+6. Accessibilité : le parcours onboarding doit être navigable au clavier et compatible lecteur d'écran. Les tooltips doivent être accessibles (pas juste hover).
+
+Livrable : docs/ux/onboarding-flow.md (avec wireframes textuels des écrans clés et métriques cibles par étape).
+
+Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, personnalité, vocabulaire) et génère-le. Rédige le microcopy complet : welcome message (personnalisé si possible), tooltips contextuels, labels de formulaire clairs, empty states engageants, messages de succès motivants, messages d'erreur humains et actionnables. Chaque texte doit réduire la friction, pas l'augmenter. Livrable : docs/copy/ux-writing-guide.md section "Onboarding".
+
+Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel onboarding avec : event de tracking par étape, taux de complétion cible par étape, alertes automatiques si drop > 20% entre deux étapes sur 48h, cohorte analysis (comparer les onboardings par semaine). Livrable : docs/analytics/dashboard-specs.md section "Funnel onboarding".
+
+Conformité : l'onboarding doit respecter le RGPD — consentement explicite pour le marketing, double opt-in email si applicable, possibilité de compléter l'onboarding sans accepter les cookies non essentiels. Si @legal a produit docs/legal/legal-audit.md, vérifier la cohérence.
+
+Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'utilisateur, le microcopy est rédigé pour chaque écran, le tracking couvre chaque étape du funnel, la conformité RGPD est assurée.`
       },
       {
         title:"Créer un agent spécialisé",
         agents:["agent-factory"],
-        quand:"Besoin d'un expert que l'équipe n'a pas encore. Remplace [domaine] et [contexte] par tes besoins avant de lancer.",
-        prompt:"@agent-factory J'ai besoin d'un agent spécialisé en [domaine, ex : \"pricing strategy\", \"community management\", \"data engineering\"]. Contexte : [décrire le cas d'usage en 2-3 phrases, ex : \"On doit définir nos grilles tarifaires pour 3 plans SaaS\"]. Vérifie qu'il n'existe pas déjà dans l'équipe (lis .claude/agents/). Crée-le avec : identité (rôle, expérience), champs critiques requis dans project-context.md, livrables types avec chemins docs/, phase d'insertion dans le pipeline (0-5), et coordination avec les agents existants. Livrable : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents) et .claude/agents/orchestrator.md (section pipeline). Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement."
+        quand:"Besoin d'un expert que l'équipe n'a pas encore. Remplace [domaine] et [contexte] par tes besoins avant de lancer. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes.",
+        prompt:`@agent-factory J'ai besoin d'un agent spécialisé en [domaine, ex : "pricing strategy", "community management", "data engineering"]. Contexte : [décrire le cas d'usage en 2-3 phrases, ex : "On doit définir nos grilles tarifaires pour 3 plans SaaS"].
+
+Protocole de création :
+1. Vérification : lis tous les agents existants dans .claude/agents/ — vérifie qu'aucun agent ne couvre déjà ce domaine (même partiellement). Si un agent existant couvre 70%+ du besoin, recommande de l'utiliser plutôt que d'en créer un nouveau.
+2. Création de l'agent : identité (rôle, expérience simulée, personnalité), champs critiques requis dans project-context.md, protocole d'entrée (fichiers à lire en premier), livrables types avec chemins dans docs/[nom-agent]/, phase d'insertion dans le pipeline (0-5), coordination explicite avec les agents existants (qui produit avant lui, à qui il passe la main).
+3. Modèle : choisir Opus (raisonnement complexe, code, coordination) ou Sonnet (contenu, stratégie, analyse) selon la nature de l'agent. Justifier le choix.
+4. Protocole de test obligatoire : après création, tester l'agent sur un cas concret lié au contexte donné. Vérifier qu'il lit project-context.md, refuse si champs critiques manquants, et produit un livrable spécifique (pas générique).
+5. Métriques de performance : définir 3-5 critères mesurables pour évaluer la qualité des livrables de cet agent (ex : "le livrable est directement implémentable sans interprétation").
+6. Documentation utilisateur : ajouter un "quand utiliser cet agent" et un exemple de prompt d'invocation dans le fichier agent.
+
+Livrables : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents, convention d'appel, tableau d'ordre de priorité) + mise à jour de .claude/agents/orchestrator.md (section pipeline, phase d'insertion).
+
+Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement.
+
+Critères de validation : l'agent créé passe le test unitaire (lit project-context.md, refuse si champs manquants, produit un livrable spécifique), le fichier agent suit le standard des agents existants, CLAUDE.md et orchestrator.md sont mis à jour.`
       },
       {
         title:"Migrer la stack technique",
-        agents:["fullstack","infrastructure"],
-        quand:"Changement de framework, base de données, ou hébergement. Remplace [stack actuelle] et [stack cible] par tes technologies avant de lancer.",
-        prompt:"@fullstack Lis project-context.md (stack actuelle) et docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour le créer (features actuelles, dépendances, contraintes) et génère-le avant de continuer. Évalue la migration de [stack actuelle, ex : \"Create React App\"] vers [stack cible, ex : \"Next.js App Router\"]. Produis : inventaire des fichiers impactés, plan de migration étape par étape (progressive, pas big bang), risques de régression, et estimation de la dette technique à résoudre. Livrable : docs/dev-decisions.md. Puis @infrastructure : prends docs/dev-decisions.md et adapte la configuration de déploiement (Replit/.replit, CI/CD, variables d'env) à la nouvelle stack. Livrable : docs/infra/infrastructure.md mis à jour."
+        agents:["fullstack","infrastructure","qa","data-analyst"],
+        quand:"Changement de framework, base de données, ou hébergement. Remplace [stack actuelle] et [stack cible] par tes technologies. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes.",
+        prompt:`@fullstack Lis project-context.md (stack actuelle) et docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour le créer (features actuelles, dépendances, contraintes) et génère-le avant de continuer. Lis aussi docs/design/design-system.md si disponible (tokens et composants à migrer).
+
+Évalue la migration de [stack actuelle, ex : "Create React App"] vers [stack cible, ex : "Next.js App Router"] :
+1. Inventaire complet : fichiers impactés, dépendances à remplacer, APIs à adapter, design tokens/composants à migrer, fichiers de traduction (i18n) à transférer.
+2. Plan de migration progressive (pas de big bang sauf si < 20 fichiers) : étapes ordonnées, fichiers impactés par étape, critère de succès par étape, durée estimée par étape.
+3. Migration du tracking : identifier tous les events analytics en place (GTM, pixels, custom events), s'assurer qu'ils survivent à la migration. Plan de vérification post-migration.
+4. Migration du contenu : textes hardcodés, assets (images, fonts), CMS si applicable.
+5. Risques de régression : par étape, avec probabilité et impact. Plan de rollback pour chaque étape critique.
+6. URLs et SEO : mapper les anciennes URLs vers les nouvelles, prévoir les redirections 301, vérifier que le sitemap est mis à jour.
+7. Tests pré/post migration : métriques à comparer avant et après (performance, conversion, erreurs).
+
+Livrable : docs/dev-decisions.md (avec plan de migration détaillé).
+
+Puis @infrastructure : lis docs/dev-decisions.md et adapte la configuration de déploiement à la nouvelle stack : Replit/.replit ou Docker, CI/CD pipeline, variables d'environnement, CDN, cache strategy. Vérifie que les performances sont au moins équivalentes post-migration (TTFB, Core Web Vitals). Livrable : docs/infra/infrastructure.md mis à jour.
+
+Puis @qa : lis docs/dev-decisions.md et définis la stratégie de test pour la migration : tests de non-régression sur les parcours critiques (Playwright), tests unitaires sur les composants migrés (Vitest), smoke tests post-déploiement. Livrable : docs/qa/qa-strategy.md section "Migration".
+
+Puis @data-analyst : lis docs/dev-decisions.md et définis les métriques de succès de la migration : dashboard comparatif avant/après (Core Web Vitals, taux de conversion, taux d'erreur, temps de chargement). Livrable : docs/analytics/dashboard-specs.md section "Migration".
+
+Critères de validation : chaque étape de migration a un critère de succès et un plan de rollback, les URLs sont préservées (redirections 301), le tracking analytics survit à la migration, les performances post-migration sont au moins équivalentes.`
       },
       {
         title:"Internationaliser le produit (i18n)",
-        agents:["fullstack","copywriter","seo"],
-        quand:"Expansion vers de nouveaux marchés/langues. Remplace [langue(s) cible(s)] par les langues visées avant de lancer. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@fullstack Base-toi sur project-context.md et le code dans src/. Prépare l'architecture i18n : choix de la librairie [next-intl, react-i18next, ou recommandation], extraction des strings hardcodées, structure des fichiers de traduction, routing par locale, gestion des formats (dates, nombres, devises). Livrable : docs/dev-decisions.md + fichiers i18n dans src/. Puis @copywriter : prends les fichiers de traduction source et adapte le contenu pour [langue(s) cible(s), ex : \"anglais, espagnol\"]. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Adapte le contenu à chaque culture (pas de traduction littérale). Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md. Puis @seo : configure les balises hreflang, les sitemaps par langue, et la stratégie de routing multilingue (sous-dossiers vs sous-domaines). Mets à jour docs/seo/seo-strategy.md avec la section i18n."
+        agents:["fullstack","copywriter","seo","legal"],
+        quand:"Expansion vers de nouveaux marchés/langues. Remplace [langue(s) cible(s)] par les langues visées. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        prompt:`@fullstack Lis project-context.md (pays cibles, stack) et le code dans src/. Identifie toutes les strings hardcodées (y compris les messages d'erreur, les emails transactionnels, les meta tags).
+
+Prépare l'architecture i18n complète :
+1. Librairie : choix entre next-intl, react-i18next, ou autre — avec justification (taille bundle, support RSC, communauté, DX). Recommandation basée sur la stack actuelle.
+2. Extraction : lister toutes les strings hardcodées à extraire, organisées par fichier source. Inclure les textes dans les images/SVG, les alt text, les placeholder, les messages d'erreur.
+3. Structure : fichiers de traduction par locale (JSON/YAML), namespace par feature/page, convention de nommage des clés.
+4. Routing : routing par locale (sous-dossiers /fr/, /en/ recommandé pour le SEO), détection automatique de la langue (Accept-Language header + géolocalisation), sélecteur de langue en UI.
+5. Formats : dates, nombres, devises, pluriels — adaptés par locale. Tester les edge cases (devises avec virgule vs point, formats de date US vs EU).
+6. Performance : lazy loading des fichiers de traduction par locale (ne pas charger toutes les langues), cache des traductions.
+
+Livrable : docs/dev-decisions.md section "i18n" + fichiers de traduction source dans src/locales/ ou équivalent.
+
+Puis @copywriter : lis les fichiers de traduction source et docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, personnalité par marché) et génère-le. Adapte le contenu pour [langue(s) cible(s), ex : "anglais, espagnol"] : adaptation culturelle (pas de traduction littérale), expressions idiomatiques locales, registre de langue adapté au marché, longueur des textes adaptée (l'allemand est ~30% plus long que l'anglais). Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md (guide de style par langue).
+
+Puis @seo : configure le SEO multilingue : balises hreflang (y compris x-default), sitemaps par langue, stratégie de routing (sous-dossiers recommandé), meta tags par locale, données structurées JSON-LD adaptées par pays. Vérifie la couverture GEO : le contenu multilingue doit être structuré pour être citable par les LLM dans chaque langue (entités nommées, claims vérifiables). Mets à jour docs/seo/seo-strategy.md section "i18n".
+
+Conformité : @legal vérifie les obligations légales par marché cible : mentions légales dans la langue locale, CGV adaptées au droit local, politique de confidentialité conforme au RGPD (Europe) et aux réglementations locales, obligations d'affichage des prix (TVA, devise locale). Note dans docs/legal/legal-audit.md section "i18n".
+
+Critères de validation : toutes les strings sont externalisées (zéro texte hardcodé), le routing par locale fonctionne avec détection automatique, les hreflang sont corrects et testés, les traductions sont culturellement adaptées (pas littérales), les obligations légales par marché sont identifiées.`
       },
       {
         title:"Post-mortem incident production",
-        agents:["infrastructure","qa"],
-        quand:"Après un incident en production (downtime, bug critique, perte de données)",
-        prompt:"@infrastructure Analyse l'incident : timeline (détection → diagnostic → résolution → vérification), cause racine (root cause), impact (utilisateurs affectés, durée, données perdues), et actions correctives immédiates prises. Lis docs/infra/infrastructure.md pour identifier les outils de monitoring en place (Sentry, UptimeRobot, ou autre) — si aucun monitoring n'est configuré, signale-le comme action corrective prioritaire. Livrable : docs/infra/post-mortem.md. Puis @qa : prends docs/infra/post-mortem.md. Lis docs/qa/qa-strategy.md s'il existe pour identifier les tests existants. Propose les tests de non-régression à ajouter pour que cet incident ne se reproduise pas. Ajoute les scénarios Vitest/Playwright correspondants. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md."
+        agents:["infrastructure","qa","copywriter","data-analyst"],
+        quand:"Après un incident en production (downtime, bug critique, perte de données, dégradation de performance). À lancer dans les 24h suivant la résolution de l'incident.",
+        prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, monitoring en place) et project-context.md (produit, utilisateurs). Si aucun monitoring n'est configuré, signale-le comme action corrective prioritaire n.1.
+
+Analyse post-mortem complète :
+1. Timeline détaillée : heure de début, heure de détection, heure de diagnostic, heure de résolution, heure de vérification. Pour chaque étape, qui a agi et comment.
+2. Cause racine (root cause) : analyse en "5 pourquoi" — ne pas s'arrêter au symptôme. Distinguer la cause technique (bug, config, infrastructure) de la cause organisationnelle (pas de monitoring, pas de test, pas de review).
+3. Impact : nombre d'utilisateurs affectés, durée de l'incident, fonctionnalités impactées, données perdues (le cas échéant), revenu perdu estimé, impact sur la confiance de marque.
+4. Actions correctives immédiates : ce qui a été fait pour résoudre.
+5. Actions préventives : ce qu'il faut faire pour que ça ne se reproduise plus. Prioriser par impact/effort. Inclure les améliorations de monitoring.
+6. Communication : évaluer si la communication avec les utilisateurs a été adéquate (temps de réponse, transparence, canal utilisé).
+
+Livrable : docs/infra/post-mortem.md.
+
+Puis @qa : lis docs/infra/post-mortem.md et docs/qa/qa-strategy.md s'il existe. Propose les tests de non-régression à ajouter pour couvrir la cause racine et les scénarios similaires. Écris les scénarios Vitest (unit/integration) et Playwright (E2E) correspondants. Ajoute un test de monitoring/alerte si l'incident aurait dû être détecté plus tôt. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md.
+
+Puis @copywriter : lis docs/infra/post-mortem.md et rédige les templates de communication incident : (a) update de status page (ton : factuel, transparent), (b) email aux utilisateurs impactés (ton : empathique, transparent, avec actions prises), (c) post social si nécessaire (ton : bref, rassurant). Si un geste commercial est justifié (incident > 4h ou perte de données), propose le format. Livrable : docs/copy/ux-writing-guide.md section "Communication incident".
+
+Puis @data-analyst : lis docs/infra/post-mortem.md et mesure l'impact business de l'incident : comparaison des métriques clés (conversion, signup, revenu) pendant vs avant l'incident. Configure une alerte préventive sur les métriques qui auraient dû signaler le problème plus tôt. Livrable : docs/analytics/dashboard-specs.md section "Alertes incident".
+
+Critères de validation : la cause racine est identifiée (pas juste le symptôme), les actions préventives ont un responsable et une deadline, les tests de non-régression couvrent le scénario de l'incident, les templates de communication sont rédigés, l'impact business est chiffré.`
       },
       {
         title:"Collecter le feedback et planifier la v2",
