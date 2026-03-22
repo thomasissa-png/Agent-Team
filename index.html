@@ -324,7 +324,7 @@ const PROMPTS = [
         title:"Définir mon projet (obligatoire en premier)",
         agents:["orchestrator"],
         quand:"Premier prompt à lancer — crée automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler.",
-        prompt:`Crée le fichier project-context.md à la racine du projet avec les informations ci-dessous. Lis templates/project-context.md pour la structure complète et remplis tous les champs. Voici les infos :
+        prompt:`Lis templates/project-context.md pour la structure complète. Si project-context.md existe déjà à la racine, lis-le et propose de mettre à jour les champs modifiés (ne pas écraser les données existantes). Sinon, crée-le avec les informations ci-dessous. Remplis tous les champs. Voici les infos :
 
 — IDENTITÉ —
 Nom du projet : [NOM]
@@ -376,19 +376,19 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement",
-        prompt:"@orchestrator Lance le projet. Séquence toutes les phases (0→5), identifie les dépendances entre agents, et produis l'orchestration-plan.md. Commence immédiatement par la Phase 0."
+        prompt:"@orchestrator Lis project-context.md. S'il n'existe pas, pose-moi les questions pour le créer (lis templates/project-context.md pour la structure) et génère-le avant de continuer. Lance le projet : séquence toutes les phases (0→5), identifie les dépendances entre agents et les parallélisations possibles. Livrables attendus : docs/orchestration-plan.md (plan de séquencement) + docs/project-synthesis.md (synthèse finale). Commence immédiatement par la Phase 0."
       },
       {
         title:"Faire un check-up complet de mon projet",
         agents:["reviewer","elon"],
         quand:"Tu as plusieurs livrables et tu veux savoir où tu en es",
-        prompt:"@reviewer Lis tous les livrables dans docs/ et produis le rapport de cohérence croisée avec recommandation GO/NO-GO. Livrable : docs/reviews/cross-review-report.md. Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Donne ton audit stratégique first principles : qu'est-ce qui manque pour être n°1 ? Livrable : docs/reviews/elon-audit.md."
+        prompt:"@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour en produire. Audite la cohérence croisée entre tous les livrables : brand ↔ copy ↔ design, specs ↔ code, tracking ↔ KPIs, conformité légale. Produis la recommandation GO/NO-GO avec blockers listés. Livrable : docs/reviews/cross-review-report.md. Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Audite en first principles : note chaque dimension sur 10, identifie ce qui manque pour être n°1. Livrable : docs/reviews/elon-audit.md."
       },
       {
         title:"Pivoter mon projet",
         agents:["orchestrator","creative-strategy"],
         quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement",
-        prompt:"@orchestrator Le projet pivote. Lis project-context.md mis à jour, identifie les livrables à reprendre vs ceux à garder, et produis le plan de re-séquencement. Lance @creative-strategy pour repositionner la plateforme de marque."
+        prompt:"@orchestrator Le projet pivote. Lis project-context.md — si les nouvelles orientations n'y sont pas encore, pose-moi les questions pour le mettre à jour (nouveau persona, nouveau marché, nouveau positionnement) et mets-le à jour avant de continuer. Trie les livrables existants dans docs/ : à garder, à adapter, à refaire. Produis le plan de re-séquencement des agents. Livrable : docs/orchestration-plan.md (version pivot). Puis lance @creative-strategy pour repositionner la plateforme de marque. Livrable attendu : docs/strategy/brand-platform.md mis à jour."
       }
     ]
   },
@@ -465,19 +465,19 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Développer une feature",
         agents:["fullstack","qa"],
-        quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md",
-        prompt:"@fullstack Implémente la feature [nom de la feature, ex : \"système de notifications\" ou \"tableau de bord analytics\"]. Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder. Lis docs/design/design-system.md et docs/analytics/tracking-plan.md s'ils existent pour les composants et events. Next.js App Router, TypeScript strict. Un composant par fichier dans src/. Puis @qa : écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture >80%. Livrable : rapport de couverture avec blockers."
+        quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer.",
+        prompt:"@fullstack Implémente la feature [nom de la feature, ex : \"système de notifications\" ou \"tableau de bord analytics\"]. Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder. Lis docs/design/design-system.md pour les composants UI — s'il n'existe pas, utilise les conventions du code existant dans src/. Lis docs/analytics/tracking-plan.md pour les events à implémenter — s'il n'existe pas, signale-le et propose les events clés à tracker pour cette feature. Next.js App Router, TypeScript strict. Un composant par fichier dans src/. Puis @qa : écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture >80%. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour avec rapport de couverture et blockers."
       },
       {
         title:"Intégrer le paiement Stripe",
         agents:["fullstack","legal","infrastructure"],
-        quand:"Plans tarifaires validés dans la roadmap",
+        quand:"Plans tarifaires validés dans la roadmap. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
         prompt:"@fullstack Lis docs/product/functional-specs.md (plans tarifaires, pricing). S'il n'existe pas, pose-moi les questions pour spécifier les plans (nombre de tiers, prix, features par tier, essai gratuit oui/non) et génère les specs avant de coder. Intègre Stripe Checkout : route API /api/stripe/webhook (signature verification), gestion des abonnements (création, upgrade, downgrade, annulation), portail client Stripe. Livrables : code dans src/app/api/stripe/. Puis @legal : lis docs/product/functional-specs.md et vérifie la conformité des CGV avec le modèle d'abonnement implémenté. Mets à jour docs/legal/cgu-draft.md (section paiements, remboursements, résiliation). Puis @infrastructure : liste les variables d'environnement Stripe à configurer (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_*). Ajoute le monitoring webhook (alertes si taux d'échec >1%). Mets à jour docs/infra/infrastructure.md."
       },
       {
         title:"Ajouter une feature IA (LLM)",
         agents:["ia","fullstack"],
-        quand:"Cas d'usage IA défini dans les specs",
+        quand:"Cas d'usage IA défini dans les specs. Remplace [decrire la feature] par ton cas d'usage avant de lancer.",
         prompt:"@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume, latence acceptable, budget) et génère les specs avant de continuer. Cas d'usage IA : [décrire la feature, ex : \"résumé automatique de documents\" ou \"chatbot support client\"]. Produis le tableau comparatif obligatoire (modèle, qualité, latence P95, coût/1000 req, streaming). Choix du modèle principal + fallback, structure des prompts, limites de tokens, budget mensuel estimé. Livrable : docs/ia/ai-architecture.md. Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md."
       },
       {
@@ -502,7 +502,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Stratégie SEO technique & éditoriale",
         agents:["seo"],
         quand:"Contenu rédigé, site en production ou pré-lancement",
-        prompt:"@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md s'il existe. Lis docs/strategy/brand-platform.md s'il existe (mots-clés de marque). Audit SEO complet : Core Web Vitals (LCP, CLS, INP), données structurées JSON-LD, maillage interne, stratégie de mots-clés. Audite en priorité les pages à plus fort trafic/conversion. Livrables : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md. Critère de qualité : chaque recommandation doit être actionnable avec la page cible et la priorité (P0/P1/P2)."
+        prompt:"@seo Lis project-context.md (persona, secteur). Lis docs/copy/landing-page-copy.md et docs/strategy/brand-platform.md. S'ils n'existent pas, pose-moi les questions sur le persona cible, les mots-clés de marque et le contenu principal du site pour calibrer l'audit. Audit SEO complet : Core Web Vitals (LCP, CLS, INP), données structurées JSON-LD, maillage interne, stratégie de mots-clés via WebSearch (volume, difficulté). Audite en priorité les pages à plus fort trafic/conversion. Livrables : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md. Critère de qualité : chaque recommandation doit être actionnable avec la page cible et la priorité (P0/P1/P2)."
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
@@ -514,7 +514,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"SEO + GEO combinés",
         agents:["seo","geo"],
         quand:"Offensive complète sur Google + IA génératives",
-        prompt:"@seo D'abord, produis l'audit SEO technique (Core Web Vitals, JSON-LD, maillage) + keyword map avec pages prioritaires. Livrable : docs/seo/seo-strategy.md. Puis @geo : prends docs/seo/seo-strategy.md (keyword map, pages auditées) et analyse la visibilité sur ChatGPT/Claude/Gemini/Perplexity. Propose le plan GEO en réutilisant les mêmes pages cibles pour maximiser la synergie SEO+GEO. Livrable : docs/geo/geo-strategy.md avec une section 'Synergies SEO↔GEO' listant les actions communes."
+        prompt:"@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles. Produis l'audit SEO technique (Core Web Vitals, JSON-LD, maillage) + keyword map avec pages prioritaires. Livrable : docs/seo/seo-strategy.md + docs/seo/keyword-map.md. Puis @geo : prends docs/seo/seo-strategy.md et docs/seo/keyword-map.md (pages auditées) et analyse la visibilité sur ChatGPT/Claude/Gemini/Perplexity. Propose le plan GEO en réutilisant les mêmes pages cibles pour maximiser la synergie SEO+GEO. Livrable : docs/geo/geo-strategy.md avec une section 'Synergies SEO↔GEO' listant les actions communes."
       }
     ]
   },
@@ -543,8 +543,8 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Auditer le funnel existant",
         agents:["growth","data-analyst"],
-        quand:"Produit en production avec trafic, conversion à optimiser. Pré-requis : fournir les données analytics (export CSV, accès dashboard, ou screenshots) dans project-context.md ou en pièce jointe.",
-        prompt:"@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Utilise aussi les données analytics fournies. Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact classés par effort/impact. Livrable : docs/growth/funnel-audit.md. Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes sur les métriques critiques. Livrable : docs/analytics/dashboard-specs.md."
+        quand:"Produit en production avec trafic, conversion à optimiser. Fournis les données analytics (coller les chiffres dans le prompt, ou les ajouter dans project-context.md section Notes libres).",
+        prompt:"@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (GA4, Mixpanel, etc.), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques dont tu as besoin. Diagnostique le funnel AARRR : taux par étape, points de churn, segments sous-performants, 3 leviers à plus fort impact classés par effort/impact. Livrable : docs/growth/funnel-audit.md. Puis @data-analyst : prends docs/growth/funnel-audit.md et configure le dashboard de conversion par cohorte (jour 1, 7, 30) + alertes sur les métriques critiques (drop >20% sur une étape). Livrable : docs/analytics/dashboard-specs.md."
       }
     ]
   },
@@ -568,7 +568,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Audit qualité & tests complets",
         agents:["qa"],
         quand:"Code développé, avant release",
-        prompt:"@qa Lis docs/product/functional-specs.md et docs/analytics/tracking-plan.md s'ils existent pour référence. Audit qualité complet : couverture Vitest (cible >80%), E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté, Lighthouse CI. Rapport avec blockers classés par sévérité. Livrable : docs/qa/qa-strategy.md."
+        prompt:"@qa Lis docs/product/functional-specs.md (critères d'acceptation par feature). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider). S'il n'existe pas, signale-le — l'audit se concentrera sur les tests fonctionnels. Audit qualité complet : couverture Vitest (cible >80%), E2E Playwright des parcours critiques, validation que chaque event du tracking-plan est implémenté, Lighthouse CI (scores cibles : Performance >90, Accessibility >95). Rapport avec blockers classés par sévérité (critique/majeur/mineur). Livrable : docs/qa/qa-strategy.md."
       },
       {
         title:"Audit UX & conversion",
@@ -580,7 +580,7 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Audit stratégique first principles",
         agents:["elon"],
         quand:"Tu veux un regard brutal et honnête sur ton projet",
-        prompt:"@elon Lis project-context.md et tous les livrables dans docs/. Audite ce projet en first principles. Note chaque dimension sur 10 : vision, exécution, moat, scalabilité. Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Donne le verdict sans filtre. Livrable : docs/reviews/elon-audit.md."
+        prompt:"@elon Lis project-context.md puis tous les livrables dans docs/ (stratégie, product, design, copy, analytics, infra). Si aucun livrable n'existe, signale-le et base l'audit sur project-context.md seul. Audite en first principles : note chaque dimension sur 10 (vision, exécution, moat, scalabilité, vitesse d'exécution). Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Identifie le plus gros risque d'échec. Donne le verdict sans filtre. Livrable : docs/reviews/elon-audit.md."
       },
       {
         title:"Monitoring post-launch",
@@ -598,13 +598,13 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
         title:"Refondre un site existant",
         agents:["ux","design","fullstack"],
         quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
-        prompt:"@ux D'abord, audite le parcours actuel : friction points, taux d'abandon, parcours critiques. Livrable : docs/ux/ux-audit.md. Puis @design : prends docs/ux/ux-audit.md et évalue la cohérence visuelle. Propose le nouveau design system aligné sur les problèmes identifiés. Livrable : docs/design/design-system.md. Enfin @fullstack : prends les deux livrables et évalue la dette technique. Propose le plan de migration [big bang ou progressive — recommande l'approche la plus sûre] avec planning par étape. Livrable : docs/dev-decisions.md avec stratégie de migration et risques identifiés."
+        prompt:"@ux Lis docs/ux/user-flows.md (parcours existants). S'il n'existe pas, audite les parcours directement depuis le code dans src/ et les specs dans docs/product/functional-specs.md. Si aucun n'existe, pose-moi les questions sur les parcours critiques actuels. Audite : friction points, taux d'abandon, parcours critiques. Livrable : docs/ux/ux-audit.md. Puis @design : prends docs/ux/ux-audit.md et lis docs/design/design-system.md s'il existe. Évalue la cohérence visuelle. Propose le nouveau design system aligné sur les problèmes identifiés. Livrable : docs/design/design-system.md. Enfin @fullstack : prends docs/ux/ux-audit.md + docs/design/design-system.md. Lis docs/product/functional-specs.md — s'il n'existe pas, signale-le. Évalue la dette technique. Propose le plan de migration [progressive recommandé — big bang uniquement si dette technique < 20 fichiers] avec planning par étape. Livrable : docs/dev-decisions.md avec stratégie de migration et risques identifiés."
       },
       {
         title:"Diagnostiquer un problème de performance",
         agents:["infrastructure","seo"],
         quand:"Le site est lent",
-        prompt:"@infrastructure Mesure les Core Web Vitals (LCP, CLS, INP) via Lighthouse CI et WebPageTest. Identifie les bottlenecks : bundle size (webpack-bundle-analyzer), requêtes API lentes (P95), assets non optimisés. Classe chaque problème par impact (critique/moyen/faible). Livrable : docs/infra/performance-audit.md. Puis @seo : prends docs/infra/performance-audit.md et vérifie l'impact sur le crawl budget et le ranking. Livrables : section 'Impact SEO' ajoutée à docs/infra/performance-audit.md."
+        prompt:"@infrastructure Lis docs/infra/infrastructure.md s'il existe (stack, hébergement). Mesure les Core Web Vitals (LCP, CLS, INP) via Lighthouse CI et WebPageTest. Identifie les bottlenecks : bundle size (webpack-bundle-analyzer), requêtes API lentes (P95), assets non optimisés (images, fonts, scripts tiers). Classe chaque problème par impact (critique/moyen/faible) avec la correction recommandée. Livrable : docs/infra/performance-audit.md. Puis @seo : prends docs/infra/performance-audit.md et vérifie l'impact sur le crawl budget et le ranking. Livrables : section 'Impact SEO' ajoutée à docs/infra/performance-audit.md."
       },
       {
         title:"Auditer la cohérence visuelle",
@@ -621,26 +621,26 @@ Après avoir créé project-context.md, confirme ce qui a été rempli et signal
       {
         title:"Créer un agent spécialisé",
         agents:["agent-factory"],
-        quand:"Besoin d'un expert que l'équipe n'a pas encore",
-        prompt:"@agent-factory J'ai besoin d'un agent spécialisé en [domaine, ex : \"pricing strategy\", \"community management\", \"data engineering\"]. Contexte : [décrire le cas d'usage en 2-3 phrases, ex : \"On doit définir nos grilles tarifaires pour 3 plans SaaS\"]. Vérifie qu'il n'existe pas déjà dans l'équipe (lis .claude/agents/). Crée-le avec : identité (rôle, expérience), champs critiques requis dans project-context.md, livrables types avec chemins docs/, phase d'insertion dans le pipeline (0-5), et coordination avec les agents existants. Livrable : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md et orchestrator.md."
+        quand:"Besoin d'un expert que l'équipe n'a pas encore. Remplace [domaine] et [contexte] par tes besoins avant de lancer.",
+        prompt:"@agent-factory J'ai besoin d'un agent spécialisé en [domaine, ex : \"pricing strategy\", \"community management\", \"data engineering\"]. Contexte : [décrire le cas d'usage en 2-3 phrases, ex : \"On doit définir nos grilles tarifaires pour 3 plans SaaS\"]. Vérifie qu'il n'existe pas déjà dans l'équipe (lis .claude/agents/). Crée-le avec : identité (rôle, expérience), champs critiques requis dans project-context.md, livrables types avec chemins docs/, phase d'insertion dans le pipeline (0-5), et coordination avec les agents existants. Livrable : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents) et .claude/agents/orchestrator.md (section pipeline). Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement."
       },
       {
         title:"Migrer la stack technique",
         agents:["fullstack","infrastructure"],
-        quand:"Changement de framework, base de données, ou hébergement",
+        quand:"Changement de framework, base de données, ou hébergement. Remplace [stack actuelle] et [stack cible] par tes technologies avant de lancer.",
         prompt:"@fullstack Lis project-context.md (stack actuelle) et docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour le créer (features actuelles, dépendances, contraintes) et génère-le avant de continuer. Évalue la migration de [stack actuelle, ex : \"Create React App\"] vers [stack cible, ex : \"Next.js App Router\"]. Produis : inventaire des fichiers impactés, plan de migration étape par étape (progressive, pas big bang), risques de régression, et estimation de la dette technique à résoudre. Livrable : docs/dev-decisions.md. Puis @infrastructure : prends docs/dev-decisions.md et adapte la configuration de déploiement (Replit/.replit, CI/CD, variables d'env) à la nouvelle stack. Livrable : docs/infra/infrastructure.md mis à jour."
       },
       {
         title:"Internationaliser le produit (i18n)",
-        agents:["fullstack","copywriter"],
-        quand:"Expansion vers de nouveaux marchés/langues",
-        prompt:"@fullstack Base-toi sur project-context.md et le code dans src/. Prépare l'architecture i18n : choix de la librairie [next-intl, react-i18next, ou recommandation], extraction des strings hardcodées, structure des fichiers de traduction, routing par locale, gestion des formats (dates, nombres, devises). Livrable : docs/dev-decisions.md + fichiers i18n dans src/. Puis @copywriter : prends les fichiers de traduction source et adapte le contenu pour [langue(s) cible(s), ex : \"anglais, espagnol\"]. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Adapte le contenu à chaque culture. Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md."
+        agents:["fullstack","copywriter","seo"],
+        quand:"Expansion vers de nouveaux marchés/langues. Remplace [langue(s) cible(s)] par les langues visées avant de lancer. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        prompt:"@fullstack Base-toi sur project-context.md et le code dans src/. Prépare l'architecture i18n : choix de la librairie [next-intl, react-i18next, ou recommandation], extraction des strings hardcodées, structure des fichiers de traduction, routing par locale, gestion des formats (dates, nombres, devises). Livrable : docs/dev-decisions.md + fichiers i18n dans src/. Puis @copywriter : prends les fichiers de traduction source et adapte le contenu pour [langue(s) cible(s), ex : \"anglais, espagnol\"]. Lis docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer et génère-le. Adapte le contenu à chaque culture (pas de traduction littérale). Livrable : fichiers de traduction complétés + docs/copy/i18n-guide.md. Puis @seo : configure les balises hreflang, les sitemaps par langue, et la stratégie de routing multilingue (sous-dossiers vs sous-domaines). Mets à jour docs/seo/seo-strategy.md avec la section i18n."
       },
       {
         title:"Post-mortem incident production",
         agents:["infrastructure","qa"],
         quand:"Après un incident en production (downtime, bug critique, perte de données)",
-        prompt:"@infrastructure Analyse l'incident : timeline (détection → diagnostic → résolution → vérification), cause racine (root cause), impact (utilisateurs affectés, durée, données perdues), et actions correctives immédiates prises. Base-toi sur les logs Sentry, UptimeRobot, et le monitoring en place. Livrable : docs/infra/post-mortem.md. Puis @qa : prends docs/infra/post-mortem.md et propose les tests de non-régression à ajouter pour que cet incident ne se reproduise pas. Ajoute les scénarios Vitest/Playwright correspondants. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md."
+        prompt:"@infrastructure Analyse l'incident : timeline (détection → diagnostic → résolution → vérification), cause racine (root cause), impact (utilisateurs affectés, durée, données perdues), et actions correctives immédiates prises. Lis docs/infra/infrastructure.md pour identifier les outils de monitoring en place (Sentry, UptimeRobot, ou autre) — si aucun monitoring n'est configuré, signale-le comme action corrective prioritaire. Livrable : docs/infra/post-mortem.md. Puis @qa : prends docs/infra/post-mortem.md. Lis docs/qa/qa-strategy.md s'il existe pour identifier les tests existants. Propose les tests de non-régression à ajouter pour que cet incident ne se reproduise pas. Ajoute les scénarios Vitest/Playwright correspondants. Livrable : tests dans src/ + mise à jour de docs/qa/qa-strategy.md."
       }
     ]
   }
