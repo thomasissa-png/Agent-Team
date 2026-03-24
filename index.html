@@ -2342,10 +2342,126 @@ Conformité : la veille concurrentielle doit rester dans le cadre légal — pas
 Critères de validation : au moins 3 concurrents directs cartographiés avec données réelles (pas inventées), les outils de monitoring sont configurés, les axes de différenciation sont documentés, le template de rapport mensuel est prêt, les alertes critiques sont définies, la visibilité LLM est surveillée.`
       }
     ]
+  },
+  {
+    category:"Sessions",
+    icon:"🔄",
+    items:[
+      {
+        title:"Clôturer ma session (avant de quitter)",
+        agents:["orchestrator"],
+        quand:"À utiliser AVANT de fermer Claude Code ou de changer de session. Sauvegarde l'état complet du projet pour que la prochaine session reprenne instantanément. Prend 1-2 minutes — évite 10 minutes de remise en contexte au retour.",
+        prompt:`@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde en 6 étapes :
+
+Étape 1 — Snapshot de l'état du projet :
+Lis project-context.md à la racine. Vérifie que le tableau "Historique des interventions agents" est à jour. S'il manque des interventions réalisées pendant cette session (agents invoqués, livrables produits, décisions prises), ajoute-les maintenant via Edit. Pour chaque entrée ajoutée, remplis TOUTES les colonnes, notamment "Pourquoi / Alternatives écartées".
+
+Étape 2 — État du plan d'orchestration :
+Si docs/orchestration-plan.md existe, lis-le et mets-le à jour : marque les phases terminées pendant cette session, note l'état précis des phases en cours (pourcentage estimé, ce qui est fait, ce qui reste). Si le fichier n'existe pas et que le projet a avancé significativement, crée-le avec l'état actuel.
+
+Étape 3 — Inventaire des livrables de cette session :
+Fais un Glob sur docs/**/*.md et src/**/*. Identifie les fichiers créés ou modifiés pendant cette session (compare avec l'historique des interventions). Pour chaque livrable :
+- Statut : complet / en cours / ébauche
+- Si en cours : note précisément où le travail s'est arrêté (quelle section, quel agent devait intervenir ensuite)
+
+Étape 4 — Détection des travaux en cours :
+Identifie tout travail non terminé :
+- Agents qui devaient être lancés mais ne l'ont pas été
+- Livrables partiels (< 20 lignes ou sections vides)
+- Dépendances non résolues (un agent attend le livrable d'un autre)
+- Incohérences détectées mais non corrigées
+
+Étape 5 — Rédaction du mémo de reprise :
+Ajoute ou mets à jour la section "## Mémo de reprise — dernière session" dans project-context.md (en bas du fichier, avant le tableau de performance si présent). Contenu :
+- Date et heure de clôture : [maintenant]
+- Résumé de la session (3-5 lignes) : ce qui a été accompli, les décisions clés prises
+- Travaux en cours : liste précise avec état d'avancement
+- Prochaines actions recommandées : les 2-3 tâches prioritaires pour la prochaine session, avec l'agent concerné et la raison de la priorité
+- Blockers éventuels : questions en attente de réponse, décisions à prendre, informations manquantes
+- Commande de reprise suggérée : le prompt exact à copier-coller pour la prochaine session
+
+Étape 6 — Confirmation :
+Affiche un résumé structuré de la clôture :
+✓ Historique des interventions : à jour / X entrées ajoutées
+✓ Plan d'orchestration : à jour / créé / non applicable
+✓ Livrables cette session : X complets, Y en cours
+✓ Mémo de reprise : sauvegardé dans project-context.md
+→ Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
+→ Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
+
+Critères de validation : project-context.md est à jour (historique + mémo de reprise), orchestration-plan.md reflète l'état réel, aucun travail en cours n'est oublié, le prompt de reprise est prêt à copier-coller.`
+      },
+      {
+        title:"Démarrer une nouvelle session (reprise)",
+        agents:["orchestrator"],
+        quand:"Première action en ouvrant une nouvelle session Claude Code pour continuer un projet existant. Tip : lancez d'abord claude --resume 'nom' ou claude --continue pour récupérer le contexte conversationnel, puis collez ce prompt. Fonctionne que la session précédente ait été clôturée proprement ou non.",
+        prompt:`@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
+
+Étape 1 — Récupération du contexte :
+Lis project-context.md à la racine. Extrais et affiche :
+- Identité du projet (nom, secteur, stade)
+- Persona principal et KPI North Star
+- Le mémo de reprise de la dernière session (section "Mémo de reprise — dernière session") — s'il existe, c'est ta source principale pour comprendre où on en est
+- Le tableau "Historique des interventions agents" — les 5 dernières entrées suffisent pour le résumé
+
+Étape 2 — État du plan :
+Si docs/orchestration-plan.md existe, lis-le. Reconstitue l'état d'avancement :
+- Phases terminées (avec date si disponible)
+- Phase en cours (et à quel point elle est avancée)
+- Phases restantes
+Si le fichier n'existe pas, signale-le — le projet fonctionne peut-être en mode agent-par-agent sans orchestration formelle.
+
+Étape 3 — Inventaire des livrables :
+Fais un Glob sur docs/**/*.md et src/**/*. Pour chaque fichier trouvé :
+- Agent probable (déduit du dossier : docs/strategy/ → creative-strategy, docs/copy/ → copywriter, etc.)
+- Statut estimé : complet (> 30 lignes avec conclusion/handoff) / en cours (> 10 lignes sans conclusion) / ébauche (< 10 lignes)
+- Lis les 5 premières lignes des livrables marqués "en cours" pour comprendre ce qui manque
+
+Étape 4 — Vérification de cohérence :
+Vérifie rapidement que les livrables existants sont cohérents avec project-context.md :
+- Le persona cité dans les livrables correspond au persona de project-context.md ?
+- Le KPI North Star est le même partout ?
+- Le ton de marque est cohérent ?
+Si un drift est détecté, signale-le avec les fichiers concernés.
+
+Étape 5 — Diagnostic et plan d'action :
+Affiche un tableau d'avancement clair :
+
+📊 ÉTAT DU PROJET — [Nom du projet]
+┌──────────────┬────────────────────────────┐
+│ ✅ Terminé    │ [liste des phases/livrables] │
+│ 🔄 En cours   │ [liste + état d'avancement]  │
+│ ⏳ À faire    │ [liste des phases restantes]  │
+│ ⚠️ Problèmes │ [incohérences, blockers]      │
+└──────────────┴────────────────────────────┘
+
+Étape 6 — Recommandations :
+Propose les 2-3 prochaines actions concrètes, classées par priorité. Pour chaque action :
+- Agent concerné et mission précise
+- Pourquoi c'est la priorité (lien avec KPI North Star, dépendance, blocker)
+- Livrables amont requis (et leur statut)
+- Estimation de complexité : rapide (1 agent, < 5 min) / moyen (1-2 agents) / long (3+ agents, multi-phases)
+
+Si le mémo de reprise contenait des "prochaines actions recommandées", compare-les avec ton diagnostic : sont-elles toujours pertinentes ou le contexte a-t-il changé ?
+
+Attends ma confirmation avant de lancer quoi que ce soit. Réponses possibles :
+- "Continue" → lance les actions recommandées dans l'ordre
+- "Continue avec [modifications]" → ajuste puis lance
+- "Montre-moi [livrable]" → affiche le contenu d'un livrable spécifique avant de décider
+
+Critères de validation : le diagnostic couvre 100% des livrables existants, aucune phase n'est oubliée, les recommandations sont justifiées par le contexte du projet (pas génériques), les travaux en cours de la session précédente sont identifiés.`
+      }
+    ]
   }
 ];
 
 const CHANGELOG = [
+  {
+    date:"2026-03-24",
+    agent:"orchestrator",
+    type:"nouveau",
+    description:"2 prompts de gestion de session (75→77) — 'Clôturer ma session' (sauvegarde état, mémo de reprise, mise à jour historique) et 'Démarrer une nouvelle session' (diagnostic complet, vérification cohérence, plan d'action). Nouvelle catégorie Sessions dans la bibliothèque + card dédiée dans la section Sessions & Continuité."
+  },
   {
     date:"2026-03-22",
     agent:"tous",
@@ -2412,7 +2528,7 @@ const CHANGELOG = [
   <p class="hero-sub">Une équipe de 19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement.</p>
   <div class="hero-stats">
     <div class="hero-stat"><span class="stat-num">19</span><span class="stat-label">Agents</span></div>
-    <div class="hero-stat"><span class="stat-num">75</span><span class="stat-label">Prompts</span></div>
+    <div class="hero-stat"><span class="stat-num">77</span><span class="stat-label">Prompts</span></div>
     <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
   </div>
 </div>
@@ -2610,6 +2726,17 @@ const CHANGELOG = [
         <li>Le tableau "Historique des interventions" trace tout le travail</li>
         <li>Commencez chaque session par : <strong>"Lis project-context.md, où en est-on ?"</strong></li>
       </ul>
+    </div>
+
+    <div class="session-card" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(232,255,0,0.05),rgba(232,255,0,0.02));border-color:rgba(232,255,0,0.2)">
+      <h3><span class="session-icon">&#128203;</span> Prompts de gestion de session</h3>
+      <p>Deux prompts dédiés sont disponibles dans la <a href="#prompts" style="color:var(--accent)">Bibliothèque de Prompts</a> (catégorie <strong>Sessions</strong>) :</p>
+      <table class="session-table">
+        <tr><th>Prompt</th><th>Quand l'utiliser</th></tr>
+        <tr><td><strong>Clôturer ma session</strong></td><td>Avant de quitter — sauvegarde l'état complet, crée un mémo de reprise</td></tr>
+        <tr><td><strong>Démarrer une nouvelle session</strong></td><td>En ouvrant Claude Code — diagnostic complet + plan d'action</td></tr>
+      </table>
+      <p style="margin-top:12px;color:var(--text-muted);font-size:13px"><strong>Workflow recommandé :</strong> clôturez avec le premier prompt → fermez Claude → rouvrez avec <code>claude --resume</code> → collez le second prompt.</p>
     </div>
 
   </div>
