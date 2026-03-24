@@ -11,9 +11,10 @@ Ouvrir une session Claude Code **sur le dossier du nouveau projet** et dire :
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — installer `.claude/agents/` là, pas dans un sous-dossier
 2. Copier les 19 agents dans `.claude/agents/` à la racine du repo git
-3. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
-4. Copier le template et créer `project-context.md` à la racine du repo git
-5. Créer la structure `docs/` et `src/` si absentes
+3. Copier `.claude/settings.json` (permissions pré-approuvées pour les agents) — **indispensable** pour que les sous-agents puissent écrire des fichiers
+4. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
+5. Copier le template et créer `project-context.md` à la racine du repo git
+6. Créer la structure `docs/` et `src/` si absentes
 
 **Ensuite :** remplir `project-context.md` → invoquer `@orchestrator` pour lancer le projet complet.
 
@@ -26,9 +27,10 @@ Ouvrir une session Claude Code **sur le projet existant** et dire :
 Claude Code va :
 1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — c'est là que `.claude/agents/` DOIT être installé, PAS dans un sous-dossier du repo
 2. Copier les 19 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
-3. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
-4. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
-5. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
+3. Copier `.claude/settings.json` (permissions pré-approuvées) — **fusionner** avec le `settings.json` existant s'il y en a un (ajouter les permissions manquantes, ne pas écraser les permissions existantes)
+4. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
+5. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
+6. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
 
 > **ATTENTION — Piège fréquent :** si le projet est un sous-dossier d'un repo git parent (ex : `monorepo/mon-projet/`), les agents DOIVENT être installés à la racine du repo git (`monorepo/.claude/agents/`), PAS dans le sous-dossier. Claude Code cherche `.claude/agents/` uniquement à la racine du repo git détectée par `git rev-parse --show-toplevel`.
 
@@ -58,13 +60,14 @@ Ouvrir une session Claude Code **sur le projet cible** et dire :
 Claude Code va :
 1. Cloner la dernière version du repo Agent-Team dans `/tmp`
 2. **Écraser** tous les fichiers `.claude/agents/*.md` avec les versions à jour
-3. **Remplacer** le `CLAUDE.md` par la nouvelle version (ou fusionner si le projet a un `CLAUDE.md` custom)
-4. **Mettre à jour** le template dans `templates/project-context.md` (le template de référence, pas le vôtre)
-5. **Ne PAS toucher** à `project-context.md` (historique du projet), `docs/` (livrables), `src/` (code), `package.json`
+3. **Mettre à jour** `.claude/settings.json` (ajouter les nouvelles permissions, préserver les permissions custom)
+4. **Remplacer** le `CLAUDE.md` par la nouvelle version (ou fusionner si le projet a un `CLAUDE.md` custom)
+5. **Mettre à jour** le template dans `templates/project-context.md` (le template de référence, pas le vôtre)
+6. **Ne PAS toucher** à `project-context.md` (historique du projet), `docs/` (livrables), `src/` (code), `package.json`
 
 > **Ce qui est préservé :** tout ce qui est spécifique à votre projet — `project-context.md`, les livrables dans `docs/`, le code dans `src/`, les agents custom que vous avez créés (s'ils ont un nom différent des agents Gradient).
 
-> **Ce qui est écrasé :** les 19 agents Gradient (prompts améliorés), `CLAUDE.md` (nouvelles règles), le template `project-context.md`.
+> **Ce qui est écrasé :** les 19 agents Gradient (prompts améliorés), `.claude/settings.json` (permissions mises à jour), `CLAUDE.md` (nouvelles règles), le template `project-context.md`.
 
 **Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés au template, les remplir dans votre `project-context.md`.
 
@@ -80,6 +83,9 @@ git clone https://github.com/thomasissa-png/Agent-Team -b claude/improve-fronten
 
 # 2. Écraser les agents
 cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
+
+# 2b. Mettre à jour les permissions (settings.json)
+cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
 
 # 3. Mettre à jour CLAUDE.md
 #    → Si CLAUDE.md est celui de Gradient (non fusionné) :
@@ -113,6 +119,9 @@ git clone <url-agent-team> /tmp/Agent-Team
 mkdir -p .claude/agents
 cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
 
+# 2b. Copier les permissions (INDISPENSABLE pour que les agents puissent écrire)
+cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
+
 # 3. CLAUDE.md
 #    → Nouveau projet : copier directement
 cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
@@ -131,7 +140,8 @@ cp templates/project-context.md ./project-context.md
 ```
 ton-projet/
 ├── .claude/
-│   └── agents/          ← les 19 agents Gradient
+│   ├── agents/          ← les 19 agents Gradient
+│   └── settings.json    ← permissions pré-approuvées (Write, Edit, Bash, etc.)
 ├── templates/
 │   └── project-context.md  ← template vierge (référence)
 ├── project-context.md      ← contexte rempli pour CE projet
