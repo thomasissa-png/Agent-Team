@@ -53,7 +53,7 @@ L'équipe Gradient Agents évolue régulièrement. Pour mettre à jour les agent
 
 Ouvrir une session Claude Code **sur le projet cible** et dire :
 
-> "Mets à jour l'équipe Gradient Agents depuis `https://github.com/thomasissa-png/Agent-Team`. Clone dans /tmp, écrase les agents dans `.claude/agents/` et le `CLAUDE.md`, mais ne touche pas à `project-context.md`, `docs/`, `src/` ni au code existant."
+> "Mets à jour l'équipe Gradient Agents depuis `https://github.com/thomasissa-png/Agent-Team` `-b claude/improve-frontend-prompts-BdBIK`. Clone dans /tmp, écrase les agents dans `.claude/agents/` et le `CLAUDE.md`, mais ne touche pas à `project-context.md`, `docs/`, `src/` ni au code existant."
 
 Claude Code va :
 1. Cloner la dernière version du repo Agent-Team dans `/tmp`
@@ -75,7 +75,7 @@ Claude Code va :
 cd $(git rev-parse --show-toplevel)
 
 # 1. Récupérer la dernière version
-git clone https://github.com/thomasissa-png/Agent-Team /tmp/Agent-Team 2>/dev/null || \
+git clone https://github.com/thomasissa-png/Agent-Team -b claude/improve-frontend-prompts-BdBIK /tmp/Agent-Team 2>/dev/null || \
   (cd /tmp/Agent-Team && git pull)
 
 # 2. Écraser les agents
