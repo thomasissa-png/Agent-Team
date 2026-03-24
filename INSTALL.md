@@ -69,6 +69,16 @@ Claude Code va :
 
 > **Ce qui est écrasé :** les 19 agents Gradient (prompts améliorés), `.claude/settings.json` (permissions mises à jour), `CLAUDE.md` (nouvelles règles), le template `project-context.md`.
 
+**Alternative rapide** — si `update.sh` est présent dans le projet (installé automatiquement) :
+
+```bash
+bash update.sh        # mise à jour interactive (agent par agent)
+bash update.sh --all  # mise à jour de tous les agents sans confirmation
+bash update.sh --rollback  # annuler la dernière mise à jour
+```
+
+Le script `update.sh` met à jour les agents, `settings.json`, et le `CLAUDE.md` (fusion intelligente avec marqueurs `<!-- GRADIENT-AGENTS-START/END -->`). Il ne touche jamais à `project-context.md`, `docs/` ni `src/`.
+
 **Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés au template, les remplir dans votre `project-context.md`.
 
 ### Méthode manuelle

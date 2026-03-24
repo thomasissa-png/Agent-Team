@@ -66,7 +66,7 @@ clone_repo() {
   # Tentative avec sparse checkout (repos publics et privés avec auth)
   if git clone --filter=blob:none --sparse --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
-    git sparse-checkout set .claude/agents templates CLAUDE.md
+    git sparse-checkout set .claude/agents .claude/settings.json templates CLAUDE.md
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
@@ -94,6 +94,20 @@ install_agents() {
   echo -e "${GREEN}✓ $(ls "$target_dir"/*.md 2>/dev/null | wc -l | tr -d ' ') agents installés dans ${AGENTS_DIR}/${NC}"
 }
 
+install_settings_json() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
+  if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
+    mkdir -p "$target_dir/.claude"
+    cp "$TEMP_DIR/repo/.claude/settings.json" "$target_dir/.claude/settings.json"
+    echo -e "${GREEN}✓ .claude/settings.json installé (permissions pré-approuvées)${NC}"
+  fi
+}
+
 install_claude_md() {
   local target_dir
   target_dir="$(pwd)"
@@ -101,14 +115,36 @@ install_claude_md() {
     target_dir="$OLDPWD"
   fi
 
-  if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
-    if [ -f "$target_dir/CLAUDE.md" ]; then
-      echo -e "${YELLOW}⚠ CLAUDE.md existe déjà à la racine — non écrasé.${NC}"
-      echo -e "  Pour voir la version recommandée : cat $TEMP_DIR/repo/CLAUDE.md"
-    else
-      cp "$TEMP_DIR/repo/CLAUDE.md" "$target_dir/CLAUDE.md"
-      echo -e "${GREEN}✓ CLAUDE.md installé${NC}"
-    fi
+  if [ ! -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
+    echo -e "${YELLOW}⚠ CLAUDE.md non trouvé dans le repo source${NC}"
+    return
+  fi
+
+  local source="$TEMP_DIR/repo/CLAUDE.md"
+  local target="$target_dir/CLAUDE.md"
+
+  if [ ! -f "$target" ]; then
+    # Pas de CLAUDE.md existant → copie directe
+    cp "$source" "$target"
+    echo -e "${GREEN}✓ CLAUDE.md installé${NC}"
+  elif grep -q "GRADIENT-AGENTS-START" "$target"; then
+    # CLAUDE.md existant avec marqueurs → remplacement de la section Gradient
+    local gradient_content
+    gradient_content=$(sed -n '/<!-- GRADIENT-AGENTS-START -->/,/<!-- GRADIENT-AGENTS-END -->/p' "$source")
+
+    # Créer le fichier temporaire avec la section remplacée
+    local tmp_file="$TEMP_DIR/claude_md_merged"
+    sed '/<!-- GRADIENT-AGENTS-START -->/,/<!-- GRADIENT-AGENTS-END -->/d' "$target" > "$tmp_file"
+
+    # Insérer le contenu Gradient au début (avant le contenu custom)
+    echo "$gradient_content" | cat - "$tmp_file" > "$target"
+    echo -e "${GREEN}✓ CLAUDE.md mis à jour (section Gradient remplacée, contenu custom préservé)${NC}"
+  else
+    # CLAUDE.md existant SANS marqueurs → append avec marqueurs
+    echo "" >> "$target"
+    cat "$source" >> "$target"
+    echo -e "${GREEN}✓ CLAUDE.md fusionné (instructions Gradient ajoutées en fin de fichier)${NC}"
+    echo -e "${YELLOW}  Conseil : les prochaines mises à jour remplaceront proprement la section Gradient grâce aux marqueurs.${NC}"
   fi
 }
 
@@ -181,6 +217,7 @@ check_requirements
 check_existing_agents
 clone_repo
 install_agents
+install_settings_json
 install_claude_md
 install_project_context
 install_update_script

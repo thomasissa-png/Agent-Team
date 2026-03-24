@@ -1,3 +1,4 @@
+<!-- GRADIENT-AGENTS-START -->
 # Gradient Agents — Instructions globales
 
 ## Règle absolue — Contexte obligatoire (n°1)
@@ -251,3 +252,4 @@ Après chaque projet terminé (ou phase majeure), l'orchestrateur DOIT mettre à
 ## Journal de setup
 
 L'historique complet des sessions de setup est dans `CHANGELOG.md` à la racine. Consulter ce fichier pour les décisions de conception passées et les modifications apportées au framework.
+<!-- GRADIENT-AGENTS-END -->
