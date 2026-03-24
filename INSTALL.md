@@ -53,38 +53,39 @@ Claude Code va :
 
 L'équipe Gradient Agents évolue régulièrement. Pour mettre à jour les agents dans un projet où ils sont déjà installés :
 
-Ouvrir une session Claude Code **sur le projet cible** et dire :
+### Option 1 — Script automatisé (recommandé)
 
-> "Mets à jour l'équipe Gradient Agents depuis `https://github.com/thomasissa-png/Agent-Team` `-b claude/improve-frontend-prompts-BdBIK`. Clone dans /tmp, écrase les agents dans `.claude/agents/` et le `CLAUDE.md`, mais ne touche pas à `project-context.md`, `docs/`, `src/` ni au code existant."
-
-Claude Code va :
-1. Cloner la dernière version du repo Agent-Team dans `/tmp`
-2. **Écraser** tous les fichiers `.claude/agents/*.md` avec les versions à jour
-3. **Mettre à jour** `.claude/settings.json` (ajouter les nouvelles permissions, préserver les permissions custom)
-4. **Remplacer** le `CLAUDE.md` par la nouvelle version (ou fusionner si le projet a un `CLAUDE.md` custom)
-5. **Mettre à jour** le template dans `templates/project-context.md` (le template de référence, pas le vôtre)
-6. **Ne PAS toucher** à `project-context.md` (historique du projet), `docs/` (livrables), `src/` (code), `package.json`
-
-> **Ce qui est préservé :** tout ce qui est spécifique à votre projet — `project-context.md`, les livrables dans `docs/`, le code dans `src/`, les agents custom que vous avez créés (s'ils ont un nom différent des agents Gradient).
-
-> **Ce qui est écrasé :** les 19 agents Gradient (prompts améliorés), `.claude/settings.json` (permissions mises à jour), `CLAUDE.md` (nouvelles règles), le template `project-context.md`.
-
-**Alternative rapide** — si `update.sh` est présent dans le projet (installé automatiquement) :
+Si `update.sh` est déjà dans le projet :
 
 ```bash
 bash update.sh        # mise à jour interactive (agent par agent)
-bash update.sh --all  # mise à jour de tous les agents sans confirmation
+bash update.sh --all  # tout mettre à jour d'un coup
 bash update.sh --rollback  # annuler la dernière mise à jour
 ```
 
-Le script `update.sh` met à jour les agents, `settings.json`, et le `CLAUDE.md` (fusion intelligente avec marqueurs `<!-- GRADIENT-AGENTS-START/END -->`). Il ne touche jamais à `project-context.md`, `docs/` ni `src/`.
+Si `update.sh` n'est pas dans le projet, l'installer d'abord :
+```bash
+curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/improve-frontend-prompts-BdBIK/update.sh -o update.sh && chmod +x update.sh
+```
 
-**Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés au template, les remplir dans votre `project-context.md`.
+### Option 2 — Via Claude Code (prompt à copier tel quel)
 
-### Méthode manuelle
+Ouvrir une session Claude Code **sur le projet cible** et copier ce prompt :
+
+> Mets à jour l'équipe Gradient Agents. Voici les étapes exactes à suivre :
+>
+> 1. `git clone https://github.com/thomasissa-png/Agent-Team -b claude/improve-frontend-prompts-BdBIK /tmp/Agent-Team 2>/dev/null || (cd /tmp/Agent-Team && git pull origin claude/improve-frontend-prompts-BdBIK)`
+> 2. `cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/` — écraser tous les agents
+> 3. `cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json` — écraser les permissions
+> 4. Pour le CLAUDE.md, vérifie si le fichier contient le marqueur `<!-- GRADIENT-AGENTS-START -->` :
+>    - **Si oui** : remplace tout le bloc entre `<!-- GRADIENT-AGENTS-START -->` et `<!-- GRADIENT-AGENTS-END -->` par le contenu du CLAUDE.md source (qui contient ces mêmes marqueurs)
+>    - **Si non** : le CLAUDE.md actuel est soit un ancien CLAUDE.md Gradient (sans marqueurs), soit un CLAUDE.md custom du projet. Demande-moi si je veux le remplacer entièrement ou ajouter la section Gradient en fin de fichier
+> 5. `cp /tmp/Agent-Team/update.sh ./update.sh && chmod +x update.sh` — installer le script de mise à jour
+> 6. Ne touche PAS à `project-context.md`, `docs/`, `src/`, `package.json`
+
+### Option 3 — Manuelle
 
 ```bash
-# 0. Se placer à la racine du repo git du projet cible
 cd $(git rev-parse --show-toplevel)
 
 # 1. Récupérer la dernière version
@@ -94,21 +95,34 @@ git clone https://github.com/thomasissa-png/Agent-Team -b claude/improve-fronten
 # 2. Écraser les agents
 cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
 
-# 2b. Mettre à jour les permissions (settings.json)
+# 3. Mettre à jour les permissions
 cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
 
-# 3. Mettre à jour CLAUDE.md
-#    → Si CLAUDE.md est celui de Gradient (non fusionné) :
+# 4. Remplacer le CLAUDE.md entièrement (si pas de contenu custom)
 cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
-#    → Si CLAUDE.md a été fusionné avec des instructions custom :
-#    Remplacer manuellement la section Gradient Agents
 
-# 4. Mettre à jour le template (pas votre project-context.md !)
-cp /tmp/Agent-Team/templates/project-context.md templates/
+# 4bis. OU fusionner (si le projet a du contenu custom dans CLAUDE.md)
+#   → Garder le contenu custom du projet
+#   → Remplacer uniquement la section entre les marqueurs GRADIENT-AGENTS-START/END
+#   → Si pas de marqueurs : ajouter le contenu de Agent-Team/CLAUDE.md en fin de fichier
 
-# 5. Vérifier les nouveaux champs du template
-diff templates/project-context.md project-context.md
+# 5. Installer update.sh pour les prochaines fois
+cp /tmp/Agent-Team/update.sh ./update.sh && chmod +x update.sh
+
+# 6. Vérifier les nouveaux champs du template
+diff /tmp/Agent-Team/templates/project-context.md project-context.md
 ```
+
+### Ce qui est écrasé vs préservé
+
+| Écrasé | Préservé |
+|---|---|
+| `.claude/agents/*.md` (prompts améliorés) | `project-context.md` (historique projet) |
+| `.claude/settings.json` (permissions) | `docs/` (livrables des agents) |
+| `CLAUDE.md` (nouvelles règles) | `src/` (code du projet) |
+| `templates/project-context.md` (template) | Agents custom (noms différents des 19 Gradient) |
+
+**Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés, les remplir.
 
 ## Variante — Si le repo Agent-Team n'est pas cloné localement
 
