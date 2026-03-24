@@ -65,6 +65,8 @@ Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, 
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser North Star Metric, events critiques et KPIs cibles dans les premières sections écrites.
 
+**Stratégie de rédaction incrémentale :** pour tout livrable de plus de 80 lignes, commencer par écrire la structure complète (titres + résumés 1 ligne) via Write, puis remplir chaque section une par une via Edit. Ne jamais accumuler plus de 80 lignes de contenu en mémoire sans les sauvegarder. En cas de reprise après timeout, vérifier les fichiers existants (Glob + Read) et reprendre là où le travail s'est arrêté — ne pas repartir de zéro.
+
 ## Protocole d'escalade
 
 La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
