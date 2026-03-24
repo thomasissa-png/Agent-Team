@@ -542,6 +542,35 @@ Après avoir créé project-context.md :
 Critères de validation : project-context.md créé avec tous les champs, chaque champ critique passe le seuil de qualité (pas juste rempli, mais exploitable par les agents).
 
 Continuité de session : rappelle à l'utilisateur de nommer sa session (claude -n "nom") s'il ne l'a pas fait, et indique que pour reprendre plus tard il suffit de lancer claude --resume "nom" puis de dire "Lis project-context.md, où en est-on ?".`
+      },
+      {
+        title:"Reprendre où j'en étais",
+        agents:["orchestrator"],
+        quand:"Nouvelle session Claude Code, après un timeout, le lendemain, ou après une interruption. Fonctionne uniquement si project-context.md existe déjà. Tip : utilisez claude --resume \"nom\" pour retrouver le contexte de conversation, puis collez ce prompt.",
+        prompt:`@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
+
+Étape 1 — État du projet :
+Lis project-context.md à la racine. Résume en 3-5 lignes : nom du projet, stade, persona principal, objectif 6 mois, KPI North Star. Lis le tableau "Historique des interventions agents" pour identifier tous les agents qui ont déjà travaillé et leurs décisions clés.
+
+Étape 2 — Plan d'orchestration :
+Si docs/orchestration-plan.md existe, lis-le. Identifie les phases terminées, les phases en cours (interrompues), et les phases restantes. Si le fichier n'existe pas, signale-le (le projet a peut-être été lancé agent par agent, sans orchestration formelle).
+
+Étape 3 — Inventaire des livrables :
+Fais un Glob sur docs/**/*.md et src/**/* pour lister tous les fichiers produits. Pour chaque livrable trouvé, indique : nom du fichier, agent probable, statut (complet si >20 lignes / possiblement incomplet si <20 lignes).
+
+Étape 4 — Diagnostic :
+Présente un tableau d'avancement clair :
+- Ce qui est fait (livrables complets, phases terminées)
+- Ce qui est en cours ou incomplet (livrables partiels, phases interrompues)
+- Ce qui reste à faire (phases non commencées, agents non encore invoqués)
+- Incohérences détectées (si un livrable référence un persona ou KPI différent de project-context.md, signale le drift)
+
+Étape 5 — Proposition :
+Propose les 2-3 prochaines actions concrètes, avec pour chaque action : l'agent concerné, la mission précise, et pourquoi c'est la priorité. Tiens compte du stade du projet, du KPI North Star, et du budget (si défini).
+
+Attends ma confirmation avant de lancer quoi que ce soit. Si je dis "continue", lance les actions proposées. Si j'ajuste, intègre mes modifications d'abord.
+
+Critères de validation : le diagnostic couvre tous les livrables existants, aucune phase n'est oubliée, les prochaines actions sont justifiées par le contexte (pas génériques).`
       }
     ]
   },
