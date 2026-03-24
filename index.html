@@ -607,7 +607,7 @@ Pour reprendre : l'utilisateur lancera claude --resume ou claude --continue, pui
       {
         title:"Faire un check-up complet de mon projet",
         agents:["reviewer","elon","legal"],
-        quand:"Tu as plusieurs livrables et tu veux savoir où tu en es — idéalement avant un lancement ou après une phase de développement intense",
+        quand:"Tu as plusieurs livrables et tu veux savoir où tu en es — idéalement avant un lancement ou après une phase de développement intense Si coupure : claude --resume puis "Lis docs/reviews/, qu'est-ce qui a déjà été audité ?"",
         prompt:`@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour en produire. Audite la cohérence croisée entre tous les livrables sur ces axes :
 - Brand ↔ copy : le ton des contenus (docs/copy/) est-il aligné avec la brand platform (docs/strategy/brand-platform.md) ?
 - Specs ↔ code : les features implémentées dans src/ correspondent-elles aux specs dans docs/product/functional-specs.md ?
@@ -625,7 +625,7 @@ Critères de validation : chaque incohérence est documentée avec l'agent respo
       {
         title:"Pivoter mon projet",
         agents:["orchestrator","creative-strategy","data-analyst"],
-        quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement. Le pivot doit être documenté pour ne pas perdre les acquis.",
+        quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement. Le pivot doit être documenté pour ne pas perdre les acquis. Nommez cette session (claude -n "pivot"). Pour reprendre : claude --resume puis "Lis project-context.md et docs/orchestration-plan.md, continue le pivot."",
         prompt:`@orchestrator Le projet pivote. Lis project-context.md — si les nouvelles orientations n'y sont pas encore, pose-moi les questions pour le mettre à jour (nouveau persona, nouveau marché, nouveau positionnement) et mets-le à jour avant de continuer.
 
 Protocole de pivot :
@@ -651,7 +651,7 @@ Critères de validation : project-context.md reflète le pivot, tous les livrabl
       {
         title:"Positionnement & plateforme de marque",
         agents:["creative-strategy","data-analyst"],
-        quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit. Fondation de toute la chaîne — un mauvais positionnement contamine tout l'aval.",
+        quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit. Fondation de toute la chaîne — un mauvais positionnement contamine tout l'aval. 4 fichiers à produire. Si coupure : "Lis docs/strategy/, quels fichiers manquent ?"",
         prompt:`@creative-strategy Analyse project-context.md. Si les champs Secteur, Persona principal, Problème principal ou Alternative actuelle sont insuffisants (un persona sans frustration concrète, un secteur trop vague comme "Tech"), pose-moi les questions ciblées pour les compléter avant de continuer.
 
 Benchmark 3-5 concurrents via WebSearch (noms réels, positionnement, prix, forces/faiblesses). Produis la plateforme de marque complète :
@@ -690,7 +690,7 @@ Critères de validation : chaque feature du backlog est liée à un persona + un
       {
         title:"KPIs & tracking plan",
         agents:["data-analyst","fullstack"],
-        quand:"Avant tout développement, pour mesurer dès le jour 1. Le tracking est la mémoire du produit — sans lui, chaque décision est une opinion.",
+        quand:"Avant tout développement, pour mesurer dès le jour 1. Le tracking est la mémoire du produit — sans lui, chaque décision est une opinion. 3 fichiers produits. Si coupure : "Lis docs/analytics/, complète les fichiers manquants."",
         prompt:`@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features MVP, modèle économique) et génère-les avant de continuer. Lis aussi project-context.md (budget, stack).
 
 Produis le framework analytique complet :
@@ -709,7 +709,7 @@ Critères de validation : chaque event du tracking plan a un nom, un trigger et 
       {
         title:"Audit juridique & conformité",
         agents:["legal","infrastructure"],
-        quand:"En parallèle des autres phases, avant mise en production. Obligatoire si données sensibles, paiement, ou IA. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants.",
+        quand:"En parallèle des autres phases, avant mise en production. Obligatoire si données sensibles, paiement, ou IA. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants. Pour reprendre après coupure : claude --resume puis "Lis docs/legal/, quels documents manquent ? Complète-les."",
         prompt:`@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Audit juridique complet :
 
 1. RGPD : registre des traitements (finalité, base légale, durée de conservation par traitement), DPA avec les sous-traitants (Stripe, analytics, hébergeur, fournisseurs IA), droits des utilisateurs (accès, rectification, suppression, portabilité), mécanismes de consentement.
@@ -728,7 +728,7 @@ Critère : chaque document doit être spécifique au projet (pas un template gé
       {
         title:"Specs fonctionnelles détaillées",
         agents:["product-manager","qa"],
-        quand:"Après la roadmap, pour détailler les features avant développement. Les specs sont le contrat entre le product et le dev — chaque ambiguïté ici coûtera 10x en développement.",
+        quand:"Après la roadmap, pour détailler les features avant développement. Les specs sont le contrat entre le product et le dev — chaque ambiguïté ici coûtera 10x en développement. Livrable potentiellement long. Si coupure : "Lis docs/product/functional-specs.md, continue les specs à partir de la dernière feature documentée."",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/analytics/tracking-plan.md si disponible (events à intégrer dans les specs).
 
 Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées :
@@ -749,7 +749,7 @@ Critères de validation : chaque feature a au moins 3 critères d'acceptation, c
       {
         title:"Valider la demande avant de construire",
         agents:["growth","creative-strategy","data-analyst"],
-        quand:"Tout début de projet, avant de coder — pour vérifier que le marché existe. Le prompt le plus important si tu n'as pas encore de clients.",
+        quand:"Tout début de projet, avant de coder — pour vérifier que le marché existe. Le prompt le plus important si tu n'as pas encore de clients. 3 agents en chaîne. Si coupure : "Lis docs/growth/demand-validation.md, quel agent n'a pas encore terminé ?"",
         prompt:`@growth Lis project-context.md (persona, secteur, problème principal). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer. Lis docs/strategy/brand-platform.md si disponible (positionnement, personas). Conçois le protocole de validation de la demande :
 
 1. Recherche marché : volume de recherche des mots-clés problème via WebSearch (pas les mots-clés solution), taille du marché adressable (TAM → SAM → SOM), tendances Google Trends, signaux de demande existants (forums, Reddit, tweets de frustration).
@@ -817,7 +817,7 @@ Critères de validation : chaque case persona x canal x funnel a un message diff
       {
         title:"Définir la stratégie de pricing",
         agents:["product-manager","growth","legal"],
-        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Le pricing est la feature la plus sous-estimée.",
+        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Le pricing est la feature la plus sous-estimée. 3 agents en chaîne. Si coupure : "Lis docs/product/pricing-strategy.md, docs/growth/ et docs/legal/, quels agents n'ont pas terminé ?"",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif, pays).
 
 Définis la stratégie de pricing complète :
@@ -859,7 +859,7 @@ Critères de validation : chaque feature retenue a une justification liée au pe
       {
         title:"Écrire le storytelling de fondation",
         agents:["creative-strategy","copywriter","seo"],
-        quand:"Après la plateforme de marque — utile pour la page About, les pitchs, le contenu social, le SEO de marque",
+        quand:"Après la plateforme de marque — utile pour la page About, les pitchs, le contenu social, le SEO de marque 3 agents en chaîne. Si coupure : "Lis docs/strategy/brand-story.md et docs/copy/brand-story-content.md, quel agent reste ?"",
         prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (positionnement, personas, ton de marque). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer.
 
 Construis la narration fondatrice du projet :
@@ -880,7 +880,7 @@ Critères de validation : l'histoire est spécifique au projet (pas un template 
       {
         title:"Stratégie de pricing dynamique",
         agents:["product-manager","data-analyst","growth","legal"],
-        quand:"Produit avec plusieurs segments utilisateurs ou marchés internationaux qui justifient une tarification adaptative. Après la stratégie de pricing initiale (docs/product/pricing-strategy.md).",
+        quand:"Produit avec plusieurs segments utilisateurs ou marchés internationaux qui justifient une tarification adaptative. Après la stratégie de pricing initiale (docs/product/pricing-strategy.md). 4 agents — session longue probable. Si coupure : "Lis docs/product/pricing-dynamic.md, quels agents n'ont pas terminé ?"",
         prompt:`@product-manager Lis docs/product/pricing-strategy.md (pricing de base) et project-context.md (persona, marchés, modèle économique). S'ils n'existent pas, pose-moi les questions pour les créer (plans actuels, segments utilisateurs, marchés géographiques, panier moyen) et génère-les avant de continuer. Lis aussi docs/analytics/kpi-framework.md si disponible.
 
 Définis la stratégie de pricing dynamique :
@@ -933,7 +933,7 @@ Critères de validation : chaque parcours a un objectif mesurable, chaque écran
       {
         title:"Design system complet",
         agents:["design","fullstack"],
-        quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent.",
+        quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent. Pour reprendre : "Lis docs/design/design-system.md et docs/design/design-tokens.json, complète ce qui manque."",
         prompt:`@design Lis docs/ux/wireframes.md et docs/strategy/brand-platform.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (wireframes : écrans clés, navigation ; brand-platform : ton de marque, 3 mots-clés, positionnement).
 
 Crée le design system complet :
@@ -971,7 +971,7 @@ Critères de validation : le guide est suffisamment précis pour que deux rédac
       {
         title:"Landing page complète",
         agents:["copywriter","seo","geo"],
-        quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas.",
+        quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas. 3 agents en chaîne. Si coupure : "Lis docs/copy/landing-page-copy.md, quel agent n'a pas terminé ?"",
         prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/value-proposition.md. S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
 
 Rédige le copy complet de la landing page :
@@ -1040,7 +1040,7 @@ Critères de validation : le lexique est différenciant (pas réutilisable par u
       {
         title:"Spécifier les interactions et états des composants",
         agents:["design","ux","fullstack"],
-        quand:"Après le design system, AVANT l'implémentation des composants — pour éviter les états manquants en production. Les états oubliés sont les bugs de demain.",
+        quand:"Après le design system, AVANT l'implémentation des composants — pour éviter les états manquants en production. Les états oubliés sont les bugs de demain. Livrable détaillé + 3 agents. Si coupure : "Lis docs/design/component-states.md, quels composants restent à spécifier ?"",
         prompt:`@design Lis docs/design/design-system.md et docs/design/design-tokens.json. S'ils n'existent pas, pose-moi les questions pour les créer (composants prioritaires, tokens de base) et génère-les avant de continuer. Lis aussi docs/ux/wireframes.md pour identifier les composants utilisés dans les parcours critiques.
 
 Produis les specs d'état pour chaque composant prioritaire. Format tableau par composant :
@@ -1107,7 +1107,7 @@ Critères de validation : chaque breakpoint est documenté, les touch targets fo
       {
         title:"Design responsive avancé",
         agents:["design","ux","fullstack","infrastructure"],
-        quand:"Au-delà des breakpoints basiques — pour les cas complexes : tableaux de données, dashboards, formulaires longs, navigation riche, contenu dense. À lancer après le design system de base.",
+        quand:"Au-delà des breakpoints basiques — pour les cas complexes : tableaux de données, dashboards, formulaires longs, navigation riche, contenu dense. À lancer après le design system de base. 4 agents — session longue. Si coupure : "Lis docs/design/responsive-specs.md, quels composants ou agents manquent ?"",
         prompt:`@design Lis docs/design/design-system.md (tokens, composants) et docs/ux/user-flows.md (parcours). S'ils n'existent pas, pose-moi les questions pour les créer et génère-les avant de continuer. Lis project-context.md (persona, devices cibles).
 
 Définis les patterns responsive avancés :
@@ -1132,7 +1132,7 @@ Critères de validation : chaque composant complexe a un comportement défini pa
       {
         title:"Onboarding utilisateur gamifié",
         agents:["ux","design","copywriter","data-analyst"],
-        quand:"Après les parcours utilisateur — pour concevoir un onboarding qui maximise l'activation et la rétention. Complémentaire au raccourci 'Optimiser l'onboarding' (celui-ci est plus axé conception, l'autre est un audit).",
+        quand:"Après les parcours utilisateur — pour concevoir un onboarding qui maximise l'activation et la rétention. Complémentaire au raccourci 'Optimiser l'onboarding' (celui-ci est plus axé conception, l'autre est un audit). 4 agents en chaîne. Si coupure : "Lis docs/ux/onboarding-flow.md, quels agents n'ont pas encore contribué ?"",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours existants ou à créer) et docs/strategy/brand-platform.md (persona). S'ils n'existent pas, pose-moi les questions (persona principal, action d'activation, job-to-be-done principal) et génère-les avant de continuer.
 
 Conçois le système d'onboarding complet :
@@ -1163,7 +1163,7 @@ Critères de validation : le time-to-value est < 3 minutes, chaque étape a un t
       {
         title:"Développer une feature",
         agents:["fullstack","qa","data-analyst"],
-        quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer.",
+        quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer. Si coupure sur une feature complexe : "Lis docs/dev-decisions.md et src/, où en est l'implémentation de [feature] ?"",
         prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer.
 
 Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder.
@@ -1190,7 +1190,7 @@ Critères de validation : la feature implémente tous les critères d'acceptatio
       {
         title:"Intégrer le paiement Stripe",
         agents:["fullstack","legal","infrastructure"],
-        quand:"Plans tarifaires validés dans la roadmap. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le paiement est la feature la plus critique — zéro droit à l'erreur.",
+        quand:"Plans tarifaires validés dans la roadmap. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le paiement est la feature la plus critique — zéro droit à l'erreur. Pour reprendre : "Lis src/app/api/stripe/ et docs/legal/cgu-draft.md, quels agents n'ont pas terminé ?"",
         prompt:`@fullstack Lis docs/product/functional-specs.md et docs/product/pricing-strategy.md (plans tarifaires, pricing). S'ils n'existent pas, pose-moi les questions pour spécifier les plans (nombre de tiers, prix, features par tier, essai gratuit oui/non, devise) et génère les specs avant de coder.
 
 Intègre Stripe :
@@ -1212,7 +1212,7 @@ Critères de validation : le webhook gère tous les events critiques de manière
       {
         title:"Ajouter une feature IA (LLM)",
         agents:["ia","fullstack","legal"],
-        quand:"Cas d'usage IA défini dans les specs. Remplace [decrire la feature] par ton cas d'usage avant de lancer.",
+        quand:"Cas d'usage IA défini dans les specs. Remplace [decrire la feature] par ton cas d'usage avant de lancer. 3 agents en chaîne. Si coupure : "Lis docs/ia/ai-architecture.md et src/app/api/, quel agent reste ?"",
         prompt:`@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume estimé, latence acceptable, budget mensuel) et génère les specs avant de continuer. Si ce prompt contient encore des crochets [...], signale-le et demande les informations avant de continuer.
 
 Cas d'usage IA : [décrire la feature, ex : "résumé automatique de documents" ou "chatbot support client"].
@@ -1292,7 +1292,7 @@ Critères de validation : le tableau contient au moins 5 modèles avec des donn�
       {
         title:"Setup initial du projet (scaffold + DB + auth)",
         agents:["fullstack","infrastructure","legal"],
-        quand:"Premier prompt de développement — avant 'Développer une feature'. Livrable volumineux : si timeout, relancer l'agent manquant.",
+        quand:"Premier prompt de développement — avant 'Développer une feature'. Livrable volumineux : si timeout, relancer l'agent manquant. Beaucoup de fichiers à créer. Pour reprendre : "Lis src/ et docs/dev-decisions.md, qu'est-ce qui a déjà été scaffold ? Continue."",
         prompt:`@fullstack Lis project-context.md (stack technique, modèle économique). Lis docs/product/functional-specs.md et docs/product/mvp-scope.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle de données, auth provider) et génère-les avant de continuer. Lis docs/design/design-tokens.json si disponible.
 
 Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
@@ -1339,7 +1339,7 @@ Critères de validation : zéro écart bloquant restant, tous les contrastes pas
       {
         title:"Gestion cookies & consent (RGPD)",
         agents:["legal","fullstack","infrastructure"],
-        quand:"Dès que le site collecte des données utilisateur (analytics, auth, pixels marketing). Obligatoire avant la mise en production — les amendes CNIL sont réelles et proportionnelles au CA.",
+        quand:"Dès que le site collecte des données utilisateur (analytics, auth, pixels marketing). Obligatoire avant la mise en production — les amendes CNIL sont réelles et proportionnelles au CA. 3 agents. Si coupure : "Lis docs/legal/cookie-policy.md, quel agent n'a pas terminé ?"",
         prompt:`@legal Lis project-context.md (modèle économique, données collectées). Lis docs/legal/rgpd-checklist.md et docs/legal/legal-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les données collectées (analytics, auth, paiement, marketing) et les services tiers utilisés (Stripe, Google Analytics, Hotjar, etc.) pour calibrer l'audit.
 
 Audit cookies et consentement complet :
@@ -1361,7 +1361,7 @@ Critères de validation : aucun cookie non essentiel n'est déposé avant consen
       {
         title:"Pipeline RAG (Retrieval-Augmented Generation)",
         agents:["ia","fullstack","infrastructure"],
-        quand:"Quand le produit a besoin de répondre à des questions sur une base documentaire (FAQ intelligente, support client, recherche interne). Le RAG transforme des documents statiques en conversations dynamiques.",
+        quand:"Quand le produit a besoin de répondre à des questions sur une base documentaire (FAQ intelligente, support client, recherche interne). Le RAG transforme des documents statiques en conversations dynamiques. Architecture complexe, 3 agents. Si coupure : "Lis docs/ia/, src/lib/ai/, qu'est-ce qui a été produit ? Continue."",
         prompt:`@ia Lis project-context.md (stack technique, budget IA, outils IA utilisés). Lis docs/ia/ai-architecture.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quel corpus de documents (type, volume, fréquence de mise à jour), quel cas d'usage (support client, recherche interne, assistant), quelle qualité de réponse attendue, quel budget mensuel IA.
 
 Architecture RAG complète :
@@ -1384,7 +1384,7 @@ Critères de validation : le pipeline ingère au moins un document de test, la r
       {
         title:"Disaster recovery & backup",
         agents:["infrastructure","fullstack","qa"],
-        quand:"Avant la mise en production, ou dès que la base de données contient des données utilisateur réelles. Perdre des données utilisateur est le scénario catastrophe numéro 1.",
+        quand:"Avant la mise en production, ou dès que la base de données contient des données utilisateur réelles. Perdre des données utilisateur est le scénario catastrophe numéro 1. Si coupure : "Lis docs/infra/disaster-recovery.md, quels agents n'ont pas terminé ?"",
         prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Vercel, AWS, Railway, etc.), la base de données (PostgreSQL, Supabase, PlanetScale), et les services critiques (auth, paiement, stockage fichiers).
 
 Plan de disaster recovery complet :
@@ -1406,7 +1406,7 @@ Critères de validation : les backups sont automatisés et monitorés, le RTO/RP
       {
         title:"Gestion des erreurs & feedback utilisateur",
         agents:["fullstack","ux","design"],
-        quand:"Pendant le développement, dès les premiers parcours utilisateur implémentés. Les messages d'erreur sont souvent le dernier truc codé et le premier truc que l'utilisateur voit quand ça plante.",
+        quand:"Pendant le développement, dès les premiers parcours utilisateur implémentés. Les messages d'erreur sont souvent le dernier truc codé et le premier truc que l'utilisateur voit quand ça plante. 3 agents. Si coupure : "Lis docs/dev-decisions.md section erreurs et docs/ux/, quel agent reste ?"",
         prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/product/functional-specs.md et docs/ux/user-flows.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les parcours critiques (signup, achat, soumission de formulaire) et les erreurs les plus fréquentes attendues.
 
 Stratégie de gestion des erreurs complète :
@@ -1432,7 +1432,7 @@ Critères de validation : aucun écran blanc en cas d'erreur, chaque erreur API 
       {
         title:"Performance budget & optimisation",
         agents:["infrastructure","fullstack","design"],
-        quand:"Après le setup initial et les premiers composants — avant que la dette de performance ne s'accumule. Plus facile de maintenir un budget perf que de rattraper un site lent.",
+        quand:"Après le setup initial et les premiers composants — avant que la dette de performance ne s'accumule. Plus facile de maintenir un budget perf que de rattraper un site lent. 3 agents. Si coupure : "Lis docs/infra/performance-budget.md, quels agents n'ont pas terminé ?"",
         prompt:`@infrastructure Lis project-context.md (stack technique, hébergement). Lis docs/infra/infrastructure.md et docs/infra/performance-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur la stack (Next.js, framework CSS, libs lourdes), l'hébergeur, et les pays cibles (latence CDN).
 
 Performance budget et plan d'optimisation :
@@ -1455,7 +1455,7 @@ Critères de validation : chaque route critique a un budget défini et mesuré, 
       {
         title:"Plan de scalabilité technique",
         agents:["infrastructure","fullstack","ia"],
-        quand:"Quand le produit atteint 1000+ utilisateurs actifs ou quand des pics de charge sont prévisibles (lancement, campagne marketing). Anticiper le scaling coûte 10x moins cher que le gérer en urgence.",
+        quand:"Quand le produit atteint 1000+ utilisateurs actifs ou quand des pics de charge sont prévisibles (lancement, campagne marketing). Anticiper le scaling coûte 10x moins cher que le gérer en urgence. 3 agents. Si coupure : "Lis docs/infra/scalability-plan.md, quels agents restent ?"",
         prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget, nombre d'utilisateurs estimé). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions : stack actuelle, hébergeur, base de données, nombre d'utilisateurs actuels et cible à 6/12 mois, pics de charge prévisibles.
 
 Plan de scalabilité technique :
@@ -1526,7 +1526,7 @@ Critères de validation : au moins 10 claims vérifiables documentés, la FAQ es
       {
         title:"SEO + GEO combinés",
         agents:["seo","geo","infrastructure"],
-        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026",
+        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026 3 agents. Si coupure : "Lis docs/seo/ et docs/geo/, quels agents restent ?"",
         prompt:`@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles.
 
 Produis l'audit SEO technique complet (Core Web Vitals avec scores actuels, JSON-LD, maillage, sitemap) + keyword map avec pages prioritaires classées par intention (informationnelle / transactionnelle). Chaque recommandation avec priorité P0/P1/P2 et impact estimé.
@@ -1542,7 +1542,7 @@ Critères de validation : chaque page prioritaire a une stratégie SEO + GEO com
       {
         title:"Stratégie de contenu & calendrier éditorial",
         agents:["copywriter","seo","geo"],
-        quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier. Le contenu est le seul canal d'acquisition qui s'apprécie avec le temps.",
+        quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier. Le contenu est le seul canal d'acquisition qui s'apprécie avec le temps. Contenu long (articles piliers). Si coupure : "Lis docs/copy/content-strategy.md, combien d'articles sont rédigés ? Continue."",
         prompt:`@copywriter Lis docs/seo/keyword-map.md (mots-clés cibles avec volume et difficulté). S'il n'existe pas, pose-moi les questions pour le créer (secteur, persona, mots-clés principaux) et génère-le avant de continuer. Lis aussi docs/copy/brand-voice.md, docs/strategy/brand-platform.md, et docs/geo/geo-strategy.md si disponible.
 
 Définis la stratégie de contenu complète :
@@ -1571,7 +1571,7 @@ Critères de validation : chaque article du calendrier a un mot-clé cible uniqu
       {
         title:"Stratégie d'acquisition complète",
         agents:["growth","social","copywriter"],
-        quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le bon canal au bon moment vaut mieux que tous les canaux en même temps.",
+        quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le bon canal au bon moment vaut mieux que tous les canaux en même temps. Pour reprendre : "Lis docs/growth/acquisition-plan.md, docs/social/ et docs/copy/, quels agents restent ?"",
         prompt:`@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Lis aussi project-context.md (budget acquisition, objectif 6 mois) et docs/product/pricing-strategy.md si disponible (pour le calcul LTV).
 
 Définis la stratégie d'acquisition :
@@ -1593,7 +1593,7 @@ Critères de validation : chaque canal a un CAC estimé et une timeline, le budg
       {
         title:"Stratégie social media",
         agents:["social","copywriter","legal"],
-        quand:"Besoin d'une présence organique sur les réseaux. Les réseaux sociaux sont un marathon, pas un sprint — la régularité bat la viralité.",
+        quand:"Besoin d'une présence organique sur les réseaux. Les réseaux sociaux sont un marathon, pas un sprint — la régularité bat la viralité. 3 agents. Si coupure : "Lis docs/social/social-strategy.md, quel agent n'a pas terminé ?"",
         prompt:`@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Lis aussi project-context.md (présence existante, budget).
 
 Stratégie social media complète :
@@ -1616,7 +1616,7 @@ Critères de validation : les plateformes sont justifiées par le persona (pas p
       {
         title:"Emails onboarding & conversion",
         agents:["copywriter","growth","legal"],
-        quand:"Besoin de convertir les inscrits en utilisateurs actifs puis en payants. L'email est le canal avec le meilleur ROI — s'il est bien fait.",
+        quand:"Besoin de convertir les inscrits en utilisateurs actifs puis en payants. L'email est le canal avec le meilleur ROI — s'il est bien fait. 3 agents. Si coupure : "Lis docs/copy/email-sequences.md, quels agents restent ?"",
         prompt:`@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur, "aha moment").
 
 Crée la séquence de 5 emails :
@@ -1639,7 +1639,7 @@ Critères de validation : chaque email a un objectif unique et un CTA unique, le
       {
         title:"Auditer le funnel existant",
         agents:["growth","data-analyst","ux"],
-        quand:"Produit en production avec trafic, conversion à optimiser. Fournis les données analytics (coller les chiffres dans le prompt, ou les ajouter dans project-context.md section Notes libres).",
+        quand:"Produit en production avec trafic, conversion à optimiser. Fournis les données analytics (coller les chiffres dans le prompt, ou les ajouter dans project-context.md section Notes libres). 3 agents. Si coupure : "Lis docs/growth/funnel-audit.md, quels agents restent ?"",
         prompt:`@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (GA4, Mixpanel, PostHog, etc.), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques exactes dont tu as besoin pour diagnostiquer.
 
 Diagnostic funnel AARRR complet :
@@ -1660,7 +1660,7 @@ Critères de validation : chaque étape du funnel a un taux documenté (réel ou
       {
         title:"Plan de lancement (0 -> premiers utilisateurs)",
         agents:["growth","copywriter","social"],
-        quand:"Produit prêt à lancer — pour orchestrer les 48 premières heures et maximiser la traction initiale. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        quand:"Produit prêt à lancer — pour orchestrer les 48 premières heures et maximiser la traction initiale. Triple chaînage : si timeout, relancer l'agent manquant séparément. 3 agents. Si coupure : "Lis docs/growth/launch-plan.md et docs/copy/launch-copies.md, quels agents restent ?"",
         prompt:`@growth Lis project-context.md (persona, secteur, objectif). Lis docs/strategy/brand-platform.md et docs/growth/acquisition-plan.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (persona, canaux préférés, budget, communautés cibles) et génère-les avant de continuer.
 
 Plan de lancement pour les 48 premières heures :
@@ -1683,7 +1683,7 @@ Critères de validation : la timeline J0 est heure par heure, les objectifs sont
       {
         title:"Concevoir un programme de referral",
         agents:["growth","product-manager","fullstack"],
-        quand:"Premiers utilisateurs satisfaits — pour activer le canal d'acquisition à coût quasi nul. Le referral est le seul canal qui s'améliore avec la satisfaction client.",
+        quand:"Premiers utilisateurs satisfaits — pour activer le canal d'acquisition à coût quasi nul. Le referral est le seul canal qui s'améliore avec la satisfaction client. 3 agents (specs + code). Si coupure : "Lis docs/growth/referral-program.md et src/, qu'est-ce qui est implémenté ?"",
         prompt:`@growth Lis docs/growth/acquisition-plan.md et docs/analytics/kpi-framework.md. S'ils n'existent pas, pose-moi les questions pour les créer (canaux actuels, CAC par canal, NPS ou satisfaction utilisateur) et génère-les avant de continuer.
 
 Mécanique de referral complète :
@@ -1709,7 +1709,7 @@ Critères de validation : le K-factor cible est défini, les anti-abus sont en p
       {
         title:"Réduire le churn et fidéliser les utilisateurs",
         agents:["growth","data-analyst","copywriter"],
-        quand:"Produit en production avec des utilisateurs — le churn est le premier ennemi de la croissance. Réduire le churn de 5% augmente les profits de 25-95%.",
+        quand:"Produit en production avec des utilisateurs — le churn est le premier ennemi de la croissance. Réduire le churn de 5% augmente les profits de 25-95%. 3 agents. Si coupure : "Lis docs/growth/retention-playbook.md, quels agents restent ?"",
         prompt:`@growth Lis docs/analytics/kpi-framework.md et docs/analytics/tracking-plan.md. S'ils n'existent pas, pose-moi les questions pour les créer (KPIs AARRR, events de rétention, outils analytics) et génère-les avant de continuer. Si des données de cohortes sont disponibles, colle-les dans le prompt.
 
 Playbook de rétention complet :
@@ -1731,7 +1731,7 @@ Critères de validation : chaque segment a une stratégie de traitement, les sig
       {
         title:"Configurer une motion PLG (Product-Led Growth)",
         agents:["growth","product-manager","ux"],
-        quand:"Modèle freemium ou free trial — pour que le produit soit son propre moteur de croissance. Le PLG fonctionne quand le produit délivre de la valeur AVANT le paiement.",
+        quand:"Modèle freemium ou free trial — pour que le produit soit son propre moteur de croissance. Le PLG fonctionne quand le produit délivre de la valeur AVANT le paiement. 3 agents. Si coupure : "Lis docs/growth/plg-strategy.md, quels agents restent ?"",
         prompt:`@growth Lis docs/product/pricing-strategy.md (tiers, feature gating). S'il n'existe pas, pose-moi les questions pour le créer (modèle freemium vs trial, features par tier, prix) et génère-le avant de continuer. Lis aussi docs/analytics/kpi-framework.md et project-context.md.
 
 Mécanique PLG complète :
@@ -1753,7 +1753,7 @@ Critères de validation : le free tier délivre de la valeur en < 5 min, chaque 
       {
         title:"Diagnostiquer le product-market fit",
         agents:["product-manager","growth","data-analyst"],
-        quand:"Après 4-6 semaines en production avec 50+ utilisateurs actifs — avant de scaler l'acquisition. Scaler sans PMF = brûler du cash plus vite.",
+        quand:"Après 4-6 semaines en production avec 50+ utilisateurs actifs — avant de scaler l'acquisition. Scaler sans PMF = brûler du cash plus vite. 3 agents. Si coupure : "Lis docs/product/pmf-diagnostic.md, quels agents restent ?"",
         prompt:`@product-manager Lis docs/analytics/kpi-framework.md (KPIs, North Star Metric). S'il n'existe pas, pose-moi les questions pour le créer (objectif, KPI North Star, métriques de rétention) et génère-le avant de continuer. Si des données utilisateur sont disponibles (analytics, NPS, feedbacks), colle-les dans le prompt ou dans project-context.md section Notes libres.
 
 Protocole de mesure du Product-Market Fit :
@@ -1775,7 +1775,7 @@ Critères de validation : chaque métrique a un seuil cible, le verdict est argu
       {
         title:"Community management & engagement",
         agents:["social","growth","copywriter"],
-        quand:"Produit lancé avec des premiers utilisateurs actifs. La communauté est le meilleur canal d'acquisition organique et le meilleur rempart contre le churn — mais elle ne se construit pas toute seule.",
+        quand:"Produit lancé avec des premiers utilisateurs actifs. La communauté est le meilleur canal d'acquisition organique et le meilleur rempart contre le churn — mais elle ne se construit pas toute seule. 3 agents. Si coupure : "Lis docs/social/community-strategy.md, quels agents restent ?"",
         prompt:`@social Lis project-context.md (persona, secteur, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/social/social-strategy.md s'il existe. S'ils n'existent pas, pose-moi les questions : qui sont les utilisateurs cibles, sur quelles plateformes sont-ils actifs, quel est le ton de la marque, quel budget temps/argent pour la communauté.
 
 Stratégie de community management complète :
@@ -1801,7 +1801,7 @@ Critères de validation : maximum 2 plateformes retenues avec justification, la 
       {
         title:"Monitoring UX (session replay & heatmaps)",
         agents:["data-analyst","ux","fullstack"],
-        quand:"Produit en production avec des utilisateurs actifs. Les analytics quantitatifs disent QUOI (taux de clic, conversion), le monitoring UX montre POURQUOI (où les utilisateurs hésitent, rage-clickent, abandonnent).",
+        quand:"Produit en production avec des utilisateurs actifs. Les analytics quantitatifs disent QUOI (taux de clic, conversion), le monitoring UX montre POURQUOI (où les utilisateurs hésitent, rage-clickent, abandonnent). 3 agents. Si coupure : "Lis docs/analytics/ux-monitoring-plan.md, quels agents restent ?"",
         prompt:`@data-analyst Lis project-context.md (budget, stack). Lis docs/analytics/tracking-plan.md et docs/analytics/kpi-framework.md s'ils existent. S'ils n'existent pas, pose-moi les questions : parcours critiques à analyser, volume d'utilisateurs, budget outils analytics, données déjà collectées.
 
 Stratégie de monitoring UX complète :
@@ -1823,7 +1823,7 @@ Critères de validation : l'outil est choisi avec justification budget/RGPD, les
       {
         title:"Stratégie d'emailing automation",
         agents:["growth","copywriter","data-analyst"],
-        quand:"Produit avec une base d'utilisateurs inscrits (même petite). L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer.",
+        quand:"Produit avec une base d'utilisateurs inscrits (même petite). L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer. Livrable détaillé + 3 agents. Si coupure : "Lis docs/growth/email-automation-plan.md, quels agents restent ?"",
         prompt:`@growth Lis project-context.md (persona, modèle économique). Lis docs/growth/growth-strategy.md et docs/analytics/kpi-framework.md s'ils existent. Lis docs/ux/user-flows.md pour les parcours utilisateur. S'ils n'existent pas, pose-moi les questions : parcours utilisateur principal, points de conversion, taille de la base email, outil d'emailing actuel ou budget pour en choisir un.
 
 Stratégie d'emailing automation complète :
@@ -1854,7 +1854,7 @@ Critères de validation : chaque séquence a un trigger, un timing et un objecti
       {
         title:"Revue croisée GO/NO-GO",
         agents:["reviewer","legal"],
-        quand:"Fin de sprint ou pré-lancement. La revue est le dernier filet de sécurité avant de lancer — ne pas la sauter.",
+        quand:"Fin de sprint ou pré-lancement. La revue est le dernier filet de sécurité avant de lancer — ne pas la sauter. Lit tous les livrables — session potentiellement longue. Si coupure : "Lis docs/reviews/cross-review-report.md, où en est l'audit ?"",
         prompt:`@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour les créer. Audite la cohérence croisée sur ces axes :
 
 1. Brand ↔ Copy : le ton dans docs/copy/ est-il aligné avec docs/strategy/brand-platform.md et docs/copy/brand-voice.md ?
@@ -1875,7 +1875,7 @@ Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), zéro bl
       {
         title:"Revue intermédiaire (mid-projet)",
         agents:["reviewer","legal"],
-        quand:"Au moins 3 livrables produits, avant d'aller plus loin. La revue intermédiaire détecte les dérives avant qu'elles ne coûtent cher.",
+        quand:"Au moins 3 livrables produits, avant d'aller plus loin. La revue intermédiaire détecte les dérives avant qu'elles ne coûtent cher. Pour reprendre : "Lis docs/reviews/mid-review.md, quels axes restent à auditer ?"",
         prompt:`@reviewer Lis tous les fichiers dans docs/ produits jusqu'ici. Si aucun livrable n'existe dans docs/, signale-le et propose les 3 premiers prompts à lancer selon le stade du projet dans project-context.md. Lis aussi project-context.md pour vérifier l'alignement. S'il n'existe pas, signale-le comme blocker n.1.
 
 Vérifie la cohérence croisée sur ces axes :
@@ -1900,7 +1900,7 @@ Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), les acti
       {
         title:"Audit qualité & tests complets",
         agents:["qa","infrastructure"],
-        quand:"Code développé, avant release. Les tests sont l'assurance vie du produit — ils protègent les fonctionnalités qui marchent pendant que tu développes les suivantes.",
+        quand:"Code développé, avant release. Les tests sont l'assurance vie du produit — ils protègent les fonctionnalités qui marchent pendant que tu développes les suivantes. Beaucoup de fichiers (tests + CI). Si coupure : "Lis docs/qa/qa-strategy.md et .github/workflows/, qu'est-ce qui manque ?"",
         prompt:`@qa Lis docs/product/functional-specs.md (critères d'acceptation par feature). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider) et docs/design/design-tokens.json (tokens à vérifier).
 
 Audit qualité complet :
@@ -1923,7 +1923,7 @@ Critères de validation : couverture > 80%, zéro blocker critique non résolu, 
       {
         title:"Audit UX & conversion",
         agents:["ux","data-analyst","growth"],
-        quand:"Produit en production avec trafic. Les données sont la vérité — pas les opinions.",
+        quand:"Produit en production avec trafic. Les données sont la vérité — pas les opinions. 3 agents. Si coupure : "Lis docs/ux/ux-audit.md, quels agents restent ?"",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours définis). S'il n'existe pas, pose-moi les questions pour le créer (parcours critiques, étapes, points de décision) et génère-le avant de continuer. Lis aussi les données analytics fournies (coller dans le prompt ou dans project-context.md Notes libres).
 
 Audit UX sur les parcours critiques :
@@ -1992,7 +1992,7 @@ Critères de validation : chaque type de monitoring est configuré avec des seui
       {
         title:"Audit accessibilité RGAA/WCAG",
         agents:["ux","fullstack","legal"],
-        quand:"Avant la mise en production, ou après une refonte. L'accessibilité est une obligation légale en France (RGAA) et une bonne pratique UX — 15% de la population mondiale a un handicap.",
+        quand:"Avant la mise en production, ou après une refonte. L'accessibilité est une obligation légale en France (RGAA) et une bonne pratique UX — 15% de la population mondiale a un handicap. Audit détaillé + corrections code. Si coupure : "Lis docs/ux/accessibility-audit.md, quels agents restent ?"",
         prompt:`@ux Lis project-context.md (type de site, audience). Lis docs/ux/ux-audit.md et docs/design/design-system.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur le type de site (vitrine, SaaS, e-commerce), l'audience cible, et les obligations légales connues (secteur public = RGAA obligatoire, privé > 250M€ CA = RGAA obligatoire depuis 2025).
 
 Audit accessibilité complet RGAA/WCAG 2.1 AA :
@@ -2016,7 +2016,7 @@ Critères de validation : zéro violation critique ou serious restante, la navig
       {
         title:"Audit de sécurité complet",
         agents:["infrastructure","fullstack","legal"],
-        quand:"Avant la mise en production, ou après l'ajout de fonctionnalités sensibles (paiement, auth, données personnelles). Une faille de sécurité détruit la confiance — et la confiance ne se reconstruit pas.",
+        quand:"Avant la mise en production, ou après l'ajout de fonctionnalités sensibles (paiement, auth, données personnelles). Une faille de sécurité détruit la confiance — et la confiance ne se reconstruit pas. Audit détaillé + corrections. Si coupure : "Lis docs/infra/security-audit.md, quels agents restent ?"",
         prompt:`@infrastructure Lis project-context.md (stack technique, hébergement). Lis docs/infra/infrastructure.md et docs/infra/security-checklist.md s'ils existent. S'ils n'existent pas, pose-moi les questions : stack, hébergeur, données sensibles traitées (PII, paiement, santé), auth provider, services tiers avec accès aux données.
 
 Audit de sécurité complet :
@@ -2046,7 +2046,7 @@ Critères de validation : zéro vulnérabilité critique ou high restante, les h
       {
         title:"Refondre un site existant",
         agents:["ux","design","fullstack","legal"],
-        quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément. Recommandé via @orchestrator pour les projets > 20 pages.",
+        quand:"Site en production avec problèmes UX/performance/dette technique. Triple chaînage : si timeout, relancer l'agent manquant séparément. Recommandé via @orchestrator pour les projets > 20 pages. 4 agents — session longue. Pour reprendre : "Lis docs/ux/ux-audit.md, docs/design/ et docs/dev-decisions.md, où en est la refonte ?"",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours existants), docs/analytics/kpi-framework.md (métriques actuelles) et docs/product/functional-specs.md (features). S'ils n'existent pas, audite directement le code dans src/ et pose-moi les questions sur les parcours critiques actuels (pages les plus visitées, taux de rebond, parcours d'achat/signup).
 
 Audit UX complet :
@@ -2070,7 +2070,7 @@ Critères de validation : chaque friction point a une correction proposée avec 
       {
         title:"Diagnostiquer un problème de performance",
         agents:["infrastructure","seo","data-analyst","ux"],
-        quand:"Site lent, Core Web Vitals dans le rouge, ou plaintes utilisateurs sur la vitesse. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        quand:"Site lent, Core Web Vitals dans le rouge, ou plaintes utilisateurs sur la vitesse. Triple chaînage : si timeout, relancer l'agent manquant séparément. 4 agents. Si coupure : "Lis docs/infra/performance-audit.md, quelles sections et agents manquent ?"",
         prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, hébergement, CDN) et project-context.md (budget). S'ils n'existent pas, pose-moi les questions (hébergeur, stack, trafic mensuel estimé, pays cibles).
 
 Audit de performance complet :
@@ -2097,7 +2097,7 @@ Critères de validation : chaque bottleneck a une sévérité, une correction, u
       {
         title:"Auditer la cohérence visuelle",
         agents:["design","ux","legal"],
-        quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité. Recommandé avant chaque release majeure.",
+        quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité. Recommandé avant chaque release majeure. Audit page par page. Si coupure : "Lis docs/design/visual-audit.md, quelles pages restent à auditer ?"",
         prompt:`@design Lis docs/design/design-system.md (tokens de référence) et docs/strategy/brand-platform.md (positionnement, ton). S'ils n'existent pas, pose-moi les questions pour les créer (couleurs principales, typographies, espacements, composants existants, identité de marque) et génère-les avant de continuer.
 
 Audit de cohérence visuelle complet :
@@ -2121,7 +2121,7 @@ Critères de validation : chaque écart visuel est documenté avec page/composan
       {
         title:"Optimiser l'onboarding",
         agents:["ux","copywriter","data-analyst","legal"],
-        quand:"Time-to-value trop long, taux d'abandon élevé sur les premières sessions, ou NPS négatif des nouveaux utilisateurs. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        quand:"Time-to-value trop long, taux d'abandon élevé sur les premières sessions, ou NPS négatif des nouveaux utilisateurs. Triple chaînage : si timeout, relancer l'agent manquant séparément. 4 agents. Si coupure : "Lis docs/ux/onboarding-flow.md, quels agents restent ?"",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). S'ils n'existent pas, pose-moi les questions nécessaires pour les créer (étapes actuelles, taux d'abandon par étape si connus, persona principal, action d'activation) et génère-les avant de continuer.
 
 Optimise le parcours d'onboarding :
@@ -2171,7 +2171,7 @@ Critères de validation : l'agent créé passe le test unitaire (lit project-con
       {
         title:"Migrer la stack technique",
         agents:["fullstack","infrastructure","qa","data-analyst"],
-        quand:"Changement de framework, base de données, ou hébergement. Remplace [stack actuelle] et [stack cible] par tes technologies. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes.",
+        quand:"Changement de framework, base de données, ou hébergement. Remplace [stack actuelle] et [stack cible] par tes technologies. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes. Migration longue, 4 agents. Nommez cette session. Pour reprendre : "Lis docs/dev-decisions.md section migration, où en est-on ?"",
         prompt:`@fullstack Lis project-context.md (stack actuelle) et docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour le créer (features actuelles, dépendances, contraintes) et génère-le avant de continuer. Lis aussi docs/design/design-system.md si disponible (tokens et composants à migrer).
 
 Évalue la migration de [stack actuelle, ex : "Create React App"] vers [stack cible, ex : "Next.js App Router"] :
@@ -2196,7 +2196,7 @@ Critères de validation : chaque étape de migration a un critère de succès et
       {
         title:"Internationaliser le produit (i18n)",
         agents:["fullstack","copywriter","seo","legal"],
-        quand:"Expansion vers de nouveaux marchés/langues. Remplace [langue(s) cible(s)] par les langues visées. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        quand:"Expansion vers de nouveaux marchés/langues. Remplace [langue(s) cible(s)] par les langues visées. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes. Triple chaînage : si timeout, relancer l'agent manquant séparément. 4 agents, beaucoup de fichiers. Si coupure : "Lis docs/dev-decisions.md section i18n et src/locales/, où en est l'internationalisation ?"",
         prompt:`@fullstack Lis project-context.md (pays cibles, stack) et le code dans src/. Identifie toutes les strings hardcodées (y compris les messages d'erreur, les emails transactionnels, les meta tags).
 
 Prépare l'architecture i18n complète :
@@ -2220,7 +2220,7 @@ Critères de validation : toutes les strings sont externalisées (zéro texte ha
       {
         title:"Post-mortem incident production",
         agents:["infrastructure","qa","copywriter","data-analyst"],
-        quand:"Après un incident en production (downtime, bug critique, perte de données, dégradation de performance). À lancer dans les 24h suivant la résolution de l'incident.",
+        quand:"Après un incident en production (downtime, bug critique, perte de données, dégradation de performance). À lancer dans les 24h suivant la résolution de l'incident. 4 agents. Si coupure : "Lis docs/infra/post-mortem.md, quels agents n'ont pas contribué ?"",
         prompt:`@infrastructure Lis docs/infra/infrastructure.md (stack, monitoring en place) et project-context.md (produit, utilisateurs). Si aucun monitoring n'est configuré, signale-le comme action corrective prioritaire n.1.
 
 Analyse post-mortem complète :
@@ -2244,7 +2244,7 @@ Critères de validation : la cause racine est identifiée (pas juste le symptôm
       {
         title:"Collecter le feedback et planifier la v2",
         agents:["product-manager","data-analyst","ux","legal"],
-        quand:"Produit en production avec des utilisateurs actifs — pour transformer les retours en roadmap actionnable. Idéal après 1-2 mois de production avec > 50 utilisateurs actifs.",
+        quand:"Produit en production avec des utilisateurs actifs — pour transformer les retours en roadmap actionnable. Idéal après 1-2 mois de production avec > 50 utilisateurs actifs. 4 agents. Si coupure : "Lis docs/product/feedback-roadmap-v2.md, quels agents restent ?"",
         prompt:`@product-manager Lis docs/product/backlog.md, docs/analytics/kpi-framework.md et project-context.md (persona, North Star Metric). S'ils n'existent pas, pose-moi les questions pour les créer (features actuelles, KPIs, feedbacks reçus, persona principal) et génère-les avant de continuer. Si des données de feedback existent (tickets support, NPS, feature requests, reviews), colle-les dans le prompt — ce sont des données réelles, pas à inventer.
 
 Structure la collecte et la priorisation du feedback :
@@ -2268,7 +2268,7 @@ Critères de validation : chaque item de la roadmap est lié à des feedbacks r�
       {
         title:"Structurer les A/B tests de conversion",
         agents:["growth","data-analyst","fullstack","legal"],
-        quand:"Produit avec trafic suffisant (> 1000 visiteurs/semaine sur les pages cibles) — pour optimiser les taux de conversion avec des données, pas des opinions. Triple chaînage : si timeout, relancer l'agent manquant séparément.",
+        quand:"Produit avec trafic suffisant (> 1000 visiteurs/semaine sur les pages cibles) — pour optimiser les taux de conversion avec des données, pas des opinions. Triple chaînage : si timeout, relancer l'agent manquant séparément. 4 agents. Si coupure : "Lis docs/growth/ab-testing-plan.md, quels agents restent ?"",
         prompt:`@growth Lis docs/analytics/kpi-framework.md, docs/growth/funnel-audit.md et project-context.md (North Star Metric, persona). S'ils n'existent pas, pose-moi les questions pour les créer (North Star Metric, taux de conversion par étape, pages à plus fort trafic, trafic mensuel) et génère-les avant de continuer.
 
 Définis le framework d'expérimentation complet :
@@ -2318,7 +2318,7 @@ Critères de validation : toutes les métriques SaaS essentielles sont définies
       {
         title:"Veille concurrentielle automatisée",
         agents:["creative-strategy","data-analyst","growth"],
-        quand:"En continu, dès que le positionnement est défini. Connaître tes concurrents n'est pas optionnel — ignorer le marché c'est piloter les yeux fermés.",
+        quand:"En continu, dès que le positionnement est défini. Connaître tes concurrents n'est pas optionnel — ignorer le marché c'est piloter les yeux fermés. Tâche récurrente. Si coupure : "Lis docs/strategy/competitive-watch.md, quels agents restent ?"",
         prompt:`@creative-strategy Lis project-context.md (secteur, concurrents identifiés, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/competitive-benchmark.md s'ils existent. S'ils n'existent pas, pose-moi les questions : 3-5 concurrents directs, concurrents indirects, sur quels axes surveiller (pricing, features, contenu, levées de fonds, recrutement).
 
 Stratégie de veille concurrentielle :
