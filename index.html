@@ -1650,6 +1650,8 @@ Définis la stratégie de contenu complète :
 
 Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description, claims GEO).
 
+6. Automatisation : pipeline de génération IA des articles (prompts de génération calibrés sur les mots-clés, workflow de relecture, publication automatisée via API ou CMS). Un fondateur solo ne produit pas manuellement 2 contenus/semaine — l'IA le fait.
+
 Livrable : docs/copy/content-strategy.md.
 
 Puis @seo : lis docs/copy/content-strategy.md et optimise le calendrier — vérifie la cohérence mot-clé/contenu, la cannibalisation potentielle, et le maillage interne entre articles. Enrichis docs/seo/seo-strategy.md.
@@ -1675,7 +1677,7 @@ Définis la stratégie d'acquisition :
 2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, effort opérationnel (heures/semaine).
 3. Unit economics : CAC vs LTV par canal. LTV/CAC cible > 3x. Si le budget est 0, prioriser les canaux organiques (SEO, communautés, social, product-led).
 4. Budget allocation : répartition du budget entre les canaux, avec seuils de réallocation (si CAC canal A > X, basculer vers canal B).
-5. Quick wins (< 2 semaines) : les 3 actions d'acquisition à lancer immédiatement.
+5. Quick wins immédiats : les 3 actions d'acquisition à lancer en priorité (activables en < 48h avec les agents IA).
 6. Conformité : consentement marketing (RGPD), opt-in email, mentions obligatoires sur les publicités.
 
 Livrable : docs/growth/acquisition-plan.md.
@@ -1700,6 +1702,7 @@ Stratégie social media complète :
 5. KPIs par plateforme : reach, engagement rate, clicks, conversions. Benchmarks sectoriels.
 6. Split organique/paid : recommandation de budget paid par plateforme si budget > 0, objectifs par campagne.
 7. Outils : planning (Buffer, Hootsuite), analytics, création visuelle.
+8. Automatisation : workflow de génération et scheduling des posts via IA (prompts de génération par format, scheduling via API, repurposing automatique d'un format vers un autre). Un fondateur solo ne crée pas 15 posts/semaine manuellement.
 
 Livrable : docs/social/social-strategy.md.
 
@@ -1950,7 +1953,7 @@ Critères de validation : chaque séquence a un trigger, un timing et un objecti
       {
         title:"Revue croisée GO/NO-GO",
         agents:["reviewer","legal"],
-        quand:"Fin de sprint ou pré-lancement. La revue est le dernier filet de sécurité avant de lancer — ne pas la sauter. Lit tous les livrables — session potentiellement longue. Si coupure : 'Lis docs/reviews/cross-review-report.md, où en est l'audit ?'",
+        quand:"Fin de phase ou pré-lancement. La revue est le dernier filet de sécurité avant de lancer — ne pas la sauter. Lit tous les livrables — session potentiellement longue. Si coupure : 'Lis docs/reviews/cross-review-report.md, où en est l'audit ?'",
         prompt:`@reviewer Lis tous les livrables dans docs/. Si aucun livrable n'existe, signale-le et propose les étapes pour les créer. Audite la cohérence croisée sur ces axes :
 
 1. Brand ↔ Copy : le ton dans docs/copy/ est-il aligné avec docs/strategy/brand-platform.md et docs/copy/brand-voice.md ?
@@ -2002,11 +2005,14 @@ Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), les acti
 Audit qualité complet :
 1. Tests unitaires Vitest : couverture cible > 80%. Identifier les modules non couverts.
 2. Tests E2E Playwright : chaque parcours critique a au moins un test E2E. Scénarios : onboarding, conversion, paiement (si applicable), parcours d'erreur.
-3. Tracking validation : vérifier que chaque event du tracking-plan est implémenté et déclenché correctement.
-4. Lighthouse CI : scores cibles Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90.
-5. Sécurité : audit des dépendances (npm audit), headers HTTP, validation des inputs, CSRF protection.
-6. Accessibilité : navigation clavier, screen reader, contrastes, aria-labels sur les éléments interactifs.
-7. Responsive : tests sur mobile (375px), tablette (768px), desktop (1280px).
+3. Tracking validation : vérifier que chaque event du tracking-plan est implémenté et déclenché correctement (Grep statique + interception dynamique en E2E).
+4. Lighthouse CI : scores cibles Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90. Deux profils : desktop ET mobile (throttling 3G).
+5. Sécurité OWASP : XSS, CSRF, injection, auth bypass, rate limiting, headers HTTP, permissions horizontales (IDOR), audit dépendances (npm audit).
+6. Accessibilité WCAG 2.2 AA : navigation clavier complète, screen reader (structure ARIA, landmarks, headings), contrastes, touch targets ≥ 44px, zoom 200%.
+7. Responsive : tests fonctionnels complets (pas juste layout) sur mobile (375px), tablette (768px), desktop (1280px).
+8. Email : test des templates (rendu multi-client Gmail/Outlook, liens fonctionnels, delivrabilité SPF/DKIM).
+9. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
+10. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) et effort de correction estimé.
 
