@@ -635,6 +635,50 @@ Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Audi
 Critères de validation : chaque incohérence est documentée avec l'agent responsable et l'action corrective, tous les livrables scorent ≥ 4.5/5.`
       },
       {
+        title:"Audit ciblé sur un sujet (agents auto-sélectionnés)",
+        agents:["orchestrator","reviewer"],
+        quand:"Tu veux un audit approfondi sur un sujet spécifique (performance, sécurité, SEO, UX mobile, accessibilité, contenu, parcours client...). L'orchestrateur sélectionne les meilleurs agents pour auditer ce sujet. Remplace [SUJET] par ton sujet.",
+        prompt:`@orchestrator Audit ciblé sur le sujet : [SUJET].
+
+Étape 1 — Sélection des agents :
+Lis project-context.md. Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pour l'auditer. Justifie chaque sélection. Voici le mapping indicatif (adapte selon le sujet) :
+- Performance web → @infrastructure + @fullstack + @qa
+- SEO → @seo + @geo + @copywriter
+- Sécurité → @infrastructure + @fullstack + @legal
+- UX / Parcours client → @ux + @design + @qa + @copywriter
+- Contenu / Copy → @copywriter + @seo + @creative-strategy
+- Mobile → @ux + @design + @qa + @fullstack
+- Accessibilité → @qa + @ux + @design + @fullstack
+- Analytics / Tracking → @data-analyst + @fullstack + @qa
+- Juridique / RGPD → @legal + @infrastructure + @data-analyst
+- Design system → @design + @fullstack + @qa
+- Parcours client B2B → @ux + @copywriter + @reviewer + @product-manager
+- Acquisition / Growth → @growth + @seo + @social + @data-analyst
+Si le sujet est transversal ou ambigu, sélectionne les agents par pertinence et signale les chevauchements.
+
+Étape 2 — Lancement des audits :
+Lance chaque agent sélectionné en parallèle avec un prompt ciblé sur le sujet. Chaque agent doit :
+1. Lire les livrables existants dans son domaine (docs/ + src/)
+2. Évaluer l'état actuel du sujet sur une échelle 1-10 avec justification
+3. Lister les problèmes trouvés classés P0/P1/P2
+4. Proposer les corrections précises pour chaque problème
+5. Scorer chaque dimension sur les 5 critères standard (Complétude, Cohérence, Actionnabilité, Messages, Spécificité)
+
+Étape 3 — Synthèse croisée :
+Consolide les rapports des agents en un seul audit :
+- Score global du sujet (moyenne pondérée)
+- Top 5 des problèmes critiques (P0) avec agent responsable de la correction
+- Top 10 des améliorations majeures (P1)
+- Plan d'action ordonné par impact
+
+Étape 4 — Corrections :
+Si des problèmes P0 sont identifiés, lance immédiatement les agents concernés pour correction. Re-score après correction. Objectif : 9/10 minimum sur le sujet audité.
+
+Livrable : docs/reviews/audit-[sujet].md
+
+Critères de validation : chaque agent sélectionné a audité sa dimension, le score global est documenté, les P0 sont corrigés, le plan d'action P1 est priorisé.`
+      },
+      {
         title:"Pivoter mon projet",
         agents:["orchestrator","creative-strategy","data-analyst"],
         quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement. Le pivot doit être documenté pour ne pas perdre les acquis. Nommez cette session (claude -n 'pivot'). Pour reprendre : claude --resume puis 'Lis project-context.md et docs/orchestration-plan.md, continue le pivot.'",
