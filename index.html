@@ -2444,72 +2444,6 @@ Conformité : la veille concurrentielle doit rester dans le cadre légal — pas
 Critères de validation : au moins 3 concurrents directs cartographiés avec données réelles (pas inventées), les outils de monitoring sont configurés, les axes de différenciation sont documentés, le template de rapport mensuel est prêt, les alertes critiques sont définies, la visibilité LLM est surveillée.`
       }
     ]
-  },
-  {
-    category:"Sessions",
-    icon:"🔄",
-    items:[
-      {
-        title:"Clôturer ma session (avant de quitter)",
-        agents:["orchestrator"],
-        quand:"À utiliser AVANT de fermer Claude Code ou de changer de session. Sauvegarde l'état complet du projet pour que la prochaine session reprenne instantanément. Prend 1-2 minutes — évite 10 minutes de remise en contexte au retour.",
-        prompt:`@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde en 6 étapes :
-
-Étape 1 — Snapshot de l'état du projet :
-Lis project-context.md à la racine. Vérifie que le tableau 'Historique des interventions agents' est à jour. S'il manque des interventions réalisées pendant cette session (agents invoqués, livrables produits, décisions prises), ajoute-les maintenant via Edit. Pour chaque entrée ajoutée, remplis TOUTES les colonnes, notamment 'Pourquoi / Alternatives écartées'.
-
-Étape 2 — État du plan d'orchestration :
-Si docs/orchestration-plan.md existe, lis-le et mets-le à jour : marque les phases terminées pendant cette session, note l'état précis des phases en cours (pourcentage estimé, ce qui est fait, ce qui reste). Si le fichier n'existe pas et que le projet a avancé significativement, crée-le avec l'état actuel.
-
-Étape 3 — Inventaire des livrables de cette session :
-Fais un Glob sur docs/**/*.md et src/**/*. Identifie les fichiers créés ou modifiés pendant cette session (compare avec l'historique des interventions). Pour chaque livrable : Statut (complet / en cours / ébauche). Si en cours : note précisément où le travail s'est arrêté.
-
-Étape 4 — Détection des travaux en cours :
-Identifie tout travail non terminé : agents qui devaient être lancés mais ne l'ont pas été, livrables partiels, dépendances non résolues, incohérences détectées mais non corrigées.
-
-Étape 5 — Rédaction du mémo de reprise :
-Ajoute ou mets à jour la section '## Mémo de reprise — dernière session' dans project-context.md. Contenu : date de clôture, résumé de la session (3-5 lignes), travaux en cours avec état d'avancement, prochaines actions recommandées (2-3 tâches prioritaires avec agent et raison), blockers éventuels, commande de reprise suggérée (prompt exact à copier-coller).
-
-Étape 6 — Confirmation :
-Affiche un résumé structuré de la clôture :
-✓ Historique des interventions : à jour / X entrées ajoutées
-✓ Plan d'orchestration : à jour / créé / non applicable
-✓ Livrables cette session : X complets, Y en cours
-✓ Mémo de reprise : sauvegardé dans project-context.md
-→ Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
-→ Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
-
-Critères de validation : project-context.md est à jour (historique + mémo de reprise), orchestration-plan.md reflète l'état réel, aucun travail en cours n'est oublié, le prompt de reprise est prêt à copier-coller.`
-      },
-      {
-        title:"Démarrer une nouvelle session (reprise)",
-        agents:["orchestrator"],
-        quand:"Première action en ouvrant une nouvelle session Claude Code pour continuer un projet existant. Tip : lancez d'abord claude --resume 'nom' ou claude --continue pour récupérer le contexte conversationnel, puis collez ce prompt. Fonctionne que la session précédente ait été clôturée proprement ou non.",
-        prompt:`@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
-
-Étape 1 — Récupération du contexte :
-Lis project-context.md à la racine. Extrais et affiche : identité du projet (nom, secteur, stade), persona principal et KPI North Star, le mémo de reprise de la dernière session (section 'Mémo de reprise — dernière session'), les 5 dernières entrées du tableau 'Historique des interventions agents'.
-
-Étape 2 — État du plan :
-Si docs/orchestration-plan.md existe, lis-le. Reconstitue l'état d'avancement : phases terminées, phase en cours (et à quel point elle est avancée), phases restantes.
-
-Étape 3 — Inventaire des livrables :
-Fais un Glob sur docs/**/*.md et src/**/*. Pour chaque fichier trouvé : agent probable (déduit du dossier), statut estimé (complet > 30 lignes / en cours > 10 lignes / ébauche < 10 lignes). Lis les 5 premières lignes des livrables en cours.
-
-Étape 4 — Vérification de cohérence :
-Vérifie que le persona et le KPI North Star sont les mêmes partout. Si drift détecté, signale-le.
-
-Étape 5 — Diagnostic et plan d'action :
-Affiche un tableau d'avancement clair (terminé / en cours / à faire / problèmes).
-
-Étape 6 — Recommandations :
-Propose les 2-3 prochaines actions concrètes avec agent concerné, mission précise, pourquoi c'est la priorité, et estimation de complexité.
-
-Attends ma confirmation avant de lancer quoi que ce soit.
-
-Critères de validation : le diagnostic couvre 100% des livrables existants, aucune phase n'est oubliée, les recommandations sont justifiées par le contexte du projet (pas génériques), les travaux en cours de la session précédente sont identifiés.`
-      }
-    ]
   }
 ];
 
@@ -2786,15 +2720,78 @@ const CHANGELOG = [
       </ul>
     </div>
 
+    <!-- Prompt Clôturer -->
+    <div class="session-card" style="grid-column:1/-1">
+      <h3><span class="session-icon">&#9632;</span> Clôturer ma session (avant de quitter)</h3>
+      <p>Sauvegarde l'état complet du projet pour que la prochaine session reprenne instantanément. <strong>1-2 min</strong> — évite 10 min de remise en contexte au retour.</p>
+      <div class="install-prompt" style="margin-top:8px">
+        <button class="install-btn-copy" data-text="@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde en 6 étapes :
+
+Étape 1 — Snapshot de l'état du projet :
+Lis project-context.md à la racine. Vérifie que le tableau 'Historique des interventions agents' est à jour. S'il manque des interventions réalisées pendant cette session, ajoute-les maintenant via Edit.
+
+Étape 2 — État du plan d'orchestration :
+Si docs/orchestration-plan.md existe, lis-le et mets-le à jour. Si le fichier n'existe pas et que le projet a avancé, crée-le.
+
+Étape 3 — Inventaire des livrables de cette session :
+Fais un Glob sur docs/**/*.md et src/**/*. Pour chaque livrable : Statut (complet / en cours / ébauche). Si en cours : note où le travail s'est arrêté.
+
+Étape 4 — Détection des travaux en cours :
+Identifie tout travail non terminé : agents non lancés, livrables partiels, dépendances non résolues, incohérences non corrigées.
+
+Étape 5 — Rédaction du mémo de reprise :
+Ajoute ou mets à jour la section 'Mémo de reprise — dernière session' dans project-context.md : date, résumé, travaux en cours, prochaines actions, blockers, commande de reprise.
+
+Étape 6 — Confirmation :
+Affiche un résumé structuré de la clôture.">Copier</button>
+        <em>@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde en 6 étapes :<br><br>
+        <strong>Étape 1</strong> — Snapshot de l'état du projet : vérifie que le tableau "Historique des interventions agents" est à jour.<br>
+        <strong>Étape 2</strong> — État du plan d'orchestration : met à jour docs/orchestration-plan.md.<br>
+        <strong>Étape 3</strong> — Inventaire des livrables : Glob docs/ et src/, statut de chaque fichier.<br>
+        <strong>Étape 4</strong> — Détection des travaux en cours : agents non lancés, livrables partiels, dépendances.<br>
+        <strong>Étape 5</strong> — Rédaction du mémo de reprise : date, résumé, travaux en cours, prochaines actions, blockers.<br>
+        <strong>Étape 6</strong> — Confirmation : résumé structuré de la clôture.</em>
+      </div>
+    </div>
+
+    <!-- Prompt Démarrer -->
+    <div class="session-card" style="grid-column:1/-1">
+      <h3><span class="session-icon">&#9654;</span> Démarrer une nouvelle session (reprise)</h3>
+      <p>Diagnostic complet + plan d'action. Lancez d'abord <code>claude --resume 'nom'</code> puis collez ce prompt. Fonctionne que la session précédente ait été clôturée proprement ou non.</p>
+      <div class="install-prompt" style="margin-top:8px">
+        <button class="install-btn-copy" data-text="@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
+
+Étape 1 — Récupération du contexte :
+Lis project-context.md. Extrais : identité du projet, persona principal, KPI North Star, mémo de reprise, 5 dernières entrées de l'historique.
+
+Étape 2 — État du plan :
+Si docs/orchestration-plan.md existe, reconstitue l'état d'avancement : phases terminées, en cours, restantes.
+
+Étape 3 — Inventaire des livrables :
+Glob docs/**/*.md et src/**/*. Pour chaque fichier : agent probable, statut estimé. Lis les 5 premières lignes des livrables en cours.
+
+Étape 4 — Vérification de cohérence :
+Vérifie que le persona et le KPI North Star sont les mêmes partout. Si drift détecté, signale-le.
+
+Étape 5 — Diagnostic et plan d'action :
+Affiche un tableau d'avancement clair (terminé / en cours / à faire / problèmes).
+
+Étape 6 — Recommandations :
+Propose les 2-3 prochaines actions concrètes avec agent concerné, mission précise, priorité et complexité.
+
+Attends ma confirmation avant de lancer quoi que ce soit.">Copier</button>
+        <em>@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.<br><br>
+        <strong>Étape 1</strong> — Récupération du contexte : identité projet, persona, KPI, mémo de reprise, historique.<br>
+        <strong>Étape 2</strong> — État du plan : phases terminées, en cours, restantes.<br>
+        <strong>Étape 3</strong> — Inventaire des livrables : agent probable, statut estimé par fichier.<br>
+        <strong>Étape 4</strong> — Vérification de cohérence : drift persona/KPI.<br>
+        <strong>Étape 5</strong> — Diagnostic et plan d'action : tableau d'avancement.<br>
+        <strong>Étape 6</strong> — Recommandations : 2-3 prochaines actions concrètes. Attends confirmation.</em>
+      </div>
+    </div>
+
     <div class="session-card" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(232,255,0,0.05),rgba(232,255,0,0.02));border-color:rgba(232,255,0,0.2)">
-      <h3><span class="session-icon">&#128203;</span> Prompts de gestion de session</h3>
-      <p>Deux prompts dédiés sont disponibles dans la <a href="#prompts" style="color:var(--accent)">Bibliothèque de Prompts</a> (catégorie <strong>Sessions</strong>) :</p>
-      <table class="session-table">
-        <tr><th>Prompt</th><th>Quand l'utiliser</th></tr>
-        <tr><td><strong>Clôturer ma session</strong></td><td>Avant de quitter — sauvegarde l'état complet, crée un mémo de reprise</td></tr>
-        <tr><td><strong>Démarrer une nouvelle session</strong></td><td>En ouvrant Claude Code — diagnostic complet + plan d'action</td></tr>
-      </table>
-      <p style="margin-top:12px;color:var(--text-muted);font-size:13px"><strong>Workflow recommandé :</strong> clôturez avec le premier prompt → fermez Claude → rouvrez avec <code>claude --resume</code> → collez le second prompt.</p>
+      <p style="text-align:center;color:var(--text-muted);font-size:13px;margin:0"><strong>Workflow recommandé :</strong> clôturez avec le premier prompt → fermez Claude → rouvrez avec <code>claude --resume</code> → collez le second prompt.</p>
     </div>
 
   </div>
