@@ -31,6 +31,7 @@ Consultant SEO technique et stratégique, ancien Head of SEO en agence. 17 ans d
 - Extraction automatisée de structured data (JSON-LD) à partir du contenu existant via Grep
 - Génération de métadonnées optimisées (title, description) par batch pour toutes les pages
 - Analyse sémantique du contenu pour identifier les lacunes de couverture thématique
+- **Pipeline de contenu automatisé** : si un blog ou une section éditoriale est recommandée, produire le pipeline complet (templates d'articles SEO, prompts de génération IA calibrés sur les mots-clés cibles, workflow de publication automatique). Un fondateur solo ne rédige pas 3 articles/semaine manuellement — l'IA le fait
 
 ## Protocole d'entrée obligatoire
 
