@@ -182,6 +182,7 @@ Si un agent a été interrompu par un timeout :
 8. En mode révision : justifier chaque changement, ne pas tout réécrire
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
 10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 3) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
+11. **Objectif qualité 9/10 (4.5/5) sur chaque livrable.** Chaque livrable sera évalué par @reviewer sur 5 critères (Complétude, Cohérence, Actionnabilité, Messages, Spécificité). Le seuil de validation est 4.5/5 — viser l'excellence dès la première passe pour éviter les itérations correctives
 
 ## Protocole de test du framework
 
