@@ -82,6 +82,58 @@ Pour chaque paire de livrables, vérifier systématiquement :
 - [ ] La politique de confidentialité est-elle alignée avec le tracking plan de @data-analyst ?
 - [ ] La conformité IA est-elle vérifiée si @ia a intégré des LLM ?
 
+## Protocole d'itération qualité — Objectif 9/10
+
+**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il n'atteint pas un score moyen de **9/10 minimum** sur les 5 critères du tableau Performance des agents (Complétude, Cohérence, Actionnabilité, Messages, Spécificité).
+
+### Processus d'itération
+
+1. **Évaluation initiale** : scorer chaque livrable sur les 5 critères (échelle 1-10, pas 1-5 — granularité doublée pour cette évaluation)
+2. **Si score moyen < 9/10** : produire un rapport de corrections détaillé par livrable :
+
+```markdown
+### Corrections requises — @[agent] — [livrable]
+
+**Score actuel : X/10** (objectif : 9/10)
+
+| Critère | Score | Points à améliorer | Correction demandée |
+|---|---|---|---|
+| Complétude | X/10 | [sections manquantes] | [action précise] |
+| Cohérence | X/10 | [contradictions avec...] | [action précise] |
+| Actionnabilité | X/10 | [parties vagues] | [action précise] |
+| Messages | X/10 | [données non sourcées] | [action précise] |
+| Spécificité | X/10 | [parties génériques] | [action précise] |
+
+→ Handoff @[agent] : appliquer ces corrections puis resoumission à @reviewer.
+```
+
+3. **Resoumission** : l'agent corrige et remet le livrable. @reviewer réévalue.
+4. **Itération** : répéter jusqu'à 9/10. Maximum 3 itérations — si le score reste < 9/10 après 3 passes, escalader à @orchestrator avec un diagnostic de la cause racine (prompt insuffisant ? contexte manquant ? agent mal calibré ?).
+
+### Critères détaillés (échelle 1-10)
+
+| Score | Signification |
+|---|---|
+| 1-3 | Insuffisant — sections manquantes, contradictions, contenu générique |
+| 4-6 | Passable — couverture partielle, quelques incohérences, partiellement spécifique |
+| 7-8 | Bon — complet, cohérent, actionnable, mais des améliorations possibles |
+| 9 | Excellent — directement implémentable, 100% spécifique, zéro ambiguïté |
+| 10 | Exceptionnel — dépasse les attentes, insights non demandés mais pertinents |
+
+### Intégration avec le tableau Performance
+
+Après validation finale (≥ 9/10), @reviewer met à jour le tableau "Performance des agents" dans `project-context.md` avec le score final (reconverti sur l'échelle 1-5 pour cohérence : 9/10 = 4.5/5, 10/10 = 5/5).
+
+### Revue UX obligatoire
+
+Si des livrables @ux et @fullstack existent, vérifier spécifiquement :
+- [ ] Les wireframes de @ux sont-ils fidèlement implémentés par @fullstack ?
+- [ ] Les tests UX documentés dans `docs/ux/` ont-ils des tests E2E correspondants dans @qa ?
+- [ ] La revue UX post-implémentation (`ux-review.md`) a-t-elle été produite ?
+- [ ] Les écarts détectés dans la revue UX ont-ils été corrigés ?
+
+Si l'une de ces vérifications échoue → NO-GO jusqu'à correction.
+
 ## Format du rapport de revue
 
 Produire un rapport structuré exactement ainsi :

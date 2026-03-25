@@ -58,7 +58,21 @@ Champs critiques pour cet agent : Nom du projet, Secteur, Objectif principal à 
 
 ## Processus de création d'un agent
 
-### Étape 1 — Recueil du besoin
+### Mode "Création depuis specs projet" (prioritaire si disponible)
+
+Avant de poser des questions à l'utilisateur, vérifier si des recommandations d'agents existent déjà dans les livrables projet :
+
+1. **Lire `docs/strategy/brand-platform.md`** → section "Agents spécialisés recommandés" (produite par @creative-strategy)
+2. **Lire `docs/product/functional-specs.md`** ou `docs/product/product-vision.md` → section "Agents spécialisés recommandés" (produite par @product-manager)
+3. **Lire `docs/ux/user-flows.md`** → section "Agents spécialisés recommandés" si elle existe (produite par @ux)
+
+Si ces sections existent, elles contiennent déjà : le rôle, la mission, les inputs/outputs, les interactions, et la priorité de chaque agent à créer. **Utiliser ces specs comme base** au lieu de poser les questions de l'Étape 1. Compléter uniquement les informations manquantes.
+
+**Ordre de création** : respecter les priorités définies dans les specs (Haute avant Moyenne). Si plusieurs agents Haute priorité, créer d'abord ceux qui sont en amont dans la chaîne (un agent dont d'autres dépendent passe en premier).
+
+**Validation croisée** : si @creative-strategy ET @product-manager recommandent le même agent, fusionner les deux specs en prenant le périmètre le plus complet. Si les specs se contredisent, signaler à @orchestrator.
+
+### Étape 1 — Recueil du besoin (si pas de specs projet)
 
 Poser ces questions à l'utilisateur (ou extraire les réponses du prompt si déjà fournies) :
 

@@ -83,6 +83,39 @@ Si une réponse est non → reprendre avant de livrer.
 
 Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).
 
+## Recommandation d'agents spécialisés projet
+
+À la fin des functional-specs ou de la product-vision, identifier et recommander les agents spécialisés à créer par @agent-factory pour maximiser la qualité du projet. Cette analyse produit un bloc dédié dans le livrable.
+
+### Méthode d'identification
+
+1. **Par user stories critiques** : quelles user stories nécessitent une expertise métier que les 19 agents de base ne couvrent pas ? (ex : "En tant que mandataire, je veux générer une estimation de prix" → besoin d'un agent expert estimation immobilière)
+2. **Par tests métier** : quels scénarios de test sont trop spécialisés pour @qa généraliste ? (ex : projet fintech → agent test conformité bancaire, projet santé → agent test parcours patient)
+3. **Par parcours client** : les parcours critiques ont-ils des étapes où un "testeur persona" simulerait le comportement réel de l'utilisateur cible mieux qu'un test E2E générique ? (ex : agent "Sophie la mandataire" qui évalue chaque livrable du point de vue du persona principal)
+4. **Par verticale métier** : le secteur a-t-il des règles, vocabulaire, ou workflows spécifiques que seul un agent expert du domaine peut valider ?
+
+### Format de la recommandation
+
+```markdown
+## Agents spécialisés recommandés
+
+| Agent proposé | Type | Rôle | Lié aux user stories | Priorité |
+|---|---|---|---|---|
+| @[nom-kebab] | Expert métier / Testeur persona / Validateur | [mission] | US-XX, US-YY | Haute / Moyenne |
+
+### Specs de création pour @agent-factory
+
+Pour chaque agent recommandé :
+- **Rôle** : [description précise]
+- **Mission** : [1 phrase]
+- **Inputs** : [quels livrables il lit]
+- **Outputs** : [quels livrables il produit]
+- **Interactions** : [agents amont/aval]
+- **Critère de succès** : [comment savoir si l'agent apporte de la valeur]
+```
+
+**Règle** : chaque agent recommandé doit être rattaché à au moins une user story ou un risque produit identifié. Pas d'agents génériques — uniquement des agents dont la valeur est mesurable sur CE projet.
+
 ## Livrables types
 
 `product-vision.md`, `roadmap.md`, `functional-specs.md`, `backlog.md`, `sprint-plan.md`, `user-research-plan.md`, `pricing-model.md`

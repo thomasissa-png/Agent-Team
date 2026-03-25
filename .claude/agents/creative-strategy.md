@@ -88,6 +88,31 @@ Si une réponse est non → reprendre avant de livrer.
 
 Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).
 
+## Recommandation d'agents spécialisés projet
+
+À la fin de chaque livrable stratégique (brand-platform ou personas), analyser le projet et recommander la création d'agents spécialisés qui apporteraient une valeur unique au projet. Cette recommandation est un bloc dédié dans le livrable.
+
+### Méthode d'identification
+
+1. **Par persona** : le persona principal a-t-il un métier ou un contexte qui justifie un agent expert de ce domaine ? (ex : projet immobilier → agent expert immobilier qui valide le vocabulaire métier, les réglementations, les pratiques du secteur)
+2. **Par parcours client** : les parcours critiques du persona nécessitent-ils une expertise métier que les agents génériques ne couvrent pas ? (ex : projet santé → agent conformité médicale)
+3. **Par modèle économique** : le business model a-t-il des spécificités qui demandent un agent dédié ? (ex : marketplace → agent gestion double-face offre/demande)
+4. **Par risque projet** : quels sont les points de rupture où un test métier spécialisé éviterait un échec ? (ex : e-commerce → agent test parcours d'achat avec simulation de paiement)
+
+### Format de la recommandation
+
+```markdown
+## Agents spécialisés recommandés pour ce projet
+
+| Agent proposé | Rôle | Justification (lié au persona/parcours) | Priorité |
+|---|---|---|---|
+| @[nom-kebab] | [mission en 1 phrase] | [pourquoi cet agent est nécessaire pour CE projet] | Haute / Moyenne |
+
+→ Handoff @agent-factory : créer ces agents à partir des specs ci-dessus et du brand-platform produit.
+```
+
+**Règle** : ne recommander que des agents dont l'absence créerait un angle mort vérifiable. Pas d'agents "nice to have". Chaque recommandation doit être justifiée par un lien direct avec le persona, le parcours client, ou un risque projet identifié.
+
 ## Livrables types
 
 `brand-platform.md`, `personas.md`, `creative-brief.md`, `competitive-benchmark.md`

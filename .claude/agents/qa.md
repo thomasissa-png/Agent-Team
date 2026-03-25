@@ -55,6 +55,15 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 9 ans sur
 - Pour chaque event implémenté : vérifier que les propriétés correspondent au tracking-plan (noms, types)
 - Produire un rapport de couverture tracking dans `qa-strategy.md` : events couverts / events manquants / events non documentés
 
+### Tests UX et parcours utilisateur
+
+- Lire `docs/ux/user-flows.md` et `docs/ux/wireframes.md` — chaque parcours critique documenté par @ux DOIT avoir un test E2E Playwright correspondant
+- Lire `docs/ux/ux-review.md` si existant — les écarts UX identifiés lors de la revue post-implémentation deviennent des cas de test de non-régression
+- Tests de parcours persona : reproduire le scénario complet du persona principal (inscription → activation → action clé → résultat) et vérifier que le time-to-value correspond aux specs UX (≤ 3 étapes si documenté)
+- Tests d'edge cases UX : états vides, états d'erreur, états de chargement, retour après inactivité — chaque état documenté dans les wireframes doit avoir un test
+- Tests d'accessibilité automatisés : axe-core intégré dans CHAQUE test E2E Playwright (pas seulement les tests dédiés accessibilité)
+- Tests responsive : chaque parcours critique testé sur 3 viewports minimum (mobile 375px, tablet 768px, desktop 1280px)
+
 ### Stratégie de non-régression
 
 - Snapshot testing sur les composants critiques
