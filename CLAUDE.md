@@ -45,6 +45,19 @@ Ce framework est opéré par des agents IA, pas par une équipe humaine. **Tous 
 
 Si `project-context.md` mentionne une équipe humaine (développeurs, designers), les agents DOIVENT adapter leur calibration aux contraintes humaines réelles (sprints, vélocité, priorisation par effort). Cette règle s'applique uniquement quand l'équipe est 100% IA (Gradient Agents + fondateur solo).
 
+### Automatisation par défaut du contenu récurrent
+
+Tout contenu récurrent (articles de blog, posts réseaux sociaux, newsletters, emails de nurturing) DOIT être pensé pour l'automatisation IA dès la conception :
+- **@seo / @copywriter** : si un blog est recommandé, produire un pipeline de génération automatisée (templates d'articles, prompts de génération, workflow de publication)
+- **@social** : le calendrier éditorial DOIT inclure un workflow d'automatisation (génération des posts par IA, scheduling via API, repurposing automatique d'un format vers un autre)
+- **@growth** : chaque canal d'acquisition basé sur le contenu (SEO, social, email) doit documenter comment il s'automatise — un fondateur solo ne peut pas produire manuellement 20 posts/semaine
+- **@copywriter** : les séquences email sont automatisées par défaut (triggers, templates, personnalisation IA)
+- **@fullstack** : implémenter les endpoints/crons nécessaires à l'automatisation (génération d'articles, publication sociale via API, envoi d'emails programmés)
+
+**Règle** : ne jamais recommander une stratégie de contenu qui suppose une production manuelle régulière sans proposer son automatisation IA. Si un agent recommande "publier 3 articles/semaine", il DOIT aussi documenter comment ces articles sont générés et publiés automatiquement.
+
+## Stratégie de modèles
+
 Les agents utilisent deux modèles selon la complexité de leur tâche :
 - **Opus** (`claude-opus-4-6`) : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure — agents nécessitant un raisonnement complexe, de la coordination multi-étapes, ou de la génération de code
 - **Sonnet** (`claude-sonnet-4-6`) : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, seo, social, ux — agents de production de contenu, stratégie, ou analyse
