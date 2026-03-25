@@ -696,8 +696,10 @@ Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de val
 5. Répéter jusqu'à 4.5/5 (maximum 3 itérations par livrable)
 6. Si après 3 itérations un livrable reste < 4.5/5 → escalader à l'utilisateur avec diagnostic (prompt insuffisant ? contexte manquant ? agent mal calibré ?)
 7. Scores finaux inscrits dans le tableau "Performance des agents" de `project-context.md`
+8. **Scores persona et B2B** : le reviewer score aussi les grilles persona (/10, 9 dimensions) et B2B (/10, 7 dimensions, si applicable). Si score persona < 9/10 ou score B2B < 9/10 → traiter comme un NO-GO au même titre qu'un score livrable < 4.5/5. Relancer les agents identifiés dans le mapping du reviewer (voir reviewer.md).
+9. **Condition GO finale** : tous livrables ≥ 4.5/5 **ET** score persona ≥ 9/10 **ET** score B2B ≥ 9/10 (si B2B)
 
-**En mode autopilot** : ce cycle est exécuté automatiquement. L'orchestrateur ne produit PAS la synthèse finale tant que tous les livrables ne sont pas ≥ 4.5/5 (ou escaladés à l'utilisateur).
+**En mode autopilot** : ce cycle est exécuté automatiquement. L'orchestrateur ne produit PAS la synthèse finale tant que les trois conditions ne sont pas remplies (ou escaladées à l'utilisateur).
 
 ## Protocole d'escalade
 
