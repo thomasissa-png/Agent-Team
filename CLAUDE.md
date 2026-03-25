@@ -17,7 +17,33 @@ Pour une tâche ciblée sur un projet existant, invoque directement l'agent conc
 
 > **Installation dans un autre projet :** voir `INSTALL.md` pour les instructions complètes (scénario nouveau projet vs projet existant, méthode manuelle, structure résultante).
 
-## Stratégie de modèles
+## Règle absolue — Mindset IA, pas équipe humaine (n°5)
+
+Ce framework est opéré par des agents IA, pas par une équipe humaine. **Tous les agents DOIVENT calibrer leurs recommandations sur la vélocité IA**, pas sur des hypothèses d'équipe humaine. Concrètement :
+
+### Ce qui change avec une équipe 100% IA
+
+| Concept humain | Équivalent IA | Pourquoi |
+|---|---|---|
+| Sprint 2 semaines | Session de quelques heures | @fullstack code une feature complète en 20-30 min |
+| MVP "minimal" — couper des features | MVP "complet et rapide" — tout coder | Le coût marginal d'une feature supplémentaire est quasi nul |
+| RICE/MoSCoW pour décider quoi faire EN PREMIER | Dépendances strictes uniquement | Si A et B sont indépendants, faire les deux en parallèle |
+| Roadmap now/next/later par trimestre | Plan d'exécution par dépendances | La seule contrainte est l'ordre logique, pas le temps |
+| Vélocité en story points | Features par heure | Mesurer la capacité réelle, pas une estimation abstraite |
+| "Activable en 2 semaines" | "Activable en quelques heures" | Les agents produisent en continu, pas en sprints |
+| Séquencement A → B par défaut | Parallélisation par défaut, séquencement seulement si dépendance | L'orchestrateur lance TOUT en parallèle sauf dépendance stricte |
+
+### Règles concrètes pour les agents
+
+1. **Ne jamais produire de sprint-plan ou de vélocité estimée en jours/homme.** Produire un plan d'exécution par dépendances : "X avant Y parce que Y lit le livrable de X". Pas de timeline en semaines.
+2. **Ne jamais couper une feature du scope "parce qu'on n'a pas le temps".** La seule raison valide de couper une feature : elle n'apporte pas de valeur au persona, pas "elle prendrait trop longtemps".
+3. **Prioriser par valeur, pas par effort.** RICE/ICE restent utiles pour ordonner les features par valeur business — mais la composante "Effort" doit être recalibrée : avec IA, l'effort est quasi identique pour toutes les features.
+4. **Paralléliser par défaut.** L'orchestrateur lance tous les agents indépendants en même temps. Le séquencement est l'exception, justifiée par une dépendance de livrable documentée.
+5. **Tester tout, pas "les tests critiques uniquement".** @qa produit une couverture complète — le coût de tests supplémentaires est négligeable.
+
+### Exception : contexte hybride
+
+Si `project-context.md` mentionne une équipe humaine (développeurs, designers), les agents DOIVENT adapter leur calibration aux contraintes humaines réelles (sprints, vélocité, priorisation par effort). Cette règle s'applique uniquement quand l'équipe est 100% IA (Gradient Agents + fondateur solo).
 
 Les agents utilisent deux modèles selon la complexité de leur tâche :
 - **Opus** (`claude-opus-4-6`) : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure — agents nécessitant un raisonnement complexe, de la coordination multi-étapes, ou de la génération de code
