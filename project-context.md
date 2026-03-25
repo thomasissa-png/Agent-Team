@@ -56,6 +56,7 @@ Mission actuelle : audit exhaustif des 59 prompts de la bibliotheque par les 18 
 | agent-factory | 2026-03-25 | .claude/agents/agent-factory.md | Ajout mode "Creation depuis specs projet" : lit automatiquement les recommandations de creative-strategy, product-manager et ux au lieu de poser des questions. Fusion si recommandations croisees. | Complement logique de la recommandation d'agents : l'agent-factory doit pouvoir consommer automatiquement les specs produites par les agents amont. |
 | qa + reviewer | 2026-03-25 | .claude/agents/qa.md, reviewer.md | QA : ajout tests UX/parcours + tests multi-viewport fonctionnels (pas juste responsive). Reviewer : protocole iteration 4.5/5 + checklist validation mobile/desktop complete. | L'utilisateur a identifie des manques : tests UX absents, pas d'iteration qualite, pas de validation experience mobile vs desktop complete. |
 | index.html | 2026-03-25 | index.html | Mise a jour 5 prompts "Tout en un" : Lancer projet (ajout phase agent-factory + revue UX + gate 4.5/5), Check-up complet (boucle iteration + chaine UX), Positionnement (recommandation agents), Parcours UX (criteres validation + recommandation agents), Specs fonctionnelles (recommandation agents + liaison QA/UX). | Les prompts frontend doivent refleter les nouvelles capacites des agents pour que les utilisateurs en beneficient automatiquement. |
+| corrections M2/M5/C8 | 2026-03-25 | creative-strategy.md, product-manager.md, data-analyst.md, CLAUDE.md | M2 : format recommandation agents harmonise a 5 colonnes + specs complementaires optionnelles dans les deux agents. M5 : note invocation parallele conditionnelle ajoutee dans data-analyst.md. C8 : double scoring documente dans CLAUDE.md (orchestrateur <3 = relance immediate, reviewer 4.5/5 = iteration fin de run). | Corrections MAJEURES restantes du framework-consistency-audit.md. Format unifie pour faciliter la fusion par agent-factory. Double scoring pour clarifier qui fait quoi et eviter ambiguite. |
 
 ---
 
@@ -83,9 +84,9 @@ Session majeure d'amelioration du framework et de preparation du projet ImmoCrew
 | index.html | Complet | 5 prompts "Tout en un" mis a jour |
 
 ### Travaux en cours / non termines
-1. **Corrections M2 (MAJEUR)** : harmonisation du format de recommandation d'agents entre @creative-strategy (4 colonnes) et @product-manager (5 colonnes). Non bloquant — @agent-factory sait fusionner les deux formats.
-2. **Correction M5 (MAJEUR)** : ajout note dans data-analyst.md sur l'invocation parallele conditionnelle avec @product-manager. Non bloquant.
-3. **Correction C8 (MAJEUR)** : clarifier la responsabilite scoring (orchestrator = controle rapide <3, reviewer = scoring final 4.5/5). Partiellement implicite dans orchestrator.md mais pas explicitement documente.
+1. ~~**Corrections M2 (MAJEUR)**~~ : FAIT — format harmonise a 5 colonnes dans creative-strategy.md et product-manager.md.
+2. ~~**Correction M5 (MAJEUR)**~~ : FAIT — note invocation parallele ajoutee dans data-analyst.md.
+3. ~~**Correction C8 (MAJEUR)**~~ : FAIT — double scoring documente dans CLAUDE.md (orchestrateur <3 + reviewer 4.5/5).
 4. **Projet ImmoCrew** : project-context-immocrew.md est pret mais le projet n'est pas encore lance. Necessera une nouvelle session dediee sur un nouveau repo/branche.
 
 ### Prochaines actions recommandees

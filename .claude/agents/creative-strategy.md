@@ -104,9 +104,13 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 ```markdown
 ## Agents spécialisés recommandés pour ce projet
 
-| Agent proposé | Rôle | Justification (lié au persona/parcours) | Priorité |
-|---|---|---|---|
-| @[nom-kebab] | [mission en 1 phrase] | [pourquoi cet agent est nécessaire pour CE projet] | Haute / Moyenne |
+| Agent proposé | Type | Rôle | Justification (lié au persona/parcours) | Priorité |
+|---|---|---|---|---|
+| @[nom-kebab] | Expert métier / Testeur persona / Validateur | [mission en 1 phrase] | [pourquoi cet agent est nécessaire pour CE projet] | Haute / Moyenne |
+
+### Specs complémentaires pour @agent-factory (par agent) *(optionnel)*
+- **Inputs/Outputs** : quels livrables il lit → quels livrables il produit
+- **Critère de succès** : comment mesurer que l'agent apporte de la valeur
 
 → Handoff @agent-factory : créer ces agents à partir des specs ci-dessus et du brand-platform produit.
 ```

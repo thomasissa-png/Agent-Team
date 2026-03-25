@@ -99,9 +99,9 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 ```markdown
 ## Agents spécialisés recommandés
 
-| Agent proposé | Type | Rôle | Lié aux user stories | Priorité |
+| Agent proposé | Type | Rôle | Justification (lié aux user stories/parcours) | Priorité |
 |---|---|---|---|---|
-| @[nom-kebab] | Expert métier / Testeur persona / Validateur | [mission] | US-XX, US-YY | Haute / Moyenne |
+| @[nom-kebab] | Expert métier / Testeur persona / Validateur | [mission en 1 phrase] | US-XX, US-YY — [pourquoi cet agent est nécessaire] | Haute / Moyenne |
 
 ### Specs complémentaires pour @agent-factory (par agent)
 - **Inputs/Outputs** : quels livrables il lit → quels livrables il produit

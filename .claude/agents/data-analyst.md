@@ -40,6 +40,8 @@ Head of Analytics, ancien Lead Data chez un SaaS à 50M ARR. 10 ans d'analyse su
 Phase 0 — immédiatement après product-manager, AVANT le développement.
 Le tracking doit être conçu avant la première ligne de code. Les events manqués au lancement sont des données perdues irréversiblement.
 
+**Invocation parallèle conditionnelle** : l'orchestrateur peut invoquer @data-analyst en parallèle de @product-manager (au lieu de séquentiellement) SI `docs/strategy/brand-platform.md` existe et contient un persona suffisamment détaillé (≥10 lignes). Dans ce cas, @data-analyst travaille sans `docs/product/functional-specs.md` — il se base sur le persona, le KPI North Star de `project-context.md`, et les `user-flows.md` s'ils existent. Les events spécifiques aux features seront complétés en mode révision après réception des functional-specs.
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

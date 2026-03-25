@@ -216,9 +216,14 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 
 Un `project-context.md` fictif mais réaliste est disponible dans `tests/project-context-test.md` (projet PulseBoard — analytics marketing pour PME). Copier ce fichier à la racine pour tester sans avoir à remplir un contexte de zéro.
 
-### Scoring automatique post-livrable
+### Scoring automatique post-livrable — Deux niveaux de contrôle qualité
 
-Après chaque livrable produit par un agent, l'orchestrateur (ou le reviewer) DOIT évaluer et remplir le tableau "Performance des agents" dans `project-context.md` selon ces critères :
+Le scoring s'effectue en **deux temps** avec des responsabilités distinctes :
+
+1. **Scoring rapide par l'orchestrateur** (après chaque phase) : contrôle rapide des 5 critères. Si un critère est **<3/5** → relance corrective immédiate de l'agent avant de passer à la phase suivante. Objectif : éliminer les livrables insuffisants au fil de l'eau.
+2. **Scoring final par @reviewer** (en fin de run, Étape 7) : évaluation approfondie sur l'échelle 1-5 avec demi-points. Seuil de validation : **4.5/5 minimum** par livrable. Boucle d'itération si besoin (max 3 passes). Les scores finaux sont inscrits dans le tableau "Performance des agents".
+
+Après chaque livrable produit par un agent, l'orchestrateur DOIT évaluer rapidement et remplir le tableau "Performance des agents" dans `project-context.md` selon ces critères :
 
 | Critère | 1 (Échec) | 3 (Acceptable) | 5 (Excellent) |
 |---|---|---|---|
@@ -228,7 +233,8 @@ Après chaque livrable produit par un agent, l'orchestrateur (ou le reviewer) DO
 | **Messages** | Silencieux sur les manques, a inventé | A signalé certains manques | A signalé tous les manques, hypothèses marquées |
 | **Spécificité** | Générique, applicable à n'importe quel projet | Partiellement spécifique | 100% taillé pour ce projet, cite le persona/KPI |
 
-**Règle** : un agent avec un score moyen <3 sur un critère doit être relancé avec un prompt correctif.
+**Règle (orchestrateur)** : un agent avec un score moyen <3 sur un critère doit être relancé immédiatement avec un prompt correctif, sans attendre la fin du run.
+**Règle (reviewer)** : en fin de run, tout livrable avec un score moyen <4.5/5 déclenche une boucle d'itération (max 3 passes). Voir `orchestrator.md` Étape 7.
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 
