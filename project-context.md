@@ -60,56 +60,60 @@ Mission actuelle : audit exhaustif des 59 prompts de la bibliotheque par les 18 
 | contrainte BDD | 2026-03-25 | fullstack.md, infrastructure.md, orchestrator.md, qa.md | PostgreSQL integre a Replit impose comme standard BDD. Supabase retire comme option DB par defaut. Prisma ORM comme couche d'acces. Toutes les references Supabase DB remplacees dans les 4 agents concernes. | Decision utilisateur : utiliser exclusivement le PostgreSQL natif de Replit pour reduire les dependances externes et les couts. Alternative ecartee : Supabase (service externe, ajout de complexite et de cout inutile quand Replit fournit PostgreSQL nativement). |
 | mindset IA | 2026-03-25 | CLAUDE.md, product-manager.md, growth.md | Regle n°5 "Mindset IA pas equipe humaine" ajoutee. Sprint-plan remplace par execution-plan. RICE recalibre (effort quasi nul). MVP "complet et rapide" au lieu de "minimal". Parallelisation par defaut. Growth : levier activable en 24h au lieu de 2 semaines. | Audit de 27 passages ou les agents raisonnaient avec des hypotheses d'equipe humaine (sprints, velocite, priorisation par effort). Risque identifie : perte de 5-10x de valeur potentielle quand le framework freine artificiellement la velocite IA. Exception preservee : si project-context mentionne une equipe humaine, les agents adaptent. |
 | reviewer | 2026-03-25 | docs/reviews/post-modifications-review.md | Revue croisee post-modifications : GO. 3 regressions mineures (supabase.ts dans exemple fullstack, branche incoherente dans project-context, C11 non appliquee). Toutes les corrections B1-B3, C4-C10 du framework-consistency-audit.md intactes. 9 modifications de session coherentes entre elles. | Audit demande pour verifier l'absence de regressions apres 9 modifications structurelles. Methode : lecture exhaustive des 20 fichiers agents + CLAUDE.md + Grep cible sur les points modifies + verification croisee avec le rapport precedent. |
+| session 2026-03-25 | 2026-03-25 | CLAUDE.md, orchestrator.md, reviewer.md, qa.md, fullstack.md, infrastructure.md, agent-factory.md, copywriter.md, seo.md, index.html, README.md, INSTALL.md, _base-agent-protocol.md, tests/project-context-test.md, docs/product/prompts-coverage-product.md | Session majeure : (1) M2/M5/C8 appliquees, (2) Regle n°4 delegation agents, (3) Regle n°5 mindset IA, (4) Regle n°12 mise a jour branche, (5) PostgreSQL Replit obligatoire, (6) Scoring persona /10 (9 dims) + B2B /10 (7 dims) dans reviewer, condition GO triple dans orchestrator, (7) qa.md enrichi massif (+10 sections tests : securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression), (8) Automatisation contenu recurrent, (9) Agent-factory tools Write/Edit obligatoires, (10) Orchestrator 8.5→9/10, (11) Prompts frontend corriges (mindset IA, automatisation, QA 10 categories, branche). Tests PulseBoard : creative-strategy (brand-platform 449 lignes) et data-analyst (kpi-framework) valides. | Session de consolidation framework : corrections audit consistency + nouvelles regles structurantes + couverture tests exhaustive + scoring persona/B2B. Objectif : framework a 9/10 sur tous les axes avant utilisation en production sur ImmoCrew. |
 
 ---
 
 ## Memo de reprise — derniere session
 
 - **Date de cloture** : 2026-03-25
-- **Branche** : `claude/improve-frontend-prompts-BdBIK`
+- **Branche** : `claude/apply-framework-corrections-3ztPh`
 
 ### Resume de la session
-Session majeure d'amelioration du framework et de preparation du projet ImmoCrew. Deux axes principaux : (1) Audit strategique @elon pour identifier le projet ideal a monetiser — choix de la verticale immobilier/mandataires independants, creation du project-context-immocrew.md pre-rempli. (2) Amelioration profonde de 8 prompts agents + orchestrator + 5 prompts "Tout en un" : ajout de 4 nouvelles boucles (recommandation agents custom, creation depuis specs, revue UX post-implementation, iteration qualite 4.5/5), validation mobile/desktop complete, audit de coherence globale par @reviewer avec corrections des 11 points identifies.
+Session de consolidation majeure du framework Gradient Agents. 26 fichiers modifies, +679 lignes. Axes principaux : (1) Corrections M2/M5/C8 du framework-consistency-audit appliquees. (2) 5 nouvelles regles structurantes dans CLAUDE.md : delegation obligatoire aux agents (n°4), mindset IA pas equipe humaine (n°5), objectif qualite 9/10 (n°11), mise a jour branche obligatoire (n°12), automatisation contenu recurrent. (3) PostgreSQL Replit impose comme standard BDD (Supabase retire). (4) qa.md enrichi massivement : 10 nouvelles sections de tests (securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression). (5) reviewer.md : scoring persona /10 (9 dimensions) + B2B /10 (7 dimensions), condition GO triple, mapping dimension→agent. (6) orchestrator.md : Phases 3/4 parallelisees, template synthesis avec scores, critere automatisation contenu. (7) agent-factory.md : tools Write/Edit obligatoires par defaut. (8) Prompts frontend : mindset IA, automatisation, QA 10 categories, prompt Audit cible ajoute. Tests PulseBoard valides (creative-strategy + data-analyst).
 
 ### Livrables de cette session
 | Fichier | Statut | Notes |
 |---|---|---|
-| project-context-immocrew.md | Complet | Pret a copier comme project-context.md dans un nouveau repo pour lancer ImmoCrew |
-| docs/reviews/framework-consistency-audit.md | Complet | Audit @reviewer — les 3 bloquants (B1, B2, B3) ont ete corriges dans orchestrator.md |
-| .claude/agents/creative-strategy.md | Complet | Section "Recommandation d'agents specialises" ajoutee |
-| .claude/agents/product-manager.md | Complet | Section "Recommandation d'agents specialises" ajoutee |
-| .claude/agents/agent-factory.md | Complet | Mode "Creation depuis specs projet" ajoute |
-| .claude/agents/ux.md | Complet | Protocole tests UX + revue post-implementation + recommandation agents + ux-review.md dans livrables |
-| .claude/agents/qa.md | Complet | Tests UX/parcours + tests multi-viewport fonctionnels |
-| .claude/agents/reviewer.md | Complet | Iteration 4.5/5 + validation mobile/desktop + checklist UX→Code→Tests |
-| .claude/agents/orchestrator.md | Complet | Phase 0b + Phase 2 revue UX + Etape 7 cycle iteration + seuils 4.5/5 |
-| .claude/agents/fullstack.md | Complet | Calibration : lit ux-review.md et ux-writing-guide.md |
-| index.html | Complet | 5 prompts "Tout en un" mis a jour |
+| CLAUDE.md | Complet | Regles n°4, n°5, n°11, n°12, scoring double, automatisation contenu |
+| .claude/agents/orchestrator.md | Complet | Phases 3/4 parallelisees, synthesis scores, critere automatisation, 9/10 |
+| .claude/agents/reviewer.md | Complet | Scoring persona 9 dims /10, B2B 7 dims /10, mapping agents, template rapport |
+| .claude/agents/qa.md | Complet | +10 sections tests, 10 questions auto-eval |
+| .claude/agents/fullstack.md | Complet | PostgreSQL Replit, timeouts services, prisma.ts |
+| .claude/agents/infrastructure.md | Complet | OWASP Top 10, delivrabilite email, Lighthouse mobile |
+| .claude/agents/product-manager.md | Complet | Execution-plan, RICE recalibre, mindset IA |
+| .claude/agents/agent-factory.md | Complet | Tools Write/Edit obligatoires, checklist validation |
+| .claude/agents/copywriter.md | Complet | Check persona + B2B double audience |
+| .claude/agents/seo.md | Complet | Pipeline contenu automatise |
+| .claude/agents/_base-agent-protocol.md | Complet | Auto-eval 9/10, 5 questions avec criteres |
+| index.html | Complet | Prompt Audit cible, QA 10 categories, automatisation, mindset IA, branche |
+| README.md | Complet | PostgreSQL Replit au lieu de Supabase |
+| INSTALL.md | Complet | Branche mise a jour |
+| tests/project-context-test.md | Complet | PostgreSQL Replit |
+| docs/strategy/brand-platform.md | Complet | Test PulseBoard — creative-strategy 449 lignes |
+| docs/analytics/kpi-framework.md | Complet | Test PulseBoard — data-analyst avec benchmarks sources |
 
 ### Travaux en cours / non termines
-1. ~~**Corrections M2 (MAJEUR)**~~ : FAIT — format harmonise a 5 colonnes dans creative-strategy.md et product-manager.md.
-2. ~~**Correction M5 (MAJEUR)**~~ : FAIT — note invocation parallele ajoutee dans data-analyst.md.
-3. ~~**Correction C8 (MAJEUR)**~~ : FAIT — double scoring documente dans CLAUDE.md (orchestrateur <3 + reviewer 4.5/5).
-4. **Projet ImmoCrew** : project-context-immocrew.md est pret mais le projet n'est pas encore lance. Necessera une nouvelle session dediee sur un nouveau repo/branche.
+1. **Prompt "Audit cible" ameliore** : @ia a produit une version amelioree (pre-verification, 17 sujets, validation reviewer integree) mais les changements n'ont pas ete appliques dans index.html (contexte agent isole). A appliquer manuellement a la prochaine session.
+2. **Projet ImmoCrew** : project-context-immocrew.md est pret mais le projet n'est pas encore lance.
 
 ### Prochaines actions recommandees
-1. **Lancer ImmoCrew** : copier project-context-immocrew.md comme project-context.md dans un nouveau repo, lancer @orchestrator. Agent : @orchestrator. Priorite : haute si l'objectif est de monetiser rapidement.
-2. **Appliquer les corrections M2, M5, C8 restantes** : harmoniser formats recommandation agents, documenter data-analyst parallele, clarifier responsabilite scoring. Agent : edition directe. Priorite : moyenne — a faire avant le prochain run complet du framework.
-3. **Tester le framework ameliore** : lancer un test E2E sur le projet PulseBoard (tests/project-context-test.md) pour verifier que les nouvelles boucles fonctionnent en conditions reelles. Agent : @orchestrator en mode autopilot. Priorite : haute pour valider avant utilisation en production.
+1. **Appliquer les ameliorations du prompt "Audit cible"** : recuperer la version amelioree par @ia (17 sujets, pre-verification, validation reviewer). Agent : edition directe. Priorite : basse — le prompt actuel fonctionne.
+2. **Lancer ImmoCrew** : copier project-context-immocrew.md comme project-context.md dans un nouveau repo, lancer @orchestrator. Agent : @orchestrator. Priorite : haute si l'objectif est de monetiser rapidement.
+3. **Test E2E complet PulseBoard** : lancer un run complet @orchestrator en mode autopilot sur PulseBoard pour valider toutes les nouvelles boucles (agent-factory, revue UX, iteration 4.5/5, scoring persona/B2B). Agent : @orchestrator. Priorite : haute pour valider le framework a 9/10 en conditions reelles.
 
 ### Blockers eventuels
-- Aucun blocker technique. Le framework est fonctionnel (GO avec reserves per @reviewer).
-- Decision a prendre : le seuil 4.5/5 s'applique-t-il a TOUS les livrables ou seulement aux livrables critiques ? (question ouverte du framework-consistency-audit.md)
-- **Rappel branche** : la prochaine session sera sur une nouvelle branche. Mettre a jour le nom de branche dans les prompts d'installation/update (INSTALL.md, install.sh, update.sh) si necessaire.
+- Aucun blocker technique. Le framework est a 9/10 sur tous les axes audites.
+- Livrables de test PulseBoard (docs/strategy/brand-platform.md, docs/analytics/kpi-framework.md) presents dans le repo — les supprimer avant un vrai run pour eviter la confusion.
 
 ### Commande de reprise suggeree
 
 Pour le **framework Gradient Agents** :
 ```
-Lis project-context.md et docs/reviews/framework-consistency-audit.md. Il reste 3 corrections MAJEURES a appliquer (M2, M5, C8 — details dans le memo de reprise de project-context.md). Applique-les puis lance un test sur le projet PulseBoard (tests/project-context-test.md) en mode autopilot pour valider les nouvelles boucles.
+Lis project-context.md (memo de reprise). Le framework est consolide a 9/10. Il reste : (1) appliquer les ameliorations du prompt "Audit cible" dans index.html, (2) nettoyer les livrables de test PulseBoard, (3) optionnel : lancer un test E2E complet sur PulseBoard en mode autopilot.
 ```
 
 Pour le **projet ImmoCrew** (nouveau repo) :
 ```
-@orchestrator Lis project-context.md. Lance le projet ImmoCrew en mode autopilot. Phase 1 prioritaire : landing page + formulaire d'onboarding + espace client + Stripe. En parallele : @creative-strategy sur le brand platform et @copywriter sur les premiers livrables demo (avant/apres d'une annonce immobiliere reecrite). Objectif : site operationnel en 2 semaines, premier client beta en semaine 3.
+@orchestrator Lis project-context.md. Lance le projet ImmoCrew en mode autopilot. Phase 1 prioritaire : landing page + formulaire d'onboarding + espace client + Stripe. En parallele : @creative-strategy sur le brand platform et @copywriter sur les premiers livrables demo (avant/apres d'une annonce immobiliere reecrite). Objectif : site operationnel rapidement.
 ```
