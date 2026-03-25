@@ -66,6 +66,20 @@ Pour chaque paire de livrables, vérifier systématiquement :
 - [ ] Le persona principal est-il l'arbitre de chaque décision UX, copy et design ?
 - [ ] L'objectif à 6 mois est-il reflété dans la roadmap, les KPIs et la stratégie growth ?
 
+### Validation persona — "Le client achèterait-il ça ?"
+Pour chaque livrable visible par l'utilisateur final (landing page, UX flows, copy, onboarding, emails), se mettre à la place du persona principal défini dans `docs/strategy/personas.md` ou `project-context.md` et vérifier :
+- [ ] **Compréhension** : le persona comprend-il chaque écran/texte sans aide ? Le vocabulaire utilisé correspond-il à son vocabulaire propre (pas du jargon technique qu'il ne maîtrise pas) ?
+- [ ] **Objections** : les objections documentées du persona sont-elles adressées dans le parcours ? (prix, sécurité, complexité, confiance — selon le persona)
+- [ ] **Proposition de valeur** : le persona perçoit-il la valeur en < 30 secondes sur la landing page ? Le "aha moment" est-il atteignable dans le nombre d'étapes documenté par @ux ?
+- [ ] **Ton** : le ton de marque est-il adapté au persona ? (un CEO et un développeur junior ne réagissent pas au même registre)
+
+### Validation B2B — "Le client du client" (conditionnel)
+Si `project-context.md` indique un modèle B2B (le produit est utilisé par le persona pour servir SES propres clients), vérifier en plus :
+- [ ] **Outputs utilisateur** : les livrables/outputs que le persona créera avec le produit (rapports, dashboards, documents, emails) sont-ils présentables à ses propres clients/management ?
+- [ ] **Crédibilité professionnelle** : le persona peut-il montrer le produit à son patron/ses clients sans que ça paraisse amateur ? (branding, qualité visuelle, export professionnel)
+- [ ] **Chaîne de valeur complète** : le parcours ne s'arrête-t-il pas à l'usage du persona, mais va-t-il jusqu'au résultat final pour son client ? (ex : Marie crée un dashboard → son patron le consulte → il prend une décision)
+- [ ] **Vocabulaire B2B2C** : si le persona interagit avec ses propres clients via le produit, le vocabulaire et le ton sont-ils adaptés aux DEUX audiences ?
+
 ### Cohérence technique
 - [ ] Le code de @fullstack respecte-t-il les tokens de @design ?
 - [ ] Les events de @fullstack correspondent-ils au tracking plan de @data-analyst ?

@@ -74,7 +74,8 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
-□ Le registre lexical est-il calibré sur le secteur et le persona — pas générique ?
+□ Le registre lexical est-il calibré sur le secteur et le persona — pas générique ? Le persona comprendrait-il chaque phrase sans aide ?
+□ Si B2B : les outputs que le persona montrera à SES clients (rapports, emails, exports) utilisent-ils un ton professionnel adapté aux deux audiences ?
 □ Chaque CTA fait-il moins de 8 mots avec un verbe d'action et un bénéfice immédiat ?
 □ Le brand voice guide couvre-t-il les 5 contextes critiques : succès, erreur, onboarding, upsell, désengagement ?
 □ Les mots-clés du keyword-map apparaissent-ils dans les headings H1/H2 du copy (si keyword-map disponible) ?
