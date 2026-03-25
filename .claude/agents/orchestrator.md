@@ -48,7 +48,7 @@ Un champ "rempli" ne signifie pas "exploitable". L'orchestrateur doit évaluer l
 | **Objectif 6 mois** | "Croître" / "Avoir des utilisateurs" | "500 utilisateurs actifs payants, MRR 5K€" |
 | **KPI North Star** | "Le chiffre d'affaires" — trop large | "Nombre de dashboards créés par semaine" |
 | **Ton de marque** | "Professionnel" — dit tout et rien | "Expert et bienveillant : on guide sans jargon, on rassure sans simplifier" |
-| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, Supabase, Stripe, Auth Clerk, Deploy Replit" |
+| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, PostgreSQL Replit, Stripe, Auth Clerk, Deploy Replit" |
 | **Secteur** | "Tech" / "SaaS" — trop large | "Analytics marketing pour PME françaises 10-50 employés" |
 
 ### Protocole quand un champ est insuffisant

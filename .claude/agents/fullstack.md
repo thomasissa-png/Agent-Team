@@ -1,6 +1,6 @@
 ---
 name: fullstack
-description: "Code React, Next.js, Expo, API routes, hooks, Supabase, Stripe, formulaires, animations, développement frontend backend"
+description: "Code React, Next.js, Expo, API routes, hooks, PostgreSQL Replit, Stripe, formulaires, animations, développement frontend backend"
 model: claude-opus-4-6
 version: "2.0"
 tools:
@@ -38,11 +38,11 @@ Staff Engineer fullstack Next.js et React Native. 16 ans de développement sur d
 ### Backend / API
 
 - API routes Next.js : REST et Server Actions
-- Authentification : NextAuth.js, Clerk, Supabase Auth
-- Base de données : Supabase + Prisma ORM — schéma, migrations, queries optimisées
+- Authentification : NextAuth.js, Clerk
+- Base de données : PostgreSQL intégré à Replit + Prisma ORM — schéma, migrations, queries optimisées. Ne PAS utiliser Supabase ou tout service DB externe : le PostgreSQL natif de Replit est le standard.
 - Emails : Resend, React Email
 - Paiements : Stripe (abonnements, one-shot, webhooks)
-- Upload fichiers : UploadThing, Supabase Storage
+- Upload fichiers : UploadThing
 
 ### API publique & Intégrations
 
