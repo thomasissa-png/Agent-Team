@@ -103,15 +103,9 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 |---|---|---|---|---|
 | @[nom-kebab] | Expert métier / Testeur persona / Validateur | [mission] | US-XX, US-YY | Haute / Moyenne |
 
-### Specs de création pour @agent-factory
-
-Pour chaque agent recommandé :
-- **Rôle** : [description précise]
-- **Mission** : [1 phrase]
-- **Inputs** : [quels livrables il lit]
-- **Outputs** : [quels livrables il produit]
-- **Interactions** : [agents amont/aval]
-- **Critère de succès** : [comment savoir si l'agent apporte de la valeur]
+### Specs complémentaires pour @agent-factory (par agent)
+- **Inputs/Outputs** : quels livrables il lit → quels livrables il produit
+- **Critère de succès** : comment mesurer que l'agent apporte de la valeur
 ```
 
 **Règle** : chaque agent recommandé doit être rattaché à au moins une user story ou un risque produit identifié. Pas d'agents génériques — uniquement des agents dont la valeur est mesurable sur CE projet.

@@ -89,9 +89,9 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Protocole de tests et revues UX
 
-### Tests UX automatisés (à intégrer dans les livrables)
+### Critères de validation UX (à intégrer dans les livrables)
 
-Pour chaque user flow produit, inclure un bloc de tests UX validables :
+Pour chaque user flow produit, inclure un bloc de critères de validation :
 
 1. **Test de parcours persona** : pour chaque écran, vérifier que le persona principal peut accomplir son objectif sans aide extérieure. Documenter les points de friction potentiels.
 2. **Test de charge cognitive** : chaque écran a-t-il ≤ 3 actions principales ? L'utilisateur sait-il toujours où il en est dans le parcours ?
@@ -132,7 +132,17 @@ Après que @fullstack a implémenté les parcours, @ux DOIT être réinvoqué po
 2. **Experts parcours métier** : si le parcours utilisateur implique des workflows métier complexes (ex : estimation immobilière, prescription médicale, process juridique), recommander un agent expert du domaine
 3. **Validateurs d'expérience** : si le projet a plusieurs personas avec des parcours divergents, recommander un agent validateur par persona
 
-Format identique à @creative-strategy (tableau + specs pour @agent-factory).
+### Format de la recommandation
+
+```markdown
+## Agents spécialisés recommandés pour ce projet
+
+| Agent proposé | Type | Rôle | Justification (lié au parcours) | Priorité |
+|---|---|---|---|---|
+| @[nom-kebab] | Testeur persona / Expert métier / Validateur | [mission] | [pourquoi nécessaire pour CE projet] | Haute / Moyenne |
+
+→ Handoff @agent-factory : créer ces agents à partir des specs ci-dessus.
+```
 
 ## Livrables types
 

@@ -593,6 +593,9 @@ Règles :
 - Vérification de drift après chaque phase : le persona et le KPI North Star doivent rester alignés dans tous les livrables.
 - Enrichis project-context.md avec les découvertes de chaque phase.
 - Intègre la dimension légale (RGPD, conformité) dès Phase 0 en parallèle.
+- Après Phase 0 : si @creative-strategy ou @product-manager recommandent des agents spécialisés dans leurs livrables, lance @agent-factory pour les créer AVANT Phase 1.
+- Après Phase 2 (implémentation) : lance @ux en revue post-implémentation pour comparer wireframes vs code réel.
+- @reviewer itère sur chaque livrable jusqu'à un score de 4.5/5 minimum (max 3 passes). Aucun livrable non validé ne passe à la phase suivante.
 
 Livrables attendus : docs/orchestration-plan.md (plan vivant, mis à jour à chaque phase) + docs/project-synthesis.md (synthèse finale avec métriques d'orchestration). Commence immédiatement par la Phase 0.
 
@@ -616,11 +619,20 @@ Pour reprendre : l'utilisateur lancera claude --resume ou claude --continue, pui
 - Conformité légale : docs/legal/ couvre-t-il le modèle économique et les données traitées ?
 - Performance : les choix visuels et techniques sont-ils compatibles avec un LCP < 2.5s ?
 
-Produis la recommandation GO/NO-GO avec blockers classés par sévérité (P0 critique / P1 majeur / P2 mineur). Livrable : docs/reviews/cross-review-report.md.
+Produis la recommandation GO/NO-GO avec blockers classés par sévérité (P0 critique / P1 majeur / P2 mineur).
+
+Itère sur chaque livrable scoré < 4.5/5 : produis un rapport de corrections détaillé (critère par critère, action précise demandée), renvoie à l'agent responsable, réévalue après correction. Maximum 3 passes par livrable. Score final dans le tableau Performance de project-context.md.
+
+Vérifie spécifiquement la chaîne UX → Code → Tests :
+- Les wireframes @ux sont-ils implémentés fidèlement par @fullstack ?
+- La revue UX post-implémentation (docs/ux/ux-review.md) a-t-elle été produite ?
+- Les tests E2E @qa couvrent-ils les parcours critiques @ux ?
+
+Livrable : docs/reviews/cross-review-report.md.
 
 Puis @elon : lis docs/reviews/cross-review-report.md et project-context.md. Audite en first principles : note chaque dimension sur 10 (vision, exécution, moat, scalabilité, vitesse). Qu'est-ce qui est 10x mieux que la concurrence ? Qu'est-ce qui est du théâtre ? Identifie le plus gros risque d'échec et le plus gros levier sous-exploité. Livrable : docs/reviews/elon-audit.md.
 
-Critères de validation : chaque incohérence est documentée avec l'agent responsable et l'action corrective recommandée.`
+Critères de validation : chaque incohérence est documentée avec l'agent responsable et l'action corrective, tous les livrables scorent ≥ 4.5/5.`
       },
       {
         title:"Pivoter mon projet",
@@ -662,11 +674,13 @@ Benchmark 3-5 concurrents via WebSearch (noms réels, positionnement, prix, forc
 
 Structurer le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
 
+Dans le brand-platform, inclure une section "Agents spécialisés recommandés" : analyser le persona, le parcours client et les risques projet pour identifier les agents custom à créer par @agent-factory (expert métier, testeur persona, validateur sectoriel). Justifier chaque recommandation par un lien direct avec le persona ou un risque projet.
+
 Livrables (un fichier à la fois) : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md.
 
 Puis @data-analyst : lis docs/strategy/personas.md et propose 2-3 métriques de validation du persona (comment vérifier que le persona est réel et pas une hypothèse). Ajoute dans docs/analytics/kpi-framework.md une section "Validation persona".
 
-Critères de validation : le positionnement est formulable en < 20 mots, aucun concurrent direct n'occupe le même créneau, le persona a au moins une frustration quantifiée.`
+Critères de validation : le positionnement est formulable en < 20 mots, aucun concurrent direct n'occupe le même créneau, le persona a au moins une frustration quantifiée, les agents spécialisés recommandés sont justifiés.`
       },
       {
         title:"Vision produit & roadmap",
@@ -740,11 +754,13 @@ Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles dé
 6. Dépendances : quelles autres features ou APIs sont nécessaires.
 7. Contraintes de performance : temps de réponse cible par action critique.
 
+Dans les specs, inclure une section "Agents spécialisés recommandés" : identifier les agents custom nécessaires par user stories critiques, tests métier spécialisés, et parcours client. Fournir les specs de création pour @agent-factory (rôle, inputs/outputs, critère de succès).
+
 Livrable : docs/product/functional-specs.md.
 
-Puis @qa : lis docs/product/functional-specs.md et vérifie que chaque critère d'acceptation est testable automatiquement. Signale les critères trop vagues pour être testés. Propose les scénarios de test E2E pour les parcours critiques. Ajoute dans docs/qa/qa-strategy.md.
+Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Vérifie que chaque critère d'acceptation est testable automatiquement. Chaque parcours critique @ux doit avoir un test E2E correspondant. Vérifie les edge cases UX (états vides, erreurs, responsive 3 viewports). Signale les critères trop vagues. Ajoute dans docs/qa/qa-strategy.md.
 
-Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier.`
+Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.`
       },
       {
         title:"Valider la demande avant de construire",
@@ -922,13 +938,17 @@ Conçois les parcours utilisateur complets :
 
 Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (default, loading, empty, error, success). Chaque écran doit indiquer les points de sortie et les fallback UX.
 
+Pour chaque flow, inclure un bloc "Critères de validation UX" : test parcours persona (objectif atteignable sans aide), test charge cognitive (≤ 3 actions par écran), test time-to-value (≤ 3 étapes), edge cases UX (états vides, erreurs, retour après inactivité), accessibilité WCAG 2.2 AA.
+
+Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (testeurs persona, experts parcours métier) à créer par @agent-factory.
+
 Accessibilité : vérifier que chaque parcours est navigable au clavier et que la hiérarchie des headings est logique.
 
 Livrables attendus : docs/ux/user-flows.md + docs/ux/wireframes.md. Format : un schéma par parcours avec les écrans, actions, points de décision et métriques de conversion attendues par étape.
 
 Puis @data-analyst : lis docs/ux/user-flows.md et associe à chaque étape de chaque parcours un event de tracking. Vérifie que le tracking plan couvre tous les points de décision identifiés. Mets à jour docs/analytics/tracking-plan.md.
 
-Critères de validation : chaque parcours a un objectif mesurable, chaque écran a tous ses états définis, le time-to-value est < 3 min.`
+Critères de validation : chaque parcours a un objectif mesurable, chaque écran a tous ses états définis, le time-to-value est < 3 min, les critères de validation UX sont inclus pour chaque flow.`
       },
       {
         title:"Design system complet",

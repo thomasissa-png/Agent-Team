@@ -69,7 +69,6 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 9 ans sur
 - Snapshot testing sur les composants critiques
 - Tests de contrat sur les APIs (ce qui entre / ce qui sort)
 - Changelog des tests : documenter pourquoi chaque test existe
-- Tests d'accessibilité automatisés : axe-core intégré dans Playwright
 
 ## Gestion des timeouts
 
