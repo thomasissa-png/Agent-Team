@@ -412,11 +412,14 @@ Après le checkpoint Phase 0, vérifier si les livrables de Phase 0 contiennent 
 Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "Agents spécialisés recommandés". Si oui et que ces agents n'ont pas été créés en Phase 0b → lancer `@agent-factory`.
 
 **Phase 3 — Contenu :**
-`copywriter` → `seo` → `geo`
-[PARALLELE] Si `copywriter` a déjà livré en Phase 1, passer directement à `seo`
+`copywriter` → [PARALLELE] `seo` + `geo` (les deux dépendent de copywriter mais pas l'un de l'autre)
+[PARALLELE] Si `copywriter` a déjà livré en Phase 1, lancer `seo` + `geo` directement en parallèle
+Après Phase 3 : vérifier que les livrables @seo, @copywriter et @geo incluent des workflows d'automatisation pour le contenu récurrent. Si une stratégie recommande "publier X articles/semaine" sans documenter l'automatisation → relancer l'agent (CLAUDE.md — Automatisation par défaut du contenu récurrent)
 
 **Phase 4 — Acquisition :**
-`growth` → `social`
+[PARALLELE] `growth` + `social` (si `brand-platform.md` existe — les deux s'y réfèrent indépendamment)
+`growth` → `social` (sinon — social a besoin du cadrage canaux de growth)
+Après Phase 4 : même vérification d'automatisation contenu pour @growth et @social
 
 **Phase 5 — Conformité :**
 `legal` (si non démarré en Phase 0)
@@ -494,6 +497,7 @@ Pour chaque critère, la réponse est OUI ou NON. Pas de "à peu près" ni de "p
 | 6 | Infra supporte la stack | Les choix d'hébergement/config de @infrastructure sont-ils compatibles avec la stack choisie par @fullstack ? | @infrastructure |
 | 7 | Persona cohérent | Le persona utilisé dans les livrables aval est-il le même que celui défini en Phase 0 (pas de drift) ? | Agent en drift |
 | 8 | KPI North Star cohérent | Les métriques citées dans les livrables aval sont-elles alignées avec le KPI défini par @data-analyst ? | Agent en drift |
+| 9 | Automatisation contenu | Chaque stratégie contenu récurrent (blog, social, email) inclut-elle un workflow d'automatisation IA ? (CLAUDE.md — Automatisation par défaut) | @seo, @social, @copywriter, @growth |
 
 **Protocole d'enrichissement du project-context :**
 
@@ -681,6 +685,12 @@ Si un seuil critique est atteint, l'orchestrateur DOIT :
 ## Métriques d'orchestration
 [Bloc métriques — voir ci-dessus]
 
+## Scores qualité
+- Score moyen livrables : X/5 (seuil : 4.5/5)
+- Score persona : X/10 (seuil : 9/10)
+- Score B2B : X/10 (seuil : 9/10) — ou N/A si non-B2B
+- Condition GO : OUI / NON (requiert les 3 seuils atteints)
+
 ## Recommandations pour la suite
 [Prochains agents à invoquer, prochaine phase, itérations suggérées]
 ```
@@ -769,6 +779,8 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Les résultats de chaque Task ont-ils été lus et vérifiés avant de lancer la phase suivante ?
 □ Les agents parallélisables ont-ils été lancés dans le MÊME message Task ?
 □ Chaque erreur ou incohérence a-t-elle été traitée (relance ou escalade) ?
+□ Le plan d'exécution est-il structuré par dépendances (pas par sprints, semaines ou story points) ?
+□ Les stratégies contenu incluent-elles des workflows d'automatisation IA ?
 □ Le project-context.md a-t-il été enrichi avec les découvertes de chaque phase terminée ?
 □ Le mode projet (nouveau vs existant) a-t-il été correctement détecté ?
 
