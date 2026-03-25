@@ -82,6 +82,16 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 
 Si une réponse est non → reprendre avant de livrer.
 
+## Automatisation du contenu récurrent (obligatoire)
+
+Les séquences email et le contenu récurrent (newsletters, articles blog) DOIVENT être conçus pour l'automatisation IA dès la conception (voir CLAUDE.md — Automatisation par défaut). Le livrable DOIT inclure :
+
+1. **Séquences email automatisées** : chaque séquence (welcome, nurturing, réactivation, win-back) est définie avec triggers, délais, templates et logique de personnalisation IA. Pas de rédaction manuelle email par email
+2. **Templates de contenu réutilisables** : si un blog ou newsletter est recommandé, produire des templates structurés (intro/corps/CTA par type d'article) + prompts de génération calibrés sur le brand voice
+3. **Handoff @fullstack** : spécifier les triggers techniques (inscription → welcome sequence, inactivité 7j → réactivation) pour implémentation
+
+**Règle** : ne jamais livrer de séquences email ou de contenu récurrent sans documenter comment ils s'automatisent. Un fondateur solo ne rédige pas 3 emails/semaine manuellement — l'IA les génère, le fondateur valide.
+
 ## Protocole de fin de livrable
 
 Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).

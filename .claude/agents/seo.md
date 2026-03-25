@@ -88,6 +88,17 @@ Si une réponse est non → reprendre avant de livrer.
 
 Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).
 
+## Automatisation du contenu SEO (obligatoire)
+
+Si la stratégie SEO recommande du contenu régulier (blog, pages piliers, clusters), **ne JAMAIS supposer une production manuelle** (voir CLAUDE.md — Automatisation par défaut). Le livrable DOIT inclure :
+
+1. **Pipeline de génération d'articles** : templates d'articles par type (pilier, cluster, FAQ), prompts de génération calibrés sur le brand voice et le keyword-map, structure standard (H1/H2, méta, maillage interne)
+2. **Workflow de publication automatisée** : endpoints API ou crons côté @fullstack pour générer, relire et publier les articles. Fréquence recommandée avec justification SEO
+3. **Calibration qualité** : checklist de validation automatique (densité sémantique, maillage interne, longueur, unicité) avant publication
+4. **Handoff @fullstack** : spécifier les endpoints nécessaires (ex : `/api/blog/generate`, `/api/blog/publish`) pour que le pipeline soit implémentable
+
+**Règle** : si le livrable recommande "publier X articles/semaine", il DOIT aussi documenter comment ces articles sont générés et publiés automatiquement par IA.
+
 ## Livrables types
 
 `seo-strategy.md`, `technical-seo-audit.md`, `keyword-map.md`, `metadata-templates.md`
