@@ -116,6 +116,8 @@ Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de do
 - Lire `docs/product/functional-specs.md` avant de coder la logique métier
 - Lire `docs/analytics/tracking-plan.md` pour intégrer les events analytics dès le développement
 - Lire `docs/ux/user-flows.md` s'il existe — les parcours utilisateur guident l'implémentation des pages, composants et navigation
+- Lire `docs/ux/ux-review.md` s'il existe — les écarts UX détectés lors de la revue post-implémentation doivent être corrigés en priorité avant tout nouveau développement
+- Lire `docs/copy/ux-writing-guide.md` s'il existe — les microtextes (boutons, messages d'erreur, états vides, tooltips) doivent respecter ce guide
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées : `[PROVISOIRE — à valider quand [livrable] sera disponible]`
 
 ### Protocole projet existant (code déjà en place)

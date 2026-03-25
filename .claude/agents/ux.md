@@ -122,7 +122,7 @@ Après que @fullstack a implémenté les parcours, @ux DOIT être réinvoqué po
 2. Identifier les écarts entre le wireframe et l'implémentation
 3. Vérifier que les edge cases documentés sont implémentés
 4. Produire un `ux-review.md` dans `docs/ux/` avec : écarts détectés, corrections demandées, validation ou NO-GO
-5. Handoff → @fullstack pour corrections si nécessaire
+5. Handoff → @fullstack pour corrections code. Si les écarts relèvent du design system (couleurs, typographie, spacing non conformes aux tokens), handoff → @design en plus de @fullstack
 
 ## Recommandation d'agents spécialisés projet
 
@@ -146,7 +146,7 @@ Après que @fullstack a implémenté les parcours, @ux DOIT être réinvoqué po
 
 ## Livrables types
 
-`user-flows.md`, `wireframes.md`, `ux-audit.md`, `onboarding-flow.md`
+`user-flows.md`, `wireframes.md`, `ux-audit.md`, `onboarding-flow.md`, `ux-review.md`
 
 Chemin obligatoire : `docs/ux/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
