@@ -66,19 +66,35 @@ Pour chaque paire de livrables, vérifier systématiquement :
 - [ ] Le persona principal est-il l'arbitre de chaque décision UX, copy et design ?
 - [ ] L'objectif à 6 mois est-il reflété dans la roadmap, les KPIs et la stratégie growth ?
 
-### Validation persona — "Le client achèterait-il ça ?"
-Pour chaque livrable visible par l'utilisateur final (landing page, UX flows, copy, onboarding, emails), se mettre à la place du persona principal défini dans `docs/strategy/personas.md` ou `project-context.md` et vérifier :
-- [ ] **Compréhension** : le persona comprend-il chaque écran/texte sans aide ? Le vocabulaire utilisé correspond-il à son vocabulaire propre (pas du jargon technique qu'il ne maîtrise pas) ?
-- [ ] **Objections** : les objections documentées du persona sont-elles adressées dans le parcours ? (prix, sécurité, complexité, confiance — selon le persona)
-- [ ] **Proposition de valeur** : le persona perçoit-il la valeur en < 30 secondes sur la landing page ? Le "aha moment" est-il atteignable dans le nombre d'étapes documenté par @ux ?
-- [ ] **Ton** : le ton de marque est-il adapté au persona ? (un CEO et un développeur junior ne réagissent pas au même registre)
+### Validation persona — "Le client achèterait-il ça ?" (scoré /10, seuil 9/10)
 
-### Validation B2B — "Le client du client" (conditionnel)
-Si `project-context.md` indique un modèle B2B (le produit est utilisé par le persona pour servir SES propres clients), vérifier en plus :
-- [ ] **Outputs utilisateur** : les livrables/outputs que le persona créera avec le produit (rapports, dashboards, documents, emails) sont-ils présentables à ses propres clients/management ?
-- [ ] **Crédibilité professionnelle** : le persona peut-il montrer le produit à son patron/ses clients sans que ça paraisse amateur ? (branding, qualité visuelle, export professionnel)
-- [ ] **Chaîne de valeur complète** : le parcours ne s'arrête-t-il pas à l'usage du persona, mais va-t-il jusqu'au résultat final pour son client ? (ex : Marie crée un dashboard → son patron le consulte → il prend une décision)
-- [ ] **Vocabulaire B2B2C** : si le persona interagit avec ses propres clients via le produit, le vocabulaire et le ton sont-ils adaptés aux DEUX audiences ?
+Pour chaque livrable visible par l'utilisateur final (landing page, UX flows, copy, onboarding, emails, outputs), se mettre à la place du persona principal et noter chaque dimension sur 10. **Rien en dessous de 9/10 ne passe.**
+
+**Du point de vue du persona (le client direct) :**
+- [ ] **Utilité** (/10) : ça résout MON problème tel que je le vis au quotidien ?
+- [ ] **Professionnalisme** (/10) : c'est pro, crédible, digne de confiance ?
+- [ ] **Fierté** (/10) : je serais fier(e) de l'utiliser, de le montrer, d'en parler ?
+- [ ] **Valeur perçue** (/10) : j'en ai pour plus que mon argent ? La valeur dépasse largement le prix ?
+- [ ] **Compréhension** (/10) : je comprends chaque écran/texte sans aide ? Le vocabulaire est le mien ?
+- [ ] **Objections traitées** (/10) : mes inquiétudes (prix, sécurité, complexité) sont adressées dans le parcours ?
+- [ ] **Proposition de valeur** (/10) : je perçois la valeur en < 30 secondes sur la landing page ?
+- [ ] **Ton** (/10) : le ton me parle, il est adapté à mon profil ?
+
+**Score moyen persona** = moyenne des 8 notes. Si < 9/10 → relancer les agents concernés avec les points faibles identifiés. Inscrire dans le rapport de revue croisée.
+
+### Validation B2B — "Le client du client" (conditionnel, scoré /10, seuil 9/10)
+
+Si `project-context.md` indique un modèle B2B, évaluer aussi du point de vue du **client final** (celui que le persona sert) :
+- [ ] **Professionnalisme des outputs** (/10) : les rapports/exports que le persona montre à ses clients sont présentables à un directeur ?
+- [ ] **Envie** (/10) : ça donne envie de travailler avec ce professionnel ? Ça inspire confiance ?
+- [ ] **Crédibilité du persona** (/10) : le persona apparaît comme LA personne compétente ? (ex : "Sophie est-elle la bonne pour vendre mon bien ?")
+- [ ] **Qualité visuelle** (/10) : branding, mise en page, exports au niveau d'un pro du secteur ?
+- [ ] **Efficacité perçue** (/10) : les outputs produisent le résultat attendu (vente, décision, engagement) ?
+- [ ] **Chaîne de valeur complète** (/10) : le parcours va jusqu'au résultat final ? (ex : dashboard → patron consulte → décision → action)
+
+**Score moyen B2B** = moyenne des 6 notes. Si < 9/10 → relancer les agents concernés.
+
+**Règle** : ces scores sont inscrits dans `docs/reviews/cross-review-report.md` et dans le tableau "Performance des agents" de project-context.md. Ils conditionnent le GO/NO-GO final.
 
 ### Cohérence technique
 - [ ] Le code de @fullstack respecte-t-il les tokens de @design ?
