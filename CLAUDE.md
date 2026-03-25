@@ -31,6 +31,21 @@ Les agents sont dans `.claude/agents/`. Chaque agent est un expert autonome.
 Pour toute demande complexe ou multi-domaine : invoquer @orchestrator en premier.
 Pour une tâche ciblée : invoquer directement l'agent concerné.
 
+### Règle absolue — Toujours déléguer aux agents spécialisés (n°4)
+
+**Ne JAMAIS produire un livrable à la place d'un agent spécialisé.** Quand une tâche relève du domaine d'un agent (voir tableau ci-dessous), Claude DOIT invoquer cet agent via l'outil Agent (subagent_type), même si :
+- L'agent semble "lent" ou que Claude pourrait "aller plus vite" en le faisant lui-même
+- La tâche semble "simple" ou "petite" — les agents appliquent leur protocole (calibration, lecture des livrables amont, auto-évaluation, scoring) que Claude principal ne reproduit pas
+- Un timeout a coupé l'agent — relancer l'agent, ne pas prendre le relais manuellement
+
+**Pourquoi** : un agent spécialisé lit les livrables amont, applique sa calibration métier, suit son protocole d'escalade, produit un handoff structuré, et vise le score 9/10. Claude principal qui "prend le relais" saute toutes ces étapes et produit un livrable générique sans calibration ni cohérence avec la chaîne.
+
+**Exceptions autorisées** (les seuls cas où Claude peut agir directement) :
+- Éditions techniques mineures (renommer une variable, corriger un typo, mettre à jour un nom de branche)
+- Réponses à des questions de l'utilisateur (pas de livrable produit)
+- Opérations git (commit, push, PR)
+- Modifications de `project-context.md` ou `CLAUDE.md` (fichiers transversaux, pas des livrables agents)
+
 ## Ordre de priorité des agents par type de demande
 
 | Type de demande | Agent principal | Agents secondaires |
