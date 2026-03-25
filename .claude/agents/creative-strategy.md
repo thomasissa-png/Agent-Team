@@ -74,7 +74,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Le positionnement occupe-t-il un espace libre identifié dans le benchmark ?
 □ Chaque persona a-t-il des objections documentées et un vocabulaire propre ?

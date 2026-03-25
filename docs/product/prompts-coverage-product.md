@@ -173,7 +173,7 @@ Les prompts reviewer (GO/NO-GO, mid-projet) et l'audit Elon couvrent la dimensio
 **Titre** : Planifier le prochain sprint
 **Agents** : @product-manager
 **Phase** : Phase 2 — début de chaque sprint
-**Description** : Découpe le backlog priorisé en sprint de 1-2 semaines : stories sélectionnées selon la vélocité estimée, définition of done pour chaque story, dépendances identifiées, objectif du sprint formulé en une phrase. Livrable : `docs/product/sprint-plan.md`
+**Description** : Découpe le backlog priorisé en plan d'exécution par dépendances strictes : stories ordonnées par valeur business (pas par effort — quasi nul en contexte IA), definition of done pour chaque story, dépendances identifiées, objectif formulé en une phrase. Livrable : `docs/product/execution-plan.md`
 
 ---
 

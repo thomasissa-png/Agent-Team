@@ -125,7 +125,7 @@ Tous les livrables des agents sont sauvegardés dans le dossier `docs/` à la ra
 ```
 docs/
 ├── strategy/          ← @creative-strategy : brand-platform.md, personas.md, creative-brief.md, competitive-benchmark.md
-├── product/           ← @product-manager : product-vision.md, roadmap.md, functional-specs.md, backlog.md
+├── product/           ← @product-manager : product-vision.md, roadmap.md, functional-specs.md, backlog.md, execution-plan.md
 ├── analytics/         ← @data-analyst : kpi-framework.md, tracking-plan.md, dashboard-specs.md
 ├── ux/                ← @ux : user-flows.md, wireframes.md, ux-audit.md, onboarding-flow.md
 ├── design/            ← @design : design-system.md, design-tokens.json, component-library.md

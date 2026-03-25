@@ -117,7 +117,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Sp
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Chaque chemin critique du persona principal est-il couvert par un test E2E ?
 □ Un développeur peut-il comprendre pourquoi chaque test existe sans lire le code ?

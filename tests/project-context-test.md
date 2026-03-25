@@ -49,7 +49,7 @@ Projet fictif mais réaliste — permet de valider que chaque agent fonctionne e
 |---|---|
 | Frontend | Next.js 14 App Router |
 | Backend | API Routes Next.js + Server Actions |
-| Base de données | Supabase (PostgreSQL) |
+| Base de données | PostgreSQL intégré Replit + Prisma ORM |
 | Authentification | Clerk |
 | Hébergement | Replit (Deployments) |
 | Paiements | Stripe (abonnements mensuels/annuels) |
@@ -60,7 +60,7 @@ Projet fictif mais réaliste — permet de valider que chaque agent fonctionne e
 
 | Champ | Valeur |
 |---|---|
-| Budget infra mensuel | 200€ max (Replit + Supabase + services tiers) |
+| Budget infra mensuel | 200€ max (Replit + services tiers) |
 | Budget acquisition mensuel | 500€ (principalement SEO + content marketing, très peu de paid) |
 | Timeline | MVP en 3 mois, beta publique en 4 mois |
 | Contraintes légales | RGPD (données analytics des utilisateurs), pas de stockage de données sensibles clients finaux |

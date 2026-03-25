@@ -193,7 +193,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 <!-- INSTRUCTION AGENT-FACTORY : Reproduire la référence compacte ci-dessus, puis ajouter MINIMUM 5 questions spécifiques au domaine de l'agent. Chaque question doit tester une compétence métier réelle, pas une question générique. Exemples par domaine : -->
 
@@ -375,7 +375,7 @@ Quand un agent devient obsolète (remplacé par un nouveau, périmètre absorbé
 
 ### Auto-évaluation — spécificités agent-factory
 
-Les 3 questions génériques s'appliquent. En plus :
+Les questions génériques s'appliquent. En plus :
 
 □ Le nouvel agent a-t-il un périmètre clairement distinct de tous les agents existants ?
 □ Le persona est-il crédible avec des accomplissements concrets et mesurables (pas juste "X ans d'expérience") ?

@@ -73,7 +73,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Chaque écran du flow est-il justifié par un besoin utilisateur documenté dans le persona ?
 □ Les edge cases et états d'erreur sont-ils couverts — pas seulement le happy path ?

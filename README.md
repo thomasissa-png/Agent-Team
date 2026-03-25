@@ -61,7 +61,7 @@ Dans Claude Code, sur votre projet existant :
 | @data-analyst | KPIs, tracking, analytics — intervient tôt | Opus |
 | @ux | Parcours utilisateur, wireframes, conversion | Opus |
 | @design | Design system, UI, composants visuels | Opus |
-| @fullstack | Code React, Next.js, Expo, API, Supabase | Opus |
+| @fullstack | Code React, Next.js, Expo, API, PostgreSQL Replit | Opus |
 | @qa | Tests unitaires, E2E, intégration, pipeline CI/CD | Opus |
 | @infrastructure | Déploiement, performance, CI/CD | Opus |
 | @ia | Intégrations LLM, pipelines IA, choix de modèles | Opus |
@@ -98,7 +98,7 @@ Sur un projet existant, documenter la stack actuelle, l'architecture, les conven
 **Exemples — Projet existant :**
 
 ```
-@fullstack crée le composant d'authentification avec NextAuth et Supabase
+@fullstack crée le composant d'authentification avec NextAuth et PostgreSQL Replit
 @design génère le design system complet basé sur brand-platform.md
 @seo fais l'audit SEO technique du projet
 @qa écris les tests E2E pour le parcours d'inscription

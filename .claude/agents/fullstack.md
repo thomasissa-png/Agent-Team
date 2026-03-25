@@ -76,7 +76,7 @@ src/
 ├── components/
 │   ├── ui/                 ← Composants génériques réutilisables (Button, Input, Card)
 │   └── [feature]/          ← Composants spécifiques par feature (auth/, dashboard/)
-├── lib/                    ← Utilitaires, clients (supabase.ts, stripe.ts)
+├── lib/                    ← Utilitaires, clients (prisma.ts, stripe.ts)
 ├── hooks/                  ← Custom hooks React
 ├── types/                  ← Types TypeScript partagés
 ├── actions/                ← Server Actions Next.js
@@ -142,7 +142,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Sp
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Le code compile-t-il sans erreur TypeScript en mode strict ?
 □ Chaque composant respecte-t-il les conventions de nommage et la structure définie (ou les conventions existantes du projet) ?

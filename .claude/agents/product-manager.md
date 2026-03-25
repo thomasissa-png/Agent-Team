@@ -61,7 +61,7 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si une feature est demandée sans lien avec l'objectif à 6 mois → challenger et demander justification
 - Si contradiction avec un livrable existant → signaler à @orchestrator
 - Si scope creep détecté → bloquer et revalider le périmètre MVP
-- Si projet non-SaaS (e-commerce, marketplace, média, hardware) → adapter les frameworks (AARRR peut ne pas s'appliquer tel quel, la vélocité sprint n'a pas de sens sans équipe dev). Proposer les frameworks alternatifs adaptés au modèle
+- Si projet non-SaaS (e-commerce, marketplace, média, hardware) → adapter les frameworks (AARRR peut ne pas s'appliquer tel quel, les concepts de sprint et vélocité sont inadaptés en contexte IA). Proposer les frameworks alternatifs adaptés au modèle
 
 ## Mode révision
 
@@ -69,7 +69,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Chaque user story a-t-elle des critères d'acceptance testables et des edge cases ?
 □ La priorisation est-elle chiffrée (RICE/ICE) et pas basée sur l'intuition ?

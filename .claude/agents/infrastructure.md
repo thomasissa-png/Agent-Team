@@ -105,7 +105,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Les métriques de performance sont-elles conformes aux seuils définis (TTI < 2s, LCP < 2.5s, INP < 200ms, CLS < 0.1) ?
 □ Le pipeline CI/CD est-il complet (lint → test → build) et compatible Replit pour le deploy ?

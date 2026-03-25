@@ -404,7 +404,7 @@ const AGENTS = [
     id:"fullstack", name:"Fullstack", at:"@fullstack", version:"2.0", model:"claude-opus-4-6",
     role:"Développeur senior full-stack — 16 ans",
     phase:"Phase 2 — Développement",
-    desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Supabase, Stripe. TypeScript strict uniquement.",
+    desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, PostgreSQL Replit, Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
@@ -512,8 +512,8 @@ KPI North Star : [UNE SEULE MÉTRIQUE d'usage — ex : "nombre de dashboards cr�
 
 — STACK TECHNIQUE —
 Frontend : [Next.js / React / Expo / autre]
-Backend : [Node / Python / Supabase / autre]
-Base de données : [PostgreSQL / Supabase / autre]
+Backend : [Node / Python / autre]
+Base de données : [PostgreSQL Replit (recommandé) / autre]
 Hébergement : [Vercel / Replit / autre]
 IA utilisée : [oui/non — si oui : modèles, APIs, budget mensuel]
 
@@ -1318,7 +1318,7 @@ Critères de validation : le tableau contient au moins 5 modèles avec des donn�
 Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
 1. Structure de fichiers : arborescence Next.js App Router (app/, components/, lib/, types/, hooks/, __tests__/).
 2. Schéma de base de données : tables principales avec types, relations, index. Format Prisma ou SQL selon la stack. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
-3. Configuration auth : setup complet de l'auth provider (Clerk, NextAuth, ou Supabase Auth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
+3. Configuration auth : setup complet de l'auth provider (Clerk ou NextAuth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
 4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
 5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
 6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
@@ -1387,7 +1387,7 @@ Critères de validation : aucun cookie non essentiel n'est déposé avant consen
 Architecture RAG complète :
 1. Ingestion : pipeline d'ingestion des documents (PDF, Markdown, HTML, CSV). Chunking strategy : taille optimale des chunks (512-1024 tokens recommandé), overlap (10-20%), métadonnées à conserver (source, date, section). Gestion des mises à jour (re-indexation incrémentale vs complète).
 2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options : OpenAI text-embedding-3-small, Voyage AI, Cohere embed-v3, ou modèle open source (BGE, E5). Benchmark sur un échantillon du corpus réel.
-3. Vector store : choix de la base vectorielle avec justification (Pinecone, Qdrant, Weaviate, pgvector, Supabase Vector). Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement (cloud vs self-hosted selon budget).
+3. Vector store : choix de la base vectorielle avec justification (Pinecone, Qdrant, Weaviate, pgvector). Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement (cloud vs self-hosted selon budget).
 4. Retrieval : stratégie de recherche (similarity search, MMR pour diversité, hybrid search BM25 + vectoriel). Nombre de chunks à récupérer (top-k), seuil de similarité minimum, re-ranking optionnel.
 5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe).
 6. Évaluation : métriques (faithfulness, relevance, answer correctness), dataset de test avec questions/réponses attendues, pipeline d'évaluation automatisé.
@@ -1405,10 +1405,10 @@ Critères de validation : le pipeline ingère au moins un document de test, la r
         title:"Disaster recovery & backup",
         agents:["infrastructure","fullstack","qa"],
         quand:"Avant la mise en production, ou dès que la base de données contient des données utilisateur réelles. Perdre des données utilisateur est le scénario catastrophe numéro 1. Si coupure : 'Lis docs/infra/disaster-recovery.md, quels agents n'ont pas terminé ?'",
-        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Vercel, AWS, Railway, etc.), la base de données (PostgreSQL, Supabase, PlanetScale), et les services critiques (auth, paiement, stockage fichiers).
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Vercel, AWS, Railway, etc.), la base de données (PostgreSQL Replit recommandé), et les services critiques (auth, paiement, stockage fichiers).
 
 Plan de disaster recovery complet :
-1. Stratégie de backup : backup automatique de la base de données (fréquence : au minimum quotidien, idéalement toutes les 6h pour les données critiques). Rétention : 7 jours glissants minimum, 1 backup mensuel conservé 90 jours. Backup des fichiers uploadés (S3/Supabase Storage). Backup de la configuration (variables d'environnement, secrets — chiffrés).
+1. Stratégie de backup : backup automatique de la base de données (fréquence : au minimum quotidien, idéalement toutes les 6h pour les données critiques). Rétention : 7 jours glissants minimum, 1 backup mensuel conservé 90 jours. Backup des fichiers uploadés (S3/stockage cloud). Backup de la configuration (variables d'environnement, secrets — chiffrés).
 2. RTO/RPO : définir le Recovery Time Objective (temps max d'indisponibilité acceptable) et le Recovery Point Objective (perte de données max acceptable). Recommandations par type de service : auth (RTO < 1h, RPO < 1h), données business (RTO < 4h, RPO < 6h), fichiers (RTO < 24h, RPO < 24h).
 3. Plan de reprise : procédure pas à pas pour chaque scénario (crash base de données, corruption de données, suppression accidentelle, compromission sécurité, panne hébergeur). Chaque procédure : étapes numérotées, commandes exactes, personne responsable, temps estimé.
 4. Redondance : base de données en mode réplica si le budget le permet, CDN pour les assets statiques, DNS failover.

@@ -180,7 +180,7 @@ Quand on passe un rapport de revue existant à mettre à jour :
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Ai-je lu TOUS les livrables existants, pas seulement les plus récents ?
 □ Chaque contradiction identifiée a-t-elle une résolution proposée et un agent responsable ?

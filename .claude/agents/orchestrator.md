@@ -759,7 +759,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Sp
 
 ## Standard de livraison — auto-évaluation obligatoire
 
-Les 3 questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 □ La demande utilisateur a-t-elle été clarifiée AVANT de lancer les agents (sauf si déjà précise) ?
 □ Les champs critiques de project-context.md passent-ils le seuil de qualité (pas juste de présence) ?
 □ Les agents ont-ils été priorisés selon le stade x KPI x budget (pas lancés mécaniquement Phase 0→5) ?
