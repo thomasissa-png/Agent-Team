@@ -183,6 +183,7 @@ Si un agent a été interrompu par un timeout :
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
 10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 3) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
 11. **Objectif qualité 9/10 (4.5/5) sur chaque livrable.** Chaque livrable sera évalué par @reviewer sur 5 critères (Complétude, Cohérence, Actionnabilité, Messages, Spécificité). Le seuil de validation est 4.5/5 — viser l'excellence dès la première passe pour éviter les itérations correctives
+12. **Mise à jour du nom de branche obligatoire.** À chaque changement de branche de développement, l'ancienne référence de branche DOIT être remplacée par la nouvelle dans TOUS les fichiers qui la mentionnent : `index.html` (prompts d'installation frontend), `INSTALL.md`, `install.sh`, `update.sh`, et `project-context.md` (mémo de reprise). Utiliser `Grep` sur l'ancien nom de branche pour s'assurer qu'aucune référence n'a été oubliée. Cette mise à jour est la responsabilité de l'agent qui effectue le changement de branche (typiquement @orchestrator ou l'agent principal de la session)
 
 ## Protocole de test du framework
 

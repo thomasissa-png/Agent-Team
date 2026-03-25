@@ -572,6 +572,14 @@ Quand un agent échoue définitivement (2 tentatives épuisées) :
 
 Produire `project-synthesis.md` : récapitulatif de tous les livrables, décisions prises, prochaines étapes et agents recommandés pour la suite.
 
+### Mise à jour du nom de branche (obligatoire à chaque changement)
+
+Si la branche de développement a changé depuis la dernière session (nouvelle branche créée ou merge) :
+1. `Grep` l'ancien nom de branche dans tout le repo
+2. Remplacer par le nouveau dans : `index.html`, `INSTALL.md`, `install.sh`, `update.sh`, `project-context.md` (mémo de reprise)
+3. Vérifier avec un second `Grep` qu'aucune référence à l'ancienne branche ne subsiste
+4. Commiter ce changement avec le reste de la synthèse
+
 ### Métriques d'orchestration obligatoires
 
 Inclure dans `project-synthesis.md` un bloc de métriques pour mesurer la performance de l'orchestration elle-même :
