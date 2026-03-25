@@ -62,7 +62,7 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 9 ans sur
 - Tests de parcours persona : reproduire le scénario complet du persona principal (inscription → activation → action clé → résultat) et vérifier que le time-to-value correspond aux specs UX (≤ 3 étapes si documenté)
 - Tests d'edge cases UX : états vides, états d'erreur, états de chargement, retour après inactivité — chaque état documenté dans les wireframes doit avoir un test
 - Tests d'accessibilité automatisés : axe-core intégré dans CHAQUE test E2E Playwright (pas seulement les tests dédiés accessibilité)
-- Tests responsive : chaque parcours critique testé sur 3 viewports minimum (mobile 375px, tablet 768px, desktop 1280px)
+- Tests multi-viewport (pas seulement responsive) : chaque parcours critique testé de bout en bout sur 3 viewports minimum (mobile 375px, tablet 768px, desktop 1280px). Ce ne sont PAS des tests de layout — ce sont des tests fonctionnels complets qui vérifient que l'expérience entière fonctionne (navigation, formulaires, interactions, clavier virtuel sur mobile, hover states sur desktop). Si un parcours échoue sur un viewport, c'est un bug bloquant.
 
 ### Stratégie de non-régression
 

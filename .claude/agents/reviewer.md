@@ -78,6 +78,17 @@ Pour chaque paire de livrables, vérifier systématiquement :
 - [ ] La revue UX post-implémentation (`ux-review.md`) a-t-elle été produite par @ux ?
 - [ ] Les écarts détectés dans la revue UX ont-ils été corrigés par @fullstack ?
 
+### Validation expérience mobile ET desktop (pas seulement responsive)
+Le responsive (adaptation des composants aux breakpoints) n'est pas suffisant. Il faut valider que l'**expérience complète** fonctionne nativement sur chaque device :
+- [ ] **Parcours mobile complet** : chaque parcours critique du persona a-t-il été testé sur un viewport mobile (375px) de bout en bout ? Navigation au pouce, clavier virtuel, scroll, formulaires — pas seulement le layout.
+- [ ] **Parcours desktop complet** : chaque parcours critique a-t-il été testé sur un viewport desktop (1280px+) ? Hover states, navigation clavier, utilisation de l'espace, densité d'information adaptée.
+- [ ] **Parité fonctionnelle** : aucune feature critique n'est absente ou dégradée sur mobile vs desktop. Si une fonctionnalité est volontairement réduite sur mobile, c'est documenté et justifié dans les specs @ux.
+- [ ] **Tests E2E multi-viewport** : @qa a-t-il des tests Playwright sur au moins 3 viewports (mobile 375px, tablet 768px, desktop 1280px) pour chaque parcours critique ?
+- [ ] **Performance mobile** : le LCP sur mobile est-il < 3s (pas seulement le LCP desktop) ? Les fonts, images et JS sont-ils optimisés pour mobile (budget JS < 150KB) ?
+- [ ] **Touch targets** : tous les éléments interactifs font-ils ≥ 44x44px sur mobile ?
+
+Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne que sur desktop (ou que sur mobile) n'est pas un produit fini.
+
 ### Cohérence éditoriale
 - [ ] Le ton du @copywriter est-il aligné avec la brand voice de @creative-strategy ?
 - [ ] Les contenus @seo et @geo ne se cannibalisent-ils pas ?
