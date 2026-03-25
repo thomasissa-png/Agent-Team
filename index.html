@@ -640,43 +640,75 @@ Critères de validation : chaque incohérence est documentée avec l'agent respo
         quand:"Tu veux un audit approfondi sur un sujet spécifique (performance, sécurité, SEO, UX mobile, accessibilité, contenu, parcours client...). L'orchestrateur sélectionne les meilleurs agents pour auditer ce sujet. Remplace [SUJET] par ton sujet.",
         prompt:`@orchestrator Audit ciblé sur le sujet : [SUJET].
 
+Pré-vérification obligatoire :
+1. Lis project-context.md — identifie le persona principal, le stade du projet et le modèle (B2B ou B2C).
+2. Si le sujet [SUJET] est ambigu ou trop large (ex : "améliorer le produit"), pose une question de cadrage à l'utilisateur avant de continuer. Un sujet clair = directement actionnable (ex : "performance web", "SEO", "sécurité").
+3. Vérifie qu'il existe des livrables ou du code à auditer dans le domaine concerné (Glob docs/ et src/). Si le domaine est vide, signale-le : "Rien à auditer sur [sujet] — aucun livrable trouvé dans [chemins]. Options : A) produire d'abord les livrables de base avec les agents concernés, B) faire un audit de cadrage (ce qu'il FAUDRAIT produire et les standards à atteindre)." Attends la réponse avant de continuer.
+
 Étape 1 — Sélection des agents :
-Lis project-context.md. Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pour l'auditer. Justifie chaque sélection. Voici le mapping indicatif (adapte selon le sujet) :
+Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pour l'auditer. Justifie chaque sélection en lien avec le persona. Voici le mapping indicatif (adapte selon le sujet réel) :
 - Performance web → @infrastructure + @fullstack + @qa
 - SEO → @seo + @geo + @copywriter
-- Sécurité → @infrastructure + @fullstack + @legal
-- UX / Parcours client → @ux + @design + @qa + @copywriter
+- Sécurité → @infrastructure + @fullstack + @legal + @qa
+- UX / Parcours client → @ux + @design + @qa + @data-analyst + @copywriter
 - Contenu / Copy → @copywriter + @seo + @creative-strategy
 - Mobile → @ux + @design + @qa + @fullstack
 - Accessibilité → @qa + @ux + @design + @fullstack
-- Analytics / Tracking → @data-analyst + @fullstack + @qa
+- Analytics / Tracking → @data-analyst + @fullstack + @qa + @infrastructure
 - Juridique / RGPD → @legal + @infrastructure + @data-analyst
 - Design system → @design + @fullstack + @qa
-- Parcours client B2B → @ux + @copywriter + @reviewer + @product-manager
+- Parcours client B2B → @ux + @copywriter + @product-manager + @data-analyst
 - Acquisition / Growth → @growth + @seo + @social + @data-analyst
-Si le sujet est transversal ou ambigu, sélectionne les agents par pertinence et signale les chevauchements.
+- IA / Coûts LLM → @ia + @infrastructure + @fullstack
+- Branding / Identité → @creative-strategy + @design + @copywriter + @reviewer
+- Onboarding / Activation → @ux + @fullstack + @data-analyst + @copywriter
+- Monétisation / Pricing → @product-manager + @growth + @copywriter + @data-analyst
+- Email / CRM → @copywriter + @growth + @data-analyst
+Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant sur la matrice de CLAUDE.md (tableau "Ordre de priorité des agents par type de demande"). Explique ta logique et demande confirmation à l'utilisateur avant de lancer.
+
+Écris docs/reviews/audit-[sujet]-plan.md avec : sujet, agents sélectionnés, justification, périmètre de chaque agent, critères d'évaluation.
 
 Étape 2 — Lancement des audits :
-Lance chaque agent sélectionné en parallèle avec un prompt ciblé sur le sujet. Chaque agent doit :
+Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). Chaque agent reçoit un prompt ciblé sur le sujet et doit :
 1. Lire les livrables existants dans son domaine (docs/ + src/)
-2. Évaluer l'état actuel du sujet sur une échelle 1-10 avec justification
-3. Lister les problèmes trouvés classés P0/P1/P2
+2. Évaluer l'état actuel du sujet sur une échelle 1-5 avec justification
+3. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
 4. Proposer les corrections précises pour chaque problème
-5. Scorer chaque dimension sur les 5 critères standard (Complétude, Cohérence, Actionnabilité, Messages, Spécificité)
+5. Évaluer l'impact de chaque problème sur le persona principal (défini dans project-context.md)
+6. Si le projet est B2B : inclure la dimension "client du client" — les outputs du persona sont-ils professionnels ? La chaîne de valeur complète est-elle couverte ?
+Si un agent timeout sans produire de livrable, relance-le une fois avec un périmètre réduit. Si échec à nouveau, documente l'angle non couvert dans la synthèse.
 
-Étape 3 — Synthèse croisée :
-Consolide les rapports des agents en un seul audit :
-- Score global du sujet (moyenne pondérée)
-- Top 5 des problèmes critiques (P0) avec agent responsable de la correction
-- Top 10 des améliorations majeures (P1)
+Étape 3 — Validation reviewer :
+Lance @reviewer sur le sujet audité. Le reviewer applique sa checklist persona (compréhension, objections, proposition de valeur, ton) et sa checklist B2B si applicable. Il vérifie aussi la cohérence entre les rapports des différents agents. Intègre ses constats dans la synthèse.
+
+Étape 4 — Synthèse croisée :
+Consolide les rapports des agents et du reviewer en un seul audit :
+- Score par dimension auditée (échelle 1-5, alignée avec le framework, seuil 4.5/5)
+- Score global du sujet (moyenne des scores agents — si pondérée, documenter les poids)
+- Tous les problèmes critiques (P0) avec agent responsable et action corrective
+- Améliorations majeures (P1) classées par impact décroissant
+- Améliorations mineures (P2)
+- Recommandation : GO / GO avec réserves / NO-GO sur le sujet audité
+- Décisions à confirmer par l'utilisateur (s'il y en a)
 - Plan d'action ordonné par impact
 
-Étape 4 — Corrections :
-Si des problèmes P0 sont identifiés, lance immédiatement les agents concernés pour correction. Re-score après correction. Objectif : 9/10 minimum sur le sujet audité.
+Étape 5 — Corrections P0 :
+Si des problèmes P0 sont identifiés :
+- En mode standard : présente les P0 à l'utilisateur et demande confirmation avant de corriger.
+- En mode autopilot : lance immédiatement les corrections (max 2-3 agents par batch).
+Après correction, vérifie que le P0 est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 4.5/5 minimum sur le sujet audité.
 
-Livrable : docs/reviews/audit-[sujet].md
+Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
+1. Résumé exécutif (3-5 lignes, non-technique, destiné au fondateur)
+2. Agents mobilisés et périmètre de chacun
+3. Score par dimension (tableau)
+4. Problèmes P0 (bloquants) avec corrections appliquées ou à appliquer
+5. Améliorations P1 avec plan d'action priorisé
+6. Améliorations P2 (nice-to-have)
+7. Validation persona et B2B (si applicable)
+8. Recommandation GO/NO-GO
 
-Critères de validation : chaque agent sélectionné a audité sa dimension, le score global est documenté, les P0 sont corrigés, le plan d'action P1 est priorisé.`
+Critères de validation : chaque agent sélectionné a audité sa dimension, le reviewer a validé la cohérence et le persona, le score global est documenté sur l'échelle 1-5, les P0 sont corrigés (ou en attente de validation utilisateur), le plan d'action P1 est priorisé.`
       },
       {
         title:"Pivoter mon projet",
