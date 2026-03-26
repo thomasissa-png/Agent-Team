@@ -2393,7 +2393,7 @@ UX & LOGIQUE :
 TECHNIQUE :
 10. Liens : chaque lien interne → page existante (pas de 404). Chaque lien externe → accessible. Ancres fonctionnent. mailto: et tel: corrects.
 11. Images & assets : toutes chargent (zéro broken image), alt text présent et descriptif, format optimisé (WebP/AVIF), lazy loading effectif, dimensions explicites (pas de CLS).
-12. Formulaires : CHAQUE formulaire testé avec : données valides (happy path), champs vides (validation), email invalide, texte trop long (255+ chars), caractères spéciaux (accents, emojis, <script>), soumission multiple rapide (pas de double-submit). Confirmation affichée. Erreurs claires.
+12. Formulaires : CHAQUE formulaire testé avec : données valides (happy path), champs vides (validation), email invalide, texte trop long (255+ chars), caractères spéciaux (accents, emojis, balises HTML), soumission multiple rapide (pas de double-submit). Confirmation affichée. Erreurs claires.
 13. Interactions complètes : CHAQUE élément cliquable fait ce qu'il doit — boutons, filtres, toggles, dropdowns, modales, tabs, accordéons. Combinaisons testées (filtre + recherche, double-clic). Aucun élément qui ressemble à un bouton mais ne fait rien.
 14. Erreurs, résilience & auth : si l'API échoue → message d'erreur clair (pas crash). Réseau lent → loading state. Session expirée → redirection login. Pages protégées visitées en non-connecté → redirection. Permissions : user A ne peut PAS accéder aux données de user B. Simuler : réseau coupé, 500, JSON malformé.
 15. Performance : page charge en < 3s sur 3G. Bundle JS < 200KB. Pas de requête API bloquante. États de chargement : chaque page avec fetch affiche un skeleton/spinner (pas un écran vide).
@@ -2406,7 +2406,7 @@ SEO & PARTAGE :
 18. SEO & OG par page : meta title unique (< 60 chars), meta description unique (< 155 chars), H1 unique, hiérarchie Hn respectée (pas de H3 sans H2), JSON-LD (Organization, BreadcrumbList, Product/Article selon le type), canonical URL, og:title + og:description + og:image spécifiques à la page. Sitemap.xml inclut toutes les pages publiques. Pas de disallow: / dans robots.txt en prod. Twitter Card tags.
 
 SÉCURITÉ FRONT :
-19. Sécurité : injection XSS dans CHAQUE champ de saisie (<script>alert(1)</script> ne doit JAMAIS s'exécuter). Aucun token/clé API/mot de passe dans le DOM, localStorage, sessionStorage ou cookies non-sécurisés. Aucune donnée sensible dans les paramètres d'URL. Liens externes avec rel="noopener noreferrer". Protection CSRF sur les formulaires sensibles. Pas de mixed content (HTTP sur page HTTPS).
+19. Sécurité : injection XSS dans CHAQUE champ de saisie (tester avec des balises script — aucune ne doit s'exécuter). Aucun token/clé API/mot de passe dans le DOM, localStorage, sessionStorage ou cookies non-sécurisés. Aucune donnée sensible dans les paramètres d'URL. Liens externes avec rel="noopener noreferrer". Protection CSRF sur les formulaires sensibles. Pas de mixed content (HTTP sur page HTTPS).
 
 COOKIES & CONSENTEMENT :
 20. Cookies : si cookies non-essentiels utilisés, bannière de consentement au premier visit. Cookies analytics/marketing bloqués AVANT consentement (pas juste cachés — non chargés). Choix persisté. Lien "Gérer mes cookies" accessible. Le site fonctionne sans cookies.
