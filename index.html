@@ -949,7 +949,9 @@ Livrable : docs/product/functional-specs.md.
 
 Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Vérifie que chaque critère d'acceptation est testable automatiquement. Chaque parcours critique @ux doit avoir un test E2E correspondant. Vérifie les edge cases UX (états vides, erreurs, responsive 3 viewports). Signale les critères trop vagues. Ajoute dans docs/qa/qa-strategy.md.
 
-Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.`
+Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
+
+Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structure (titres + résumé par feature) via Write, puis remplir feature par feature via Edit. Prioriser les features MVP en premier.`
       },
       {
         title:"Valider la demande avant de construire",
@@ -974,7 +976,7 @@ Critères de validation : au moins 3 signaux de demande documentés (volume rech
       {
         title:"Construire la messaging matrix",
         agents:["creative-strategy","copywriter"],
-        quand:"Après la proposition de valeur — avant la landing page et les contenus marketing. La messaging matrix est le GPS de toute ta communication.",
+        quand:"Après la proposition de valeur — avant la landing page et les contenus marketing. La messaging matrix est le GPS de toute ta communication. Si coupure : 'Lis docs/strategy/messaging-matrix.md, quel agent reste ?'",
         prompt:`@creative-strategy Lis docs/strategy/value-proposition.md et docs/strategy/personas.md. S'ils n'existent pas, pose-moi les questions pour les créer (proposition de valeur, personas avec objections) et génère-les avant de continuer. Lis aussi docs/strategy/competitive-benchmark.md si disponible.
 
 Construis la messaging matrix : une grille qui croise persona x canal x étape du funnel x message clé. Pour chaque combinaison :
@@ -1122,6 +1124,8 @@ Crée le design system complet :
 Livrable (un fichier à la fois) : docs/design/design-system.md + docs/design/design-tokens.json.
 
 Puis @fullstack : prends docs/design/design-tokens.json et implémente les tokens en CSS variables/Tailwind config et les composants React dans src/. Un composant par fichier. Vérifie que les contrastes WCAG sont respectés dans l'implémentation.
+
+Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord le fichier avec la structure (tokens + premiers composants prioritaires) via Write, puis compléter composant par composant via Edit.
 
 Critères de validation : tous les tokens sont définis dans design-tokens.json, chaque composant a ses états documentés, les contrastes passent WCAG 2.2 AA, le design est compatible avec un LCP < 2.5s.`
       },

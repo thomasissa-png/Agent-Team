@@ -108,7 +108,7 @@ Claude Code a une limite de temps par réponse. Un orchestrateur qui lance trop 
 
 ### Règles strictes anti-timeout pour l'orchestrateur
 
-1. **Maximum 2-3 Task par message.** Lancer 2 agents en parallèle, attendre les résultats, puis lancer les suivants. JAMAIS 5+ Task dans le même message.
+1. **Maximum 2-3 Task par message.** Lancer 2-3 agents en parallèle, attendre les résultats, puis lancer les suivants. JAMAIS plus de 3 Task dans le même message.
 2. **Un cycle par message.** Chaque message de l'orchestrateur suit exactement ce cycle : Lancer Task → Recevoir résultats → Vérifier (Read) → Décider de la suite. Ne pas empiler plusieurs cycles dans un message.
 3. **Sauvegarder l'état entre les cycles.** Après chaque phase complétée, mettre à jour `orchestration-plan.md` avec l'état d'avancement AVANT de lancer la phase suivante. Si un timeout survient, le plan sauvegardé permet de reprendre.
 4. **Écrire `orchestration-plan.md` AVANT de lancer le premier Task.** Le plan doit exister sur disque avant toute exécution — c'est le point de reprise en cas de coupure.
