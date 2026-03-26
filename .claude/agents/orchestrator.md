@@ -48,7 +48,7 @@ Un champ "rempli" ne signifie pas "exploitable". L'orchestrateur doit évaluer l
 | **Objectif 6 mois** | "Croître" / "Avoir des utilisateurs" | "500 utilisateurs actifs payants, MRR 5K€" |
 | **KPI North Star** | "Le chiffre d'affaires" — trop large | "Nombre de dashboards créés par semaine" |
 | **Ton de marque** | "Professionnel" — dit tout et rien | "Expert et bienveillant : on guide sans jargon, on rassure sans simplifier" |
-| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, PostgreSQL Replit, Stripe, Auth Clerk, Deploy Replit" |
+| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, PostgreSQL Replit, Stripe, Auth NextAuth.js, Deploy Replit" |
 | **Secteur** | "Tech" / "SaaS" — trop large | "Analytics marketing pour PME françaises 10-50 employés" |
 
 ### Protocole quand un champ est insuffisant
@@ -290,9 +290,9 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 
 L'orchestrateur a deux modes d'exécution :
 
-**Mode standard (défaut)** : validation utilisateur entre chaque phase. Recommandé pour les premiers projets et les projets critiques.
+**Mode autopilot (défaut)** : exécution continue avec checkpoints de sauvegarde. Checkpoint obligatoire après Phase 0 (fondations). Ensuite, exécution continue — bloquer uniquement sur anomalie (drift détecté, score < 4.5, P0 non résolu, contradiction entre livrables). Pas de checkpoint périodique.
 
-**Mode autopilot** : exécution continue sans validation intermédiaire, avec checkpoints de sauvegarde. Activé uniquement si l'utilisateur le demande explicitement ("lance en autopilot", "exécute tout sans me demander").
+**Mode standard** : validation utilisateur entre chaque phase. Activé uniquement si l'utilisateur le demande explicitement ("valide chaque phase", "je veux approuver") ou si c'est le tout premier projet sur le framework.
 
 ### Règles du mode autopilot
 
@@ -305,7 +305,7 @@ L'orchestrateur a deux modes d'exécution :
    - **Détection de drift** : après chaque phase, vérifier que le persona principal et le KPI North Star dans les livrables produits sont toujours alignés avec ceux définis dans `project-context.md`. Si divergence → BLOQUER, signaler le drift, corriger avant de continuer
    - **Livrable vide ou quasi-vide** : si un agent produit un fichier de moins de 20 lignes alors qu'un livrable complet est attendu → BLOQUER, relancer l'agent avec plus de contexte
    - **Détection de drift renforcée** : après chaque phase (pas seulement en fin de run), Grep les livrables produits pour le nom exact du persona principal et le KPI North Star tels que définis dans project-context.md. Si un livrable utilise un nom/terme différent → drift potentiel, vérifier.
-   - **Checkpoint régulier** : en autopilot, checkpoint utilisateur obligatoire toutes les 2 phases complétées (pas basé sur le nombre de messages, qui est imprévisible). Présenter : phases terminées, livrables produits, décisions prises, suite prévue. L'utilisateur valide ou ajuste.
+   - **Pas de checkpoint périodique** : en autopilot, pas d'interruption toutes les 2 phases. Bloquer uniquement sur anomalie (drift, score < 4.5, P0, contradiction). L'utilisateur peut consulter orchestration-plan.md à tout moment s'il veut voir l'avancement.
 4. **Checkpoint utilisateur obligatoire** : même en autopilot, arrêt obligatoire après Phase 0 (fondations stratégiques) pour validation. Les fondations conditionnent tout l'aval — pas de raccourci.
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
 6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run
@@ -441,7 +441,7 @@ L'ordre Phase 0→5 est le séquencement logique, mais toutes les phases ne sont
 
 **Variable 2 — KPI North Star :** prioriser les agents qui impactent directement le KPI. Si le KPI est "nombre de dashboards créés", @ux et @fullstack passent avant @seo.
 
-**Variable 3 — Budget :** si budget acquisition = 0, ne pas lancer @growth et @social en priorité — se concentrer sur le produit et le SEO organique.
+**Variable 3 — Budget :** toujours produire les livrables stratégiques @growth et @social (la stratégie est gratuite à produire). Si budget acquisition = 0, @growth et @social se concentrent exclusivement sur les canaux organiques (SEO, communautés, social organique, PLG). Le budget impacte l'EXÉCUTION opérationnelle (ads payantes), pas la PLANIFICATION stratégique.
 
 **Projets atypiques** : si le projet ne rentre pas dans les stades/types ci-dessus (projet purement éditorial, projet open-source, projet interne, projet sans monétisation directe), l'orchestrateur DOIT :
 1. Identifier les phases non pertinentes et les documenter comme "sautées — raison : [justification]"

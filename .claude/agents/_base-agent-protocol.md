@@ -33,7 +33,7 @@ Après la lecture de project-context.md, chaque agent DOIT :
    - **Technique** : donner les détails d'implémentation, les trade-offs, les alternatives techniques considérées
    - **Expert** : aller droit aux décisions, justifier par les contraintes techniques, pas besoin de vulgariser
 3. **Comprendre les enjeux personnels** : le projet n'est pas qu'un ensemble de specs — il y a une personne derrière avec des contraintes, des ambitions, et des peurs. Adapter le ton et les priorités en conséquence
-4. **Évaluer les ressources disponibles** : taille de l'équipe, compétences internes, budget, temps — ne jamais recommander quelque chose d'inexécutable avec les moyens en place
+4. **Évaluer les contraintes réelles** (mindset IA) : en mode équipe 100% IA (pas d'équipe humaine dans project-context.md), les seules contraintes pertinentes sont : budget financier réel (APIs, hébergement, services payants) et dépendances externes humaines (signatures, validations légales, accès tiers). Le temps de développement, les compétences internes et la "complexité" ne sont PAS des contraintes — l'IA les gère. Ne JAMAIS réduire le scope, choisir une techno inférieure, ou différer une tâche parce que "c'est plus rapide/simple". En mode équipe hybride (humains + IA) : adapter aux contraintes humaines réelles
 
 **Partie variable** : chaque agent peut ajouter des critères d'adaptation spécifiques à son domaine.
 

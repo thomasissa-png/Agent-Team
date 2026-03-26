@@ -914,7 +914,7 @@ Produis le framework analytique complet :
 
 Livrables (un fichier à la fois) : docs/analytics/kpi-framework.md + docs/analytics/tracking-plan.md + docs/analytics/dashboard-specs.md.
 
-Puis @fullstack : lis docs/analytics/tracking-plan.md et évalue l'effort d'implémentation. Signale les events qui nécessitent des modifications backend vs frontend-only. Estime le temps par event. Ajoute une section "Implémentation tracking" dans docs/dev-decisions.md.
+Puis @fullstack : lis docs/analytics/tracking-plan.md et évalue l'effort d'implémentation. Signale les events qui nécessitent des modifications backend vs frontend-only.  Ajoute une section "Implémentation tracking" dans docs/dev-decisions.md.
 
 Critères de validation : chaque event du tracking plan a un nom, un trigger et des propriétés définis ; le KPI North Star a une formule de calcul ; les dashboards sont directement implémentables.`
       },
@@ -1043,11 +1043,11 @@ Critères de validation : chaque tier est justifié par la valeur perçue (pas l
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features envisagées, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/growth/demand-validation.md si disponible (signaux de demande validés).
 
 Produis la définition MVP formalisée :
-1. Features RETENUES (5-8 max) : pour chaque feature, justification RICE (Reach, Impact, Confidence, Effort) et lien avec le KPI North Star. Si une feature n'impacte pas le KPI, elle n'est pas MVP.
+1. Features RETENUES : toutes les features qui impactent le KPI North Star. Pas de plafond artificiel — le coût marginal d'une feature supplémentaire est quasi nul avec l'IA. Le critère d'exclusion est la valeur pour le persona, pas le nombre. Pour chaque feature : justification par Impact × Confidence et lien avec le KPI North Star.
 2. Features EXCLUES : pour chaque feature écartée, raison explicite (pas assez d'impact, trop d'effort, pas validée par les utilisateurs, v2). Documenter = éviter de re-débattre.
 3. Critères de sortie MVP : les métriques à atteindre pour considérer le MVP comme validé et passer à la v2 (ex : 50 utilisateurs actifs, rétention J7 > 30%, NPS > 30).
 4. Hypothèse business centrale : la question unique à laquelle le MVP doit répondre (ex : "les PME sont-elles prêtes à payer 29 euros/mois pour automatiser leur reporting ?").
-5. Timeline : estimation du temps de développement par feature, chemin critique, dépendances techniques.
+5. Dépendances : quelles features dépendent de quelles autres (technique). Chemin critique basé sur les dépendances, pas sur le temps.
 6. Risques : les 3 risques principaux du MVP (technique, marché, UX) et le plan de mitigation.
 
 Livrable : docs/product/mvp-scope.md.
@@ -1780,7 +1780,7 @@ Critères de validation : chaque endpoint a ses types TypeScript (request + resp
         prompt:`@fullstack Lis project-context.md (stack technique, données sensibles). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quels rôles utilisateur (admin, user, guest), quelles méthodes de connexion (email/password, OAuth, magic link), quelles données sensibles à protéger.
 
 Architecture d'authentification et d'autorisation :
-1. Choix de la solution : Clerk, NextAuth.js, Lucia, ou custom — justifier selon le budget, les providers requis (Google, GitHub, etc.), et la complexité. Tableau comparatif avec prix et features.
+1. Choix de la solution : NextAuth.js, Clerk, Lucia, ou custom — justifier selon la valeur technique pour le projet (contrôle des données, flexibilité, ownership) et le budget récurrent. IMPORTANT (mindset IA) : ne JAMAIS choisir une solution parce qu'elle est "plus rapide à coder" — le temps de développement n'est PAS un critère de choix avec une équipe IA. Préférer la solution qui donne le plus de contrôle et de flexibilité au projet sur le long terme, même si elle demande plus de code initial. Tableau comparatif avec : prix mensuel, ownership des données, flexibilité (custom flows, branding), dépendance vendor, providers supportés.
 2. Flows d'authentification : signup (email + password ou OAuth), login, logout, reset password, email verification. Pour chaque flow : étapes, redirections, messages d'erreur, états de l'UI.
 3. Sessions : stratégie de gestion (JWT stateless vs session DB). Durée de session (recommandation : 7 jours avec refresh, 30 min pour les actions sensibles). Invalidation (logout, changement de mot de passe).
 4. Autorisation : modèle de permissions (RBAC recommandé pour la plupart des cas). Matrice rôle × action × ressource. Middleware de vérification des permissions sur chaque route protégée.
@@ -1952,7 +1952,7 @@ Critères de validation : chaque article du calendrier a un mot-clé cible uniqu
 
 Définis la stratégie d'acquisition :
 1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/effort pour CE persona et CE budget. Justification par canal (pas de liste générique).
-2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, effort opérationnel (heures/semaine).
+2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, automatisabilité IA (note /5 — ce canal peut-il être automatisé à 80%+ via IA ?).
 3. Unit economics : CAC vs LTV par canal. LTV/CAC cible > 3x. Si le budget est 0, prioriser les canaux organiques (SEO, communautés, social, product-led).
 4. Budget allocation : répartition du budget entre les canaux, avec seuils de réallocation (si CAC canal A > X, basculer vers canal B).
 5. Quick wins immédiats : les 3 actions d'acquisition à lancer en priorité (activables en < 48h avec les agents IA).
@@ -2023,7 +2023,7 @@ Diagnostic funnel AARRR complet :
 1. Taux par étape : Acquisition → Activation → Rétention → Revenue → Referral. Identifier l'étape avec le plus fort drop.
 2. Points de churn : à quel moment exact les utilisateurs décrochent ? Hypothèses de cause pour chaque point de churn.
 3. Segments sous-performants : par canal d'acquisition, par device, par cohorte temporelle.
-4. 3 leviers à plus fort impact : classés par effort/impact, avec estimation du lift attendu.
+4. 3 leviers à plus fort impact : classés par impact sur la conversion, avec estimation du lift attendu.
 5. Benchmark : comparaison avec les moyennes sectorielles (via WebSearch si disponible — sinon marquer [HYPOTHÈSE]).
 
 Livrable : docs/growth/funnel-audit.md.
@@ -2307,7 +2307,7 @@ Audit qualité complet :
 11. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
 12. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
 
-Rapport avec blockers classés par sévérité (critique/majeur/mineur) et effort de correction estimé.
+Rapport avec blockers classés par sévérité (critique/majeur/mineur) .
 
 Livrable : docs/qa/qa-strategy.md.
 
@@ -2450,7 +2450,7 @@ Audit accessibilité complet RGAA/WCAG 2.1 AA :
 4. Audit manuel — Contrastes : ratio minimum 4.5:1 pour le texte normal, 3:1 pour le texte large (> 18px ou > 14px bold). Vérifier aussi les contrastes des bordures, icônes, et états focus/hover. Outil : Colour Contrast Analyser.
 5. Audit manuel — Formulaires : chaque champ a un label associé (pas de placeholder seul), les erreurs de validation sont annoncées (aria-live ou focus sur l'erreur), les champs obligatoires sont indiqués (pas uniquement par la couleur).
 6. Audit manuel — Médias : sous-titres sur les vidéos, transcription sur les audios, alternatives textuelles sur les contenus visuels complexes (graphiques, infographies).
-7. Plan de remédiation : pour chaque violation, fiche corrective (critère RGAA/WCAG concerné, localisation, correction proposée, effort estimé, priorité). Les violations critiques bloquent la mise en production.
+7. Plan de remédiation : pour chaque violation, fiche corrective (critère RGAA/WCAG concerné, localisation, correction proposée, priorité). Les violations critiques bloquent la mise en production.
 8. Déclaration d'accessibilité : page obligatoire (RGAA) avec : niveau de conformité visé, résultat de l'audit, liste des non-conformités, plan de correction, contact.
 
 Livrable : docs/ux/accessibility-audit.md.
@@ -2582,7 +2582,7 @@ Audit de performance complet :
 6. Sécurité liée à la performance : headers de sécurité (CSP, HSTS) qui peuvent impacter le chargement, scripts tiers non sécurisés.
 7. Budget performance : définir un budget (JS < 200KB gzipped, total page < 1MB, LCP < 2.5s, TTFB < 800ms) et mesurer l'écart actuel par page.
 
-Pour chaque problème : sévérité (critique/majeur/mineur), correction recommandée, effort estimé (heures), impact attendu sur les Core Web Vitals, et ROI estimé (impact conversion vs effort de correction).
+Pour chaque problème : sévérité (critique/majeur/mineur), correction recommandée, impact attendu sur les Core Web Vitals, et ROI estimé (impact conversion vs effort de correction).
 
 Livrable : docs/infra/performance-audit.md.
 
@@ -2592,7 +2592,7 @@ Puis @data-analyst : lis docs/infra/performance-audit.md et corrèle les problè
 
 Puis @ux : lis docs/infra/performance-audit.md et évalue l'impact sur l'expérience utilisateur perçue : squelettes de chargement manquants, absence d'optimistic UI, transitions abruptes, indicateurs de progression absents. Propose des améliorations UX qui réduisent la perception de lenteur même sans gain technique. Ajoute une section "Performance perçue" dans docs/infra/performance-audit.md.
 
-Critères de validation : chaque bottleneck a une sévérité, une correction, un effort estimé et un ROI ; le budget performance est défini avec seuils par page ; l'impact SEO est quantifié ; l'impact business est chiffré en revenu perdu estimé.`
+Critères de validation : chaque bottleneck a une sévérité, une correction, un un impact et un ROI ; le budget performance est défini avec seuils par page ; l'impact SEO est quantifié ; l'impact business est chiffré en revenu perdu estimé.`
       },
       {
         title:"Auditer la cohérence visuelle",
@@ -2751,7 +2751,7 @@ Structure la collecte et la priorisation du feedback :
 1. Sources de feedback à mettre en place ou analyser : in-app survey (NPS à J+14, CSAT après action critique), interviews ciblées (protocole : 5 churners + 5 power users, questions ouvertes), tickets support (patterns récurrents, volume par catégorie), feature requests (agrégation et déduplication), avis publics (App Store, G2, Trustpilot si applicable), analytics comportementales (rage clicks, dead clicks, abandon flows).
 2. Matrice de synthèse : chaque feedback catégorisé (bug / amélioration / nouvelle feature / confusion UX / demande légale) avec fréquence, nombre d'utilisateurs impactés, et sévérité. Distinguer les retours des power users vs nouveaux utilisateurs.
 3. Priorisation RICE : chaque item scoré (Reach, Impact, Confidence, Effort) contre les métriques actuelles et le KPI North Star. Confidence basée sur des données réelles (nombre de demandes, pas de l'intuition).
-4. Roadmap v2 : les 5-8 items retenus pour la prochaine itération, avec pour chacun : justification, persona impacté, impact estimé sur le KPI North Star, effort estimé, dépendances techniques.
+4. Roadmap v2 : les items retenus pour la prochaine itération (tous ceux qui impactent le KPI), avec pour chacun : justification, persona impacté, impact estimé sur le KPI North Star, dépendances techniques.
 5. Items exclus : avec raison et horizon potentiel (v3, never, conditionnel). Documenter = éviter de re-débattre.
 6. Quick wins : les items réalisables en < 1 jour qui ont un impact disproportionné (souvent des corrections UX ou des bugs mineurs fréquents).
 
