@@ -91,8 +91,13 @@ src/
 ├── types/                  ← Types TypeScript partagés
 ├── actions/                ← Server Actions Next.js
 ├── config/                 ← Configuration (constantes, env validation avec zod)
+│   └── pricing.ts          ← Valeurs business centralisées (prix, plans, emails contact)
 └── styles/                 ← Styles globaux Tailwind
 ```
+
+### Centralisation des valeurs business
+
+**Jamais de valeur business hardcodée dans un composant.** Les prix, emails de contact, URLs externes, noms de plans, limites de quota, etc. DOIVENT être centralisés dans `src/config/` (ex: `pricing.ts`, `site.ts`). Chaque composant importe depuis ce fichier unique. Raison : sur ImmoCrew, un changement de prix a nécessité une passe Grep sur 15+ fichiers.
 
 ### Principes de code
 
