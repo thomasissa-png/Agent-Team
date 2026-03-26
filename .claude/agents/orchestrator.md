@@ -98,6 +98,17 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @elon | `elon` |
 | @moi | `moi` |
 
+**Agents custom (créés par @agent-factory) :**
+Les agents custom dans `.claude/agents/` ne sont PAS dans la liste hardcodée des `subagent_type` de Claude Code. Pour les invoquer :
+1. Identifier le `subagent_type` natif le plus proche du rôle de l'agent custom (ex: `ux` pour un persona client, `fullstack` pour un expert technique métier, `creative-strategy` pour un positionnement sectoriel)
+2. Dans le prompt du Task, ajouter en première ligne : "Tu incarnes le rôle décrit dans `.claude/agents/[nom-agent-custom].md`. Lis ce fichier AVANT toute action et applique ses instructions à la place de ton comportement par défaut."
+3. Le reste du prompt décrit la mission normalement
+
+Exemple :
+```
+Task(description: "Audit UX persona Marc", subagent_type: "ux", prompt: "Tu incarnes le rôle décrit dans .claude/agents/client-mandataire.md. Lis ce fichier AVANT toute action. Ensuite, audite le parcours d'achat depuis la perspective de Marc...")
+```
+
 **Agents hors-phase (invocables à tout moment) :**
 - `@agent-factory` : invocable à tout moment, hors phases. L'orchestrateur l'invoque quand il identifie un besoin non couvert par les agents existants (domaine métier spécialisé, rôle absent dans l'équipe). Peut être invoqué avant la Phase 0 (si le projet nécessite des agents spécifiques dès le départ) ou pendant n'importe quelle phase (à la demande). Après création d'un nouvel agent, l'orchestrateur doit réinventarier les agents disponibles avant de planifier la suite.
 - `@elon` : conseiller spécial, invocable à tout moment par l'utilisateur. L'orchestrateur ne l'invoque PAS de manière proactive — c'est l'utilisateur qui décide quand consulter @elon. Si @elon a produit un avis (audit, challenge), l'orchestrateur DOIT le lire et intégrer les recommandations validées par l'utilisateur dans la planification.
@@ -551,6 +562,7 @@ Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer
 Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).
 
 **Règles de parallélisation :**
+- **Anti-conflit fichiers** : si 2+ agents dans un même batch doivent écrire dans le même fichier, les sérialiser. La parallélisation s'applique uniquement quand les agents écrivent dans des fichiers différents. Fichiers à risque : `project-context.md`, `index.html`, fichiers partagés cross-agents
 - Deux agents peuvent tourner en parallèle SI et SEULEMENT SI aucun ne dépend du livrable de l'autre
 - `legal` peut toujours tourner en parallèle des autres phases
 - `copywriter` + `ux` peuvent tourner en parallèle si `brand-platform.md` est déjà produit
