@@ -556,7 +556,7 @@ Continuité de session : rappelle à l'utilisateur de nommer sa session (claude 
       {
         title:"Quel prompt utiliser ? (guide rapide)",
         agents:["orchestrator"],
-        quand:"Tu ne sais pas par où commencer parmi les 80+ prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
+        quand:"Tu ne sais pas par où commencer parmi les 88 prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
         prompt:`@orchestrator Mode sélecteur guidé. Ne lance aucun agent.
 
 Lis project-context.md si il existe. Puis pose-moi ces 3 questions (une à la fois si possible, sinon les 3 ensemble) :
@@ -1898,7 +1898,7 @@ Critères de validation : au moins 10 claims vérifiables documentés, la FAQ es
       {
         title:"SEO + GEO combinés",
         agents:["seo","geo","infrastructure"],
-        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026 3 agents. Si coupure : 'Lis docs/seo/ et docs/geo/, quels agents restent ?'",
+        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026. 3 agents. Si coupure : 'Lis docs/seo/ et docs/geo/, quels agents restent ?'",
         prompt:`@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles.
 
 Produis l'audit SEO technique complet (Core Web Vitals avec scores actuels, JSON-LD, maillage, sitemap) + keyword map avec pages prioritaires classées par intention (informationnelle / transactionnelle). Chaque recommandation avec priorité P0/P1/P2 et impact estimé.
@@ -2592,7 +2592,7 @@ Puis @data-analyst : lis docs/infra/performance-audit.md et corrèle les problè
 
 Puis @ux : lis docs/infra/performance-audit.md et évalue l'impact sur l'expérience utilisateur perçue : squelettes de chargement manquants, absence d'optimistic UI, transitions abruptes, indicateurs de progression absents. Propose des améliorations UX qui réduisent la perception de lenteur même sans gain technique. Ajoute une section "Performance perçue" dans docs/infra/performance-audit.md.
 
-Critères de validation : chaque bottleneck a une sévérité, une correction, un un impact et un ROI ; le budget performance est défini avec seuils par page ; l'impact SEO est quantifié ; l'impact business est chiffré en revenu perdu estimé.`
+Critères de validation : chaque bottleneck a une sévérité, une correction, un impact et un ROI ; le budget performance est défini avec seuils par page ; l'impact SEO est quantifié ; l'impact business est chiffré en revenu perdu estimé.`
       },
       {
         title:"Auditer la cohérence visuelle",
