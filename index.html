@@ -647,33 +647,27 @@ Commence."`
       },
       {
         title:"Faire un check-up complet de mon projet",
-        agents:["orchestrator","reviewer","elon","qa","seo","infrastructure"],
+        agents:["orchestrator","reviewer","elon","qa","seo","geo","infrastructure","ux","design","legal","data-analyst"],
         quand:"Tu as plusieurs livrables et tu veux vérifier que tout est à 9/10 avant un lancement ou après une phase intense. Lance tous les audits pertinents automatiquement — même rigueur que chaque prompt d'audit un par un. Si coupure : 'Lis docs/reviews/, qu'est-ce qui a déjà été audité ?'",
         prompt:`@orchestrator Mode check-up complet. Objectif : vérifier que TOUS les livrables existants sont à 9/10 et cohérents entre eux — le même niveau de rigueur que si on relançait chaque prompt d'audit de la bibliothèque un par un.
 
-Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*).
+Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*). Crée docs/orchestration-plan.md en mode "CHECK-UP" avec la liste des audits à lancer. Marque chaque audit PENDING/EN COURS/COMPLETE pour permettre la reprise.
 
-Étape 1 — Audit de cohérence croisée (@reviewer) :
-Lance @reviewer avec les instructions du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Il doit vérifier :
-- Brand ↔ copy : ton aligné avec brand-platform.md
-- Specs ↔ code : features implémentées = features spécifiées
-- Tracking ↔ KPIs : chaque event est implémenté et mesurable
-- Design ↔ code : tokens respectés dans src/
-- UX → Code → Tests : wireframes implémentés, revue UX produite, tests E2E couvrent les parcours
-- Conformité légale : docs/legal/ couvre le modèle économique
-- Performance : LCP < 2.5s, Core Web Vitals
-- Anti-placeholder : Grep sur tous les livrables
-- Vrais outputs : tester les templates/prompts avec le persona réel
-Scoring : 4.5/5 minimum par livrable. Score persona ≥ 9/10. Score B2B ≥ 9/10 (si applicable).
+Étape 1 — Audit de cohérence croisée :
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Scoring : 4.5/5 minimum par livrable. Score persona ≥ 9/10. Score B2B ≥ 9/10 (si applicable).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
-Pour chaque domaine qui a des livrables, lance l'agent spécialisé en mode audit avec les instructions du prompt correspondant :
-- Code existant → @qa avec le prompt "Audit qualité & tests complets"
-- SEO → @seo avec le prompt "Stratégie SEO technique & éditoriale" (section audit)
-- Sécurité → @infrastructure avec le prompt "Audit de sécurité complet"
-- Accessibilité → @qa avec le prompt "Audit accessibilité RGAA/WCAG"
-- Si le projet est en production → @infrastructure avec "Monitoring post-launch" + @data-analyst avec "Monitoring UX"
+Pour chaque domaine qui a des livrables, lance l'agent spécialisé avec les instructions du prompt correspondant :
+- Code → @qa avec "Audit qualité & tests complets"
+- SEO → @seo avec "Stratégie SEO technique & éditoriale" (section audit)
+- GEO → @geo avec "Visibilité sur les IA génératives" (si livrables GEO existants)
+- Sécurité → @infrastructure avec "Audit de sécurité complet"
+- Accessibilité → @qa avec "Audit accessibilité RGAA/WCAG"
+- UX & conversion → @ux avec "Audit UX & conversion" (si produit avec trafic)
+- Cohérence visuelle → @design avec "Auditer la cohérence visuelle" (si design system + code)
+- Conformité juridique → @legal avec "Audit juridique & conformité"
+- Si en production → @infrastructure "Monitoring post-launch" + @data-analyst "Monitoring UX"
 
 Étape 3 — Audit stratégique (@elon) :
 Lance @elon avec le prompt "Audit stratégique first principles". Il note vision, exécution, moat, scalabilité, vitesse sur 10. Identifie le risque n°1 et le levier n°1.
@@ -775,9 +769,11 @@ Critères de validation : chaque agent sélectionné a audité sa dimension, le 
         title:"Pivoter mon projet",
         agents:["orchestrator"],
         quand:"Changement de direction : nouveau persona, nouveau marché, nouveau positionnement. Relance automatiquement tous les agents impactés en mode autopilot — même qualité que 'Lancer de A à Z' mais en capitalisant sur les acquis. Multi-sessions. Pour reprendre : 'Lis project-context.md et docs/orchestration-plan.md, continue le pivot.'",
-        prompt:`@orchestrator Le projet pivote. Objectif : relancer toutes les étapes impactées en mode autopilot avec la même qualité que le prompt "Lancer de A à Z" — comme un nouveau projet, mais en capitalisant sur ce qui reste valide.
+        prompt:`@orchestrator Le projet pivote. Objectif : relancer UNIQUEMENT les étapes impactées en mode autopilot — même qualité que "Lancer de A à Z", en capitalisant sur les acquis.
 
 Lis project-context.md. Si les nouvelles orientations n'y sont pas encore, pose-moi les questions pour le mettre à jour (nouveau persona, nouveau marché, nouveau positionnement, nouveau KPI). Mets à jour project-context.md AVANT de continuer. Documente le changement : avant/après pour chaque champ modifié.
+
+Garde-fou : évalue d'abord si c'est un vrai pivot (changement de secteur, modèle économique, cible) ou un changement structurel (nouveau persona secondaire, ajout de feature majeure). Si structurel, utilise ton protocole "Gestion du changement de périmètre" au lieu du mode pivot complet.
 
 Étape 1 — Inventaire et tri :
 Glob docs/**/*.md + src/**/*. Pour chaque livrable existant, classe-le :
@@ -786,35 +782,25 @@ Glob docs/**/*.md + src/**/*. Pour chaque livrable existant, classe-le :
 - ❌ À refaire (invalidé par le pivot)
 Identifie les dépendances entre livrables impactés.
 
-Étape 2 — Plan de re-séquencement :
-Produis un plan qui relance UNIQUEMENT les agents impactés, dans l'ordre de dépendance. Utilise la carte de référence de ton protocole (section "Prompts de la bibliothèque par phase") pour chaque Task — même niveau de détail que les prompts individuels.
+Checkpoint obligatoire : présente-moi l'inventaire (tableau garder/adapter/refaire) pour validation AVANT de lancer les agents. Si je reclasse un livrable, ajuste le plan.
 
-Ordre typique d'un pivot :
-1. @creative-strategy → repositionner brand-platform, personas, messaging (prompt "Positionnement & plateforme de marque")
-2. @product-manager → adapter roadmap, specs, pricing si impacté (prompts correspondants)
-3. @data-analyst → vérifier/ajuster KPI North Star et tracking
-4. @ux → adapter parcours utilisateur et wireframes si impactés
-5. @design → adapter design system si la direction artistique change
-6. @copywriter → réécrire copy impacté (landing page, brand voice, emails)
-7. @seo + @geo → adapter keyword map et stratégie de visibilité
-8. @fullstack → adapter le code si les specs ont changé
-9. @qa → relancer les tests sur les parcours modifiés
-10. @reviewer → revue croisée post-pivot (tous les livrables 🔄 et ❌ re-scorés à 4.5/5)
+Étape 2 — Plan de re-séquencement :
+Suis l'ordre de dépendance de ta carte de référence (section "Prompts de la bibliothèque par phase", Phases 0→5). Ne relance que les agents dont au moins un livrable est classé "À adapter" ou "À refaire". Inclus TOUS les agents impactés — y compris @infrastructure, @legal, @growth, @social s'ils ont des livrables invalidés par le pivot. Pour chaque agent relancé, utilise les instructions détaillées du prompt de la bibliothèque correspondant.
 
 Renforcements (identiques au prompt "Lancer de A à Z") :
-1. Vrais outputs obligatoires sur chaque livrable revu.
-2. Vérification anti-placeholder (Grep).
+1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
+2. Vérification anti-placeholder (Grep) sur chaque livrable.
 3. 11 critères de cohérence après chaque phase de pivot.
 4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10.
-5. Dégradation gracieuse si un agent échoue.
+5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à ce que tous les livrables impactés soient à 9/10.
-- Marqueurs COMPLETE/EN COURS dans orchestration-plan.md (version pivot).
+- Marqueurs COMPLETE/EN COURS dans orchestration-plan.md.
 - Pour reprendre : 'Lis project-context.md et docs/orchestration-plan.md, continue le pivot.'
 
-Livrable : docs/orchestration-plan.md (version pivot, avec section "Changements vs version précédente").
+Livrable : ajoute une section "Pivot [date]" dans docs/orchestration-plan.md existant (ne pas écraser le plan original). Inclure : avant/après project-context.md, inventaire garder/adapter/refaire, plan de re-séquencement.
 
 Critères de validation : project-context.md reflète le pivot, tous les livrables impactés sont identifiés et classés, chaque livrable revu score ≥ 4.5/5, la cohérence post-pivot est vérifiée par @reviewer.`
       },
