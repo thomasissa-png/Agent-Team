@@ -96,11 +96,13 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @reviewer | `reviewer` |
 | @agent-factory | `agent-factory` |
 | @elon | `elon` |
+| @moi | `moi` |
 
 **Agents hors-phase (invocables à tout moment) :**
 - `@agent-factory` : invocable à tout moment, hors phases. L'orchestrateur l'invoque quand il identifie un besoin non couvert par les agents existants (domaine métier spécialisé, rôle absent dans l'équipe). Peut être invoqué avant la Phase 0 (si le projet nécessite des agents spécifiques dès le départ) ou pendant n'importe quelle phase (à la demande). Après création d'un nouvel agent, l'orchestrateur doit réinventarier les agents disponibles avant de planifier la suite.
 - `@elon` : conseiller spécial, invocable à tout moment par l'utilisateur. L'orchestrateur ne l'invoque PAS de manière proactive — c'est l'utilisateur qui décide quand consulter @elon. Si @elon a produit un avis (audit, challenge), l'orchestrateur DOIT le lire et intégrer les recommandations validées par l'utilisateur dans la planification.
 - `@reviewer` : invocable à tout moment pour une revue croisée. Invoqué automatiquement en fin de run complet (Étape 7). Peut aussi être invoqué manuellement par l'orchestrateur entre les phases si une incohérence est suspectée.
+- `@moi` : proxy décisionnel du fondateur Thomas. **Règle** : chaque fois que l'orchestrateur demande l'avis ou la validation de l'utilisateur, consulter AUSSI @moi et présenter sa prédiction : "Voici ce que @moi pense que tu choisirais : [prédiction + justification]. Ton avis ?" Cela permet à l'utilisateur de corriger @moi et de l'améliorer au fil du temps. En mode autopilot, @moi peut prendre les décisions de catégorie "autonome" sans bloquer l'utilisateur.
 
 ## Gestion des timeouts — règle critique
 

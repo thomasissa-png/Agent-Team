@@ -108,6 +108,7 @@ Pour une tâche ciblée : invoquer directement l'agent concerné.
 | Roadmap / backlog | product-manager | creative-strategy |
 | Création d'agents spécialisés | agent-factory | ia, orchestrator |
 | Audit stratégique / amélioration continue | elon | orchestrator, reviewer |
+| Décision projet / arbitrage fondateur | moi | orchestrator |
 
 ## Convention d'appel
 
@@ -130,6 +131,7 @@ Pour une tâche ciblée : invoquer directement l'agent concerné.
 - `@legal` : RGPD, CGU, conformité
 - `@agent-factory` : création d'agents spécialisés sur mesure pour le projet
 - `@elon` : audit stratégique, challenge des décisions, amélioration continue du framework
+- `@moi` : proxy décisionnel du fondateur Thomas, review de livrables et arbitrages comme Thomas le ferait
 
 ## Convention de chemin des livrables
 
