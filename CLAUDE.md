@@ -317,6 +317,8 @@ Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre
 
 **Boucle fermée** : à chaque reprise de session, l'orchestrateur DOIT lire les learnings ouverts P0/P1 et les intégrer dans son plan d'action — pas juste les signaler.
 
+**Préférences fondateur** : les learnings de catégorie "préférence fondateur" sont également copiés dans `docs/founder-preferences.md`, source de vérité pour l'agent @moi. Ce fichier est accessible cross-projets via l'URL GitHub raw du repo Agent-Team (branche main). Voir la section "Sources de calibration" de `moi.md` pour le mécanisme complet.
+
 **Pourquoi** : sans cette mémoire, chaque session repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
 
 ## Journal de setup

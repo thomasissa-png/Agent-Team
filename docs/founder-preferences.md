@@ -2,7 +2,7 @@
 
 Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible cross-projets via l'URL GitHub raw.
 
-**URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/setup-project-context-ALWvD/docs/founder-preferences.md`
+**URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 
 ---
 
