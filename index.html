@@ -2997,9 +2997,10 @@ Catégories à couvrir :
 
 IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité pour @moi.
 
-Synchronisation entre projets : après avoir écrit docs/founder-preferences.md, pousser les changements sur la branche. Les autres projets (Sarani, Mandataire-Immo, etc.) accèdent à ce fichier via l'URL GitHub raw :
-https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
-Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ce fichier via WebFetch pour se calibrer.
+Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
+Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
 Format tableau pour chaque learning :
 | Session | Date | Catégorie | Sévérité (P0/P1/P2) | Description | Correction appliquée | Recommandation framework | Statut (ouvert/appliqué/obsolète) |
@@ -3016,6 +3017,12 @@ Affiche un résumé structuré de la clôture :
 ✓ Livrables cette session : X complets, Y en cours
 ✓ Mémo de reprise : sauvegardé dans project-context.md
 ✓ Learnings : X learnings ajoutés dans docs/lessons-learned.md
+✓ Push : branche + main poussés (learnings accessibles cross-projets)
+
+📎 Liens publics (à partager entre projets) :
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
+
 → Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
 → Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
 → Amélioration framework : [résumé des 1-2 recommandations les plus impactantes pour l'équipe]

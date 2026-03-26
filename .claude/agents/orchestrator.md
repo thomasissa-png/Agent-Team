@@ -346,6 +346,9 @@ L'orchestrateur a deux modes d'exécution :
 4. **Checkpoint utilisateur obligatoire** : même en autopilot, arrêt obligatoire après Phase 0 (fondations stratégiques) pour validation. Les fondations conditionnent tout l'aval — pas de raccourci.
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
 6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run
+7. **Pousser les learnings sur main** : après avoir mis à jour `docs/lessons-learned.md` et `docs/founder-preferences.md`, pousser sur la branche ET sur main (`git push origin main`) pour que les URLs publiques soient accessibles cross-projets. Afficher les liens :
+   - Learnings : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md`
+   - Préférences fondateur : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 
 ### Quand passer en mode standard (exception)
 
