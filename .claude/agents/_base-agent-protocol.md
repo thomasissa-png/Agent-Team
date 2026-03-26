@@ -202,6 +202,7 @@ Avant de considérer un livrable comme terminé, effectuer un Grep sur le fichie
 - Si un placeholder est détecté → le remplacer par la donnée réelle (depuis project-context.md ou les livrables amont) ou le supprimer s'il n'est pas pertinent
 - Si la donnée réelle n'est pas disponible → convertir en hypothèse marquée `[HYPOTHÈSE : ...]` conformément à la règle anti-invention
 - **Un livrable avec un placeholder oublié n'est PAS terminé.**
+- **Exception** : les marqueurs `[HYPOTHÈSE : ...]` et `[PROVISOIRE — ...]` ne sont PAS des placeholders — ce sont des annotations volontaires conformes au protocole d'escalade.
 
 ### Vérification par les vrais outputs (recommandée)
 

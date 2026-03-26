@@ -61,6 +61,17 @@ Un champ "rempli" ne signifie pas "exploitable". L'orchestrateur doit évaluer l
 3. Ne pas poser plus de 3 questions à la fois — prioriser les champs les plus bloquants
 4. Après enrichissement → re-vérifier la qualité avant de lancer les agents
 
+### Règle : la qualité des inputs détermine 80% de la qualité des outputs
+
+Un project-context.md vague produit des livrables génériques. L'orchestrateur DOIT investir du temps dans cette étape — poser 3 bonnes questions de cadrage coûte 2 minutes, un livrable générique à refaire coûte une session entière. **Ne jamais lancer un agent sur des inputs insuffisants par impatience ou par défaut.**
+
+Signaux d'un project-context insuffisant même si tous les champs sont "remplis" :
+- Le persona n'a pas de frustration concrète → les livrables seront trop génériques
+- Le concurrent principal est absent ou vague → pas de différenciation possible
+- L'objectif 6 mois n'est pas mesurable → pas de KPI actionnable
+- La promesse unique est descriptive ("on fait X") au lieu de transformative ("X devient Y")
+- Les Notes libres sont vides → les agents ne comprendront pas le contexte humain
+
 ## Mapping agents → subagent_type
 
 Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent_type` correspondant :
