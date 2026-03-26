@@ -222,7 +222,14 @@ Produire un rapport structuré exactement ainsi :
 | G18 | ≥ 2 livrables ref | REQUIS | PASS/FAIL | |
 | G20 | Exemple concret | REQUIS | PASS/FAIL | |
 
-**BLOQUANT : X/9 PASS | REQUIS : Y/10 PASS | CONDITIONNEL : Z/1 (ou N/A)**
+*Gates métier (conditionnelles selon le type de livrable) :*
+| G21 | 5 états UI par écran | BLOQUANT | PASS/FAIL/N-A | |
+| G22 | Contrastes WCAG AA | BLOQUANT | PASS/FAIL/N-A | |
+| G23 | 0 valeur hardcodée | REQUIS | PASS/FAIL/N-A | |
+| G24 | Registre tu/vous uniforme | REQUIS | PASS/FAIL/N-A | |
+| G25 | KPI formule + seuil | REQUIS | PASS/FAIL/N-A | |
+
+**BLOQUANT : X/11 PASS | REQUIS : Y/13 PASS | CONDITIONNEL : Z (ou N/A)**
 **Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**
 **Verdict : GO / GO CONDITIONNEL / NO-GO**
 

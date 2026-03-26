@@ -301,7 +301,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 
 | # | Gate | Classe | Vérification |
 |---|---|---|---|
-| G5 | Persona identique à project-context.md | BLOQUANT | Grep nom persona dans le livrable |
+| G5 | Persona identique à project-context.md | BLOQUANT | Grep nom persona dans le livrable. Le persona doit être cité par nom ET le livrable doit adresser ses frustrations/objections (pas juste mentionner le nom) |
 | G6 | KPI North Star identique | BLOQUANT | Grep KPI dans le livrable |
 | G7 | 0 contradiction avec livrables amont | BLOQUANT | Read les 2-3 livrables amont référencés, extraire les décisions clés (positionnement, persona, KPI, choix techniques), comparer avec le livrable évalué. Si une décision diverge → FAIL |
 | G8 | Ton cohérent avec brand-voice.md (si existe) | CONDITIONNEL | Grep registre (tu/vous), vocabulaire |
@@ -313,7 +313,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G9 | Chaque recommandation a un owner + action + cible | REQUIS | Grep `→ @` ou équivalent actionnable |
 | G10 | 0 langage vague sans action ("envisager", "pourrait", "éventuellement") | REQUIS | Grep mots vagues |
 | G11 | Critères de validation binaires (vérifiables oui/non) | REQUIS | Read section validation |
-| G12 | Un agent pourrait implémenter sans poser de question | BLOQUANT | Pour chaque action/recommandation : a-t-elle (a) un verbe d'action, (b) un objet clair, (c) un critère de done vérifiable ? Si une action dit "améliorer le SEO" sans préciser quoi/comment/critère → FAIL |
+| G12 | Un agent pourrait implémenter sans poser de question | BLOQUANT | Pour chaque action/recommandation : a-t-elle (a) un verbe d'action, (b) un objet clair, (c) des inputs/outputs explicites, (d) un critère de done vérifiable ? Si une action dit "améliorer le SEO" sans préciser quoi/comment/critère → FAIL |
 
 **MESSAGES**
 
@@ -332,6 +332,16 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G18 | >= 2 livrables amont référencés par chemin | REQUIS | Grep `docs/` |
 | G19 | Pas copiable tel quel pour un projet concurrent | BLOQUANT | Test d'inversion : remplacer le nom du projet par un concurrent dans un autre secteur. Si > 50% du contenu reste applicable sans modification → FAIL. Indicateurs : le livrable mentionne-t-il le secteur spécifique, les contraintes du persona, les choix techniques du projet ? |
 | G20 | >= 1 exemple concret spécifique au projet | REQUIS | Vérification sectorielle |
+
+**QUALITÉ MÉTIER** (gates spécifiques par type de livrable — s'appliquent conditionnellement selon le type)
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G21 | Les 5 états UI documentés par écran interactif (défaut, loading, vide, erreur, succès) | BLOQUANT | Pour specs/wireframes : Grep `loading\|erreur\|vide\|empty\|error\|succes` par écran. Chaque écran avec données dynamiques DOIT avoir les 5 états |
+| G22 | Contrastes WCAG 2.2 AA respectés (>= 4.5:1 texte, >= 3:1 interactifs) | BLOQUANT | Pour design-system/tokens : vérifier chaque combinaison couleur texte/fond. Clair ET dark mode si applicable |
+| G23 | 0 valeur hardcodée — toute couleur, spacing, typo référence un token nommé | REQUIS | Pour design/specs/code : Grep couleurs hex en dur hors fichiers de tokens, valeurs px hors scale |
+| G24 | Registre tu/vous uniforme dans le livrable (0 alternance non justifiée) | REQUIS | Pour copy/contenu : Grep `tu \|ton \|votre \|vous ` — vérifier cohérence |
+| G25 | Chaque KPI/métrique a une formule de calcul explicite ET un seuil d'alerte défini | REQUIS | Pour analytics/KPI : chaque KPI a (formule ou trigger) + seuil. Grep `formule\|calcul\|seuil\|alerte` |
 
 ### Verdict
 
