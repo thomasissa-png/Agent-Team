@@ -238,7 +238,7 @@ Si un agent a été interrompu par un timeout :
 8. En mode révision : justifier chaque changement, ne pas tout réécrire
 9. **Après chaque livrable** : mettre à jour le tableau "Historique des interventions agents" dans `project-context.md` avec : agent, date, fichiers produits, décisions clés, **et justification des choix (pourquoi cette décision, quelles alternatives écartées)**
 10. **Respecter les règles anti-timeout** (voir Règle absolue numéro 3) — découper les livrables, sauvegarder au fur et à mesure, ne jamais accumuler sans écrire
-11. **Objectif qualité 9/10 (4.5/5) sur chaque livrable.** Chaque livrable sera évalué par @reviewer sur 5 critères (Complétude, Cohérence, Actionnabilité, Messages, Spécificité). Le seuil de validation est 4.5/5 — viser l'excellence dès la première passe pour éviter les itérations correctives
+11. **Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 20 gates binaires (PASS/FAIL) réparties en BLOQUANT et REQUIS. Le seuil de validation est : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS. Viser l'excellence dès la première passe pour éviter les itérations correctives
 12. **Mise à jour du nom de branche obligatoire.** À chaque changement de branche de développement, l'ancienne référence de branche DOIT être remplacée par la nouvelle dans TOUS les fichiers qui la mentionnent : `index.html` (prompts d'installation frontend), `INSTALL.md`, `install.sh`, `update.sh`, et `project-context.md` (mémo de reprise). Utiliser `Grep` sur l'ancien nom de branche pour s'assurer qu'aucune référence n'a été oubliée. Cette mise à jour est la responsabilité de l'agent qui effectue le changement de branche (typiquement @orchestrator ou l'agent principal de la session)
 
 ## Protocole de test du framework
@@ -274,25 +274,83 @@ Pour valider que les agents fonctionnent correctement ensemble, utiliser ce prot
 
 Un `project-context.md` fictif mais réaliste est disponible dans `tests/project-context-test.md` (projet PulseBoard — analytics marketing pour PME). Copier ce fichier à la racine pour tester sans avoir à remplir un contexte de zéro.
 
-### Scoring automatique post-livrable — Deux niveaux de contrôle qualité
+### Contrôle qualité post-livrable — Système de gates binaires
 
-Le scoring s'effectue en **deux temps** avec des responsabilités distinctes :
+Le contrôle qualité s'effectue en **deux temps** avec des responsabilités distinctes :
 
-1. **Scoring rapide par l'orchestrateur** (après chaque phase) : contrôle rapide des 5 critères. Si un critère est **<3/5** → relance corrective immédiate de l'agent avant de passer à la phase suivante. Objectif : éliminer les livrables insuffisants au fil de l'eau.
-2. **Scoring final par @reviewer** (en fin de run, Étape 7) : évaluation approfondie sur l'échelle 1-5 avec demi-points. Seuil de validation : **4.5/5 minimum** par livrable. Boucle d'itération si besoin (max 3 passes). Les scores finaux sont inscrits dans le tableau "Performance des agents".
+1. **Vérification rapide par l'orchestrateur** (après chaque phase) : exécuter les gates BLOQUANT sur chaque livrable. Si 1+ gate BLOQUANT = FAIL → relance corrective immédiate de l'agent avant de passer à la phase suivante. Objectif : éliminer les livrables insuffisants au fil de l'eau.
+2. **Audit complet par @reviewer** (en fin de run, Étape 7) : exécuter les 20 gates (BLOQUANT + REQUIS + CONDITIONNEL) via Grep/Read/comparaison — pas de jugement subjectif. Boucle d'itération si besoin (max 3 passes). Les verdicts sont inscrits dans le tableau "Performance des agents".
 
-Après chaque livrable produit par un agent, l'orchestrateur DOIT évaluer rapidement et remplir le tableau "Performance des agents" dans `project-context.md` selon ces critères :
+### Les 20 gates binaires (PASS/FAIL)
 
-| Critère | 1 (Échec) | 3 (Acceptable) | 5 (Excellent) |
+Chaque livrable dans `docs/` est évalué par ces gates. Classification :
+- **BLOQUANT** : 1 FAIL = NO-GO immédiat, relance obligatoire
+- **REQUIS** : 1 FAIL = GO conditionnel (corriger dans la session)
+- **CONDITIONNEL** : s'applique uniquement si la feature/le livrable amont existe
+
+**COMPLÉTUDE**
+
+| # | Gate | Classe | Vérification |
 |---|---|---|---|
-| **Complétude** | Sections manquantes, travail inachevé | Sections principales couvertes, détails manquants | Toutes les sections remplies, rien à ajouter |
-| **Cohérence** | Contredit des livrables existants | Pas de contradiction, mais pas de cross-référence | Référence explicitement les livrables amont, aligné |
-| **Actionnabilité** | Trop vague pour être implémenté | Implémentable avec interprétation | Directement implémentable, zéro ambiguïté |
-| **Messages** | Silencieux sur les manques, a inventé | A signalé certains manques | A signalé tous les manques, hypothèses marquées |
-| **Spécificité** | Générique, applicable à n'importe quel projet | Partiellement spécifique | 100% taillé pour ce projet, cite le persona/KPI |
+| G1 | Toutes les sections du template agent présentes (0 section vide/TODO) | BLOQUANT | Grep `[TODO]`, `[À REMPLIR]`, sections < 2 lignes |
+| G2 | Les livrables amont référencés existent | REQUIS | Glob les chemins cités dans le livrable |
+| G3 | Bloc Handoff structuré présent | BLOQUANT | Grep `Handoff` |
+| G4 | Chaque donnée chiffrée sourcée ou marquée `[HYPOTHÈSE]` | REQUIS | Grep nombres, vérifier source ou marqueur |
 
-**Règle (orchestrateur)** : un agent avec un score moyen <3 sur un critère doit être relancé immédiatement avec un prompt correctif, sans attendre la fin du run.
-**Règle (reviewer)** : en fin de run, tout livrable avec un score moyen <4.5/5 déclenche une boucle d'itération (max 3 passes). Voir `orchestrator.md` Étape 7.
+**COHÉRENCE**
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G5 | Persona identique à project-context.md | BLOQUANT | Grep nom persona dans le livrable |
+| G6 | KPI North Star identique | BLOQUANT | Grep KPI dans le livrable |
+| G7 | 0 contradiction avec livrables amont | BLOQUANT | Read + comparaison des décisions clés |
+| G8 | Ton cohérent avec brand-voice.md (si existe) | CONDITIONNEL | Grep registre (tu/vous), vocabulaire |
+
+**ACTIONNABILITÉ**
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G9 | Chaque recommandation a un owner + action + cible | REQUIS | Grep `→ @` ou équivalent actionnable |
+| G10 | 0 langage vague sans action ("envisager", "pourrait", "éventuellement") | REQUIS | Grep mots vagues |
+| G11 | Critères de validation binaires (vérifiables oui/non) | REQUIS | Read section validation |
+| G12 | Un agent pourrait implémenter sans poser de question | BLOQUANT | Heuristique : chaque action a verbe + objet + critère de done |
+
+**MESSAGES**
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G13 | 0 donnée inventée (chaque chiffre sourcé ou `[HYPOTHÈSE]`) | BLOQUANT | Grep chiffres sans source |
+| G14 | Livrables absents signalés | REQUIS | Si ref à un fichier inexistant, est-ce documenté ? |
+| G15 | 0 placeholder résiduel | BLOQUANT | Grep `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` |
+
+**SPÉCIFICITÉ**
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G16 | Nom du projet cité >= 3 fois | REQUIS | Grep count |
+| G17 | Persona cité par nom >= 2 fois | REQUIS | Grep count |
+| G18 | >= 2 livrables amont référencés par chemin | REQUIS | Grep `docs/` |
+| G19 | Pas copiable tel quel pour un projet concurrent | BLOQUANT | Test d'inversion : remplacer mentalement le nom du projet — le contenu reste-t-il pertinent ? Si oui → FAIL |
+| G20 | >= 1 exemple concret spécifique au projet | REQUIS | Vérification sectorielle |
+
+### Verdict
+
+- **GO** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS
+- **GO CONDITIONNEL** : 100% gates BLOQUANT PASS + >= 1 gate REQUIS FAIL (corriger dans la session)
+- **NO-GO** : >= 1 gate BLOQUANT FAIL → relance immédiate
+
+### Score numérique dérivé (pour tracking)
+
+Pour le tableau "Performance des agents" : `(gates PASS / gates applicables) × 10`. Ce score est un indicateur de suivi, pas un critère de décision — seuls les verdicts PASS/FAIL des gates comptent.
+
+### Scoring persona et B2B (conservés)
+
+Les grilles persona (/10, 9 dimensions, seuil 9/10) et B2B (/10, 7 dimensions, seuil 9/10 si applicable) sont conservées. Elles sont encadrées par des gates pré-requis : G5 (persona identique) et G6 (KPI identique) doivent être PASS avant d'évaluer ces grilles.
+
+**Condition GO finale** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + gates persona PASS (>= 9/10) + gates B2B PASS (>= 9/10, si applicable).
+
+**Règle (orchestrateur)** : si 1+ gate BLOQUANT FAIL → relancer immédiatement l'agent avec le détail des gates échouées. Ne pas attendre la fin du run.
+**Règle (reviewer)** : en fin de run, exécuter les 20 gates sur chaque livrable. Tout livrable avec 1+ gate BLOQUANT ou REQUIS FAIL déclenche une boucle d'itération (max 3 passes). Voir `orchestrator.md` Étape 7.
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 

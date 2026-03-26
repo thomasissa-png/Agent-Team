@@ -302,7 +302,7 @@ L'orchestrateur a deux modes d'exécution :
 1. **Toujours sauvegarder** `docs/orchestration-plan.md` après chaque phase (point de reprise)
 2. **Toujours scorer** chaque livrable dans le tableau Performance (voir CLAUDE.md — scoring automatique)
 3. **BLOQUER automatiquement** si :
-   - Un agent score <4.5/5 en moyenne → relancer avec prompt correctif (max 3 itérations) AVANT de continuer
+   - Un agent a ≥ 1 gate BLOQUANT en FAIL → relancer avec prompt correctif (max 3 itérations) AVANT de continuer
    - Une contradiction est détectée entre livrables → arbitrer selon priorité (persona > objectif > budget), documenter
    - Un champ critique manque pour un agent aval → demander à l'utilisateur (seule interruption autorisée)
    - **Détection de drift** : après chaque phase, vérifier que le persona principal et le KPI North Star dans les livrables produits sont toujours alignés avec ceux définis dans `project-context.md`. Si divergence → BLOQUER, signaler le drift, corriger avant de continuer
@@ -542,7 +542,7 @@ Pour chaque phase, suivre ce protocole d'exécution :
 
 ### A. Avant de lancer un agent
 
-1. **Vérifier le score Performance** : lire le tableau "Performance des agents" dans `project-context.md`. Si l'agent a un score moyen <3 sur un critère lors d'une intervention précédente, ajouter dans le prompt Task des instructions correctives ciblées : "Attention : lors de ta dernière intervention, [critère] était insuffisant. Cette fois : [instruction correctrice spécifique]."
+1. **Vérifier les gates Performance** : lire le tableau "Performance des agents" dans `project-context.md`. Si l'agent a eu des gates BLOQUANT en FAIL lors d'une intervention précédente, ajouter dans le prompt Task des instructions correctives ciblées : "Attention : lors de ta dernière intervention, les gates [G5, G13] étaient en FAIL. Cette fois : [instruction correctrice spécifique]."
 2. Relire les livrables des agents précédents pour extraire les décisions clés
 3. Formuler le prompt Task avec le contexte complet (voir format ci-dessus)
 4. Inclure dans les contraintes les décisions des agents précédents
@@ -699,7 +699,7 @@ Inclure dans `project-synthesis.md` un bloc de métriques pour mesurer la perfor
 | Métrique | Seuil acceptable | Seuil critique (escalade utilisateur) |
 |---|---|---|
 | Échecs Task (après 2 tentatives) | ≤ 1 agent | ≥ 3 agents |
-| Score moyen des livrables | ≥ 4.5/5 | < 3.5/5 |
+| Gates BLOQUANT des livrables | 100% PASS | ≥ 1 FAIL |
 | Drift détecté | 0 | ≥ 2 instances |
 | Feedbacks P0 non résolus en fin de run | 0 | ≥ 1 |
 | Livrables vides ou quasi-vides en fin de run | 0 | ≥ 1 |
@@ -778,7 +778,7 @@ Si un seuil critique est atteint, l'orchestrateur DOIT :
 [Bloc métriques — voir ci-dessus]
 
 ## Scores qualité
-- Score moyen livrables : X/5 (seuil : 4.5/5)
+- Gates : X/X BLOQUANT PASS, Y/Y REQUIS PASS (score dérivé : Z/10)
 - Score persona : X/10 (seuil : 9/10)
 - Score B2B : X/10 (seuil : 9/10) — ou N/A si non-B2B
 - Condition GO : OUI / NON (requiert les 3 seuils atteints)
@@ -791,15 +791,15 @@ Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de val
 
 ### Cycle d'itération qualité @reviewer (obligatoire en fin de run)
 
-1. Lancer `@reviewer` → il score chaque livrable sur les 5 critères (échelle 1-5 avec demi-points)
-2. Si un livrable score < 4.5/5 → `@reviewer` produit un rapport de corrections détaillé
-3. L'orchestrateur relance l'agent responsable avec le rapport de corrections
-4. L'agent corrige → `@reviewer` réévalue
-5. Répéter jusqu'à 4.5/5 (maximum 3 itérations par livrable)
-6. Si après 3 itérations un livrable reste < 4.5/5 → escalader à l'utilisateur avec diagnostic (prompt insuffisant ? contexte manquant ? agent mal calibré ?)
-7. Scores finaux inscrits dans le tableau "Performance des agents" de `project-context.md`
-8. **Scores persona et B2B** : le reviewer score aussi les grilles persona (/10, 9 dimensions) et B2B (/10, 7 dimensions, si applicable). Si score persona < 9/10 ou score B2B < 9/10 → traiter comme un NO-GO au même titre qu'un score livrable < 4.5/5. Relancer les agents identifiés dans le mapping du reviewer (voir reviewer.md).
-9. **Condition GO finale** : tous livrables ≥ 4.5/5 **ET** score persona ≥ 9/10 **ET** score B2B ≥ 9/10 (si B2B)
+1. Lancer `@reviewer` → il exécute les 20 gates binaires (G1-G20) sur chaque livrable via Grep/Read/comparaison
+2. Si ≥ 1 gate BLOQUANT en FAIL → `@reviewer` produit le rapport avec la gate en échec + correction exacte requise
+3. L'orchestrateur relance l'agent responsable avec le rapport
+4. L'agent corrige → `@reviewer` re-vérifie uniquement les gates en FAIL
+5. Répéter jusqu'à 100% gates BLOQUANT PASS + 100% gates REQUIS PASS (maximum 3 itérations)
+6. Si après 3 itérations des gates BLOQUANT restent en FAIL → escalader à l'utilisateur
+7. Score dérivé (gates PASS / total applicables × 10) inscrit dans le tableau "Performance des agents"
+8. **Gates persona et B2B** : le reviewer vérifie aussi les pré-requis binaires persona (nom cité, vocabulaire secteur, objections adressées) et B2B (si applicable). Si pré-requis persona FAIL → NO-GO.
+9. **Condition GO finale** : 100% gates BLOQUANT PASS **ET** 100% gates REQUIS PASS **ET** pré-requis persona PASS **ET** pré-requis B2B PASS (si B2B)
 
 **En mode autopilot** : ce cycle est exécuté automatiquement. L'orchestrateur ne produit PAS la synthèse finale tant que les trois conditions ne sont pas remplies (ou escaladées à l'utilisateur).
 

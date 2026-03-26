@@ -641,7 +641,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
 2. Vérification anti-placeholder (Grep) sur chaque livrable.
 3. 11 critères de cohérence (Étape 6) après chaque phase.
-4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
+4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable). Le scoring numérique est dérivé des gates pour le tracking.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md.
 7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
@@ -664,7 +664,7 @@ Commence."`
 Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*). Crée docs/orchestration-plan.md en mode "CHECK-UP" avec la liste des audits à lancer. Marque chaque audit PENDING/EN COURS/COMPLETE pour permettre la reprise.
 
 Étape 1 — Audit de cohérence croisée :
-Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Scoring : 4.5/5 minimum par livrable. Score persona ≥ 9/10. Score B2B ≥ 9/10 (si applicable).
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 20 gates binaires (PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
@@ -686,7 +686,7 @@ Lance @elon avec le prompt "Audit stratégique first principles". Il note vision
 Livrable : docs/reviews/elon-audit.md.
 
 Étape 4 — Boucle corrective :
-Pour chaque livrable scoré < 4.5/5 :
+Pour chaque livrable avec ≥ 1 gate BLOQUANT en FAIL :
 1. Produis un rapport de corrections (critère par critère, action précise)
 2. Relance l'agent responsable avec les instructions correctives
 3. Re-score après correction (max 3 passes)
@@ -698,7 +698,7 @@ Produis le GO/NO-GO avec :
 - Problèmes restants par sévérité (P0/P1/P2) — tous doivent être corrigés, P0 en premier
 - Confirmation que le projet est prêt pour le lancement (GO si 0 problème restant)
 
-Critères de validation : chaque domaine avec des livrables a été audité par l'agent spécialisé, tous les livrables scorent ≥ 4.5/5, les P0 sont résolus, le verdict GO/NO-GO est documenté.`
+Critères de validation : chaque domaine avec des livrables a été audité par l'agent spécialisé, tous les livrables ont 100% gates PASS, les P0 sont résolus, le verdict GO/NO-GO est documenté.`
       },
       {
         title:"Audit ciblé sur un sujet (agents auto-sélectionnés)",
@@ -749,7 +749,7 @@ Lance @reviewer sur le sujet audité. Le reviewer applique sa checklist persona 
 
 Étape 4 — Synthèse croisée :
 Consolide les rapports des agents et du reviewer en un seul audit :
-- Score par dimension auditée (échelle 1-5, alignée avec le framework, seuil 4.5/5)
+- Gates binaires par dimension auditée (PASS/FAIL, seuil 100% gates BLOQUANT)
 - Score global du sujet (moyenne des scores agents — si pondérée, documenter les poids)
 - Tous les problèmes critiques (P0) avec agent responsable et action corrective
 - Améliorations majeures (P1) classées par impact décroissant
@@ -760,7 +760,7 @@ Consolide les rapports des agents et du reviewer en un seul audit :
 
 Étape 5 — Corrections (P0, P1, P2 — toutes) :
 Corriger TOUS les problèmes identifiés, dans l'ordre P0 → P1 → P2 (max 2-3 agents par batch). Avec une équipe IA, le coût de corriger un P2 est quasi nul — ne pas demander à l'utilisateur "veux-tu corriger les P2 ?", les corriger directement. La classification sert à ordonner, pas à filtrer.
-Après correction, vérifier que chaque problème est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 4.5/5 minimum sur le sujet audité.
+Après correction, vérifier que chaque problème est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 100% gates BLOQUANT PASS sur le sujet audité.
 
 Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 1. Résumé exécutif (3-5 lignes, non-technique, destiné au fondateur)
@@ -800,7 +800,7 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
 2. Vérification anti-placeholder (Grep) sur chaque livrable.
 3. 11 critères de cohérence après chaque phase de pivot.
-4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10.
+4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable).
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
@@ -813,7 +813,7 @@ Gestion multi-sessions :
 
 Livrable : ajoute une section "Pivot [date]" dans docs/orchestration-plan.md existant (ne pas écraser le plan original). Inclure : avant/après project-context.md, inventaire garder/adapter/refaire, plan de re-séquencement.
 
-Critères de validation : project-context.md reflète le pivot, tous les livrables impactés sont identifiés et classés, chaque livrable revu score ≥ 4.5/5, la cohérence post-pivot est vérifiée par @reviewer.`
+Critères de validation : project-context.md reflète le pivot, tous les livrables impactés sont identifiés et classés, chaque livrable revu a 100% gates PASS, la cohérence post-pivot est vérifiée par @reviewer.`
       },
       {
         title:"Intégrer des learnings d'un autre projet",

@@ -112,15 +112,15 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 
 **Variante multi-acteurs B2B** : si project-context.md mentionne plusieurs personas (admin vs utilisateur final, décideur vs opérationnel, B2B2C), évaluer séparément pour chaque acteur en utilisant les dimensions applicables. L'admin/décideur est évalué sur : ROI perçu, sécurité/compliance, intégration. L'utilisateur final est évalué sur : facilité, utilité, valeur quotidienne.
 
-### Articulation des échelles de scoring
+### Articulation gates binaires + scoring persona/B2B
 
-Le reviewer utilise deux grilles complémentaires :
-1. **Scoring livrables** : 5 critères standard (Complétude, Cohérence, Actionnabilité, Messages, Spécificité) sur une échelle 1-5 avec seuil 4.5/5 — évalue la QUALITÉ de chaque livrable d'agent
-2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client
+Le reviewer utilise deux mécanismes complémentaires :
+1. **Gates binaires livrables** : 20 gates PASS/FAIL (voir CLAUDE.md section "Les 20 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL
+2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client. Encadré par les gates pré-requis G5 (persona identique) et G6 (KPI identique)
 
-**Condition GO** : les DEUX grilles doivent passer. Un livrable peut scorer 5/5 en qualité mais 5/10 en persona (techniquement parfait mais inutilisable par le client). Le GO/NO-GO final requiert : A) tous livrables ≥ 4.5/5 **ET** B) score persona ≥ 9/10 **ET** C) score B2B ≥ 9/10 (si applicable).
+**Condition GO** : les DEUX mécanismes doivent passer. Un livrable peut avoir 100% gates PASS mais 5/10 en persona (techniquement conforme mais inutilisable par le client). Le GO/NO-GO final requiert : A) 100% gates BLOQUANT PASS + 100% gates REQUIS PASS **ET** B) score persona >= 9/10 **ET** C) score B2B >= 9/10 (si applicable).
 
-**Règle** : ces scores sont inscrits dans `docs/reviews/cross-review-report.md` (sections dédiées) et dans le tableau "Performance des agents" de project-context.md.
+**Règle** : les verdicts de gates et les scores persona/B2B sont inscrits dans `docs/reviews/cross-review-report.md` (sections dédiées) et dans le tableau "Performance des agents" de project-context.md. Le score numérique dérivé `(gates PASS / gates applicables) × 10` est inscrit pour le tracking.
 
 ### Cohérence technique
 - [ ] Le code de @fullstack respecte-t-il les tokens de @design ?
