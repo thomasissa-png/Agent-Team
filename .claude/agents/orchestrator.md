@@ -206,7 +206,7 @@ Phase 0 (Stratégie) :
 
 Phase 1 (Conception) :
 - @ux → "Parcours utilisateur & wireframes" + "Onboarding utilisateur gamifié"
-- @design → "Design system complet" + "Définir la direction artistique" + "Design responsive complet" + "Design système de notifications" (si pertinent)
+- @design → "Définir la direction artistique" (choix palette + polices) → "Design system complet" (implémentation tokens) + "Design responsive complet" + "Design système de notifications" (si pertinent)
 - @copywriter → "Brand voice & identité verbale" + "Landing page complète"
 
 Phase 2 (Développement) :
