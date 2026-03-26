@@ -1905,13 +1905,14 @@ Critères de validation : chaque page prioritaire a une stratégie SEO + GEO com
 Définis la stratégie de contenu complète :
 1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
 2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues, glossaire. Pour chaque type : objectif (SEO, conversion, autorité, GEO), fréquence, format, KPI de mesure.
-3. Calendrier éditorial : planning sur 8 semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, étape funnel (découverte/considération/décision), et format GEO (claims vérifiables inclus).
-4. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email. Lien avec la proposition de valeur.
-5. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication, Product Hunt Blog si pertinent).
+3. Calendrier éditorial perpétuel : planning des 8 premières semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, étape funnel (découverte/considération/décision), et format GEO (claims vérifiables inclus). Puis le mécanisme de renouvellement automatique : à chaque fin de cycle 8 semaines, le prochain cycle est généré automatiquement à partir du keyword map restant (mots-clés non encore couverts), des performances du cycle précédent (articles les plus performants → créer des contenus similaires), et de la saisonnalité (via WebSearch : quels sujets du secteur ont un pic de recherche dans les 2 prochains mois).
+4. Horaires de publication optimaux : via WebSearch, identifier les jours et heures de publication les plus performants par canal pour le secteur et le persona du projet. Blog : jour + heure de publication (ex : mardi 7h vs jeudi 10h selon le secteur). Social : horaires par plateforme (LinkedIn mardi-jeudi 8h-10h, Twitter/X 12h-14h, etc.). Newsletter : jour d'envoi + heure. Documenter les sources des données. Le scheduling des crons doit utiliser ces horaires.
+5. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email. Lien avec la proposition de valeur.
+6. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication, Product Hunt Blog si pertinent).
 
 Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description, claims GEO).
 
-6. Automatisation : pipeline de génération IA des articles (prompts de génération calibrés sur les mots-clés, workflow de relecture, publication automatisée via API ou CMS). Un fondateur solo ne produit pas manuellement 2 contenus/semaine — l'IA le fait.
+7. Automatisation : pipeline de génération IA des articles (prompts de génération calibrés sur les mots-clés, workflow de relecture, publication automatisée via API ou CMS). Un fondateur solo ne produit pas manuellement 2 contenus/semaine — l'IA le fait.
 
 Livrable : docs/copy/content-strategy.md.
 
@@ -2172,7 +2173,7 @@ Stratégie d'automatisation marketing :
    - Social : repurposing automatique d'un article en 3-5 posts (LinkedIn, Twitter/X, thread). Adaptation du format et du ton par plateforme. Template de prompt par plateforme.
    - Newsletter : agrégation automatique des contenus de la semaine + édito généré. Template avec sections récurrentes.
    - Email nurturing : séquences déclenchées par comportement (voir prompt "Emailing automation" pour le détail).
-3. Scheduling et publication : choix de l'outil (Buffer, Typefully, Resend, ou API directe). Calendrier éditorial automatisé : X articles/semaine, Y posts sociaux/jour, Z newsletters/mois. Horaires optimaux par plateforme.
+3. Scheduling et publication perpétuelle : choix de l'outil (Buffer, Typefully, Resend, ou API directe). Calendrier éditorial automatisé : X articles/semaine, Y posts sociaux/jour, Z newsletters/mois. Horaires optimaux par plateforme et par secteur (via WebSearch — données réelles sur les meilleurs jours/heures de publication pour le persona cible). Le scheduling doit fonctionner à durée ILLIMITÉE : à chaque fin de cycle, le prochain cycle est généré automatiquement à partir du keyword map SEO (mots-clés non encore couverts), des performances du cycle précédent (taux d'engagement, trafic), et de la saisonnalité du secteur. Cron de régénération du planning : hebdomadaire.
 4. Repurposing cross-canal : un contenu source (article, vidéo, podcast) → déclinaison automatique sur tous les canaux. Matrice source → déclinaisons avec prompt template pour chaque transformation.
 5. Triggers comportementaux : contenu personnalisé déclenché par des actions utilisateur (signup → welcome sequence, feature usage → tips, inactivité → réengagement). Mapper chaque trigger à un contenu.
 6. Métriques et feedback loop : taux d'engagement par contenu généré vs contenu manuel (objectif : ≥ 80% de la performance manuelle), coût par contenu (tokens IA + temps de review), volume de publication vs objectif. A/B testing automatisé : 2 variantes de titre/hook, sélection automatique après 100 impressions.
@@ -2183,10 +2184,11 @@ Livrable : docs/growth/marketing-automation-plan.md.
 Puis @ia : lis docs/growth/marketing-automation-plan.md. Conçois les prompts de génération pour chaque type de contenu : system prompt (ton, contraintes, format), user prompt template (variables : sujet, keyword, audience), few-shot examples. Optimise pour le modèle le moins cher qui atteint la qualité requise. Estime le coût mensuel de la production automatisée. Livrable : docs/ia/prompt-library.md section "Content automation".
 
 Puis @fullstack : lis docs/growth/marketing-automation-plan.md et docs/ia/prompt-library.md. Implémente :
-1. Crons de génération dans src/scripts/ (article generator, social post generator).
-2. API routes : POST /api/admin/content/generate (type, sujet, canal), GET /api/admin/content/queue (contenus en attente de review), PATCH /api/admin/content/:id/approve.
-3. Intégration APIs de publication si applicable (Buffer, Resend, ou API social directe).
-4. Dashboard admin minimaliste pour la file de review.
+1. Crons de génération dans src/scripts/ (article generator, social post generator) — planifiés aux horaires optimaux identifiés par @growth.
+2. Cron de régénération du planning (hebdomadaire) : lit le keyword map SEO, vérifie les mots-clés non encore couverts, génère le planning de la semaine suivante automatiquement. Le calendrier ne s'arrête JAMAIS — il se renouvelle en boucle perpétuelle.
+3. API routes : POST /api/admin/content/generate (type, sujet, canal), GET /api/admin/content/queue (contenus en attente de review), PATCH /api/admin/content/:id/approve, GET /api/admin/content/schedule (planning des 4 prochaines semaines).
+4. Intégration APIs de publication (Buffer, Resend, ou API social directe) — publication automatique aux horaires configurés.
+5. Dashboard admin minimaliste : file de review + calendrier visuel des publications passées et à venir + métriques de performance par contenu.
 
 Puis @copywriter : lis docs/growth/marketing-automation-plan.md et docs/copy/brand-voice.md. Rédige les templates de contenu pour chaque canal avec le ton de marque : structure d'article type (intro hook, sections, CTA), format de post LinkedIn (hook → insight → CTA), format tweet/thread, template newsletter. Ces templates servent de few-shot pour les prompts IA. Livrable : docs/copy/content-templates.md.
 
