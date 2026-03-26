@@ -37,10 +37,10 @@
 - **Budget infra mensuel** : 0 (GitHub Pages)
 - **Budget acquisition mensuel** : 0
 - **Timeline** : En production
-- **Contraintes specifiques** : Les 88 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
+- **Contraintes specifiques** : Les 89 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
 
 ## Notes libres
-Mission actuelle : framework consolide a 9/10 avec 88 prompts. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
+Mission actuelle : framework consolide avec 89 prompts, 20 agents, 25 gates binaires. Systeme de qualite PASS/FAIL (plus de scoring 1-5). Cycle : Idee → V1 → Production → Croissance. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
 
 ## Historique des interventions agents
 | Agent | Date | Fichiers | Decisions cles | Pourquoi |
@@ -62,14 +62,51 @@ Mission actuelle : framework consolide a 9/10 avec 88 prompts. Les 3 prompts Tou
 | reviewer | 2026-03-25 | docs/reviews/post-modifications-review.md | Revue croisee post-modifications : GO. 3 regressions mineures (supabase.ts dans exemple fullstack, branche incoherente dans project-context, C11 non appliquee). Toutes les corrections B1-B3, C4-C10 du framework-consistency-audit.md intactes. 9 modifications de session coherentes entre elles. | Audit demande pour verifier l'absence de regressions apres 9 modifications structurelles. Methode : lecture exhaustive des 20 fichiers agents + CLAUDE.md + Grep cible sur les points modifies + verification croisee avec le rapport precedent. |
 | session 2026-03-25 | 2026-03-25 | CLAUDE.md, orchestrator.md, reviewer.md, qa.md, fullstack.md, infrastructure.md, agent-factory.md, copywriter.md, seo.md, index.html, README.md, INSTALL.md, _base-agent-protocol.md, tests/project-context-test.md, docs/product/prompts-coverage-product.md | Session majeure : (1) M2/M5/C8 appliquees, (2) Regle n°4 delegation agents, (3) Regle n°5 mindset IA, (4) Regle n°12 mise a jour branche, (5) PostgreSQL Replit obligatoire, (6) Scoring persona /10 (9 dims) + B2B /10 (7 dims) dans reviewer, condition GO triple dans orchestrator, (7) qa.md enrichi massif (+10 sections tests : securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression), (8) Automatisation contenu recurrent, (9) Agent-factory tools Write/Edit obligatoires, (10) Orchestrator 8.5→9/10, (11) Prompts frontend corriges (mindset IA, automatisation, QA 10 categories, branche). Tests PulseBoard : creative-strategy (brand-platform 449 lignes) et data-analyst (kpi-framework) valides. | Session de consolidation framework : corrections audit consistency + nouvelles regles structurantes + couverture tests exhaustive + scoring persona/B2B. Objectif : framework a 9/10 sur tous les axes avant utilisation en production sur ImmoCrew. |
 
+| session 2026-03-26 | 2026-03-26 | index.html (89 prompts), CLAUDE.md (25 gates), orchestrator.md (carte reference + compteur session), reviewer.md (gates binaires), _base-agent-protocol.md (gates + learnings), fullstack.md (PostgreSQL + mindset), infrastructure.md (persistance Replit), moi.md (nouvel agent), product-manager.md (V1 pas MVP), docs/founder-preferences.md (nouveau), docs/reviews/prompts-quality-review.md | Session transformationnelle : (1) 6 prompts full IA crees + 5 techniques + 3 manquants + sélecteur guide, (2) refonte bibliotheque prompts (fusions, suppressions, reorg), (3) 3 prompts Tout-en-un optimises (autopilot parite qualite), (4) systeme gates binaires 25 PASS/FAIL remplace scoring 1-5, (5) cycle Idee/V1/Production/Croissance (plus de MVP/Beta), (6) prompt chirurgical 21 dimensions page par page, (7) pipeline contenu perpetuel avec anti-repetition, (8) protections PostgreSQL Replit, (9) agent @moi cree, (10) compteur session avec alertes, (11) learnings + founder-preferences cross-projets. | Session demandee par Thomas pour consolider le framework. Chaque changement audite par @ia/@elon/@qa a 9/10+ avant validation. Le scoring numerique 1-5 a ete remplace par des gates binaires sur proposition @elon (reproductible, pas d'inflation, chirurgical). Le concept MVP a ete supprime au profit de V1 complete (mindset IA). |
+
 ---
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-03-25
+- **Date de cloture** : 2026-03-26
 - **Branche** : `claude/setup-project-context-ALWvD`
 
 ### Resume de la session
+Session transformationnelle du framework Gradient Agents. 30+ commits, 11 fichiers modifies. Axes principaux : (1) Bibliotheque de prompts refondee — 89 prompts, 10 categories, prompt chirurgical 21 dimensions, selecteur guide. (2) Systeme de qualite revolutionne — 25 gates binaires PASS/FAIL remplace le scoring subjectif 1-5 (reproductible, pas d'inflation). (3) Mindset IA renforce — cycle Idee/V1/Production/Croissance (plus de MVP/Beta), P2 tous corriges, choix techniques par valeur pas par facilite. (4) Agent @moi cree (proxy fondateur, Opus). (5) Pipeline contenu perpetuel avec anti-repetition + LLM-as-judge. (6) Protections PostgreSQL Replit (persistance). (7) Compteur de session avec alertes proactives. (8) Boucle learnings fermee + founder-preferences cross-projets.
+
+### Livrables de cette session
+| Fichier | Statut | Notes |
+|---|---|---|
+| index.html | Complet | 89 prompts, 20 agents, 25 gates, 0 "4.5/5", 0 MVP actif, bug script fixe |
+| CLAUDE.md | Complet | 25 gates binaires, cycle V1, compteur session, learnings, founder-preferences |
+| orchestrator.md | Complet | Carte reference, Phase 5b chirurgicale, compteur session, gates |
+| reviewer.md | Complet | Rapport gates G1-G25, protocole iteration gates |
+| _base-agent-protocol.md | Complet | Self-check gates, anti-placeholder, vrais outputs |
+| fullstack.md | Complet | Mindset IA choix techniques, PostgreSQL persistance |
+| infrastructure.md | Complet | 7 protections PostgreSQL Replit |
+| moi.md | Complet | Nouvel agent, Opus, 25 dimensions, apprentissage continu |
+| product-manager.md | Complet | V1 pas MVP, scope V1 |
+| docs/founder-preferences.md | Complet | 12 preferences, 10 anti-patterns, style review |
+| docs/reviews/prompts-quality-review.md | Complet | Audit 6 prompts initiaux |
+
+### Travaux en cours / non termines
+Aucun blocker. Micro-corrections optionnelles :
+1. Quelques notes "/5" residuelles dans les prompts growth et ia (usage contextuel pour les evals LLM, pas le systeme de scoring principal)
+2. Merger la branche dans main pour que l'URL founder-preferences.md soit accessible cross-projets
+
+### Prochaines actions recommandees
+1. **Merger dans main** : la branche contient toutes les ameliorations. L'URL founder-preferences.md pointe vers main. Priorite haute.
+2. **Test E2E PulseBoard ou ImmoCrew** : lancer un run complet autopilot pour valider les 25 gates, le prompt chirurgical, et le compteur de session en conditions reelles. Agent : @orchestrator. Priorite haute.
+3. **Mettre a jour README.md** : refleter les 20 agents, 89 prompts, 25 gates, cycle V1. Agent : edition directe. Priorite moyenne.
+
+### Blockers eventuels
+- Aucun blocker technique. Le framework est operationnel.
+- La branche doit etre mergee dans main pour que founder-preferences.md soit accessible par les autres projets.
+
+### Commande de reprise suggeree
+```
+Lis project-context.md (memo de reprise). Le framework a 89 prompts, 20 agents, 25 gates binaires, cycle Idee/V1/Production/Croissance. Priorite : merger dans main puis test E2E autopilot sur un projet reel.
+```
 Session de consolidation majeure du framework Gradient Agents. 26 fichiers modifies, +679 lignes. Axes principaux : (1) Corrections M2/M5/C8 du framework-consistency-audit appliquees. (2) 5 nouvelles regles structurantes dans CLAUDE.md : delegation obligatoire aux agents (n°4), mindset IA pas equipe humaine (n°5), objectif qualite 9/10 (n°11), mise a jour branche obligatoire (n°12), automatisation contenu recurrent. (3) PostgreSQL Replit impose comme standard BDD (Supabase retire). (4) qa.md enrichi massivement : 10 nouvelles sections de tests (securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression). (5) reviewer.md : scoring persona /10 (9 dimensions) + B2B /10 (7 dimensions), condition GO triple, mapping dimension→agent. (6) orchestrator.md : Phases 3/4 parallelisees, template synthesis avec scores, critere automatisation contenu. (7) agent-factory.md : tools Write/Edit obligatoires par defaut. (8) Prompts frontend : mindset IA, automatisation, QA 10 categories, prompt Audit cible ajoute. Tests PulseBoard valides (creative-strategy + data-analyst).
 
 ### Livrables de cette session
