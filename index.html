@@ -644,7 +644,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md.
-7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 18 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
+7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope MVP) pour ma validation avant de lancer la conception.
 
 Gestion multi-sessions :
@@ -804,7 +804,7 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
-8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 18 dimensions, correction de TOUS les bugs, itération jusqu'à 9/10.
+8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 21 dimensions, correction de TOUS les bugs, itération jusqu'à 9/10.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à ce que tous les livrables impactés soient à 9/10.
@@ -2370,7 +2370,7 @@ Critères de validation : chaque dimension est notée avec justification, le ris
 Phase 1 — Crawl exhaustif :
 Glob src/app/**/page.tsx (ou équivalent). Liste TOUTES les pages/routes dans un tableau. Pour chaque page : statut HTTP (200/404/500), erreurs console, temps de chargement mesuré via Playwright (navigation + DOMContentLoaded).
 
-Phase 2 — Audit chirurgical par page (18 dimensions) :
+Phase 2 — Audit chirurgical par page (21 dimensions) :
 Pour CHAQUE page, vérifier systématiquement. Un bug sur N'IMPORTE quelle dimension = la page n'est PAS à 9/10.
 
 COPIE & ORTHOGRAPHE :
@@ -2401,10 +2401,19 @@ DONNÉES & CONTENU DYNAMIQUE :
 17. Dark mode : si applicable, CHAQUE composant respecte les tokens dark. Pas de texte invisible, bordure qui disparaît, image avec fond blanc sur fond sombre.
 
 SEO & PARTAGE :
-18. SEO & OG par page : meta title unique (< 60 chars), meta description unique (< 155 chars), H1 unique, JSON-LD si pertinent, canonical URL, og:title + og:description + og:image spécifiques à la page.
+18. SEO & OG par page : meta title unique (< 60 chars), meta description unique (< 155 chars), H1 unique, hiérarchie Hn respectée (pas de H3 sans H2), JSON-LD (Organization, BreadcrumbList, Product/Article selon le type), canonical URL, og:title + og:description + og:image spécifiques à la page. Sitemap.xml inclut toutes les pages publiques. Pas de disallow: / dans robots.txt en prod. Twitter Card tags.
+
+SÉCURITÉ FRONT :
+19. Sécurité : injection XSS dans CHAQUE champ de saisie (<script>alert(1)</script> ne doit JAMAIS s'exécuter). Aucun token/clé API/mot de passe dans le DOM, localStorage, sessionStorage ou cookies non-sécurisés. Aucune donnée sensible dans les paramètres d'URL. Liens externes avec rel="noopener noreferrer". Protection CSRF sur les formulaires sensibles. Pas de mixed content (HTTP sur page HTTPS).
+
+COOKIES & CONSENTEMENT :
+20. Cookies : si cookies non-essentiels utilisés, bannière de consentement au premier visit. Cookies analytics/marketing bloqués AVANT consentement (pas juste cachés — non chargés). Choix persisté. Lien "Gérer mes cookies" accessible. Le site fonctionne sans cookies.
+
+EMAILS TRANSACTIONNELS :
+21. Emails (si applicable) : chaque email testé end-to-end (envoi réel, vérification réception). Rendu sur Gmail + Outlook minimum. Liens fonctionnels et pointent vers la prod (pas localhost). Expéditeur correct. Lien désinscription présent. SPF/DKIM/DMARC configurés.
 
 Phase 3 — Accessibilité par page :
-Navigation clavier complète (Tab → tous les éléments interactifs dans l'ordre logique → Enter/Space déclenche l'action). Lancer axe-core sur chaque page (violations A et AA = bugs). Contrastes WCAG AA (4.5:1 texte, 3:1 interactifs). Aria-labels présents.
+Navigation clavier complète (Tab → tous les éléments interactifs dans l'ordre logique → Enter/Space déclenche l'action). Focus visible sur chaque élément (outline pas supprimé). Skip link "Aller au contenu" en haut de page. Lancer axe-core sur chaque page (violations A et AA = bugs). Contrastes WCAG AA (4.5:1 texte normal, 3:1 texte large + interactifs). Aria-labels sur les boutons/icônes sans texte. Landmarks (header, nav, main, footer). Formulaires accessibles (label + for, aria-describedby pour les erreurs). Pas d'information véhiculée uniquement par la couleur. Zoom 200% : le site reste utilisable.
 
 Phase 4 — Cross-browser :
 Pages critiques = pages du parcours principal (cf. docs/ux/user-flows.md) + pages avec formulaires. Tester sur Chrome + Firefox minimum. Vérifier : layout, navigation, formulaires, animations CSS, fonts.
@@ -2421,14 +2430,14 @@ Phase 5 — Cohérence globale (APRÈS les pages individuelles) :
 Phase 6 — Boucle d'itération (objectif : 9/10 par page, 0 bug restant) :
 
 Scoring par page :
-| Page | Score /18 | Bugs P0 | Bugs P1 | Bugs P2 | Statut |
-Chaque dimension OK = 1, WARNING = 0.5, BUG = 0. Score = total / 18. Règle bloquante : tout BUG P0 sur dim 10 (liens), 12 (formulaires), 13 (interactions) ou 14 (erreurs/auth) = page échouée quel que soit le score.
+| Page | Score /21 | Bugs P0 | Bugs P1 | Bugs P2 | Statut |
+Chaque dimension OK = 1, WARNING = 0.5, BUG = 0. Score = total / 21. Règle bloquante : tout BUG P0 sur dim 10 (liens), 12 (formulaires), 13 (interactions) ou 14 (erreurs/auth) = page échouée quel que soit le score.
 
 Rapport : docs/qa/page-review-report.md. Structure : tableau synthèse en haut (page / score / nb bugs / statut), puis détail par page en dessous.
 
 Puis @fullstack : corrige TOUS les bugs (P0+P1+P2). Si > 15 bugs : corriger par page (plus critique d'abord), un commit par page. @qa re-vérifie page par page au fur et à mesure.
 
-Puis @qa : re-vérifie CHAQUE fix. Si un fix crée un nouveau bug → signaler. Itérer jusqu'à CHAQUE page >= 16/18. Maximum 3 itérations par page (incluant les retours @ux/@design).
+Puis @qa : re-vérifie CHAQUE fix. Si un fix crée un nouveau bug → signaler. Itérer jusqu'à CHAQUE page >= 19/21. Maximum 3 itérations par page (incluant les retours @ux/@design).
 
 Puis @ux : vérifie que les corrections respectent les parcours utilisateur. Les fixes n'ont-ils pas cassé le flow ?
 
@@ -2439,7 +2448,7 @@ Score final du site = moyenne des scores de toutes les pages. Objectif : >= 9/10
 Tests de non-régression :
 @fullstack : configure Playwright toPage.screenshot() sur les 5 pages les plus critiques + pages avec le plus de bugs. Viewports : 375px, 768px, 1280px. Seuil : maxDiffPixelRatio 0.01. Baselines dans tests/screenshots/. Masquer les contenus dynamiques (dates, compteurs) avec mask ou clip pour éviter les faux positifs. Dark mode inclus si applicable.
 
-Critères de validation : 100% des pages vérifiées sur 18 dimensions + accessibilité + cross-browser, 0 bug P0/P1/P2 restant, score >= 9/10 par page, cohérence globale validée, tests screenshot en place.
+Critères de validation : 100% des pages vérifiées sur 21 dimensions + accessibilité + cross-browser, 0 bug P0/P1/P2 restant, score >= 9/10 par page, cohérence globale validée, tests screenshot en place.
 
 Anti-timeout : vérifier 2-3 pages simples OU 1 page complexe (formulaires, états multiples) par message. Sauvegarder le rapport après chaque batch. Si coupure : reprendre à la page suivante non vérifiée.`
       },
