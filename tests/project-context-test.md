@@ -62,7 +62,7 @@ Projet fictif mais réaliste — permet de valider que chaque agent fonctionne e
 |---|---|
 | Budget infra mensuel | 200€ max (Replit + services tiers) |
 | Budget acquisition mensuel | 500€ (principalement SEO + content marketing, très peu de paid) |
-| Timeline | MVP en 3 mois, beta publique en 4 mois |
+| Timeline | V1 complète en 3 mois, lancement public en 4 mois |
 | Contraintes légales | RGPD (données analytics des utilisateurs), pas de stockage de données sensibles clients finaux |
 | Ressources humaines | 1 fondateur technique solo + framework Gradient Agents |
 
