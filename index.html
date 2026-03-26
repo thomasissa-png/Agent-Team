@@ -471,7 +471,7 @@ const AGENTS = [
     role:"Senior auditor qualité — 22 ans",
     phase:"Phase 5 — Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
-    required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/MVP/Beta/Production/Croissance)"]
+    required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
     id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"2.0", model:"claude-opus-4-6",
@@ -503,7 +503,7 @@ const PROMPTS = [
 — IDENTITÉ —
 Nom du projet : [NOM]
 Secteur : [SECTEUR — sois précis : "analytics marketing pour PME françaises 10-50 employés" plutôt que "SaaS"]
-Stade : [Idée / MVP / Beta / Production / Croissance]
+Stade : [Idée / V1 / Production / Croissance]
 
 — CIBLE —
 Persona principal : [Prénom fictif, âge, métier, situation, frustration concrète — ex : "Marie, 35 ans, CMO startup, gère 5 canaux seule, perd 3h/semaine à consolider ses metrics"]

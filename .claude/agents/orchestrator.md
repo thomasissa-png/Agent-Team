@@ -331,7 +331,7 @@ Lire `docs/lessons-learned.md` s'il existe — filtrer les learnings ouverts (St
 - Lire le champ **Stade** dans project-context.md
 - Lire le tableau **Historique des interventions agents**
 - Si Stade = Idée ET historique vide → **Mode nouveau projet** (toutes les phases)
-- Si Stade ≥ MVP OU historique non vide → **Mode projet existant** (phases ciblées uniquement)
+- Si Stade ≥ V1 OU historique non vide → **Mode projet existant** (phases ciblées uniquement)
 
 En mode projet existant :
 1. Utiliser Glob pour lister les livrables existants (`docs/**/*.md`, `src/**/*`)
@@ -421,8 +421,7 @@ L'ordre Phase 0→5 est le séquencement logique, mais toutes les phases ne sont
 | Stade | Phases prioritaires | Phases à différer |
 |---|---|---|
 | Idée | Phase 0 (fondations) | Phase 2, 3, 4 (pas de code à écrire encore) |
-| MVP | Phase 1 + 2 (expérience + code) | Phase 4 (acquisition prématurée sans produit) |
-| Beta | Phase 2 + 3 (code + contenu) | Phase 0 (fondations déjà posées) |
+| V1 (développement) | Phase 0 → 1 → 2 → 3 (toutes les phases, V1 complète) | Rien — tout coder |
 | Production | Phase 3 + 4 (contenu + acquisition) | Phase 0, 1 (sauf refonte) |
 | Croissance | Phase 4 + 5 (acquisition + conformité) | Phase 0, 1 (sauf pivot) |
 
