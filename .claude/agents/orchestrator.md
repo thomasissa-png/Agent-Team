@@ -106,7 +106,35 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 
 ## Gestion des timeouts — règle critique
 
-Claude Code a une limite de temps par réponse. Un orchestrateur qui lance trop de Task d'un coup ou qui produit trop de texte dans un seul message **sera coupé en plein travail** et perdra le contexte de coordination. C'est la cause n°1 de perte de travail.
+Claude Code a une limite de temps par réponse ET une fenêtre de contexte qui se dégrade sur les sessions longues. Un orchestrateur qui lance trop de Task d'un coup ou qui coordonne trop d'agents dans une seule session **perdra le contexte** des décisions prises en début de session.
+
+### Compteur de session obligatoire
+
+L'orchestrateur DOIT maintenir un compteur de :
+- Nombre de phases complétées dans cette session
+- Nombre total de sous-agents (Task) lancés dans cette session
+
+**Seuils d'alerte :**
+
+**ALERTE JAUNE** — Après 2 phases complétées OU 6 Task lancés :
+→ Afficher : "⚠️ Cette session a complété [N] phases avec [N] agents. La qualité de coordination se dégrade au-delà. Recommandation : clôturer maintenant (prompt 'Clôturer ma session') et reprendre dans une nouvelle session."
+→ Sauvegarder orchestration-plan.md IMMÉDIATEMENT
+→ Continuer UNIQUEMENT si l'utilisateur confirme explicitement
+
+**ALERTE ROUGE** — Après 3 phases complétées OU 10 Task lancés :
+→ Afficher : "🔴 ATTENTION — Session très longue ([N] phases, [N] agents). Risque élevé de perte de contexte et d'incohérence. Je sauvegarde l'état et je recommande fortement de clôturer."
+→ Exécuter automatiquement les étapes 1-5 du protocole de clôture (mémo de reprise + learnings)
+→ Ne PAS lancer de nouvel agent sans confirmation explicite de l'utilisateur
+
+**Self-diagnostic entre chaque phase :**
+Avant de lancer la phase suivante, vérifier de mémoire (sans relire project-context.md) :
+1. Le nom du persona principal et sa frustration clé
+2. Le KPI North Star
+3. Les 2-3 décisions clés des phases précédentes
+Si hésitation ou réponse vague → le contexte se dégrade. Déclencher l'ALERTE JAUNE.
+
+**Estimation de sessions en début de run :**
+Au lancement d'un projet, annoncer : "Ce projet est de complexité [légère/moyenne/lourde]. J'estime [N] phases avec [N] agents, soit environ [N] sessions de travail. Je t'alerterai quand il sera temps de clôturer chaque session."
 
 ### Règles strictes anti-timeout pour l'orchestrateur
 

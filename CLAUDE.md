@@ -193,7 +193,9 @@ Dans certains cas, avancer nécessite de poser une hypothèse. C'est acceptable 
 
 ## Règle absolue — Anti-timeout (n°3)
 
-Claude Code a une limite de temps par réponse. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
+Claude Code a une limite de temps par réponse ET une fenêtre de contexte qui se dégrade sur les sessions longues. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
+
+**Limite de session** : l'orchestrateur maintient un compteur de phases/agents et alerte l'utilisateur quand la session risque de dégénérer (voir orchestrator.md — Compteur de session obligatoire). Seuils : ALERTE JAUNE après 2 phases / 6 agents, ALERTE ROUGE après 3 phases / 10 agents. Un projet complet doit être découpé en plusieurs sessions.
 
 ### Principes anti-timeout
 
