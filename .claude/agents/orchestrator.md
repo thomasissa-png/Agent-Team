@@ -490,7 +490,12 @@ Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "A
 **Phase 3 — Contenu :**
 `copywriter` → [PARALLELE] `seo` + `geo` (les deux dépendent de copywriter mais pas l'un de l'autre)
 [PARALLELE] Si `copywriter` a déjà livré en Phase 1, lancer `seo` + `geo` directement en parallèle
-Après Phase 3 : vérifier que les livrables @seo, @copywriter et @geo incluent des workflows d'automatisation pour le contenu récurrent. Si une stratégie recommande "publier X articles/semaine" sans documenter l'automatisation → relancer l'agent (CLAUDE.md — Automatisation par défaut du contenu récurrent)
+
+**Vérification obligatoire fin de Phase 3 :**
+1. Glob `docs/seo/` → `seo-strategy.md` ET `keyword-map.md` doivent exister. Si absents → @seo n'a pas tourné ou a échoué. BLOQUER et relancer.
+2. Glob `docs/geo/` → `geo-strategy.md` doit exister. Si absent → @geo n'a pas tourné. Relancer.
+3. Le SEO et le GEO sont deux livrables DISTINCTS et OBLIGATOIRES. Le GEO ne remplace PAS le SEO (le GEO couvre la visibilité LLM, pas le référencement Google). Si un seul des deux existe → la Phase 3 est INCOMPLÈTE.
+4. Vérifier que les livrables @seo, @copywriter et @geo incluent des workflows d'automatisation pour le contenu récurrent. Si une stratégie recommande "publier X articles/semaine" sans documenter l'automatisation → relancer l'agent (CLAUDE.md — Automatisation par défaut du contenu récurrent)
 
 **Phase 4 — Acquisition :**
 [PARALLELE] `growth` + `social` (si `brand-platform.md` existe — les deux s'y réfèrent indépendamment)

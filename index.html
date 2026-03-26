@@ -1848,13 +1848,15 @@ Livrables (un fichier à la fois) : docs/seo/seo-strategy.md + docs/seo/keyword-
 
 Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals actuels. Identifie les bottlenecks techniques (bundle size, images non optimisées, TTFB). Mets à jour docs/infra/performance-audit.md.
 
+IMPORTANT : le SEO couvre le référencement Google. Pour la visibilité sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity), lancer aussi le prompt "Visibilité sur les IA génératives (GEO)". Les deux sont complémentaires et doivent être lancés ensemble en Phase 3.
+
 Critères de validation : le keyword map contient au minimum 20 mots-clés avec volume réel (pas inventé), chaque mot-clé a une page cible assignée, les clusters sémantiques sont formés, le content gap vs concurrents est documenté, chaque recommandation est actionnable avec priorité P0/P1/P2.`
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
         agents:["geo","copywriter"],
         quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity. En 2026, la visibilité IA est aussi stratégique que le SEO classique.",
-        prompt:`@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, pose-moi les questions pour les créer (mots-clés principaux, pages existantes, objectif de visibilité) et génère-les avant de continuer. Lis aussi docs/strategy/brand-platform.md (entités de marque) et docs/strategy/verbal-identity.md si disponible.
+        prompt:`@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, ALERTE : "Les livrables SEO (docs/seo/) sont absents. Le GEO complète le SEO, il ne le remplace pas. Recommandation : lancer d'abord le prompt 'Stratégie SEO technique & éditoriale' pour obtenir le keyword map et l'audit technique, puis relancer ce prompt GEO." Si l'utilisateur confirme de continuer sans SEO, pose les questions pour travailler avec project-context.md seul. Lis aussi docs/strategy/brand-platform.md (entités de marque) et docs/strategy/verbal-identity.md si disponible.
 
 Analyse et plan GEO :
 1. Audit de visibilité actuelle : interroger ChatGPT, Claude, Gemini, Perplexity sur les requêtes clés du secteur via WebSearch. La marque est-elle mentionnée ? Les concurrents le sont-ils ?
