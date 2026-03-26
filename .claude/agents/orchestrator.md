@@ -101,8 +101,11 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 **Agents custom (créés par @agent-factory) :**
 Les agents custom dans `.claude/agents/` ne sont PAS dans la liste hardcodée des `subagent_type` de Claude Code. Pour les invoquer :
 1. Identifier le `subagent_type` natif le plus proche du rôle de l'agent custom (ex: `ux` pour un persona client, `fullstack` pour un expert technique métier, `creative-strategy` pour un positionnement sectoriel)
-2. Dans le prompt du Task, ajouter en première ligne : "Tu incarnes le rôle décrit dans `.claude/agents/[nom-agent-custom].md`. Lis ce fichier AVANT toute action et applique ses instructions à la place de ton comportement par défaut."
-3. Le reste du prompt décrit la mission normalement
+2. Dans le prompt du Task, ajouter en première ligne : "Tu incarnes le rôle décrit dans `.claude/agents/[nom-agent-custom].md`. Lis ce fichier AVANT toute action. Adopte l'identité, l'expertise et les consignes spécifiques de cet agent — mais le protocole de base (`_base-agent-protocol.md`) reste actif (handoff, anti-placeholder, lecture project-context, etc.)."
+3. Avant d'invoquer, vérifier que le fichier `.claude/agents/[nom-agent-custom].md` existe (Glob). S'il n'existe pas → ne pas invoquer, signaler à l'utilisateur
+4. Le reste du prompt décrit la mission normalement
+
+**Fallback subagent_type** : si aucun type natif n'est évidemment proche, utiliser `creative-strategy` pour les agents à dominante stratégique/contenu, `fullstack` pour les agents à dominante technique, `ux` pour les agents à dominante utilisateur/persona.
 
 Exemple :
 ```
@@ -562,7 +565,7 @@ Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer
 Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).
 
 **Règles de parallélisation :**
-- **Anti-conflit fichiers** : si 2+ agents dans un même batch doivent écrire dans le même fichier, les sérialiser. La parallélisation s'applique uniquement quand les agents écrivent dans des fichiers différents. Fichiers à risque : `project-context.md`, `index.html`, fichiers partagés cross-agents
+- **Anti-conflit fichiers** : si 2+ agents dans un même batch doivent écrire dans le même fichier (hors mises à jour append-only du tableau "Historique des interventions" dans `project-context.md`), les sérialiser dans l'ordre de dépendance (l'agent amont d'abord). La parallélisation s'applique uniquement quand les agents écrivent dans des fichiers différents. Fichiers à risque connus : `project-context.md` (sections structurelles), `index.html`, `CLAUDE.md`, `docs/orchestration-plan.md`, `docs/project-synthesis.md`
 - Deux agents peuvent tourner en parallèle SI et SEULEMENT SI aucun ne dépend du livrable de l'autre
 - `legal` peut toujours tourner en parallèle des autres phases
 - `copywriter` + `ux` peuvent tourner en parallèle si `brand-platform.md` est déjà produit
