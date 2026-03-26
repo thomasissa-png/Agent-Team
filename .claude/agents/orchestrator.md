@@ -232,7 +232,7 @@ Phase 4 (Acquisition) :
 Phase 5 (Audit & Validation) :
 - @reviewer → "Revue croisée GO/NO-GO"
 - @qa → "Audit qualité & tests complets"
-- @qa + @fullstack + @ux + @design → "Revue finale page par page (dernier kilomètre)" — OBLIGATOIRE. Audit chirurgical de CHAQUE page, CHAQUE bouton, CHAQUE texte sur 12 dimensions. C'est la différence entre un site qui "marche" et un site à 9/10.
+- @qa + @fullstack + @ux + @design → "Revue finale page par page (dernier kilomètre)" — OBLIGATOIRE. Audit chirurgical de CHAQUE page, CHAQUE bouton, CHAQUE texte sur 18 dimensions. C'est la différence entre un site qui "marche" et un site à 9/10.
 - Checklist jour de lancement (GO/NO-GO final — après la revue page par page)
 - @infrastructure → "Monitoring post-launch"
 
@@ -507,7 +507,7 @@ Après Phase 4 : même vérification d'automatisation contenu pour @growth et @s
 
 **Phase 5b — Revue finale chirurgicale (OBLIGATOIRE si du code existe dans src/) :**
 Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer la "Revue finale page par page" :
-1. @qa crawle TOUTES les pages et vérifie 12 dimensions par page (contenu, liens, images, formulaires, interactions, responsive, dark mode, états vides/pleins, erreurs, performance, SEO)
+1. @qa crawle TOUTES les pages et vérifie 18 dimensions par page (copie, orthographe, microcopy, tokens design, alignement, responsive, parcours logique, affordance, navigation, liens, images, formulaires, interactions, erreurs/auth, performance, états de données, dark mode, SEO/OG) + accessibilité + cross-browser
 2. @fullstack corrige TOUS les bugs (P0, P1 ET P2 — aucun n'est optionnel)
 3. @qa re-vérifie chaque fix
 4. @ux + @design valident que les corrections respectent le design system et les parcours

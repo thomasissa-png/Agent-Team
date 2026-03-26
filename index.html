@@ -644,7 +644,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md.
-7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 12 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
+7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 18 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope MVP) pour ma validation avant de lancer la conception.
 
 Gestion multi-sessions :
@@ -803,7 +803,8 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
-7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md (templates @copywriter) et docs/ia/prompt-library.md section "Content automation" (prompts de génération @ia) pour aligner avec le nouveau positionnement. Archiver le content_registry existant et créer un nouveau registre vierge — retagguer uniquement les articles publiés qui restent pertinents dans le nouveau positionnement.
+7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
+8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 18 dimensions, correction de TOUS les bugs, itération jusqu'à 9/10.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à ce que tous les livrables impactés soient à 9/10.
