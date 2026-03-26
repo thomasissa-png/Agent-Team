@@ -194,6 +194,40 @@ Produire un rapport structuré exactement ainsi :
 ## Résumé technique
 [3 lignes : état général de cohérence, blocages critiques, recommandation GO/NO-GO]
 
+## Résultats des gates binaires (G1-G20)
+
+*Exécuter les 20 gates de CLAUDE.md pour chaque livrable audité :*
+
+### [Nom du livrable] — @[agent]
+| # | Gate | Classe | Verdict | Détail |
+|---|---|---|---|---|
+| G1 | Sections complètes | BLOQUANT | PASS/FAIL | |
+| G3 | Handoff structuré | BLOQUANT | PASS/FAIL | |
+| G5 | Persona identique | BLOQUANT | PASS/FAIL | |
+| G6 | KPI identique | BLOQUANT | PASS/FAIL | |
+| G7 | 0 contradiction amont | BLOQUANT | PASS/FAIL | |
+| G12 | Implémentable sans question | BLOQUANT | PASS/FAIL | |
+| G13 | 0 donnée inventée | BLOQUANT | PASS/FAIL | |
+| G15 | 0 placeholder | BLOQUANT | PASS/FAIL | |
+| G19 | Spécifique au projet | BLOQUANT | PASS/FAIL | |
+| G2 | Livrables amont existent | REQUIS | PASS/FAIL | |
+| G4 | Chiffres sourcés | REQUIS | PASS/FAIL | |
+| G8 | Ton brand-voice | CONDITIONNEL | PASS/FAIL/N-A | |
+| G9 | Owner + action + cible | REQUIS | PASS/FAIL | |
+| G10 | 0 langage vague | REQUIS | PASS/FAIL | |
+| G11 | Critères binaires | REQUIS | PASS/FAIL | |
+| G14 | Absents signalés | REQUIS | PASS/FAIL | |
+| G16 | Nom projet ≥ 3x | REQUIS | PASS/FAIL | |
+| G17 | Persona ≥ 2x | REQUIS | PASS/FAIL | |
+| G18 | ≥ 2 livrables ref | REQUIS | PASS/FAIL | |
+| G20 | Exemple concret | REQUIS | PASS/FAIL | |
+
+**BLOQUANT : X/9 PASS | REQUIS : Y/10 PASS | CONDITIONNEL : Z/1 (ou N/A)**
+**Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**
+**Verdict : GO / GO CONDITIONNEL / NO-GO**
+
+---
+
 ## Contradictions détectées
 | Livrable A | Livrable B | Contradiction | Criticité | Résolution proposée |
 |---|---|---|---|---|

@@ -295,7 +295,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G1 | Toutes les sections du template agent présentes (0 section vide/TODO) | BLOQUANT | Grep `[TODO]`, `[À REMPLIR]`, sections < 2 lignes |
 | G2 | Les livrables amont référencés existent | REQUIS | Glob les chemins cités dans le livrable |
 | G3 | Bloc Handoff structuré présent | BLOQUANT | Grep `Handoff` |
-| G4 | Chaque donnée chiffrée sourcée ou marquée `[HYPOTHÈSE]` | REQUIS | Grep nombres, vérifier source ou marqueur |
+| G4 | Chaque donnée chiffrée a une source explicite (URL, livrable, ou marqueur `[HYPOTHÈSE]`) | REQUIS | Grep nombres, vérifier que chaque chiffre cite sa source |
 
 **COHÉRENCE**
 
@@ -319,7 +319,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 
 | # | Gate | Classe | Vérification |
 |---|---|---|---|
-| G13 | 0 donnée inventée (chaque chiffre sourcé ou `[HYPOTHÈSE]`) | BLOQUANT | Grep chiffres sans source |
+| G13 | 0 donnée inventée (aucun chiffre, benchmark ou métrique sans fondement factuel) | BLOQUANT | Grep chiffres sans source — vérifier crédibilité, pas juste présence de source |
 | G14 | Livrables absents signalés | REQUIS | Grep tous les chemins docs/ mentionnés dans le livrable → Glob pour vérifier existence. Si un chemin référencé n'existe pas ET n'est pas documenté comme absent → FAIL |
 | G15 | 0 placeholder résiduel | BLOQUANT | Grep `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` |
 
@@ -338,6 +338,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 - **GO** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS
 - **GO CONDITIONNEL** : 100% gates BLOQUANT PASS + >= 1 gate REQUIS FAIL (corriger dans la session)
 - **NO-GO** : >= 1 gate BLOQUANT FAIL → relance immédiate
+- **Gates CONDITIONNEL** : s'appliquent uniquement si le livrable amont existe (ex: G8 s'applique si brand-voice.md existe). Si applicable et FAIL → traité comme REQUIS FAIL. Si non applicable → ignoré (N/A), ne compte pas dans le score dérivé.
 
 ### Score numérique dérivé (pour tracking)
 
@@ -346,6 +347,13 @@ Pour le tableau "Performance des agents" : `(gates PASS / gates applicables) × 
 ### Scoring persona et B2B (conservés)
 
 Les grilles persona (/10, 9 dimensions, seuil 9/10) et B2B (/10, 7 dimensions, seuil 9/10 si applicable) sont conservées. Elles sont encadrées par des gates pré-requis : G5 (persona identique) et G6 (KPI identique) doivent être PASS avant d'évaluer ces grilles.
+
+**Pré-requis binaires persona** (doivent être PASS pour que le score persona soit valide) :
+- Le persona est nommé dans le livrable (pas "l'utilisateur" mais le nom défini dans project-context.md)
+- Le vocabulaire du secteur est utilisé (termes métier, pas du langage générique)
+- Les objections documentées dans personas.md (si existe) sont adressées dans le livrable
+
+**Condition GO finale** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + gates persona PASS (>= 9/10) + gates B2B PASS (>= 9/10, si applicable).
 
 **Condition GO finale** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + gates persona PASS (>= 9/10) + gates B2B PASS (>= 9/10, si applicable).
 
