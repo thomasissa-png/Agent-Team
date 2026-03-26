@@ -1112,7 +1112,7 @@ Critères de validation : chaque parcours a un objectif mesurable, chaque écran
         title:"Design system complet",
         agents:["design","fullstack"],
         quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent. Pour reprendre : 'Lis docs/design/design-system.md et docs/design/design-tokens.json, complète ce qui manque.'",
-        prompt:`@design Lis docs/ux/wireframes.md et docs/strategy/brand-platform.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer (wireframes : écrans clés, navigation ; brand-platform : ton de marque, 3 mots-clés, positionnement).
+        prompt:`@design Lis docs/design/art-direction.md (direction artistique retenue : palette, typographie, style composants). S'il n'existe pas, lis docs/strategy/brand-platform.md et pose-moi les questions pour définir la direction artistique d'abord (palette, polices, style). Lis aussi docs/ux/wireframes.md et docs/strategy/personas.md si disponibles.
 
 Crée le design system complet :
 1. Tokens : couleurs (primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark), typographies (heading + body, échelle, line-height), espacements (échelle 4/8/12/16/24/32/48/64), ombres (subtle, medium, elevated), border-radius.
@@ -1185,7 +1185,7 @@ Critères de validation : le hero est compréhensible en < 5 secondes, chaque b�
         title:"Définir la direction artistique",
         agents:["design","creative-strategy"],
         quand:"Après la plateforme de marque, AVANT le design system — pour valider l'ambiance visuelle avant d'investir dans les tokens",
-        prompt:`@design Lis docs/strategy/brand-platform.md (positionnement, ton, 3 mots de marque). S'il n'existe pas, pose-moi les questions pour le créer (ton de marque, 3 mots-clés visuels, positionnement, secteur) et génère-le avant de continuer. Lis aussi docs/ux/wireframes.md si disponible.
+        prompt:`@design Lis docs/strategy/brand-platform.md (positionnement, ton, 3 mots de marque) et docs/strategy/personas.md (profil, âge, contexte professionnel, attentes visuelles du persona). S'ils n'existent pas, pose-moi les questions pour les créer (ton de marque, 3 mots-clés visuels, positionnement, secteur, profil persona) et génère-les avant de continuer. Lis aussi docs/ux/wireframes.md si disponible.
 
 Produis 2-3 directions artistiques sous forme de brief visuel textuel. Pour chaque direction :
 1. Nom de la direction (ex : "Minimal tech", "Warm premium", "Bold startup")
@@ -1197,7 +1197,7 @@ Produis 2-3 directions artistiques sous forme de brief visuel textuel. Pour chaq
 7. Iconographie : style recommandé (outline/solid/duotone), librairie (Lucide, Heroicons, Phosphor).
 8. Impact performance : estimation du poids visuel (fonts custom, images, animations). Compatible avec LCP < 2.5s ?
 
-Recommande la direction la plus alignée avec le positionnement de marque, avec justification.
+Recommande la direction la plus alignée avec le positionnement de marque ET les attentes visuelles du persona, avec justification. La palette et la typographie doivent parler au persona — un CMO de 38 ans n'a pas les mêmes codes visuels qu'un dev indie de 25 ans.
 
 Livrable : docs/design/art-direction.md.
 
