@@ -233,7 +233,17 @@ Phase 5 (Audit & Validation) :
 - Checklist jour de lancement
 - @infrastructure → "Monitoring post-launch"
 
-**Tous les prompts optionnels** sont déclenchés conditionnellement selon le type de projet (SaaS → Stripe + auth + notifications, site vitrine → SEO + landing page prioritaires, marketplace → double persona, etc.).
+**Prompts conditionnels par type de projet** (la carte ci-dessus est le minimum — ces prompts s'ajoutent selon le contexte) :
+- SaaS : "Intégrer le paiement Stripe" + "Authentification & autorisation" + "Design système de notifications" + "Stratégie de pricing complète" + "Configurer une motion PLG"
+- Site vitrine : "Landing page complète" prioritaire + "SEO + GEO combinés"
+- Marketplace : double persona (vendeur + acheteur) dans chaque agent
+- Tout projet avec UI : "Spécifier les interactions et états des composants" + "Gestion des erreurs & feedback utilisateur" + "Performance budget & optimisation"
+- Tout projet EU/FR : "Gestion cookies & consent (RGPD)"
+- Tout projet en production : "Analyse automatisée des feedbacks utilisateurs" + "Monitoring UX"
+- Tout projet existant / refonte : "Auditer le funnel existant"
+- Phase 5 systématique : "Checklist jour de lancement" (l'orchestrateur compile le GO/NO-GO)
+
+Si un prompt de la bibliothèque n'apparaît ni dans la carte ni dans les conditionnels mais est pertinent pour le projet, l'orchestrateur DOIT quand même le déclencher. La carte est un minimum, pas un maximum.
 
 ### Limites de taille du prompt Task
 
