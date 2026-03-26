@@ -898,30 +898,6 @@ Puis @data-analyst : définis les métriques de suivi du test de demande (taux d
 Critères de validation : au moins 3 signaux de demande documentés (volume recherche, trafic concurrent, verbatims utilisateurs), critère go/no-go chiffré et non ambigu.`
       },
       {
-        title:"Structurer la proposition de valeur",
-        agents:["creative-strategy","copywriter"],
-        quand:"Après la plateforme de marque — avant de rédiger quoi que ce soit (landing page, emails, ads). La proposition de valeur est la phrase que tes utilisateurs répéteront pour parler de toi.",
-        prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (positionnement, personas, benchmark concurrentiel). S'il n'existe pas, pose-moi les questions pour le créer (positionnement, persona principal avec frustrations, concurrents) et génère-le avant de continuer.
-
-Traduis le positionnement en proposition de valeur opérationnelle avec cette structure :
-1. Problème documenté : la douleur quantifiée du persona (temps perdu, argent gaspillé, frustration mesurable). Utilise les mots du persona, pas du jargon marketing.
-2. Solution différenciante : le mécanisme unique qui résout ce problème (pas ce que fait le produit — comment il le fait différemment des alternatives).
-3. Preuve : ce qui rend la promesse crédible (techno, méthode, résultat mesurable, témoignage, démo).
-4. Résultat : ce que le persona obtient concrètement (chiffré si possible — "gagne 3h/semaine" plutôt que "gagne du temps").
-5. Pour qui : les critères de qualification (qui est le client idéal, qui ne l'est PAS — exclure explicitement aide à qualifier).
-6. Pourquoi maintenant : l'urgence ou l'opportunité qui rend l'action immédiate rationnelle (nouvelle réglementation, tendance marché, coût de l'inaction).
-
-Formule la proposition de valeur en une phrase (< 20 mots) + version longue (3-4 phrases). Teste-la contre les 3 concurrents du benchmark : est-elle différenciante ? Crédible ? Mémorable ? Le persona la reformulerait-il spontanément ?
-
-Structure le contenu pour être citable par les LLM : claims vérifiables, entités nommées.
-
-Livrable : docs/strategy/value-proposition.md.
-
-Puis @copywriter : lis docs/strategy/value-proposition.md et rédige 3 variantes de la proposition de valeur adaptées à des contextes différents : hero landing page, accroche email, bio social media. Livrable : ajout dans docs/copy/brand-voice.md section "Propositions de valeur".
-
-Critère de qualité : la proposition de valeur est directement utilisable par @copywriter pour la landing page et par @growth pour les canaux d'acquisition. Le persona reconnaît son problème dans la formulation.`
-      },
-      {
         title:"Construire la messaging matrix",
         agents:["creative-strategy","copywriter"],
         quand:"Après la proposition de valeur — avant la landing page et les contenus marketing. La messaging matrix est le GPS de toute ta communication.",
@@ -946,9 +922,9 @@ Puis @copywriter : lis docs/strategy/messaging-matrix.md et rédige 2 variantes 
 Critères de validation : chaque case persona x canal x funnel a un message différencié (pas de copier-coller entre les cases), les CTA sont spécifiques à l'étape du funnel.`
       },
       {
-        title:"Définir la stratégie de pricing",
-        agents:["product-manager","growth","legal"],
-        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Le pricing est la feature la plus sous-estimée. 3 agents en chaîne. Si coupure : 'Lis docs/product/pricing-strategy.md, docs/growth/ et docs/legal/, quels agents n'ont pas terminé ?'",
+        title:"Stratégie de pricing complète",
+        agents:["product-manager","data-analyst","growth","legal"],
+        quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Couvre pricing de base ET pricing dynamique (segmentation, psychologie, A/B testing). Si coupure : 'Lis docs/product/pricing-strategy.md, quels agents n'ont pas terminé ?'",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif, pays).
 
 Définis la stratégie de pricing complète :
@@ -965,7 +941,19 @@ Puis @growth : lis docs/product/pricing-strategy.md et valide la cohérence avec
 
 Puis @legal : lis docs/product/pricing-strategy.md et vérifie la conformité des conditions commerciales (droit de rétractation, transparence tarifaire, CGV). Signale les obligations légales liées au pricing (affichage TVA, mentions obligatoires e-commerce). Note dans docs/legal/legal-audit.md.
 
-Critères de validation : chaque tier est justifié par la valeur perçue (pas le coût), le modèle économique est viable (LTV/CAC > 3x), les obligations légales sont identifiées.`
+Section avancée (si multi-segments ou international) :
+7. Pricing dynamique : axes de différenciation tarifaire (usage, segment startup vs enterprise, géographie/PPP, engagement annuel vs mensuel). Justifier chaque différentiel par la valeur perçue.
+8. Ancrage et psychologie avancés : decoy pricing, affichage mensuel vs annuel, grandfathering des clients existants.
+9. Promotions : politique de remise (jamais > 30%, contrepartie obligatoire), anti-pattern des promotions permanentes.
+10. Évolution : plan de révision tarifaire (fréquence, critères de déclenchement, communication).
+
+Puis @data-analyst : lis docs/product/pricing-strategy.md et définis les métriques de suivi : ARPU par segment, taux de conversion par plan, upgrade/downgrade rate. Configure les alertes si un changement de prix dégrade la conversion > 15%. Livrable : docs/analytics/kpi-framework.md section "Pricing metrics".
+
+Puis @growth : lis docs/product/pricing-strategy.md et valide la cohérence avec la stratégie d'acquisition. Le plan d'entrée doit avoir un CAC compatible (LTV/CAC > 3x). Propose des expérimentations A/B sur la page pricing. Ajoute la section "Unit Economics" dans docs/growth/growth-strategy.md.
+
+Puis @legal : lis docs/product/pricing-strategy.md et vérifie la conformité des conditions commerciales (droit de rétractation, transparence tarifaire, CGV, affichage TVA). Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque tier est justifié par la valeur perçue (pas le coût), le modèle économique est viable (LTV/CAC > 3x), les obligations légales sont identifiées, les métriques de pricing sont configurées.`
       },
       {
         title:"Définir le scope MVP",
@@ -986,51 +974,6 @@ Livrable : docs/product/mvp-scope.md.
 Puis @fullstack : lis docs/product/mvp-scope.md et évalue la faisabilité technique de chaque feature retenue. Signale les features sous-estimées en effort, les dépendances techniques non identifiées, et les choix de stack qui pourraient bloquer. Ajoute une section "Faisabilité technique" dans docs/dev-decisions.md.
 
 Critères de validation : chaque feature retenue a une justification liée au persona principal et au KPI North Star, le MVP répond à une hypothèse business unique et testable, les risques sont identifiés.`
-      },
-      {
-        title:"Écrire le storytelling de fondation",
-        agents:["creative-strategy","copywriter","seo"],
-        quand:"Après la plateforme de marque — utile pour la page About, les pitchs, le contenu social, le SEO de marque 3 agents en chaîne. Si coupure : 'Lis docs/strategy/brand-story.md et docs/copy/brand-story-content.md, quel agent reste ?'",
-        prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (positionnement, personas, ton de marque). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer.
-
-Construis la narration fondatrice du projet :
-1. Histoire d'origine : pourquoi ce problème, pourquoi maintenant, quel événement déclencheur. Si le fondateur a une histoire personnelle liée au problème, l'intégrer (authenticité > perfection).
-2. Tension narrative : ce que le marché fait de façon inacceptable, ce que la marque refuse de faire comme les autres, la rupture incarnée. Le conflit rend l'histoire mémorable.
-3. Vision à 3-5 ans : où va la marque, quel monde elle veut construire, quel impact elle veut avoir. Concret et ambitieux.
-4. Manifeste : déclaration d'intention (10-15 lignes) qui fait fuir les mauvais clients et attire les bons. Ton : aligné avec la brand voice.
-5. Entités de marque pour le GEO : les noms, termes et concepts propriétaires à pousser pour la visibilité sur les IA génératives.
-
-Livrable : docs/strategy/brand-story.md.
-
-Puis @copywriter : lis docs/strategy/brand-story.md et docs/copy/brand-voice.md. Rédige la page About (version web, 300-500 mots, structurée pour le SEO avec H2/H3) + le pitch elevator (30 secondes, version texte) + 3 posts sociaux tirés du storytelling (1 LinkedIn, 1 Twitter/X, 1 format court). Livrable : docs/copy/brand-story-content.md.
-
-Puis @seo : lis docs/copy/brand-story-content.md et optimise la page About pour le SEO de marque (meta title/description, données structurées Organization JSON-LD, maillage interne). Ajoute dans docs/seo/metadata-templates.md.
-
-Critères de validation : l'histoire est spécifique au projet (pas un template générique), le manifeste provoque une réaction (accord fort ou désaccord — pas d'indifférence), les entités de marque sont identifiées pour le GEO.`
-      },
-      {
-        title:"Stratégie de pricing dynamique",
-        agents:["product-manager","data-analyst","growth","legal"],
-        quand:"Produit avec plusieurs segments utilisateurs ou marchés internationaux qui justifient une tarification adaptative. Après la stratégie de pricing initiale (docs/product/pricing-strategy.md). 4 agents — session longue probable. Si coupure : 'Lis docs/product/pricing-dynamic.md, quels agents n'ont pas terminé ?'",
-        prompt:`@product-manager Lis docs/product/pricing-strategy.md (pricing de base) et project-context.md (persona, marchés, modèle économique). S'ils n'existent pas, pose-moi les questions pour les créer (plans actuels, segments utilisateurs, marchés géographiques, panier moyen) et génère-les avant de continuer. Lis aussi docs/analytics/kpi-framework.md si disponible.
-
-Définis la stratégie de pricing dynamique :
-1. Segmentation : identifier les axes de différenciation tarifaire justifiés — par usage (volume), par segment (startup vs enterprise), par géographie (parité de pouvoir d'achat), par engagement (annuel vs mensuel). Pour chaque axe, justifier le différentiel de prix par la valeur perçue.
-2. Modèle de pricing : usage-based, seat-based, hybrid, ou tiered — avec simulation de revenus pour 3 scénarios (conservateur, base, optimiste). Montrer l'impact sur la LTV et le MRR.
-3. Ancrage et psychologie : prix d'ancrage, decoy pricing (plan intermédiaire qui pousse vers le premium), affichage mensuel vs annuel avec réduction, gratuit vs freemium vs trial.
-4. Promotions et discounts : politique de remise (jamais > 30%, toujours justifiée par une contrepartie — annuel, volume, early adopter), coupons, seasonal. Anti-pattern : éviter de créer une attente de promotion permanente.
-5. Prix par marché : si marchés internationaux, adapter les prix au pouvoir d'achat local (PPP) via WebSearch sur les indices. Afficher en devise locale.
-6. Évolution : plan de révision tarifaire (fréquence, critères de déclenchement, communication), grandfathering des clients existants (oui/non, durée).
-
-Livrable : docs/product/pricing-dynamic.md.
-
-Puis @data-analyst : lis docs/product/pricing-dynamic.md et définis les métriques de suivi : ARPU par segment, taux de conversion par plan, upgrade/downgrade rate, élasticité-prix estimée. Configure les alertes si un changement de prix dégrade la conversion > 15%. Livrable : docs/analytics/kpi-framework.md section "Pricing metrics".
-
-Puis @growth : lis docs/product/pricing-dynamic.md et vérifie la cohérence avec la stratégie d'acquisition. Le plan d'entrée doit avoir un CAC compatible (LTV/CAC > 3x). Propose des expérimentations de pricing (A/B test sur la page pricing). Livrable : docs/growth/growth-strategy.md section "Pricing experiments".
-
-Conformité : @legal vérifie les obligations de transparence tarifaire (affichage TTC, mentions obligatoires e-commerce, droit de rétractation), les règles de non-discrimination tarifaire par pays (réglementations EU), et la conformité des conditions de renouvellement automatique. Livrable : docs/legal/legal-audit.md section "Pricing".
-
-Critères de validation : chaque différentiel de prix est justifié par la valeur perçue (pas par le coût), les simulations de revenus couvrent 3 scénarios, les obligations légales de transparence tarifaire sont respectées, les métriques de suivi sont en place.`
       },
       {
         title:"Vision long terme et moat",
@@ -1113,9 +1056,9 @@ Puis @fullstack : prends docs/design/design-tokens.json et implémente les token
 Critères de validation : tous les tokens sont définis dans design-tokens.json, chaque composant a ses états documentés, les contrastes passent WCAG 2.2 AA, le design est compatible avec un LCP < 2.5s.`
       },
       {
-        title:"Brand voice & guide d'écriture",
-        agents:["copywriter","geo"],
-        quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants. La voix de marque est ce qui rend ton produit reconnaissable.",
+        title:"Brand voice & identité verbale",
+        agents:["copywriter","creative-strategy","geo"],
+        quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants. La voix de marque est ce qui rend ton produit reconnaissable même sans logo. Couvre ton, vocabulaire, UX writing ET territoire verbal propriétaire. Si coupure : 'Lis docs/copy/brand-voice.md et docs/strategy/verbal-identity.md, quel agent reste ?'",
         prompt:`@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer.
 
 Produis le brand voice guide complet :
@@ -1127,9 +1070,16 @@ Produis le brand voice guide complet :
 
 Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md.
 
-Puis @geo : lis docs/copy/brand-voice.md et identifie les termes et expressions clés à pousser pour la visibilité sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity). Propose les entités nommées et claims vérifiables à intégrer systématiquement dans le contenu. Ajoute dans docs/geo/geo-strategy.md une section "Entités de marque".
+Puis @creative-strategy : lis docs/copy/brand-voice.md et docs/strategy/brand-platform.md. Construis le territoire verbal propriétaire :
+1. Lexique de marque : 10-15 mots/expressions que la marque s'approprie. Pour chaque mot : définition dans le contexte de la marque, usage type.
+2. Formulations bannies : 5-10 expressions interdites parce que tous les concurrents les utilisent (ex : "solution innovante"). Pour chaque : pourquoi bannie + alternative propriétaire.
+3. Phrases signature : 2-3 formulations mémorables qui cristallisent la promesse (tagline, baseline, claim). Testées contre : mémorable ? différenciante ? vraie ?
+4. Métaphores fondatrices : 1-2 images mentales que la marque veut créer.
+Livrable : docs/strategy/verbal-identity.md.
 
-Critères de validation : le guide est suffisamment précis pour que deux rédacteurs différents produisent un ton cohérent, les exemples couvrent au moins 3 contextes différents.`
+Puis @geo : lis docs/copy/brand-voice.md et docs/strategy/verbal-identity.md. Identifie les termes propriétaires et entités nommées à pousser pour la visibilité sur les IA génératives. Ajoute dans docs/geo/geo-strategy.md section "Entités de marque".
+
+Critères de validation : le guide est suffisamment précis pour que deux rédacteurs IA produisent un ton cohérent, le lexique est différenciant (pas réutilisable par un concurrent), les exemples couvrent au moins 3 contextes.`
       },
       {
         title:"Landing page complète",
@@ -1181,26 +1131,6 @@ Puis @creative-strategy : lis docs/design/art-direction.md et valide l'alignemen
 Critères de validation : chaque direction a des références réelles (pas inventées), la palette passe WCAG AA, la direction retenue est justifiée par le positionnement de marque.`
       },
       {
-        title:"Définir l'identité verbale",
-        agents:["creative-strategy","copywriter","geo"],
-        quand:"Après la brand voice — quand le ton est défini mais avant de produire les contenus marketing. L'identité verbale rend ta marque reconnaissable même sans logo.",
-        prompt:`@creative-strategy Lis docs/copy/brand-voice.md (ton, registre, vocabulaire). S'il n'existe pas, pose-moi les questions pour le créer (ton de marque, registre, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/brand-platform.md et docs/strategy/competitive-benchmark.md si disponibles.
-
-Construis le territoire verbal propriétaire de la marque :
-1. Lexique de marque : 10-15 mots/expressions que la marque s'approprie et qui lui sont associés dans l'esprit du persona. Pour chaque mot : définition dans le contexte de la marque, usage type, fréquence recommandée.
-2. Formulations bannies : 5-10 expressions interdites parce que tous les concurrents les utilisent (ex : "solution innovante", "leader du marché"). Pour chaque formulation : pourquoi elle est bannie, alternative propriétaire.
-3. Phrases signature : 2-3 formulations mémorables qui cristallisent la promesse (tagline, baseline, claim). Testées contre : mémorable ? différenciante ? vraie ? Le persona la répéterait-il ?
-4. Métaphores fondatrices : 1-2 images mentales que la marque veut créer (ex : "le copilote" plutôt que "l'outil"). La métaphore guide toute la communication.
-
-Livrable : docs/strategy/verbal-identity.md.
-
-Puis @copywriter : lis docs/strategy/verbal-identity.md et enrichis docs/copy/brand-voice.md avec le lexique propriétaire et les formulations bannies. Vérifie que docs/copy/landing-page-copy.md (si existant) respecte l'identité verbale — signale les écarts.
-
-Puis @geo : lis docs/strategy/verbal-identity.md et identifie les termes propriétaires à pousser pour la visibilité sur les IA génératives. Ces termes doivent devenir les entités nommées associées à la marque. Ajoute dans docs/geo/geo-strategy.md.
-
-Critères de validation : le lexique est différenciant (pas réutilisable par un concurrent), les formulations bannies sont justifiées par le benchmark, les phrases signature passent le test "le persona la répéterait-il ?".`
-      },
-      {
         title:"Spécifier les interactions et états des composants",
         agents:["design","ux","fullstack"],
         quand:"Après le design system, AVANT l'implémentation des composants — pour éviter les états manquants en production. Les états oubliés sont les bugs de demain. Livrable détaillé + 3 agents. Si coupure : 'Lis docs/design/component-states.md, quels composants restent à spécifier ?'",
@@ -1233,9 +1163,9 @@ Puis @fullstack : lis docs/design/component-states.md et évalue l'effort d'impl
 Critères de validation : chaque composant a au minimum 7 états définis, les animations respectent prefers-reduced-motion, l'accessibilité est documentée pour chaque état.`
       },
       {
-        title:"Définir les specs responsive",
-        agents:["design","ux","infrastructure"],
-        quand:"En complément du design system — avant l'implémentation, pour spécifier le comportement mobile. 60%+ du trafic est mobile — le responsive n'est pas optionnel.",
+        title:"Design responsive complet",
+        agents:["design","ux","fullstack","infrastructure"],
+        quand:"Après le design system, AVANT l'implémentation — pour spécifier le comportement mobile de tous les composants (basiques ET complexes). 60%+ du trafic est mobile — le responsive n'est pas optionnel. Si coupure : 'Lis docs/design/design-system.md section Responsive, quels agents restent ?'",
         prompt:`@design Lis docs/design/design-system.md (tokens, composants). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer. Lis aussi docs/ux/wireframes.md pour identifier les écrans à adapter.
 
 Produis les specs responsive pour les composants et layouts critiques. Format par composant/layout :
@@ -1255,42 +1185,23 @@ Composants/layouts à couvrir :
 4. Formulaires : largeur des champs, disposition des labels (side vs top), clavier virtuel.
 5. Tableaux : scroll horizontal vs cards empilées sur mobile.
 6. Modals : plein écran sur mobile vs centré sur desktop.
-7. Typographie : échelle responsive (clamp() ou paliers fixes par breakpoint).
+7. Typographie : échelle responsive (clamp() CSS), line-height adaptatif, longueur de ligne optimale (45-75 caractères).
+8. Composants complexes : pour chaque composant complexe (tableaux de données, dashboards, formulaires multi-étapes, sidebars, carousels), repenser l'interaction par breakpoint — pas juste empiler (tableau → cards sur mobile, sidebar → bottom sheet, formulaire long → stepper).
+9. Navigation adaptative : hamburger menu vs bottom nav bar (mobile) vs sidebar (desktop). Navigation au pouce (zone de confort : bas de l'écran).
+10. Interactions tactiles : swipe gestures, pull-to-refresh si pertinent, long press comme alternatives aux hover states.
+11. Performance mobile : budget spécifique mobile (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset par device, images art direction (cadrage différent par device), srcset avec tailles exactes.
 
 Règle de densité : documenter ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique. Aucun contenu critique ne doit disparaître sur mobile.
 
 Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via Edit, pas un fichier séparé).
 
-Puis @ux : vérifie que les adaptations mobiles respectent les parcours utilisateur prioritaires — un parcours critique ne doit pas être dégradé sur mobile. Teste mentalement chaque flow sur un écran 375px.
+Puis @ux : vérifie que les adaptations mobiles respectent les parcours utilisateur prioritaires sur mobile 375px. Teste les edge cases : clavier virtuel ouvert (réduit la hauteur de 50%), mode paysage, grand texte (accessibilité). Vérifie la navigation au pouce.
 
-Puis @infrastructure : lis la section responsive et vérifie la compatibilité avec les images responsive (srcset, format WebP/AVIF), le lazy loading, et les Core Web Vitals mobiles. Note dans docs/infra/infrastructure.md.
+Puis @fullstack : évalue la faisabilité technique. Propose l'implémentation CSS (container queries vs media queries, CSS Grid vs Flexbox). Identifie les composants nécessitant du JS pour le responsive (resize observers, intersection observers). Livrable : docs/dev-decisions.md section "Responsive".
 
-Critères de validation : chaque breakpoint est documenté, les touch targets font 44x44px minimum, aucun parcours critique n'est dégradé sur mobile.`
-      },
-      {
-        title:"Design responsive avancé",
-        agents:["design","ux","fullstack","infrastructure"],
-        quand:"Au-delà des breakpoints basiques — pour les cas complexes : tableaux de données, dashboards, formulaires longs, navigation riche, contenu dense. À lancer après le design system de base. 4 agents — session longue. Si coupure : 'Lis docs/design/responsive-specs.md, quels composants ou agents manquent ?'",
-        prompt:`@design Lis docs/design/design-system.md (tokens, composants) et docs/ux/user-flows.md (parcours). S'ils n'existent pas, pose-moi les questions pour les créer et génère-les avant de continuer. Lis project-context.md (persona, devices cibles).
+Puis @infrastructure : lis la section responsive et vérifie la compatibilité avec les images responsive (srcset, format WebP/AVIF), le lazy loading, le cache par device, et les Core Web Vitals mobiles. Note dans docs/infra/infrastructure.md.
 
-Définis les patterns responsive avancés :
-1. Composants complexes : pour chaque composant complexe (tableaux de données, formulaires multi-étapes, dashboards, sidebars, modales, carousels), définir le comportement par breakpoint — pas juste "empiler", mais repenser l'interaction (tableau → cards sur mobile, sidebar → bottom sheet, formulaire long → stepper).
-2. Navigation adaptative : hamburger menu, bottom navigation bar (mobile), sidebar (desktop), breadcrumbs, tabs — définir quel pattern à quel breakpoint et pourquoi. Navigation au pouce sur mobile (zone de confort : bas de l'écran).
-3. Typographie fluide : échelle de taille responsive (clamp() CSS), line-height adaptatif, longueur de ligne optimale (45-75 caractères par ligne).
-4. Grille et espacements : système de grille responsive (12 colonnes desktop → 4 colonnes mobile), gouttières adaptatives, marges de sécurité par breakpoint.
-5. Images et médias : art direction (cadrage différent par device), srcset avec tailles exactes, aspect ratios préservés, placeholder LQIP (Low Quality Image Placeholder).
-6. Interactions tactiles : touch targets 44x44px minimum, swipe gestures, pull-to-refresh si pertinent, long press alternatives aux hover states.
-7. Performance mobile : budget spécifique mobile (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset par device.
-
-Livrable : docs/design/responsive-specs.md (avec wireframes textuels par breakpoint pour chaque composant complexe).
-
-Puis @ux : lis docs/design/responsive-specs.md et vérifie que chaque parcours critique reste fluide sur mobile 375px. Teste mentalement les edge cases : clavier virtuel ouvert (réduit la hauteur visible de 50%), mode paysage, grand texte (accessibilité). Vérifie la navigation au pouce. Ajoute les corrections dans docs/ux/ux-audit.md.
-
-Puis @fullstack : lis docs/design/responsive-specs.md et évalue la faisabilité technique. Propose l'implémentation CSS (container queries vs media queries, CSS Grid vs Flexbox, aspect-ratio). Identifie les composants qui nécessitent du JS pour le responsive (resize observers, intersection observers). Livrable : docs/dev-decisions.md section "Responsive".
-
-Puis @infrastructure : vérifie la compatibilité avec le CDN (images responsive servies par le CDN), le cache (variation par device), et les Core Web Vitals mobiles. Livrable : docs/infra/infrastructure.md section "Mobile performance".
-
-Critères de validation : chaque composant complexe a un comportement défini par breakpoint, les touch targets sont > 44x44px, la performance mobile respecte le budget (LCP < 3s sur 3G), la navigation au pouce est optimisée.`
+Critères de validation : chaque breakpoint est documenté avec composants basiques ET complexes, les touch targets font 44x44px minimum, aucun parcours critique n'est dégradé sur mobile, la performance mobile respecte le budget (LCP < 3s sur 3G).`
       },
       {
         title:"Onboarding utilisateur gamifié",
@@ -1719,6 +1630,113 @@ Puis @data-analyst : lis project-context.md et docs/ia/prompt-optimization.md. C
 
 Critères de validation : chaque prompt du produit est documenté dans la prompt library avec version et exemples de test, le coût mensuel estimé après optimisation est documenté, la matrice modèle × use case est justifiée, les fallback chains sont implémentées, le A/B testing framework est opérationnel.`
       }
+      {
+        title:"Design de base de données & optimisation",
+        agents:["fullstack","infrastructure"],
+        quand:"Avant ou pendant le développement — dès que les specs fonctionnelles existent. Un schéma DB mal conçu génère de la dette technique qui coûte 10x plus cher à corriger après lancement.",
+        prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quelles entités métier (utilisateurs, produits, commandes...), quelles relations entre elles, quel volume de données attendu, quelles requêtes fréquentes.
+
+Architecture base de données complète (PostgreSQL Replit) :
+1. Schéma de données : diagramme ERD textuel avec toutes les tables, colonnes (nom, type, contraintes), relations (1:1, 1:N, N:N), clés primaires et étrangères.
+2. Indexation : index par colonne de requête fréquente (WHERE, JOIN, ORDER BY). Index composites si pertinent. Justifier chaque index par un use case de requête réel.
+3. Migrations : stratégie de migration (Prisma migrate ou Drizzle). Convention de nommage des migrations. Gestion des données existantes lors des migrations destructives.
+4. Seed data : script de seed pour l'environnement de développement (données réalistes, pas juste "test1, test2").
+5. Performance : requêtes N+1 à éviter (recommander eager loading), pagination (cursor-based pour les listes longues), dénormalisation stratégique si volume > 100K lignes.
+6. Sécurité : Row Level Security (RLS) si multi-tenant, chiffrement des colonnes sensibles, audit trail (created_at, updated_at, deleted_at soft delete).
+
+Livrable : docs/dev-decisions.md section "Database schema" + schema Prisma/Drizzle dans src/.
+
+Puis @infrastructure : lis le schéma et vérifie la configuration PostgreSQL Replit (connexion pooling, backups, limites de taille). Recommande les optimisations de configuration. Mets à jour docs/infra/infrastructure.md.
+
+Critères de validation : chaque table a une clé primaire et des timestamps, les relations sont contraintes par des clés étrangères, les index couvrent les requêtes fréquentes, le seed script est fonctionnel.`
+      },
+      {
+        title:"API design & documentation",
+        agents:["fullstack","qa"],
+        quand:"Avant l'implémentation des routes API — ou pour documenter une API existante. Une API bien conçue est utilisable sans lire le code source. Si coupure : 'Lis docs/dev-decisions.md section API, quelles routes manquent ?'",
+        prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quelles actions l'utilisateur peut faire (CRUD sur quelles entités), quelles intégrations tierces (webhooks, OAuth), quel format de réponse attendu.
+
+Design API complet :
+1. Convention : REST ou tRPC (justifier le choix selon la stack et les besoins). Nommage des routes (kebab-case, pluriel pour les collections). Versioning (URL path /api/v1/ ou header).
+2. Routes : pour chaque entité métier, documenter les endpoints CRUD avec méthode HTTP, path, params, body (avec types TypeScript), réponse (avec types), codes d'erreur possibles.
+3. Authentification : stratégie d'auth sur les routes (JWT, session, API key). Quelles routes sont publiques vs protégées vs admin.
+4. Validation : schéma de validation des inputs (Zod recommandé). Réponses d'erreur standardisées (format { error: string, code: string, details?: object }).
+5. Pagination : cursor-based pour les listes (pas de offset — problème de performance et de cohérence). Format : { data: [], nextCursor: string | null }.
+6. Rate limiting : limites par route et par utilisateur. Réponse 429 avec header Retry-After.
+7. Documentation : auto-générée si possible (Swagger/OpenAPI via Zod-to-OpenAPI, ou documentation Markdown structurée).
+
+Livrable : docs/dev-decisions.md section "API design" + types TypeScript dans src/lib/types/.
+
+Puis @qa : lis le design API et crée les tests d'intégration : chaque endpoint testé avec inputs valides, invalides et edge cases. Vérifie les codes de réponse, la validation, l'authentification. Livrable : docs/qa/qa-strategy.md section "API tests".
+
+Critères de validation : chaque endpoint a ses types TypeScript (request + response), la validation est documentée, les codes d'erreur sont standardisés, les tests couvrent le happy path et les edge cases.`
+      },
+      {
+        title:"Authentification & autorisation",
+        agents:["fullstack","infrastructure","legal"],
+        quand:"Dès que le produit a des utilisateurs avec des comptes. L'auth est la feature la plus critique — une faille = game over. Si coupure : 'Lis docs/dev-decisions.md section Auth, quels agents restent ?'",
+        prompt:`@fullstack Lis project-context.md (stack technique, données sensibles). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quels rôles utilisateur (admin, user, guest), quelles méthodes de connexion (email/password, OAuth, magic link), quelles données sensibles à protéger.
+
+Architecture d'authentification et d'autorisation :
+1. Choix de la solution : Clerk, NextAuth.js, Lucia, ou custom — justifier selon le budget, les providers requis (Google, GitHub, etc.), et la complexité. Tableau comparatif avec prix et features.
+2. Flows d'authentification : signup (email + password ou OAuth), login, logout, reset password, email verification. Pour chaque flow : étapes, redirections, messages d'erreur, états de l'UI.
+3. Sessions : stratégie de gestion (JWT stateless vs session DB). Durée de session (recommandation : 7 jours avec refresh, 30 min pour les actions sensibles). Invalidation (logout, changement de mot de passe).
+4. Autorisation : modèle de permissions (RBAC recommandé pour la plupart des cas). Matrice rôle × action × ressource. Middleware de vérification des permissions sur chaque route protégée.
+5. Sécurité : rate limiting sur login (5 tentatives puis lockout 15 min), CSRF protection, secure cookies (HttpOnly, SameSite, Secure), protection contre le brute force.
+6. Multi-tenant : si pertinent, isolation des données par tenant (schema-based ou row-based avec RLS).
+
+Livrable : docs/dev-decisions.md section "Auth" + code dans src/lib/auth/.
+
+Puis @infrastructure : lis le design auth et configure : variables d'environnement pour les secrets OAuth, HTTPS obligatoire, headers de sécurité (HSTS, CSP). Mets à jour docs/infra/infrastructure.md.
+
+Puis @legal : vérifie la conformité RGPD de la gestion des comptes : droit à l'oubli (suppression de compte), portabilité des données, durée de conservation des sessions, politique de mots de passe. Mets à jour docs/legal/rgpd-checklist.md.
+
+Critères de validation : tous les flows d'auth sont documentés avec états d'erreur, les permissions sont vérifiées sur chaque route protégée, le rate limiting est implémenté, la conformité RGPD est couverte.`
+      },
+      {
+        title:"Migration de données (v1 → v2)",
+        agents:["fullstack","qa","infrastructure"],
+        quand:"Changement de schéma DB, migration de provider, ou évolution majeure du modèle de données avec des utilisateurs existants. La migration est le moment où tu perds des données si tu te trompes. Si coupure : 'Lis docs/dev-decisions.md section Migration, quels agents restent ?'",
+        prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/dev-decisions.md section "Database schema" s'il existe. S'il n'existe pas, pose-moi les questions : quel est le schéma actuel, quel est le schéma cible, quel volume de données, y a-t-il des données à transformer (format, type, fusion de colonnes).
+
+Plan de migration de données :
+1. Inventaire : schéma source vs schéma cible. Pour chaque table/colonne : ajout, suppression, renommage, transformation de type, split/merge.
+2. Script de migration : script idempotent (re-exécutable sans doublon). Étapes numérotées avec rollback pour chaque étape. Transactions pour l'atomicité.
+3. Transformation des données : pour chaque colonne transformée, règle de conversion explicite (ex : "status string → status enum", "fullName → firstName + lastName"). Gestion des valeurs NULL et invalides.
+4. Downtime : estimation du temps de migration selon le volume. Stratégie zero-downtime si possible (migration en 2 phases : ajout colonnes → migration données → suppression anciennes colonnes). Communication utilisateurs si downtime nécessaire.
+5. Rollback : plan de rollback complet en cas d'échec. Backup avant migration (obligatoire). Procédure de restauration testée.
+6. Validation post-migration : requêtes de vérification (count par table, intégrité des relations, échantillonnage de données). Comparaison avant/après.
+
+Livrable : docs/dev-decisions.md section "Migration plan" + scripts dans src/scripts/migrations/.
+
+Puis @qa : lis le plan de migration et crée un test de migration : exécuter sur une copie des données de production, vérifier l'intégrité, comparer les counts. Livrable : docs/qa/qa-strategy.md section "Migration tests".
+
+Puis @infrastructure : lis le plan et configure le backup pré-migration (automatique, vérifié), estime les ressources nécessaires (CPU, mémoire, espace disque pendant la migration). Mets à jour docs/infra/disaster-recovery.md.
+
+Critères de validation : le script est idempotent et testé, le rollback est documenté et testé, le backup pré-migration est vérifié, la validation post-migration couvre 100% des tables.`
+      },
+      {
+        title:"Debug & troubleshooting",
+        agents:["fullstack","infrastructure","qa"],
+        quand:"Bug en production, comportement inattendu, ou dégradation de performance. Le debug structuré est 10x plus rapide que le debug ad hoc. Si coupure : 'Lis docs/dev-decisions.md section Debug, quel est l'état du diagnostic ?'",
+        prompt:`@fullstack Lis project-context.md (stack technique). Décris le problème : [DÉCRIS LE BUG OU LE COMPORTEMENT INATTENDU — symptômes observés, étapes pour reproduire, depuis quand, impact utilisateur].
+
+Protocole de debug structuré :
+1. Reproduction : confirmer le bug (environnement, navigateur, utilisateur, données). Si non reproductible, identifier les conditions (volume, timing, données spécifiques).
+2. Isolation : réduire le périmètre — front ou back ? Quel composant ? Quelle route API ? Quel service ? Utiliser les logs et le réseau (onglet Network) pour identifier la couche fautive.
+3. Diagnostic : lire les logs d'erreur (Sentry si configuré, console, logs serveur). Identifier la stacktrace. Grep le codebase pour le message d'erreur. Vérifier les derniers commits qui touchent la zone impactée (git log --oneline -- path/to/file).
+4. Correction : fix minimal (pas de refactoring pendant un fix de bug). Test de non-régression (le fix ne casse rien d'autre). Code review du fix.
+5. Prevention : pourquoi le bug est passé à travers les tests ? Ajouter le test manquant. Si c'est un pattern récurrent, documenter l'anti-pattern.
+6. Post-mortem léger : si le bug a impacté des utilisateurs, documenter : quand détecté, temps de résolution, impact, cause racine, actions préventives.
+
+Livrable : fix dans src/ + test de non-régression.
+
+Puis @infrastructure : si le bug est lié à l'infra (timeout, mémoire, connexion DB), diagnostique côté serveur : logs, métriques, configuration. Mets à jour docs/infra/infrastructure.md si une config doit changer.
+
+Puis @qa : ajoute le test de non-régression pour ce bug. Vérifie que les tests existants couvrent le scénario. Mets à jour docs/qa/qa-strategy.md si un type de test manque.
+
+Critères de validation : le bug est reproduit et corrigé, un test de non-régression est ajouté, la cause racine est identifiée, le fix est minimal et ciblé.`
+      }
     ]
   },
   {
@@ -2019,54 +2037,6 @@ Puis @data-analyst : configure le dashboard PMF (Sean Ellis results, rétention 
 Critères de validation : chaque métrique a un seuil cible, le verdict est argumenté avec des données (pas des opinions), les actions suivantes sont concrètes.`
       },
       {
-        title:"Community management & engagement",
-        agents:["social","growth","copywriter"],
-        quand:"Produit lancé avec des premiers utilisateurs actifs. La communauté est le meilleur canal d'acquisition organique et le meilleur rempart contre le churn — mais elle ne se construit pas toute seule. 3 agents. Si coupure : 'Lis docs/social/community-strategy.md, quels agents restent ?'",
-        prompt:`@social Lis project-context.md (persona, secteur, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/social/social-strategy.md s'il existe. S'ils n'existent pas, pose-moi les questions : qui sont les utilisateurs cibles, sur quelles plateformes sont-ils actifs, quel est le ton de la marque, quel budget temps/argent pour la communauté.
-
-Stratégie de community management complète :
-1. Choix des plateformes communautaires : Discord, Slack, forum intégré, groupe Facebook/LinkedIn, subreddit — justifier le choix selon le persona (B2B → LinkedIn/Slack, B2C tech → Discord/Reddit, B2C grand public → Facebook/Instagram). Maximum 2 plateformes au lancement pour concentrer l'effort.
-2. Modération : charte communautaire (règles claires, ton attendu, comportements interdits), processus de modération (qui modère, quand, outils), gestion des trolls et conflits, escalade vers le support si besoin.
-3. Engagement : calendrier d'animations (AMA, challenges, sondages, partage de use cases, early access features). Fréquence : minimum 3 interactions/semaine. Métriques : taux de réponse < 4h sur les questions, ratio posts équipe/communauté (objectif : 30/70 après 3 mois).
-4. Programme ambassadeurs : identification des power users (critères : fréquence d'usage, contributions communautaires, NPS promoteurs). Avantages : accès beta, badge, mention dans les changelogs, swag. Objectif : 5-10 ambassadeurs actifs à 6 mois.
-5. Feedback loop : canaliser les retours communautaires vers le produit (feature requests, bugs, suggestions). Outil de vote (Canny, feature board intégré). Boucle de retour : quand une feature demandée est livrée, le signaler à la communauté (close the loop).
-6. Métriques communautaires : membres actifs/mois, taux d'engagement (messages/membre), sentiment (positif/neutre/négatif), conversion communauté → utilisateur payant, NPS communautaire.
-
-Livrable : docs/social/community-strategy.md.
-
-Puis @growth : lis docs/social/community-strategy.md et intègre la communauté dans le funnel d'acquisition. Comment le referral et le bouche-à-oreille communautaire alimentent la croissance. Mets à jour docs/growth/growth-strategy.md section "Canaux organiques".
-
-Puis @copywriter : lis docs/social/community-strategy.md et rédige : la charte communautaire (ton accueillant mais cadré), les templates de posts d'animation (AMA, sondage, annonce feature, welcome message), les réponses types aux questions fréquentes. Livrable : docs/copy/community-templates.md.
-
-Conformité : la communauté doit respecter le RGPD — politique de confidentialité accessible, consentement pour les communications marketing, modération conforme au DSA (Digital Services Act) si la communauté est hébergée par la marque. Les données communautaires (emails, messages) doivent être traitées conformément au registre des traitements.
-
-GEO : le contenu communautaire (FAQ, discussions, use cases) est une source de contenu citable par les LLM. Structurer les meilleures discussions en articles FAQ publics (avec claims vérifiables et entités nommées) pour alimenter la visibilité GEO. Les témoignages communautaires = social proof citable.
-
-Critères de validation : maximum 2 plateformes retenues avec justification, la charte est rédigée, le calendrier d'animation couvre les 4 premières semaines, les métriques de succès sont définies avec des seuils, la conformité RGPD/DSA est documentée.`
-      },
-      {
-        title:"Monitoring UX (session replay & heatmaps)",
-        agents:["data-analyst","ux","fullstack"],
-        quand:"Produit en production avec des utilisateurs actifs. Les analytics quantitatifs disent QUOI (taux de clic, conversion), le monitoring UX montre POURQUOI (où les utilisateurs hésitent, rage-clickent, abandonnent). 3 agents. Si coupure : 'Lis docs/analytics/ux-monitoring-plan.md, quels agents restent ?'",
-        prompt:`@data-analyst Lis project-context.md (budget, stack). Lis docs/analytics/tracking-plan.md et docs/analytics/kpi-framework.md s'ils existent. S'ils n'existent pas, pose-moi les questions : parcours critiques à analyser, volume d'utilisateurs, budget outils analytics, données déjà collectées.
-
-Stratégie de monitoring UX complète :
-1. Choix de l'outil : comparatif Hotjar vs PostHog vs FullStory vs Microsoft Clarity (gratuit). Critères : prix (volume de sessions/mois), fonctionnalités (replay, heatmaps, funnels, rage click detection), conformité RGPD (hébergement EU, anonymisation), intégration avec la stack. Recommandation avec justification.
-2. Session replay : configuration (quelles pages enregistrer, sampling rate selon le volume — 100% si < 1000 sessions/jour, 10-30% au-delà), masquage des données sensibles (inputs password, données bancaires, PII), rétention (30 jours minimum). Segments à analyser en priorité : utilisateurs qui abandonnent le funnel, nouveaux utilisateurs (onboarding), utilisateurs qui contactent le support.
-3. Heatmaps : pages à instrumenter en priorité (landing page, pricing, signup, dashboard principal). Types : click maps, scroll maps, move maps. Fréquence d'analyse : hebdomadaire pendant le premier mois, puis bimensuelle.
-4. Rage clicks & dead clicks : détection automatique des clics de frustration (élément non cliquable qui ressemble à un bouton, bouton qui ne répond pas, double-clic rapide). Alerte si le taux de rage clicks dépasse 3% sur une page.
-5. Funnel analysis : recréer les funnels critiques dans l'outil (signup, activation, conversion, achat). Identifier les étapes à plus fort taux d'abandon. Corréler avec les session replays des abandons.
-6. Rapport UX mensuel : template de rapport (top 5 friction points, session replays illustratives, recommandations d'amélioration priorisées par impact, comparaison mois/mois).
-
-Livrable : docs/analytics/ux-monitoring-plan.md + mise à jour de docs/analytics/tracking-plan.md.
-
-Puis @ux : lis docs/analytics/ux-monitoring-plan.md et définis le protocole d'analyse : quand regarder les session replays (après chaque release, après un drop de conversion), comment documenter les insights (format standardisé : page, problème observé, replay ID, sévérité, recommandation), comment prioriser les corrections. Mets à jour docs/ux/ux-audit.md.
-
-Puis @fullstack : lis docs/analytics/ux-monitoring-plan.md et intègre l'outil choisi : script conditionné au consentement cookies (pas de chargement sans consentement), masquage CSS des éléments sensibles (data-hj-suppress ou équivalent), événements custom pour les interactions clés. Code dans src/.
-
-Critères de validation : l'outil est choisi avec justification budget/RGPD, les données sensibles sont masquées, le script est conditionné au consentement, les pages critiques sont instrumentées, le template de rapport mensuel est défini.`
-      },
-      {
         title:"Stratégie d'emailing automation",
         agents:["growth","copywriter","data-analyst"],
         quand:"Produit avec une base d'utilisateurs inscrits (même petite). L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer. Livrable détaillé + 3 agents. Si coupure : 'Lis docs/growth/email-automation-plan.md, quels agents restent ?'",
@@ -2322,6 +2292,28 @@ Puis @legal : lis docs/infra/security-audit.md et vérifie la conformité avec l
 Critères de validation : zéro vulnérabilité critique ou high restante, les headers de sécurité sont tous configurés, npm audit passe sans CVE critique, aucun secret dans le code ou les logs, le pentest léger ne révèle pas d'IDOR ou de privilege escalation.`
       },
       {
+        title:"Monitoring UX (session replay & heatmaps)",
+        agents:["data-analyst","ux","fullstack"],
+        quand:"Produit en production avec des utilisateurs actifs. Les analytics quantitatifs disent QUOI (taux de clic, conversion), le monitoring UX montre POURQUOI (où les utilisateurs hésitent, rage-clickent, abandonnent). 3 agents. Si coupure : 'Lis docs/analytics/ux-monitoring-plan.md, quels agents restent ?'",
+        prompt:`@data-analyst Lis project-context.md (budget, stack). Lis docs/analytics/tracking-plan.md et docs/analytics/kpi-framework.md s'ils existent. S'ils n'existent pas, pose-moi les questions : parcours critiques à analyser, volume d'utilisateurs, budget outils analytics, données déjà collectées.
+
+Stratégie de monitoring UX complète :
+1. Choix de l'outil : comparatif Hotjar vs PostHog vs FullStory vs Microsoft Clarity (gratuit). Critères : prix (volume de sessions/mois), fonctionnalités (replay, heatmaps, funnels, rage click detection), conformité RGPD (hébergement EU, anonymisation), intégration avec la stack. Recommandation avec justification.
+2. Session replay : configuration (quelles pages enregistrer, sampling rate selon le volume — 100% si < 1000 sessions/jour, 10-30% au-delà), masquage des données sensibles (inputs password, données bancaires, PII), rétention (30 jours minimum).
+3. Heatmaps : pages à instrumenter en priorité (landing page, pricing, signup, dashboard principal). Types : click maps, scroll maps, move maps.
+4. Rage clicks & dead clicks : détection automatique des clics de frustration. Alerte si taux > 3% sur une page.
+5. Funnel analysis : recréer les funnels critiques. Identifier les étapes à plus fort taux d'abandon. Corréler avec les session replays.
+6. Rapport UX mensuel automatisé : template (top 5 friction points, session replays illustratives, recommandations priorisées par impact).
+
+Livrable : docs/analytics/ux-monitoring-plan.md.
+
+Puis @ux : lis docs/analytics/ux-monitoring-plan.md et définis le protocole d'analyse : quand regarder les replays (après chaque release, après un drop de conversion), format de documentation des insights. Mets à jour docs/ux/ux-audit.md.
+
+Puis @fullstack : intègre l'outil : script conditionné au consentement cookies, masquage des éléments sensibles, événements custom pour les interactions clés. Code dans src/.
+
+Critères de validation : l'outil est choisi avec justification budget/RGPD, les données sensibles sont masquées, le script est conditionné au consentement, les pages critiques sont instrumentées.`
+      },
+      {
         title:"Évaluation des outputs IA (evals)",
         agents:["ia","qa","data-analyst"],
         quand:"Le produit utilise des LLM en production et tu veux mesurer objectivement la qualité des réponses. Sans evals, tu navigues à l'aveugle — un changement de prompt ou de modèle peut dégrader silencieusement la qualité. Si coupure : 'Lis docs/ia/eval-framework.md et docs/qa/qa-strategy.md section LLM evals, quels agents restent ?'",
@@ -2354,8 +2346,8 @@ Critères de validation : chaque use case LLM a un golden dataset de ≥ 50 cas,
     ]
   },
   {
-    category:"Raccourcis (1 agent, 1 action)",
-    icon:"⚡",
+    category:"Workflows avancés",
+    icon:"🔧",
     items:[
       {
         title:"Refondre un site existant",
