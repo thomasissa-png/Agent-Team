@@ -620,30 +620,25 @@ Critères de validation : le diagnostic couvre tous les livrables existants, auc
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions. Pour reprendre : claude --resume \'nom\' puis \'Lis project-context.md et docs/orchestration-plan.md, continue.\'",
-        prompt:`@orchestrator Lis project-context.md. S'il n'existe pas, pose-moi les questions pour le créer (lis templates/project-context.md pour la structure) et génère-le avant de continuer. Vérifie la qualité de chaque champ critique (pas juste la présence — un persona sans frustration ou un KPI vague = insuffisant).
+        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5).
 
-Lance le projet en mode autopilot : séquence toutes les phases (0→5), identifie les dépendances entre agents et les parallélisations possibles. Adapte l'ordre des phases au type de projet (SaaS, e-commerce, site vitrine, marketplace, API — l'ordre par défaut n'est pas toujours optimal).
+Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
-Règles :
-- Checkpoint obligatoire après Phase 0 (fondations) pour ma validation.
-- Maximum 2-3 agents par message pour éviter les timeouts.
-- Sauvegarde docs/orchestration-plan.md après chaque phase complétée (point de reprise).
-- Vérification de drift après chaque phase : le persona et le KPI North Star doivent rester alignés dans tous les livrables.
-- Enrichis project-context.md avec les découvertes de chaque phase.
-- Intègre la dimension légale (RGPD, conformité) dès Phase 0 en parallèle.
-- Après Phase 0 : si @creative-strategy ou @product-manager recommandent des agents spécialisés dans leurs livrables, lance @agent-factory pour les créer AVANT Phase 1.
-- Après Phase 2 (implémentation) : lance @ux en revue post-implémentation pour comparer wireframes vs code réel.
-- @reviewer itère sur chaque livrable jusqu'à un score de 4.5/5 minimum (max 3 passes). Aucun livrable non validé ne passe à la phase suivante.
+Renforcements spécifiques pour ce run (en plus de ton protocole standard) :
+1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation. Pas de validation "sur papier".
+2. Vérification anti-placeholder (Grep) sur chaque livrable avant de le considérer comme terminé.
+3. Utilise tes 11 critères de cohérence (Étape 6) après chaque phase, pas seulement en fin de run.
+4. Condition GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
+5. Si un agent échoue : dégradation gracieuse (ton protocole Étape 6), ne bloque pas toute la chaîne.
+6. Lis docs/lessons-learned.md au démarrage. Enrichis-le en fin de run.
+7. Phase 5 : produire la checklist jour de lancement (GO/NO-GO).
 
-Livrables attendus : docs/orchestration-plan.md (plan vivant, mis à jour à chaque phase) + docs/project-synthesis.md (synthèse finale avec métriques d'orchestration). Commence immédiatement par la Phase 0.
+Gestion multi-sessions :
+- Objectif réaliste : Phase 0 validée + Phase 1 lancée cette session. On continue en sessions suivantes.
+- Chaque phase terminée = marqueur "COMPLETE" dans orchestration-plan.md. Phase en cours = "EN COURS — dernier agent : @X".
+- Pour reprendre : 'Lis project-context.md et docs/orchestration-plan.md, continue où on s'est arrêté.'
 
-Critères de succès : tous les livrables produits sont cohérents entre eux (brand ↔ copy ↔ design ↔ code), le KPI North Star est tracké, la conformité légale est couverte.
-
-Gestion multi-sessions : ce projet nécessitera probablement plusieurs sessions Claude Code. À chaque fin de session ou de phase :
-1. Mets à jour docs/orchestration-plan.md avec l'état d'avancement (phases terminées, en cours, à faire).
-2. Mets à jour le tableau "Historique des interventions agents" dans project-context.md.
-3. Termine par un résumé clair de ce qui reste à faire pour que la prochaine session puisse reprendre immédiatement.
-Pour reprendre : l'utilisateur lancera claude --resume ou claude --continue, puis 'Lis project-context.md et docs/orchestration-plan.md, continue où on s'est arrêté."`
+Commence."`
       },
       {
         title:"Faire un check-up complet de mon projet",
