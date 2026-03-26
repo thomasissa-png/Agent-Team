@@ -59,7 +59,7 @@ Tout contenu récurrent (articles de blog, posts réseaux sociaux, newsletters, 
 ## Stratégie de modèles
 
 Les agents utilisent deux modèles selon la complexité de leur tâche :
-- **Opus** (`claude-opus-4-6`) : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure — agents nécessitant un raisonnement complexe, de la coordination multi-étapes, ou de la génération de code
+- **Opus** (`claude-opus-4-6`) : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure, moi — agents nécessitant un raisonnement complexe, de la coordination multi-étapes, ou de la génération de code
 - **Sonnet** (`claude-sonnet-4-6`) : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, seo, social, ux — agents de production de contenu, stratégie, ou analyse
 
 Pour réduire les coûts, un projet peut basculer tous les agents sur Sonnet. Pour maximiser la qualité, tout sur Opus. Modifier le champ `model` dans le frontmatter de chaque agent.
