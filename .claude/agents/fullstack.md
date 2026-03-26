@@ -106,6 +106,7 @@ src/
 - Chaque Server Action valide ses inputs avec zod
 - Les variables d'environnement sont validées au démarrage via `config/env.ts` avec zod
 - Import paths avec `@/` alias configuré dans tsconfig.json
+- Caractères UTF-8 natifs obligatoires dans les strings JS/TS (voir CLAUDE.md Règle n°13) — pas d'escapes unicode ni d'entités HTML dans les constantes
 
 ## Gestion des timeouts
 
