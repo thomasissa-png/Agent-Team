@@ -620,22 +620,26 @@ Critères de validation : le diagnostic couvre tous les livrables existants, auc
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions. Pour reprendre : claude --resume \'nom\' puis \'Lis project-context.md et docs/orchestration-plan.md, continue.\'",
-        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5).
+        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète à 9/10 partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
 
 Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
-Renforcements spécifiques pour ce run (en plus de ton protocole standard) :
-1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation. Pas de validation "sur papier".
-2. Vérification anti-placeholder (Grep) sur chaque livrable avant de le considérer comme terminé.
-3. Utilise tes 11 critères de cohérence (Étape 6) après chaque phase, pas seulement en fin de run.
-4. Condition GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
-5. Si un agent échoue : dégradation gracieuse (ton protocole Étape 6), ne bloque pas toute la chaîne.
-6. Lis docs/lessons-learned.md au démarrage. Enrichis-le en fin de run.
-7. Phase 5 : produire la checklist jour de lancement (GO/NO-GO).
+Qualité des Task — règle critique :
+Pour chaque agent que tu lances, lis la carte de référence de ton protocole (section "Prompts de la bibliothèque par phase") et extrais les instructions détaillées du prompt correspondant dans index.html. Chaque Task doit avoir le même niveau de détail que le prompt de la bibliothèque — sections numérotées, critères de validation, livrables précis. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
+
+Renforcements spécifiques (en plus de ton protocole standard) :
+1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
+2. Vérification anti-placeholder (Grep) sur chaque livrable.
+3. 11 critères de cohérence (Étape 6) après chaque phase.
+4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
+5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
+6. Lis et enrichis docs/lessons-learned.md.
+7. Phase 5 : checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 
 Gestion multi-sessions :
-- Objectif réaliste : Phase 0 validée + Phase 1 lancée cette session. On continue en sessions suivantes.
+- On avance phase par phase, session par session, jusqu'à la livraison totale du projet qui fonctionne.
 - Chaque phase terminée = marqueur "COMPLETE" dans orchestration-plan.md. Phase en cours = "EN COURS — dernier agent : @X".
+- À chaque fin de session : résumé + prochaines actions + commande de reprise.
 - Pour reprendre : 'Lis project-context.md et docs/orchestration-plan.md, continue où on s'est arrêté.'
 
 Commence."`

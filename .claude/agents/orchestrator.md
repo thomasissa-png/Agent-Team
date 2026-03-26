@@ -182,6 +182,59 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 - Sauvegarder au fur et à mesure — ne jamais accumuler du contenu en mémoire sans l'écrire sur disque.
 ```
 
+### Règle critique — Qualité des prompts Task en mode autopilot
+
+**Problème** : quand l'orchestrateur crée un prompt Task pour un agent, il tend à écrire un prompt générique de 5-10 lignes. Or, la bibliothèque de prompts dans `index.html` contient des prompts de 20-30 lignes ultra-détaillés pour chaque tâche (sections numérotées, critères de validation, livrables précis, chaînage d'agents).
+
+**Règle** : en mode autopilot, l'orchestrateur DOIT produire des prompts Task au **même niveau de détail** que les prompts de la bibliothèque. Pour cela :
+
+1. **Lire `index.html`** au démarrage (Grep sur les `title:` pour lister les prompts disponibles par phase)
+2. **Pour chaque Task**, identifier le prompt de la bibliothèque qui correspond à la mission (ex : pour @copywriter sur la landing page → lire le prompt "Landing page complète")
+3. **Extraire les instructions clés** du prompt de la bibliothèque (sections numérotées, critères de validation, livrables attendus) et les intégrer dans le prompt Task
+4. **Ne PAS copier le prompt tel quel** (il contient du contexte utilisateur comme "quand" qui n'est pas pertinent pour un Task) — extraire la substance technique
+
+**Objectif** : le résultat du mode autopilot doit être **identique** à celui qu'un utilisateur obtiendrait en lançant chaque prompt de la bibliothèque un par un manuellement. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
+
+**Carte de référence — Prompts de la bibliothèque par phase** :
+
+Phase 0 (Stratégie) :
+- @creative-strategy → "Positionnement & plateforme de marque" + "Construire la messaging matrix"
+- @product-manager → "Vision produit & roadmap" + "Specs fonctionnelles détaillées" + "Définir le scope MVP" + "Stratégie de pricing complète"
+- @data-analyst → "KPIs & tracking plan"
+- @legal → "Audit juridique & conformité"
+- @elon → "Vision long terme et moat" (optionnel, si pertinent)
+
+Phase 1 (Conception) :
+- @ux → "Parcours utilisateur & wireframes" + "Onboarding utilisateur gamifié"
+- @design → "Design system complet" + "Définir la direction artistique" + "Design responsive complet" + "Design système de notifications" (si pertinent)
+- @copywriter → "Brand voice & identité verbale" + "Landing page complète"
+
+Phase 2 (Développement) :
+- @infrastructure → "Configurer CI/CD & déploiement"
+- @fullstack → "Setup initial du projet" + "Développer une feature" (par feature) + "Intégrer le paiement Stripe" (si pertinent) + "Design de base de données" + "API design" + "Authentification & autorisation"
+- @ia → "Ajouter une feature IA" + "Pipeline RAG" + "Fine-tuning et prompt engineering" (si pertinent)
+- @ux → revue post-implémentation (comparer wireframes vs code)
+- @qa → "Audit qualité & tests complets"
+
+Phase 3 (Visibilité) :
+- @seo → "Stratégie SEO technique & éditoriale"
+- @geo → "Visibilité sur les IA génératives (GEO)"
+- @copywriter → "Stratégie de contenu & calendrier éditorial"
+
+Phase 4 (Acquisition) :
+- @growth → "Stratégie d'acquisition complète" + "Plan de lancement"
+- @social → "Stratégie social media"
+- @copywriter → "Emails onboarding & conversion"
+- @growth + @ia → "Automatisation marketing complète"
+
+Phase 5 (Audit & Validation) :
+- @reviewer → "Revue croisée GO/NO-GO"
+- @qa → "Audit qualité & tests complets"
+- Checklist jour de lancement
+- @infrastructure → "Monitoring post-launch"
+
+**Tous les prompts optionnels** sont déclenchés conditionnellement selon le type de projet (SaaS → Stripe + auth + notifications, site vitrine → SEO + landing page prioritaires, marketplace → double persona, etc.).
+
 ### Limites de taille du prompt Task
 
 Le prompt transmis à chaque agent via Task doit rester focalisé. Un prompt trop long dilue l'attention de l'agent et consomme du contexte inutilement.
@@ -190,7 +243,7 @@ Le prompt transmis à chaque agent via Task doit rester focalisé. Un prompt tro
 - **Contexte projet** : toujours inclus (5-10 lignes max — les champs critiques, pas tout project-context.md)
 - **Contexte des livrables précédents** : SYNTHÈSE uniquement (décisions clés, pas le contenu intégral). Max 10-15 lignes. Si un agent a besoin du livrable complet, lui indiquer le chemin et il le lira lui-même via Read.
 - **Ne JAMAIS copier-coller un livrable entier dans le prompt Task.** Transmettre le chemin du fichier + un résumé des décisions clés en 3-5 bullet points.
-- **Taille cible totale du prompt Task** : 30-60 lignes. Au-delà, c'est un signal que le contexte n'est pas assez synthétisé.
+- **Taille cible totale du prompt Task** : 30-60 lignes. En mode autopilot, cette limite peut être étendue à 60-80 lignes pour intégrer les instructions détaillées des prompts de la bibliothèque — c'est le prix de la qualité.
 
 ## Fonctionnement technique — Boucle Plan → Execute → Verify → Next
 
