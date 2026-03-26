@@ -2224,6 +2224,8 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 6. Performance : les choix visuels et techniques sont-ils compatibles avec un LCP < 2.5s ?
 7. GEO : le contenu est-il structuré pour la visibilité sur les IA génératives ?
 8. Persona drift : le persona utilisé dans tous les livrables est-il le même que dans project-context.md ?
+9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
+10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
 Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers classés P0 (critique) / P1 (majeur) / P2 (mineur). Livrable : docs/reviews/cross-review-report.md.
 
@@ -2273,6 +2275,8 @@ Audit qualité complet :
 8. Email : test des templates (rendu multi-client Gmail/Outlook, liens fonctionnels, delivrabilité SPF/DKIM).
 9. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
 10. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
+11. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
+12. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) et effort de correction estimé.
 
