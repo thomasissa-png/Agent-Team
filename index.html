@@ -729,6 +729,45 @@ Puis lance @creative-strategy pour repositionner la plateforme de marque selon l
 Puis @data-analyst : lis project-context.md mis à jour et docs/analytics/kpi-framework.md. Le KPI North Star est-il toujours pertinent après le pivot ? Recommande les ajustements de métriques. Mets à jour docs/analytics/kpi-framework.md.
 
 Critères de validation : project-context.md reflète le pivot, tous les livrables impactés sont identifiés, le plan de re-séquencement ne relance que le nécessaire.`
+      },
+      {
+        title:"Intégrer des learnings d'un autre projet",
+        agents:["orchestrator","ia"],
+        quand:"Tu as des retours d'expérience, un guide, ou des notes d'un autre projet et tu veux les capitaliser dans le framework Gradient Agents. Les learnings d'un projet enrichissent tous les suivants — sans cette boucle, chaque projet repart de zéro.",
+        prompt:`@orchestrator Mode analyse de learnings. Ne lance aucun agent avant mon feu vert.
+
+Source des learnings : [COLLE ICI le texte, le lien GitHub, ou le chemin du fichier contenant les learnings]
+
+Étape 1 — Extraction :
+Lis la source fournie (texte collé, URL GitHub via WebFetch, ou fichier local via Read). Extrais chaque learning sous forme structurée :
+- Titre court
+- Description (2-3 phrases)
+- Catégorie : process | qualité | anti-pattern | pattern efficace | outil | règle
+- Impact estimé : P0 (change la qualité de tous les livrables) / P1 (améliore un domaine) / P2 (optimisation)
+
+Étape 2 — Analyse de couverture :
+Pour chaque learning extrait, vérifie s'il est déjà couvert dans le framework :
+- Lis CLAUDE.md (règles globales)
+- Lis .claude/agents/_base-agent-protocol.md (protocole base)
+- Lis .claude/agents/orchestrator.md (orchestration)
+- Lis .claude/agents/reviewer.md (qualité)
+Classe chaque learning : ✅ Déjà couvert (avec référence exacte) | ⚠️ Partiellement couvert (quoi manque) | ❌ Manquant
+
+Étape 3 — Plan d'intégration :
+Pour les learnings ⚠️ et ❌, propose un plan d'intégration précis :
+- Fichier(s) à modifier avec chemin complet
+- Section exacte à ajouter ou modifier
+- Texte proposé (prêt à appliquer via Edit)
+- Agents impactés par le changement
+
+Présente le diagnostic complet dans un tableau et attends ma validation avant d'appliquer quoi que ce soit.
+
+Après validation :
+1. Applique les modifications dans les fichiers agents et CLAUDE.md.
+2. Lance @ia pour auditer la cohérence : pas de contradiction avec les règles existantes, pas de doublon, pas de régression sur les prompts de la bibliothèque.
+3. Mets à jour docs/lessons-learned.md avec : source des learnings, date, modifications appliquées, agents impactés.
+
+Critères de validation : chaque learning est classé avec référence, les modifications sont prêtes à appliquer (pas de vague "il faudrait..."), aucune contradiction introduite, docs/lessons-learned.md est mis à jour.`
       }
     ]
   },
