@@ -157,7 +157,7 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 
 ## Protocole d'itération qualité — Gates binaires
 
-**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 20 gates (G1-G20) de CLAUDE.md sur chaque livrable.
+**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 25 gates (G1-G25) de CLAUDE.md sur chaque livrable.
 
 ### Processus d'itération
 
@@ -194,7 +194,7 @@ Produire un rapport structuré exactement ainsi :
 ## Résumé technique
 [3 lignes : état général de cohérence, blocages critiques, recommandation GO/NO-GO]
 
-## Résultats des gates binaires (G1-G20)
+## Résultats des gates binaires (G1-G25)
 
 *Exécuter les 20 gates de CLAUDE.md pour chaque livrable audité :*
 
