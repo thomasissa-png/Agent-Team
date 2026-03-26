@@ -825,7 +825,7 @@ Source des learnings : [COLLE ICI le texte, le lien GitHub, ou le chemin du fich
 Lis la source fournie (texte collé, URL GitHub via WebFetch, ou fichier local via Read). Extrais chaque learning sous forme structurée :
 - Titre court
 - Description (2-3 phrases)
-- Catégorie : process | qualité | anti-pattern | pattern efficace | outil | règle
+- Catégorie : problème | insistance | requête | biais | pattern | recommandation | performance-ia (catégories standard du framework — voir CLAUDE.md "Mémoire organisationnelle")
 - Impact estimé : P0 (change la qualité de tous les livrables) / P1 (améliore un domaine) / P2 (optimisation)
 
 Étape 2 — Analyse de couverture :
@@ -2895,10 +2895,10 @@ Catégories à couvrir :
 Format tableau pour chaque learning :
 | Session | Date | Catégorie | Sévérité (P0/P1/P2) | Description | Correction appliquée | Recommandation framework | Statut (ouvert/appliqué/obsolète) |
 
-Gestion du volume : si docs/lessons-learned.md contient plus de 30 learnings ouverts :
-- Synthétiser les learnings récurrents en règles permanentes à ajouter dans CLAUDE.md ou les agents concernés
-- Archiver les learnings avec Statut = "appliqué" ou "obsolète" dans une section "## Archive" en bas du fichier
-- Ne conserver dans la section active que les learnings ouverts
+Gestion du volume et de la qualité :
+- Déduplication : avant d'ajouter un learning, vérifier s'il en existe un similaire. Si oui, enrichir l'existant (ajouter la date, incrémenter) plutôt que dupliquer.
+- Expiration P2 : les P2 ouverts depuis plus de 5 sessions sans action sont archivés automatiquement comme "obsolète".
+- Si plus de 30 learnings ouverts : synthétiser les récurrents en règles permanentes (CLAUDE.md ou agents), archiver les appliqués/obsolètes dans "## Archive" en bas du fichier.
 
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
