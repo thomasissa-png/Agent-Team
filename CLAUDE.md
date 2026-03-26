@@ -26,7 +26,7 @@ Ce framework est opéré par des agents IA, pas par une équipe humaine. **Tous 
 | Concept humain | Équivalent IA | Pourquoi |
 |---|---|---|
 | Sprint 2 semaines | Session de quelques heures | @fullstack code une feature complète en 20-30 min |
-| MVP "minimal" — couper des features | MVP "complet et rapide" — tout coder | Le coût marginal d'une feature supplémentaire est quasi nul |
+| MVP "minimal" — couper des features | V1 complète — tout coder, pas de scope réduit | Le coût marginal d'une feature supplémentaire est quasi nul. La seule raison d'exclure : pas de valeur pour le persona |
 | RICE/MoSCoW pour décider quoi faire EN PREMIER | Dépendances strictes uniquement | Si A et B sont indépendants, faire les deux en parallèle |
 | Roadmap now/next/later par trimestre | Plan d'exécution par dépendances | La seule contrainte est l'ordre logique, pas le temps |
 | Vélocité en story points | Features par heure | Mesurer la capacité réelle, pas une estimation abstraite |

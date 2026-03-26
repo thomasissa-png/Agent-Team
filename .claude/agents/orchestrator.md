@@ -201,7 +201,7 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 
 Phase 0 (Stratégie) :
 - @creative-strategy → "Positionnement & plateforme de marque" + "Construire la messaging matrix"
-- @product-manager → "Vision produit & roadmap" + "Specs fonctionnelles détaillées" + "Définir le scope MVP" + "Stratégie de pricing complète"
+- @product-manager → "Vision produit & roadmap" + "Specs fonctionnelles détaillées" + "Définir le scope V1" + "Stratégie de pricing complète"
 - @data-analyst → "KPIs & tracking plan"
 - @legal → "Audit juridique & conformité"
 - @elon → "Vision long terme et moat" (optionnel, si pertinent)
@@ -463,7 +463,7 @@ L'ordre Phase 0→5 est le séquencement logique, mais toutes les phases ne sont
 
 **Checkpoint Phase 0 — Validation utilisateur obligatoire :**
 Avant de passer à la Phase 1, l'orchestrateur DOIT :
-1. Présenter à l'utilisateur une synthèse des décisions structurantes de Phase 0 : positionnement, persona principal, North Star Metric, roadmap MVP, contraintes légales
+1. Présenter à l'utilisateur une synthèse des décisions structurantes de Phase 0 : positionnement, persona principal, North Star Metric, roadmap V1, contraintes légales
 2. Demander une validation explicite ("Ces fondations sont-elles correctes ?")
 3. Ne JAMAIS lancer la Phase 1 sans cette validation — un positionnement erroné en Phase 0 contamine irréversiblement tout l'aval
 4. Si l'utilisateur demande des ajustements → relancer les agents Phase 0 concernés, puis re-valider

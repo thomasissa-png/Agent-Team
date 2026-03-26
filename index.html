@@ -645,7 +645,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md.
 7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
-8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope MVP) pour ma validation avant de lancer la conception.
+8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à la livraison totale du projet qui fonctionne.
@@ -905,7 +905,7 @@ Critères de validation : chaque feature du backlog est liée à un persona + un
         title:"KPIs & tracking plan",
         agents:["data-analyst","fullstack"],
         quand:"Avant tout développement, pour mesurer dès le jour 1. Le tracking est la mémoire du produit — sans lui, chaque décision est une opinion. 3 fichiers produits. Si coupure : 'Lis docs/analytics/, complète les fichiers manquants.'",
-        prompt:`@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features MVP, modèle économique) et génère-les avant de continuer. Lis aussi project-context.md (budget, stack).
+        prompt:`@data-analyst Lis docs/product/product-vision.md et docs/product/roadmap.md (objectif, KPI North Star, features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (objectif à 6 mois, KPI North Star, features V1, modèle économique) et génère-les avant de continuer. Lis aussi project-context.md (budget, stack).
 
 Produis le framework analytique complet :
 1. North Star Metric : définition précise, formule de calcul, fréquence de mesure, valeur cible à 3 et 6 mois.
@@ -962,7 +962,7 @@ Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Vérif
 
 Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
 
-Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structure (titres + résumé par feature) via Write, puis remplir feature par feature via Edit. Prioriser les features MVP en premier.`
+Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structure (titres + résumé par feature) via Write, puis remplir feature par feature via Edit. Prioriser les features V1 critiques en premier.`
       },
       {
         title:"Valider la demande avant de construire",
@@ -1012,7 +1012,7 @@ Critères de validation : chaque case persona x canal x funnel a un message diff
         title:"Stratégie de pricing complète",
         agents:["product-manager","data-analyst","growth","legal"],
         quand:"Après la roadmap et avant l'intégration Stripe — ou pour reprendre un pricing existant. Couvre pricing de base ET pricing dynamique (segmentation, psychologie, A/B testing). Si coupure : 'Lis docs/product/pricing-strategy.md, quels agents n'ont pas terminé ?'",
-        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif, pays).
+        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md (features planifiées). S'ils n'existent pas, pose-moi les questions pour les créer (features V1, modèle économique, persona) et génère-les avant de continuer. Lis project-context.md (modèle économique, persona, objectif, pays).
 
 Définis la stratégie de pricing complète :
 1. Benchmark : analyse des prix de 3-5 concurrents directs via WebSearch (tiers, prix, features par tier, modèle — données réelles, pas inventées).
@@ -1039,24 +1039,26 @@ Puis @legal : lis docs/product/pricing-strategy.md et vérifie la conformité de
 Critères de validation : chaque tier est justifié par la valeur perçue (pas le coût), le modèle économique est viable (LTV/CAC > 3x), les obligations légales sont identifiées, les métriques de pricing sont configurées.`
       },
       {
-        title:"Définir le scope MVP",
+        title:"Définir le scope V1 (première version complète)",
         agents:["product-manager","fullstack"],
-        quand:"Après la roadmap, avant le développement — pour verrouiller ce qui est dedans et ce qui attend. Dire non aux features est plus important que dire oui.",
-        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features envisagées, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/growth/demand-validation.md si disponible (signaux de demande validés).
+        quand:"Après la roadmap, avant le développement — pour verrouiller ce qui est dedans. Mindset IA : avec une équipe IA, le coût de coder une feature supplémentaire est quasi nul. On ne fait pas un 'MVP minimal' — on fait une V1 complète avec TOUTES les features qui apportent de la valeur au persona.",
+        prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features envisagées, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/growth/demand-validation.md si disponible.
 
-Produis la définition MVP formalisée :
-1. Features RETENUES : toutes les features qui impactent le KPI North Star. Pas de plafond artificiel — le coût marginal d'une feature supplémentaire est quasi nul avec l'IA. Le critère d'exclusion est la valeur pour le persona, pas le nombre. Pour chaque feature : justification par Impact × Confidence et lien avec le KPI North Star.
-2. Features EXCLUES : pour chaque feature écartée, raison explicite (pas assez d'impact, trop d'effort, pas validée par les utilisateurs, v2). Documenter = éviter de re-débattre.
-3. Critères de sortie MVP : les métriques à atteindre pour considérer le MVP comme validé et passer à la v2 (ex : 50 utilisateurs actifs, rétention J7 > 30%, NPS > 30).
-4. Hypothèse business centrale : la question unique à laquelle le MVP doit répondre (ex : "les PME sont-elles prêtes à payer 29 euros/mois pour automatiser leur reporting ?").
-5. Dépendances : quelles features dépendent de quelles autres (technique). Chemin critique basé sur les dépendances, pas sur le temps.
-6. Risques : les 3 risques principaux du MVP (technique, marché, UX) et le plan de mitigation.
+IMPORTANT (mindset IA) : on ne définit PAS un "MVP minimal". On définit une V1 COMPLÈTE — toutes les features qui apportent de la valeur au persona sont incluses. La seule raison d'exclure une feature : elle n'apporte PAS de valeur au persona, PAS "elle prendrait trop de temps". Avec une équipe IA, le temps de dev n'est pas une contrainte.
 
-Livrable : docs/product/mvp-scope.md.
+Produis la définition V1 formalisée :
+1. Features RETENUES : toutes les features qui impactent le KPI North Star. Pas de plafond artificiel — le coût marginal d'une feature supplémentaire est quasi nul. Le critère d'exclusion est UNIQUEMENT la valeur pour le persona. Pour chaque feature : justification par Impact × Confidence et lien avec le KPI North Star.
+2. Features REPORTÉES (V2) : pour chaque feature reportée, raison explicite — uniquement : pas encore assez de données pour valider la valeur (hypothèse non testée), ou dépendance sur un retour utilisateur de la V1. JAMAIS "trop complexe" ou "pas le temps".
+3. Critères de succès V1 : les métriques à atteindre pour considérer la V1 comme validée (ex : 50 utilisateurs actifs, rétention J7 > 30%, NPS > 30).
+4. Hypothèse business centrale : la question unique à laquelle la V1 doit répondre.
+5. Dépendances : quelles features dépendent de quelles autres. Chemin critique basé sur les dépendances, pas sur le temps.
+6. Risques : les 3 risques principaux (technique, marché, UX) et le plan de mitigation.
 
-Puis @fullstack : lis docs/product/mvp-scope.md et évalue la faisabilité technique de chaque feature retenue. Signale les features sous-estimées en effort, les dépendances techniques non identifiées, et les choix de stack qui pourraient bloquer. Ajoute une section "Faisabilité technique" dans docs/dev-decisions.md.
+Livrable : docs/product/v1-scope.md.
 
-Critères de validation : chaque feature retenue a une justification liée au persona principal et au KPI North Star, le MVP répond à une hypothèse business unique et testable, les risques sont identifiés.`
+Puis @fullstack : lis docs/product/v1-scope.md et évalue la faisabilité technique de chaque feature retenue. Signale les dépendances techniques non identifiées et les choix de stack qui pourraient bloquer. Ajoute une section "Faisabilité technique" dans docs/dev-decisions.md.
+
+Critères de validation : chaque feature retenue a une justification liée au persona principal et au KPI North Star, la V1 répond à une hypothèse business unique et testable, les risques sont identifiés, AUCUNE feature n'est exclue "parce qu'elle prend trop de temps".`
       },
       {
         title:"Vision long terme et moat",
@@ -1480,7 +1482,7 @@ Critères de validation : le tableau contient au moins 5 modèles avec des donn�
         title:"Setup initial du projet (scaffold + DB + auth)",
         agents:["fullstack","infrastructure","legal"],
         quand:"Premier prompt de développement — avant 'Développer une feature'. Livrable volumineux : si timeout, relancer l'agent manquant. Beaucoup de fichiers à créer. Pour reprendre : 'Lis src/ et docs/dev-decisions.md, qu'est-ce qui a déjà été scaffold ? Continue.'",
-        prompt:`@fullstack Lis project-context.md (stack technique, modèle économique). Lis docs/product/functional-specs.md et docs/product/mvp-scope.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (features MVP, modèle de données, auth provider) et génère-les avant de continuer. Lis docs/design/design-tokens.json si disponible.
+        prompt:`@fullstack Lis project-context.md (stack technique, modèle économique). Lis docs/product/functional-specs.md et docs/product/v1-scope.md si disponibles. S'ils n'existent pas, pose-moi les questions pour les créer (features V1, modèle de données, auth provider) et génère-les avant de continuer. Lis docs/design/design-tokens.json si disponible.
 
 Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
 1. Structure de fichiers : arborescence Next.js App Router (app/, components/, lib/, types/, hooks/, __tests__/).
