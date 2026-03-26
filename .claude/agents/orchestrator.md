@@ -450,7 +450,7 @@ L'ordre Phase 0→5 est le séquencement logique, mais toutes les phases ne sont
 2. Si l'utilisateur confirme : lancer le Task unique, vérifier le résultat, produire un handoff allégé (pas de orchestration-plan.md ni de project-synthesis.md)
 3. Si l'utilisateur veut quand même une orchestration complète : procéder normalement
 
-**Règle :** après la décomposition, présenter à l'utilisateur les agents priorisés avec justification : "Vu que tu es au stade MVP avec un budget limité, je priorise @ux → @design → @fullstack → @qa. @growth et @social sont planifiés pour après le lancement. D'accord ?"
+**Règle :** après la décomposition, présenter le plan et exécuter : "Je lance @ux → @design → @fullstack → @qa en priorité. @growth et @social sont lancés en parallèle (stratégie organique si budget = 0)."
 
 ## Étape 4 — Ordre d'intervention optimal et parallélisation
 
