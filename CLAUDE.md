@@ -294,22 +294,28 @@ Après chaque livrable produit par un agent, l'orchestrateur DOIT évaluer rapid
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 
-Après chaque projet terminé (ou phase majeure), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec :
+Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec le format tableau structuré :
 
 ```markdown
-## [Nom du projet] — [Date]
+## Session [date] — [Nom du projet]
 
-### Ce qui a bien fonctionné
-- [Pattern, décision, agent qui a surperformé]
-
-### Ce qui a mal fonctionné
-- [Friction, timeout, livrable refusé par reviewer, chaîne cassée]
-
-### Améliorations à apporter au framework
-- [Suggestion concrète : nouvel agent, nouvelle calibration, règle à ajouter]
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Statut |
+|---|---|---|---|---|---|---|---|
+| [nom] | [date] | problème/insistance/requête/biais/pattern/recommandation/performance-ia | P0/P1/P2 | [description] | [ce qui a été fait] | [ce qu'il faudrait changer dans le framework] | ouvert/appliqué/obsolète |
 ```
 
-**Pourquoi** : sans cette mémoire, chaque projet repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
+**Catégories** : problème (bug/incohérence corrigé), insistance (utilisateur a demandé 2+ fois), requête (demande non couverte), biais (mindset humain détecté), pattern (ce qui a bien marché), recommandation (amélioration framework), performance-ia (coûts/latence/hallucinations).
+
+**Cycle de vie des learnings** :
+1. **Ouvert** : learning identifié, recommandation non encore appliquée
+2. **Appliqué** : la recommandation a été implémentée dans le framework (agent, prompt, CLAUDE.md)
+3. **Obsolète** : le learning n'est plus pertinent (contexte changé, problème disparu)
+
+**Gestion du volume** : si le fichier contient plus de 30 learnings ouverts, synthétiser les récurrents en règles permanentes (dans CLAUDE.md ou les agents) et archiver les appliqués/obsolètes dans une section "## Archive" en bas du fichier.
+
+**Boucle fermée** : à chaque reprise de session, l'orchestrateur DOIT lire les learnings ouverts P0/P1 et les intégrer dans son plan d'action — pas juste les signaler.
+
+**Pourquoi** : sans cette mémoire, chaque session repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
 
 ## Journal de setup
 

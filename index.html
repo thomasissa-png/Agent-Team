@@ -2881,22 +2881,24 @@ Ajoute ou mets à jour la section "## Mémo de reprise — dernière session" da
 - Commande de reprise suggérée : le prompt exact à copier-coller pour la prochaine session
 
 Étape 5b — Learnings de la session (amélioration continue de l'équipe) :
-Analyse cette session et extrais les learnings pour améliorer le framework. Ajoute dans docs/lessons-learned.md :
+Analyse cette session et extrais les learnings pour améliorer le framework. Ajoute dans docs/lessons-learned.md sous une section "## Session [date]" :
 
-1. Problèmes rencontrés et corrigés : quels bugs, incohérences, ou lacunes ont été détectés et corrigés pendant cette session ? Pour chaque problème : quel était le symptôme, quelle était la cause racine, quelle correction a été appliquée, et comment éviter que ça se reproduise.
+Catégories à couvrir :
+1. Problèmes rencontrés et corrigés : symptôme, cause racine, correction, prévention.
+2. Insistances de l'utilisateur : ce qu'il a demandé 2+ fois ou corrigé = trou dans le framework.
+3. Requêtes non couvertes : demandes sans prompt/protocole existant.
+4. Biais détectés : mindset humain, estimations d'effort, permissions inutiles, choix par facilité.
+5. Patterns efficaces : agents/chaînes qui surperforment, bonnes pratiques à capitaliser.
+6. Recommandations framework : quoi ajouter/modifier/supprimer dans les agents, prompts, ou CLAUDE.md.
+7. Performance IA : latence anormale, coûts tokens élevés, hallucinations, modèle sous-performant sur une tâche. Pour chaque : quel modèle, quelle tâche, quel problème, quelle alternative.
 
-2. Insistances de l'utilisateur : sur quoi l'utilisateur a-t-il insisté ou relancé ? Si l'utilisateur a dû demander quelque chose 2+ fois ou corriger une direction, c'est un signal que le framework ne le couvrait pas. Documenter chaque insistance et la correction apportée.
+Format tableau pour chaque learning :
+| Session | Date | Catégorie | Sévérité (P0/P1/P2) | Description | Correction appliquée | Recommandation framework | Statut (ouvert/appliqué/obsolète) |
 
-3. Requêtes de l'utilisateur non couvertes : quelles demandes de l'utilisateur n'étaient pas couvertes par un prompt ou un protocole existant ? Chaque nouvelle demande = un trou potentiel dans la bibliothèque.
-
-4. Biais détectés : des biais "mindset humain" ont-ils été identifiés ? (estimations d'effort, permissions inutiles, scope réduit, choix techniques par facilité). Documenter chaque biais et sa correction.
-
-5. Patterns efficaces : qu'est-ce qui a bien fonctionné ? Quels agents ont surperformé ? Quelles chaînes de prompts ont produit un bon résultat du premier coup ?
-
-6. Recommandations pour le framework : que faudrait-il ajouter, modifier ou supprimer dans les agents, les prompts, ou CLAUDE.md pour que ces problèmes ne se reproduisent pas ?
-
-Format pour chaque learning :
-| Session | Catégorie | Description | Correction appliquée | Recommandation framework |
+Gestion du volume : si docs/lessons-learned.md contient plus de 30 learnings ouverts :
+- Synthétiser les learnings récurrents en règles permanentes à ajouter dans CLAUDE.md ou les agents concernés
+- Archiver les learnings avec Statut = "appliqué" ou "obsolète" dans une section "## Archive" en bas du fichier
+- Ne conserver dans la section active que les learnings ouverts
 
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
@@ -2923,7 +2925,11 @@ Lis project-context.md à la racine. Extrais et affiche :
 - Persona principal et KPI North Star
 - Le mémo de reprise de la dernière session (section "Mémo de reprise — dernière session") — s'il existe, c'est ta source principale pour comprendre où on en est
 - Le tableau "Historique des interventions agents" — les 5 dernières entrées suffisent pour le résumé
-- Les learnings de la session précédente : lis docs/lessons-learned.md (dernière section). S'il y a des recommandations framework non encore appliquées, signale-les comme actions possibles.
+- Learnings ouverts : lis docs/lessons-learned.md. Filtre les learnings avec Statut = "ouvert" et Sévérité P0 ou P1. Pour chaque recommandation ouverte :
+  - Si c'est une modification de fichier agent/CLAUDE.md/prompt : propose le diff exact
+  - Si c'est un ajustement de process : intègre-le dans le plan d'action de cette session
+  - Après application, marque le learning comme "appliqué" dans lessons-learned.md
+  - Si des learnings P0 non appliqués existent, affiche un WARNING visible avant le diagnostic.
 
 Étape 2 — État du plan :
 Si docs/orchestration-plan.md existe, lis-le. Reconstitue l'état d'avancement :

@@ -322,7 +322,7 @@ Tous les autres cas → autopilot.
 
 Lire `project-context.md`. S'il est absent, générer le template et s'arrêter.
 Vérifier que Nom / Secteur / Persona / Objectif / Stack sont remplis.
-Lire `docs/lessons-learned.md` s'il existe — intégrer les apprentissages des projets précédents dans la planification.
+Lire `docs/lessons-learned.md` s'il existe — filtrer les learnings ouverts (Statut != "appliqué"). Pour les P0 : les intégrer comme contraintes dans le plan d'orchestration. Pour les P1 : les lister comme recommandations à traiter en fin de run. Après application, marquer les learnings comme "appliqué" dans le fichier.
 
 **Détection du mode :**
 - Lire le champ **Stade** dans project-context.md
