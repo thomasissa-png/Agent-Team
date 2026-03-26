@@ -2880,16 +2880,36 @@ Ajoute ou mets à jour la section "## Mémo de reprise — dernière session" da
 - Blockers éventuels : questions en attente de réponse, décisions à prendre, informations manquantes
 - Commande de reprise suggérée : le prompt exact à copier-coller pour la prochaine session
 
+Étape 5b — Learnings de la session (amélioration continue de l'équipe) :
+Analyse cette session et extrais les learnings pour améliorer le framework. Ajoute dans docs/lessons-learned.md :
+
+1. Problèmes rencontrés et corrigés : quels bugs, incohérences, ou lacunes ont été détectés et corrigés pendant cette session ? Pour chaque problème : quel était le symptôme, quelle était la cause racine, quelle correction a été appliquée, et comment éviter que ça se reproduise.
+
+2. Insistances de l'utilisateur : sur quoi l'utilisateur a-t-il insisté ou relancé ? Si l'utilisateur a dû demander quelque chose 2+ fois ou corriger une direction, c'est un signal que le framework ne le couvrait pas. Documenter chaque insistance et la correction apportée.
+
+3. Requêtes de l'utilisateur non couvertes : quelles demandes de l'utilisateur n'étaient pas couvertes par un prompt ou un protocole existant ? Chaque nouvelle demande = un trou potentiel dans la bibliothèque.
+
+4. Biais détectés : des biais "mindset humain" ont-ils été identifiés ? (estimations d'effort, permissions inutiles, scope réduit, choix techniques par facilité). Documenter chaque biais et sa correction.
+
+5. Patterns efficaces : qu'est-ce qui a bien fonctionné ? Quels agents ont surperformé ? Quelles chaînes de prompts ont produit un bon résultat du premier coup ?
+
+6. Recommandations pour le framework : que faudrait-il ajouter, modifier ou supprimer dans les agents, les prompts, ou CLAUDE.md pour que ces problèmes ne se reproduisent pas ?
+
+Format pour chaque learning :
+| Session | Catégorie | Description | Correction appliquée | Recommandation framework |
+
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
 ✓ Historique des interventions : à jour / X entrées ajoutées
 ✓ Plan d'orchestration : à jour / créé / non applicable
 ✓ Livrables cette session : X complets, Y en cours
 ✓ Mémo de reprise : sauvegardé dans project-context.md
+✓ Learnings : X learnings ajoutés dans docs/lessons-learned.md
 → Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
 → Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
+→ Amélioration framework : [résumé des 1-2 recommandations les plus impactantes pour l'équipe]
 
-Critères de validation : project-context.md est à jour (historique + mémo de reprise), orchestration-plan.md reflète l'état réel, aucun travail en cours n'est oublié, le prompt de reprise est prêt à copier-coller.`
+Critères de validation : project-context.md est à jour (historique + mémo de reprise), orchestration-plan.md reflète l'état réel, aucun travail en cours n'est oublié, le prompt de reprise est prêt à copier-coller, les learnings sont documentés dans lessons-learned.md.`
       },
       {
         title:"Démarrer une nouvelle session (reprise)",
@@ -2903,6 +2923,7 @@ Lis project-context.md à la racine. Extrais et affiche :
 - Persona principal et KPI North Star
 - Le mémo de reprise de la dernière session (section "Mémo de reprise — dernière session") — s'il existe, c'est ta source principale pour comprendre où on en est
 - Le tableau "Historique des interventions agents" — les 5 dernières entrées suffisent pour le résumé
+- Les learnings de la session précédente : lis docs/lessons-learned.md (dernière section). S'il y a des recommandations framework non encore appliquées, signale-les comme actions possibles.
 
 Étape 2 — État du plan :
 Si docs/orchestration-plan.md existe, lis-le. Reconstitue l'état d'avancement :
