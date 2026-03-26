@@ -67,7 +67,7 @@ Mission actuelle : audit exhaustif des 59 prompts de la bibliotheque par les 18 
 ## Memo de reprise — derniere session
 
 - **Date de cloture** : 2026-03-25
-- **Branche** : `claude/apply-framework-corrections-3ztPh`
+- **Branche** : `claude/setup-project-context-ALWvD`
 
 ### Resume de la session
 Session de consolidation majeure du framework Gradient Agents. 26 fichiers modifies, +679 lignes. Axes principaux : (1) Corrections M2/M5/C8 du framework-consistency-audit appliquees. (2) 5 nouvelles regles structurantes dans CLAUDE.md : delegation obligatoire aux agents (n°4), mindset IA pas equipe humaine (n°5), objectif qualite 9/10 (n°11), mise a jour branche obligatoire (n°12), automatisation contenu recurrent. (3) PostgreSQL Replit impose comme standard BDD (Supabase retire). (4) qa.md enrichi massivement : 10 nouvelles sections de tests (securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression). (5) reviewer.md : scoring persona /10 (9 dimensions) + B2B /10 (7 dimensions), condition GO triple, mapping dimension→agent. (6) orchestrator.md : Phases 3/4 parallelisees, template synthesis avec scores, critere automatisation contenu. (7) agent-factory.md : tools Write/Edit obligatoires par defaut. (8) Prompts frontend : mindset IA, automatisation, QA 10 categories, prompt Audit cible ajoute. Tests PulseBoard valides (creative-strategy + data-analyst).
