@@ -544,6 +544,44 @@ Critères de validation : project-context.md créé avec tous les champs, chaque
 Continuité de session : rappelle à l'utilisateur de nommer sa session (claude -n "nom") s'il ne l'a pas fait, et indique que pour reprendre plus tard il suffit de lancer claude --resume "nom" puis de dire "Lis project-context.md, où en est-on ?".`
       },
       {
+        title:"Quel prompt utiliser ? (guide rapide)",
+        agents:["orchestrator"],
+        quand:"Tu ne sais pas par où commencer parmi les 80+ prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
+        prompt:`@orchestrator Mode sélecteur guidé. Ne lance aucun agent.
+
+Lis project-context.md si il existe. Puis pose-moi ces 3 questions (une à la fois si possible, sinon les 3 ensemble) :
+
+1. **Stade du projet** : quel est ton stade actuel ?
+   - A) J'ai une idée mais rien de concret encore
+   - B) J'ai défini mon projet (project-context.md existe) mais pas encore de code
+   - C) J'ai du code / un site mais je veux l'améliorer
+   - D) Mon produit est lancé, je veux croître
+   - E) Je veux auditer / vérifier ce qui existe
+
+2. **Priorité immédiate** : qu'est-ce qui est le plus urgent pour toi ?
+   - A) Clarifier ma stratégie / mon positionnement
+   - B) Concevoir l'UX et le design
+   - C) Coder / développer des features
+   - D) Créer du contenu / du copy
+   - E) Acquérir des utilisateurs / du trafic
+   - F) Tester / auditer la qualité
+   - G) Tout — je veux un lancement complet
+
+3. **Contrainte principale** :
+   - A) Je suis seul (fondateur solo + IA)
+   - B) J'ai une équipe technique
+   - C) Budget limité (0 ou très faible)
+   - D) Besoin de résultats rapides
+
+Après mes réponses, recommande les 2-3 prompts les plus adaptés parmi la bibliothèque, avec :
+- Le nom exact du prompt et sa catégorie
+- Pourquoi ce prompt pour ma situation
+- L'ordre dans lequel les utiliser
+- Ce que chaque prompt va produire comme livrable
+
+Ne lance rien — présente juste les recommandations et attends mon choix.`
+      },
+      {
         title:"Reprendre où j'en étais",
         agents:["orchestrator"],
         quand:"Nouvelle session Claude Code, après un timeout, le lendemain, ou après une interruption. Fonctionne uniquement si project-context.md existe déjà. Tip : utilisez claude --resume \'nom\' pour retrouver le contexte de conversation, puis collez ce prompt.",
@@ -2104,6 +2142,29 @@ Puis @copywriter : lis docs/growth/marketing-automation-plan.md et docs/copy/bra
 Critères de validation : chaque canal a un workflow automatisé documenté, les prompts de génération sont testés avec 3 exemples par type, le coût mensuel d'automatisation est estimé, les garde-fous qualité sont en place, le calendrier éditorial est réaliste pour un fondateur solo (review < 30 min/jour).`
       }
     ]
+      {
+        title:"Analyse automatisée des feedbacks utilisateurs",
+        agents:["data-analyst","ux","product-manager"],
+        quand:"Produit lancé avec des utilisateurs actifs (même peu). Les feedbacks bruts (support, reviews, NPS, in-app) contiennent de l'or — mais personne ne les lit systématiquement. L'IA le fait en continu. Si coupure : 'Lis docs/analytics/feedback-analysis.md, quels agents restent ?'",
+        prompt:`@data-analyst Lis project-context.md (persona, KPI North Star). Lis docs/analytics/kpi-framework.md et docs/analytics/tracking-plan.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quelles sources de feedback existent (support email, chat, NPS, avis stores, réseaux sociaux, in-app feedback widget), quel volume, quel outil actuel.
+
+Pipeline d'analyse automatisée des feedbacks :
+1. Sources de feedback : inventorier toutes les sources (emails support, tickets, NPS/CSAT, avis app stores, mentions sociales, formulaires in-app, session replays). Pour chaque source : volume estimé, fréquence, format des données.
+2. Classification automatique IA : configurer un pipeline de classification des feedbacks par : catégorie (bug, feature request, UX friction, pricing, onboarding, contenu), sentiment (positif/neutre/négatif), urgence (critique/important/mineur), feature concernée. Prompt template pour la classification avec few-shot examples.
+3. Extraction d'insights : agrégation par catégorie et par période. Top 5 problèmes récurrents, top 5 features demandées, tendance du sentiment. Détection automatique des signaux faibles (nouveau problème qui émerge, dégradation du sentiment sur une feature).
+4. Dashboard feedback : tableau de bord avec : volume de feedbacks par source, distribution par catégorie, évolution du sentiment, top problèmes, top demandes. Rafraîchissement automatique (quotidien ou hebdomadaire).
+5. Alertes : notification si sentiment négatif > 30% sur une semaine, si un nouveau problème apparaît dans > 5 feedbacks, si le NPS/CSAT baisse de > 10 points.
+6. Boucle produit : processus pour transformer les insights en actions (feedback → ticket → priorisation → implémentation → communication au client).
+
+Livrable : docs/analytics/feedback-analysis.md.
+
+Puis @ux : lis docs/analytics/feedback-analysis.md. Traduis les top 5 frictions en recommandations UX actionnables : pour chaque friction, quelle modification du parcours la résoudrait ? Quel impact attendu sur la rétention ? Mets à jour docs/ux/ux-audit.md section "Feedbacks utilisateurs".
+
+Puis @product-manager : lis docs/analytics/feedback-analysis.md. Intègre les top 5 features demandées dans le backlog avec scoring RICE adapté (Reach = nombre de feedbacks, Impact = lien avec KPI North Star). Mets à jour docs/product/backlog.md.
+
+Critères de validation : chaque source de feedback est inventoriée, le pipeline de classification est documenté avec prompt template, le dashboard a des métriques concrètes, les alertes ont des seuils définis, la boucle produit est formalisée.`
+      }
+    ]
   },
   {
     category:"Phase 5 — Audit & Validation",
@@ -2224,6 +2285,59 @@ Audite en first principles — pas de complaisance :
 Verdict sans filtre. Pas de langue de bois. Livrable : docs/reviews/elon-audit.md.
 
 Critères de validation : chaque dimension est notée avec justification, le risque n°1 et le levier n°1 sont identifiés, le verdict est actionnable.`
+      },
+      {
+        title:"Checklist jour de lancement",
+        agents:["orchestrator","qa","infrastructure","legal"],
+        quand:"Tout est développé, testé, prêt — tu es à J-1 du lancement. Cette checklist est ton filet de sécurité final. Mieux vaut reporter d'un jour que lancer avec un blocker.",
+        prompt:`@orchestrator Mode checklist pré-lancement. Lis project-context.md et docs/orchestration-plan.md. Fais un inventaire complet (Glob docs/**/*.md + src/**/*) et vérifie chaque point ci-dessous.
+
+Checklist GO/NO-GO :
+
+**Produit (vérification @qa)**
+□ Tous les tests E2E passent (parcours critique : signup → activation → action principale → conversion)
+□ Tests sur 3 viewports (mobile 375px, tablette 768px, desktop 1280px)
+□ Formulaire de contact / signup fonctionnel (envoyer un vrai test)
+□ Paiement Stripe en mode live (si applicable — faire une transaction test réelle et la rembourser)
+□ Performance : Lighthouse mobile > 90 (Performance, Accessibility, Best Practices, SEO)
+□ Pas de console errors en production
+□ Liens morts : 0 (vérifier chaque lien de la navigation et du footer)
+
+**Infrastructure (vérification @infrastructure)**
+□ Variables d'environnement de production configurées (pas de clés de dev)
+□ HTTPS actif avec certificat valide
+□ Backup de la base de données configuré et testé
+□ Monitoring d'erreurs actif (Sentry ou équivalent)
+□ Monitoring de disponibilité actif (UptimeRobot ou équivalent)
+□ DNS configuré et propagé (vérifier avec nslookup)
+□ Headers de sécurité (HSTS, CSP, X-Frame-Options)
+
+**Contenu & SEO**
+□ Meta title et description sur chaque page
+□ Sitemap.xml accessible et soumis à Google Search Console
+□ robots.txt correct (pas de disallow: / en production !)
+□ Données structurées JSON-LD validées (Schema.org validator)
+□ Favicon + OG image configurés (tester avec un partage LinkedIn/Twitter)
+□ Analytics installé et fonctionnel (vérifier un event test)
+
+**Légal (vérification @legal)**
+□ Mentions légales accessibles
+□ CGU/CGV si vente
+□ Politique de confidentialité à jour
+□ Bannière cookies/consent RGPD (si cookies non essentiels)
+□ Conformité accessibilité WCAG 2.2 AA (vérifier les violations critiques)
+
+**Communication**
+□ Annonce de lancement préparée (email, social, communautés)
+□ Page de status / health check accessible
+
+Pour chaque point : vérifier concrètement (pas juste "oui je pense"). Statut : ✅ OK / ❌ BLOCKER / ⚠️ WARNING.
+
+Verdict : GO si 0 blocker. NO-GO si ≥ 1 blocker. Lister les blockers avec l'agent responsable de la correction.
+
+Livrable : docs/reviews/launch-checklist.md.
+
+Critères de validation : chaque point a été vérifié concrètement (pas juste coché), les blockers sont identifiés avec un responsable, le verdict GO/NO-GO est documenté.`
       },
       {
         title:"Monitoring post-launch",
