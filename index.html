@@ -537,7 +537,7 @@ Après avoir créé project-context.md :
 1. Confirme ce qui a été rempli et signale les champs laissés vides qui devront être complétés plus tard.
 2. Vérifie la qualité de chaque champ critique (un persona sans frustration concrète ou un KPI trop vague = insuffisant — pose des questions ciblées).
 3. Signale les implications légales évidentes (données sensibles, IA, e-commerce) : "Tu auras besoin de lancer le prompt Audit juridique & conformité pour couvrir [points identifiés]."
-4. Propose les 3 prochains prompts à lancer selon le stade du projet.
+4. Propose les 3 prochains prompts à lancer selon le stade du projet. Mentionne aussi le prompt "Quel prompt utiliser ?" (catégorie Démarrage) si l'utilisateur veut explorer la bibliothèque par lui-même.
 
 Critères de validation : project-context.md créé avec tous les champs, chaque champ critique passe le seuil de qualité (pas juste rempli, mais exploitable par les agents).
 
@@ -1667,7 +1667,7 @@ Livrable : docs/ia/prompt-optimization.md + docs/ia/prompt-library.md (mis à jo
 Puis @data-analyst : lis project-context.md et docs/ia/prompt-optimization.md. Configure le suivi des métriques LLM : coût par use case par jour, latence P50/P95, taux d'erreur par modèle, qualité par prompt (si LLM-as-judge est en place). Dashboard avec tendances sur 30 jours. Alerte si coût journalier > 120% de la moyenne ou si taux d'erreur > 5%. Livrable : docs/analytics/tracking-plan.md section "LLM metrics".
 
 Critères de validation : chaque prompt du produit est documenté dans la prompt library avec version et exemples de test, le coût mensuel estimé après optimisation est documenté, la matrice modèle × use case est justifiée, les fallback chains sont implémentées, le A/B testing framework est opérationnel.`
-      }
+      },
       {
         title:"Design de base de données & optimisation",
         agents:["fullstack","infrastructure"],
@@ -2140,8 +2140,7 @@ Puis @fullstack : lis docs/growth/marketing-automation-plan.md et docs/ia/prompt
 Puis @copywriter : lis docs/growth/marketing-automation-plan.md et docs/copy/brand-voice.md. Rédige les templates de contenu pour chaque canal avec le ton de marque : structure d'article type (intro hook, sections, CTA), format de post LinkedIn (hook → insight → CTA), format tweet/thread, template newsletter. Ces templates servent de few-shot pour les prompts IA. Livrable : docs/copy/content-templates.md.
 
 Critères de validation : chaque canal a un workflow automatisé documenté, les prompts de génération sont testés avec 3 exemples par type, le coût mensuel d'automatisation est estimé, les garde-fous qualité sont en place, le calendrier éditorial est réaliste pour un fondateur solo (review < 30 min/jour).`
-      }
-    ]
+      },
       {
         title:"Analyse automatisée des feedbacks utilisateurs",
         agents:["data-analyst","ux","product-manager"],
