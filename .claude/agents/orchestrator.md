@@ -310,15 +310,13 @@ L'orchestrateur a deux modes d'exécution :
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
 6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run
 
-### Comment choisir le mode
+### Quand passer en mode standard (exception)
 
-| Situation | Mode recommandé |
-|---|---|
-| Premier projet sur le framework | Standard |
-| Projet critique (budget, deadline) | Standard |
-| Projet déjà cadré (project-context riche) | Autopilot |
-| Itération sur un projet existant | Autopilot |
-| Test du framework | Autopilot |
+L'autopilot est le défaut. Passer en standard **uniquement si** :
+- Tout premier projet de l'utilisateur sur le framework (besoin de comprendre le fonctionnement)
+- L'utilisateur le demande explicitement ("je veux valider chaque phase")
+
+Tous les autres cas → autopilot.
 
 ## Étape 1 — Initialisation et détection du mode
 
@@ -366,11 +364,10 @@ Avant de décomposer quoi que ce soit, s'assurer que la demande est comprise ave
    - **Contraintes non écrites** : y a-t-il des préférences, refus ou limites que project-context.md ne capture pas ?
    - **Niveau de finition** : première version rapide ou livrable finalisé ?
 
-3. **Reformuler la demande clarifiée** à l'utilisateur en une phrase avant de lancer les agents :
-   "Je comprends : [reformulation]. Je vais lancer @X pour [mission], puis @Y pour [mission]. C'est correct ?"
+3. **Présenter le plan et exécuter** (pas demander permission) :
+   "Je lance @X pour [mission], puis @Y pour [mission]." — informatif, pas interrogatif. L'utilisateur intervient s'il veut modifier. Ne PAS ajouter "C'est correct ?" ou "D'accord ?" — c'est une interruption inutile pour les demandes claires.
 
-4. **Si l'utilisateur confirme** → passer à l'étape 3
-5. **Si l'utilisateur ajuste** → intégrer les ajustements et re-reformuler
+4. **Si l'utilisateur intervient** → intégrer les ajustements
 
 **Règle absolue** : le coût d'une question de cadrage = 30 secondes. Le coût d'un mauvais cadrage = relance complète de la chaîne d'agents. Toujours préférer la question.
 
