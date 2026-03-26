@@ -694,9 +694,8 @@ Score final dans le tableau Performance de project-context.md.
 Étape 5 — Verdict :
 Produis le GO/NO-GO avec :
 - Score global par domaine (stratégie, UX, design, code, contenu, SEO, légal, performance)
-- Blockers P0 restants
-- Plan d'action P1 priorisé
-- Confirmation que le projet est prêt pour le lancement (ou pas)
+- Problèmes restants par sévérité (P0/P1/P2) — tous doivent être corrigés, P0 en premier
+- Confirmation que le projet est prêt pour le lancement (GO si 0 problème restant)
 
 Critères de validation : chaque domaine avec des livrables a été audité par l'agent spécialisé, tous les livrables scorent ≥ 4.5/5, les P0 sont résolus, le verdict GO/NO-GO est documenté.`
       },
@@ -758,11 +757,9 @@ Consolide les rapports des agents et du reviewer en un seul audit :
 - Décisions à confirmer par l'utilisateur (s'il y en a)
 - Plan d'action ordonné par impact
 
-Étape 5 — Corrections P0 :
-Si des problèmes P0 sont identifiés :
-- En mode standard : présente les P0 à l'utilisateur et demande confirmation avant de corriger.
-- En mode autopilot : lance immédiatement les corrections (max 2-3 agents par batch).
-Après correction, vérifie que le P0 est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 4.5/5 minimum sur le sujet audité.
+Étape 5 — Corrections (P0, P1, P2 — toutes) :
+Corriger TOUS les problèmes identifiés, dans l'ordre P0 → P1 → P2 (max 2-3 agents par batch). Avec une équipe IA, le coût de corriger un P2 est quasi nul — ne pas demander à l'utilisateur "veux-tu corriger les P2 ?", les corriger directement. La classification sert à ordonner, pas à filtrer.
+Après correction, vérifier que chaque problème est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 4.5/5 minimum sur le sujet audité.
 
 Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 1. Résumé exécutif (3-5 lignes, non-technique, destiné au fondateur)
@@ -770,7 +767,7 @@ Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 3. Score par dimension (tableau)
 4. Problèmes P0 (bloquants) avec corrections appliquées ou à appliquer
 5. Améliorations P1 avec plan d'action priorisé
-6. Améliorations P2 (nice-to-have)
+6. Corrections P2 (mineures — à corriger aussi, pas optionnelles)
 7. Validation persona et B2B (si applicable)
 8. Recommandation GO/NO-GO
 

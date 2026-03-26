@@ -628,7 +628,7 @@ Cas fréquents de feedback remontant, classés par sévérité :
 - `growth` → `social` : ajustement de calendrier éditorial
 - `reviewer` → tout agent : suggestions d'amélioration, optimisations de ton
 
-**Règle de priorisation** : traiter les P0 avant les P1, les P1 avant les P2. Ne JAMAIS ignorer un feedback remontant. Un P0 non traité bloque tout l'aval. Un P2 non traité est acceptable temporairement mais doit être résolu avant la synthèse finale.
+**Règle de priorisation (mindset IA)** : traiter P0, P1 ET P2 — tous. L'ordre de traitement est P0 → P1 → P2 (les P0 bloquent l'aval), mais les P2 ne sont PAS optionnels. Avec une équipe IA, le coût marginal de corriger un P2 est quasi nul — il n'y a aucune raison de laisser un bug connu non corrigé. Ne JAMAIS demander à l'utilisateur "veux-tu corriger les P2 ?" — les corriger directement. La classification P0/P1/P2 sert à ordonner les corrections, pas à décider lesquelles faire.
 
 **Si plusieurs P0 simultanés** : prioriser par position dans la chaîne amont→aval. Un P0 sur un livrable Phase 0 (fondations) est plus urgent qu'un P0 Phase 2 (code) car il impacte plus de livrables en cascade. Ordre de traitement : Phase 0 > Phase 1 > Phase 2 > Phase 3 > Phase 4.
 
