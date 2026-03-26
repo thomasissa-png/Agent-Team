@@ -69,7 +69,7 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 25 gates bina
 ## Memo de reprise — derniere session
 
 - **Date de cloture** : 2026-03-26
-- **Branche** : `claude/setup-project-context-ALWvD`
+- **Branche** : `claude/extract-project-context-BrqhN`
 
 ### Resume de la session
 Session transformationnelle du framework Gradient Agents. 30+ commits, 11 fichiers modifies. Axes principaux : (1) Bibliotheque de prompts refondee — 89 prompts, 10 categories, prompt chirurgical 21 dimensions, selecteur guide. (2) Systeme de qualite revolutionne — 25 gates binaires PASS/FAIL remplace le scoring subjectif 1-5 (reproductible, pas d'inflation). (3) Mindset IA renforce — cycle Idee/V1/Production/Croissance (plus de MVP/Beta), P2 tous corriges, choix techniques par valeur pas par facilite. (4) Agent @moi cree (proxy fondateur, Opus). (5) Pipeline contenu perpetuel avec anti-repetition + LLM-as-judge. (6) Protections PostgreSQL Replit (persistance). (7) Compteur de session avec alertes proactives. (8) Boucle learnings fermee + founder-preferences cross-projets.
