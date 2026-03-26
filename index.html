@@ -1485,7 +1485,13 @@ Critères de validation : le tableau contient au moins 5 modèles avec des donn�
 
 Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
 1. Structure de fichiers : arborescence Next.js App Router (app/, components/, lib/, types/, hooks/, __tests__/).
-2. Schéma de base de données : tables principales avec types, relations, index. Format Prisma ou SQL selon la stack. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
+2. Schéma de base de données (PostgreSQL Replit) : tables principales avec types, relations, index. Format Prisma ou Drizzle. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
+   Persistance Replit — CRITIQUE : le PostgreSQL Replit peut perdre ses données lors de redéploiements ou mises à jour. Protections obligatoires :
+   a. DATABASE_URL dans Replit Secrets (JAMAIS dans .env ou en dur dans le code)
+   b. Script de migration auto au démarrage : le script npm start doit exécuter les migrations Prisma (prisma migrate deploy) AVANT de lancer le serveur. Si la DB est vide/réinitialisée, les tables sont recréées automatiquement.
+   c. Seed conditionnel : si les tables sont vides après migration (ex: 0 rows dans la table de référence), exécuter le seed automatiquement.
+   d. Client Prisma avec reconnexion : configurer le connection pool avec retry (connection_limit, pool_timeout) pour gérer les cold starts Replit.
+   e. Health check DB : la route /api/health doit vérifier la connexion PostgreSQL (SELECT 1) et retourner un statut dégradé si la DB est inaccessible.
 3. Configuration auth : setup complet de l'auth provider (Clerk ou NextAuth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
 4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
 5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
@@ -1496,7 +1502,13 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 
 Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
-Puis @infrastructure : lis docs/dev-decisions.md. Configure la compatibilité Replit (.replit + replit.nix si pertinent), vérifie les variables d'environnement, crée /api/health. Mets à jour docs/infra/infrastructure.md avec le schéma d'infrastructure.
+Puis @infrastructure : lis docs/dev-decisions.md. Configure :
+- Compatibilité Replit (.replit + replit.nix si pertinent)
+- Variables d'environnement : vérifier que DATABASE_URL est dans Replit Secrets, pas dans .env. Lister toutes les vars nécessaires dans .env.example SANS valeurs réelles.
+- Route /api/health avec vérification DB (SELECT 1 sur PostgreSQL — retourner status: "degraded" si DB inaccessible au lieu de crasher)
+- Script start : prisma migrate deploy → seed conditionnel → next start (dans cet ordre, pour que la DB soit prête avant le serveur)
+- Documenter les limites Replit connues : cold starts (première requête lente), storage éphémère (ne PAS stocker de fichiers en local — utiliser S3/R2 si upload), DATABASE_URL peut changer (toujours lire depuis process.env, jamais cacher en mémoire au boot)
+Mets à jour docs/infra/infrastructure.md.
 
 Puis @legal : lis docs/dev-decisions.md et vérifie les implications RGPD du schéma de données (quelles données personnelles, bases légales, durées de conservation). Mets à jour docs/legal/rgpd-checklist.md.
 
@@ -1734,7 +1746,12 @@ Architecture base de données complète (PostgreSQL Replit) :
 
 Livrable : docs/dev-decisions.md section "Database schema" + schema Prisma/Drizzle dans src/.
 
-Puis @infrastructure : lis le schéma et vérifie la configuration PostgreSQL Replit (connexion pooling, backups, limites de taille). Recommande les optimisations de configuration. Mets à jour docs/infra/infrastructure.md.
+Puis @infrastructure : lis le schéma et vérifie la configuration PostgreSQL Replit :
+- Connection pooling (connection_limit adapté aux limites Replit, pool_timeout avec retry)
+- Backups : stratégie de backup automatique (pg_dump cron ou Replit backup si disponible). Documenter la fréquence et le plan de restauration.
+- Persistance : vérifier que le script start inclut prisma migrate deploy + seed conditionnel. Documenter que DATABASE_URL doit être en Replit Secrets.
+- Limites de taille : documenter les limites PostgreSQL Replit (storage, connexions simultanées, cold starts).
+Mets à jour docs/infra/infrastructure.md.
 
 Critères de validation : chaque table a une clé primaire et des timestamps, les relations sont contraintes par des clés étrangères, les index couvrent les requêtes fréquentes, le seed script est fonctionnel.`
       },

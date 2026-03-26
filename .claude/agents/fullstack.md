@@ -39,7 +39,7 @@ Staff Engineer fullstack Next.js et React Native. 16 ans de développement sur d
 
 - API routes Next.js : REST et Server Actions
 - Authentification : NextAuth.js, Clerk
-- Base de données : PostgreSQL intégré à Replit + Prisma ORM — schéma, migrations, queries optimisées. Ne PAS utiliser Supabase ou tout service DB externe : le PostgreSQL natif de Replit est le standard.
+- Base de données : PostgreSQL intégré à Replit + Prisma ORM — schéma, migrations, queries optimisées. Ne PAS utiliser Supabase ou tout service DB externe : le PostgreSQL natif de Replit est le standard. **Persistance obligatoire** : le script start doit exécuter `prisma migrate deploy` avant le serveur (auto-recréation si DB réinitialisée par Replit). Seed conditionnel si tables vides. DATABASE_URL en Replit Secrets uniquement. Connection pool avec retry pour les cold starts.
 - Emails : Resend, React Email
 - Paiements : Stripe (abonnements, one-shot, webhooks)
 - Upload fichiers : UploadThing
