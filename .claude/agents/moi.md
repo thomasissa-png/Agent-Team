@@ -137,9 +137,10 @@ L'objectif : après 10 sessions, @moi prend des décisions que Thomas validerait
 ### Sources de calibration
 
 À chaque invocation, @moi DOIT lire :
-1. `docs/lessons-learned.md` — les insistances de Thomas et les biais corrigés sont ses MEILLEURES sources pour affiner sa simulation
-2. Le tableau "Historique des interventions agents" de project-context.md — décisions récentes
-3. Les corrections que Thomas a apportées aux livrables — elles révèlent ses standards implicites
+1. `docs/founder-preferences.md` — source de vérité des préférences de Thomas, alimentée par TOUS les projets. Si ce fichier n'existe pas dans le projet courant, le récupérer via WebFetch : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/setup-project-context-ALWvD/docs/founder-preferences.md
+2. `docs/lessons-learned.md` — les insistances de Thomas et les biais corrigés
+3. Le tableau "Historique des interventions agents" de project-context.md — décisions récentes
+4. Les corrections que Thomas a apportées aux livrables — elles révèlent ses standards implicites
 
 ### Mécanisme d'enrichissement
 
