@@ -2364,46 +2364,84 @@ Critères de validation : chaque dimension est notée avec justification, le ris
         title:"Revue finale page par page (dernier kilomètre)",
         agents:["qa","fullstack","ux","design"],
         quand:"Tout est développé, les tests E2E passent, mais tu veux t'assurer que CHAQUE page, CHAQUE bouton, CHAQUE texte fonctionne parfaitement avant de livrer. C'est le 'dernier kilomètre' — la différence entre un projet qui marche et un projet qui impressionne. 4 agents. Si coupure : 'Lis docs/qa/page-review-report.md, quelles pages restent à vérifier ?'",
-        prompt:`@qa Lis project-context.md et docs/product/functional-specs.md (features attendues). Lis docs/design/design-system.md et docs/copy/brand-voice.md si disponibles.
+        prompt:`@qa Lis project-context.md, docs/product/functional-specs.md, docs/design/design-system.md, docs/design/design-tokens.json, docs/copy/brand-voice.md, docs/ux/user-flows.md. Pour chaque fichier manquant, noter "[SANS RÉFÉRENCE]" dans le rapport — l'audit continue quand même.
 
 Phase 1 — Crawl exhaustif :
-Glob src/app/**/page.tsx (ou équivalent selon le framework). Liste TOUTES les pages/routes du site. Pour chaque page : vérifier qu'elle est accessible (pas de 404/500), pas d'erreur console (Grep console.error dans le code source ET vérification runtime).
+Glob src/app/**/page.tsx (ou équivalent). Liste TOUTES les pages/routes du site dans un tableau. Pour chaque page : statut HTTP (200/404/500), erreurs console (Grep console.error dans le code + vérification runtime), temps de chargement estimé.
 
-Phase 2 — Vérification par page (12 dimensions par page) :
-Pour CHAQUE page identifiée, vérifier systématiquement :
-1. Contenu textuel : le texte correspond au copy approuvé (docs/copy/), zéro lorem ipsum, zéro placeholder [À REMPLIR], zéro texte en anglais si le site est en français, cohérence du ton avec brand-voice.md.
-2. Liens : chaque lien interne pointe vers une page existante (pas de 404), chaque lien externe est accessible (pas de lien mort), les ancres fonctionnent.
-3. Images et assets : toutes les images chargent (pas de broken image), alt text présent et descriptif, format optimisé (WebP/AVIF), lazy loading effectif, favicon et OG image présents.
-4. Formulaires : CHAQUE formulaire testé — chaque champ accepte les bonnes données, la validation affiche les bons messages d'erreur, la soumission fonctionne, la confirmation s'affiche, les cas limites (champ vide, email invalide, texte trop long).
-5. Interactions : CHAQUE élément cliquable fait ce qu'il doit — boutons, filtres, toggles, dropdowns, modales, onglets, accordéons. Feedback visuel présent (hover, focus, loading, success). Combinaisons testées (filtre + recherche, double-clic rapide).
-6. Responsive : chaque page testée sur 3 viewports (375px mobile, 768px tablette, 1280px desktop). Pas juste "ça s'affiche" mais "ça fonctionne ET c'est lisible" — les CTA sont visibles, le texte n'est pas tronqué, les images ne débordent pas, la navigation est utilisable.
-7. Dark mode : si le design system spécifie un dark mode, chaque composant de chaque page respecte les tokens dark. Pas de texte invisible sur fond sombre, pas de bordures qui disparaissent.
-8. États vides : chaque page/section qui affiche des données dynamiques a un empty state utile quand il y a 0 données (pas une page blanche ni un spinner infini).
-9. États pleins : avec beaucoup de données (longues listes, texte très long, noms très longs), la page ne casse pas — pagination, troncature, scroll fonctionnent.
-10. Gestion d'erreurs : si l'API échoue, le composant affiche un message d'erreur clair (pas un crash React ni une page blanche). Tester en simulant une erreur réseau.
-11. Performance par page : chaque page charge en < 3s sur 3G simulé. Identifier les pages lentes (bundle trop gros, images non optimisées, requêtes API lentes).
-12. SEO par page : meta title + description uniques et pertinents, heading H1 unique, données structurées JSON-LD si pertinent, canonical URL.
+Phase 2 — Audit chirurgical par page (18 dimensions) :
+Pour CHAQUE page, vérifier systématiquement ces 18 dimensions. Un bug sur N'IMPORTE quelle dimension = la page n'est PAS à 9/10.
 
-Phase 3 — Cross-browser :
-Tester sur Chrome ET Firefox au minimum (Safari si possible). Vérifier les points critiques : layout, navigation, formulaires, animations CSS. Signaler les écarts.
+COPIE & ORTHOGRAPHE :
+1. Contenu textuel : texte correspond au copy approuvé (docs/copy/), zéro lorem ipsum, zéro placeholder [À REMPLIR], zéro texte dans la mauvaise langue, cohérence du ton avec brand-voice.md.
+2. Orthographe & accents : Grep chaque texte visible pour les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Vérifier la grammaire, la ponctuation, les majuscules selon les règles de brand-voice.md. Un accent manquant = un bug.
+3. Microcopy : les labels de boutons sont-ils des verbes d'action (pas "Soumettre" mais "Créer mon compte") ? Les messages d'erreur sont-ils empathiques et actionnables ? Les tooltips sont-ils concis ? Les empty states guident-ils l'action ?
 
-Phase 4 — Rapport :
-Produire docs/qa/page-review-report.md avec un tableau :
-| Page | Dimension | Statut | Détail du bug | Sévérité | Agent responsable |
-Pour chaque bug : description précise, étapes de reproduction, viewport/navigateur concerné.
+DESIGN & VISUEL :
+4. Tokens design : chaque couleur, typographie, espacement, radius, ombre correspond-il à docs/design/design-tokens.json ? Grep le code pour les valeurs hardcodées (couleurs hex en dur au lieu de var(--primary), px au lieu de tokens d'espacement). Chaque écart = un bug.
+5. Alignement & espacement : les éléments sont-ils alignés entre eux ? L'espacement est-il régulier et conforme au design system ? La hiérarchie visuelle est-elle claire (titre > sous-titre > texte) ?
+6. Responsive visuel : sur CHAQUE viewport (375px, 768px, 1280px), vérifier que le rendu est correct — pas de texte tronqué, pas d'image qui déborde, pas de CTA invisible, pas de chevauchement, pas de scroll horizontal. Les touch targets font 44px minimum sur mobile.
 
-Puis @fullstack : lis docs/qa/page-review-report.md et corrige TOUS les bugs identifiés (P0, P1 ET P2 — aucun n'est optionnel). Un commit par page corrigée. Après correction, @qa re-vérifie chaque fix.
+UX & LOGIQUE :
+7. Parcours logique : le flow de la page fait-il sens ? L'utilisateur comprend-il ce qu'il doit faire ? Les étapes sont-elles dans le bon ordre ? Le CTA principal est-il visible et clair ?
+8. Affordance & feedback : chaque élément cliquable RESSEMBLE à un élément cliquable (cursor pointer, style bouton). Chaque action a un feedback (loading → success/error). L'utilisateur sait toujours où il est (navigation, breadcrumbs, titre de page actif).
+9. Navigation & cohérence : les liens de navigation fonctionnent, la page active est marquée, le retour en arrière est possible, le fil d'Ariane est cohérent. La navigation est identique sur toutes les pages.
 
-Puis @ux : lis docs/qa/page-review-report.md et vérifie que les corrections respectent les parcours utilisateur de docs/ux/user-flows.md. Les fixes n'ont-ils pas cassé l'UX ?
+TECHNIQUE :
+10. Liens : chaque lien interne → page existante (pas de 404). Chaque lien externe → accessible. Les ancres fonctionnent. Les mailto: et tel: sont corrects.
+11. Images & assets : toutes chargent (zéro broken image), alt text présent et descriptif, format optimisé (WebP/AVIF), lazy loading effectif, dimensions explicites (pas de CLS).
+12. Formulaires : CHAQUE formulaire testé avec : données valides (happy path), champs vides (validation), email invalide, texte trop long (255+ chars), caractères spéciaux (accents, émojis, <script>), soumission multiple rapide (pas de double-submit). La confirmation s'affiche. Les erreurs sont claires.
+13. Interactions complètes : CHAQUE élément cliquable fait ce qu'il doit — boutons, filtres, toggles, dropdowns, modales, tabs, accordéons, carousels. Combinaisons testées (filtre + recherche, ouvrir 2 modales, double-clic). Aucun élément qui ressemble à un bouton mais ne fait rien.
+14. Erreurs & résilience : si l'API échoue → message d'erreur clair (pas crash). Si le réseau est lent → loading state. Si la session expire → redirection login. Simuler : débrancher le réseau, envoyer un 500, envoyer un JSON malformé.
+15. Performance : page charge en < 3s sur 3G. Bundle JS de la page < 200KB. Pas de requête API bloquante qui retarde le rendu.
 
-Puis @design : lis docs/qa/page-review-report.md et vérifie que les corrections respectent le design system. Les fixes visuels utilisent-ils les bons tokens ?
+DONNÉES & CONTENU DYNAMIQUE :
+16. États de données : tester avec 0 données (empty state utile), 1 donnée, beaucoup de données (pagination/scroll infini/troncature). Texte très long (nom de 100 chars), données manquantes (champ null), données mal formatées. Vérifier le format des dates, prix (€), pourcentages, numéros de téléphone.
+17. Dark mode : si applicable, CHAQUE composant respecte les tokens dark. Pas de texte invisible, bordure qui disparaît, image avec fond blanc sur fond sombre, input illisible.
 
-Bonus — Tests de screenshot automatisés :
-@fullstack : configure des tests de comparaison visuelle Playwright (toPage.screenshot + comparaison pixel) sur les 5 pages les plus critiques. Ces tests détecteront automatiquement les régressions visuelles à chaque deploy futur.
+SEO & PARTAGE :
+18. SEO & OG par page : meta title unique et pertinent (< 60 chars), meta description unique (< 155 chars), H1 unique, données structurées JSON-LD si pertinent, canonical URL, og:title + og:description + og:image spécifiques à la page (pas l'image globale par défaut partout).
 
-Critères de validation : chaque page a été vérifiée sur les 12 dimensions, zéro bug P0 restant, zéro bug P1 restant, les P2 sont corrigés aussi, les tests de screenshot sont en place pour la non-régression, le rapport couvre 100% des pages.
+Phase 3 — Accessibilité par page :
+Pour chaque page : navigation clavier complète (Tab → tous les éléments interactifs dans l'ordre logique → Enter/Space déclenche l'action), lecteur d'écran (aria-labels, landmarks, alt text, rôles), contrastes WCAG AA (4.5:1 texte, 3:1 éléments interactifs).
 
-Anti-timeout : ce prompt peut être long. Vérifier 3-5 pages par message maximum. Sauvegarder le rapport après chaque batch de pages. Si coupure : reprendre à la page suivante non vérifiée dans le rapport.`
+Phase 4 — Cross-browser :
+Tester les pages critiques sur Chrome + Firefox minimum (Safari si possible). Points à vérifier : layout, navigation, formulaires, animations CSS, fonts, scroll behavior.
+
+Phase 5 — Cohérence globale (APRÈS avoir vérifié chaque page individuellement) :
+Vérifier la cohérence ENTRE les pages :
+- Même ton/registre partout (brand-voice.md)
+- Même pattern de navigation sur toutes les pages
+- Même format de dates, prix, numéros partout
+- Même pattern d'affichage des erreurs partout
+- Même style de boutons/CTA partout (pas un bouton bleu sur une page et vert sur une autre)
+- Même convention de titres (majuscules, ponctuation)
+- Les pages forment un parcours cohérent (la page A mène logiquement à la page B)
+
+Phase 6 — Boucle d'itération (objectif : 9/10 par page, 0 bug restant) :
+
+Scoring par page :
+| Page | Score /18 dimensions | Bugs P0 | Bugs P1 | Bugs P2 | Statut |
+Chaque dimension OK = 1 point, WARNING = 0.5, BUG = 0. Score page = total / 18.
+
+Rapport initial : docs/qa/page-review-report.md avec TOUS les bugs trouvés.
+
+Puis @fullstack : corrige TOUS les bugs (P0+P1+P2 — aucun n'est optionnel). Un commit par page corrigée.
+
+Puis @qa : re-vérifie CHAQUE fix sur les dimensions concernées. Si un fix a créé un nouveau bug → signaler et corriger. Itérer jusqu'à ce que CHAQUE page score >= 16/18 (≈ 9/10). Maximum 3 itérations par page.
+
+Puis @ux : vérifie que les corrections respectent les parcours utilisateur. Les fixes n'ont-ils pas cassé le flow ?
+
+Puis @design : vérifie que les corrections respectent le design system. Les fixes visuels utilisent-ils les bons tokens ?
+
+Score final du site = moyenne des scores de toutes les pages. Objectif : >= 9/10 (16/18 par page minimum).
+
+Tests de non-régression :
+@fullstack : configure des tests de comparaison visuelle Playwright (toPage.screenshot) sur les 5 pages les plus critiques + les pages qui avaient le plus de bugs. Ces tests détecteront automatiquement les régressions visuelles à chaque deploy futur.
+
+Critères de validation : 100% des pages vérifiées sur les 18 dimensions, 0 bug P0/P1/P2 restant, score >= 9/10 par page, cohérence globale validée, tests de screenshot en place.
+
+Anti-timeout : vérifier 2-3 pages par message maximum. Sauvegarder le rapport après chaque batch. Si coupure : reprendre à la page suivante non vérifiée.`
       },
       {
         title:"Checklist jour de lancement",
