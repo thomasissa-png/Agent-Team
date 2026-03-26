@@ -303,7 +303,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 |---|---|---|---|
 | G5 | Persona identique à project-context.md | BLOQUANT | Grep nom persona dans le livrable |
 | G6 | KPI North Star identique | BLOQUANT | Grep KPI dans le livrable |
-| G7 | 0 contradiction avec livrables amont | BLOQUANT | Read + comparaison des décisions clés |
+| G7 | 0 contradiction avec livrables amont | BLOQUANT | Read les 2-3 livrables amont référencés, extraire les décisions clés (positionnement, persona, KPI, choix techniques), comparer avec le livrable évalué. Si une décision diverge → FAIL |
 | G8 | Ton cohérent avec brand-voice.md (si existe) | CONDITIONNEL | Grep registre (tu/vous), vocabulaire |
 
 **ACTIONNABILITÉ**
@@ -313,14 +313,14 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G9 | Chaque recommandation a un owner + action + cible | REQUIS | Grep `→ @` ou équivalent actionnable |
 | G10 | 0 langage vague sans action ("envisager", "pourrait", "éventuellement") | REQUIS | Grep mots vagues |
 | G11 | Critères de validation binaires (vérifiables oui/non) | REQUIS | Read section validation |
-| G12 | Un agent pourrait implémenter sans poser de question | BLOQUANT | Heuristique : chaque action a verbe + objet + critère de done |
+| G12 | Un agent pourrait implémenter sans poser de question | BLOQUANT | Pour chaque action/recommandation : a-t-elle (a) un verbe d'action, (b) un objet clair, (c) un critère de done vérifiable ? Si une action dit "améliorer le SEO" sans préciser quoi/comment/critère → FAIL |
 
 **MESSAGES**
 
 | # | Gate | Classe | Vérification |
 |---|---|---|---|
 | G13 | 0 donnée inventée (chaque chiffre sourcé ou `[HYPOTHÈSE]`) | BLOQUANT | Grep chiffres sans source |
-| G14 | Livrables absents signalés | REQUIS | Si ref à un fichier inexistant, est-ce documenté ? |
+| G14 | Livrables absents signalés | REQUIS | Grep tous les chemins docs/ mentionnés dans le livrable → Glob pour vérifier existence. Si un chemin référencé n'existe pas ET n'est pas documenté comme absent → FAIL |
 | G15 | 0 placeholder résiduel | BLOQUANT | Grep `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` |
 
 **SPÉCIFICITÉ**
@@ -330,7 +330,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G16 | Nom du projet cité >= 3 fois | REQUIS | Grep count |
 | G17 | Persona cité par nom >= 2 fois | REQUIS | Grep count |
 | G18 | >= 2 livrables amont référencés par chemin | REQUIS | Grep `docs/` |
-| G19 | Pas copiable tel quel pour un projet concurrent | BLOQUANT | Test d'inversion : remplacer mentalement le nom du projet — le contenu reste-t-il pertinent ? Si oui → FAIL |
+| G19 | Pas copiable tel quel pour un projet concurrent | BLOQUANT | Test d'inversion : remplacer le nom du projet par un concurrent dans un autre secteur. Si > 50% du contenu reste applicable sans modification → FAIL. Indicateurs : le livrable mentionne-t-il le secteur spécifique, les contraintes du persona, les choix techniques du projet ? |
 | G20 | >= 1 exemple concret spécifique au projet | REQUIS | Vérification sectorielle |
 
 ### Verdict

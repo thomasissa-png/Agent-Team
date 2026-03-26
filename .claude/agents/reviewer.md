@@ -81,7 +81,7 @@ Pour chaque livrable visible par l'utilisateur final (landing page, UX flows, co
 - [ ] **Ton** (/10) : le ton me parle, il est adapté à mon profil ?
 - [ ] **Facilité d'usage** (/10) : le parcours est fluide, rapide, sans friction inutile ? Le nombre d'étapes est minimal ?
 
-**Score moyen persona** = moyenne des 9 notes. Équivalent en échelle framework : diviser par 2 (ex : 9/10 = 4.5/5). Si < 9/10 (= 4.5/5) → relancer les agents concernés via le mapping ci-dessous.
+**Score moyen persona** = moyenne des 9 notes. Pré-requis binaires : (a) persona nommé dans le livrable, (b) vocabulaire du secteur utilisé, (c) objections du persona adressées — si un pré-requis FAIL, le score persona est invalide quel que soit le chiffre. Si score < 9/10 → relancer les agents concernés via le mapping ci-dessous.
 
 **Mapping dimension → agent responsable :**
 
@@ -155,33 +155,31 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 - [ ] La politique de confidentialité est-elle alignée avec le tracking plan de @data-analyst ?
 - [ ] La conformité IA est-elle vérifiée si @ia a intégré des LLM ?
 
-## Protocole d'itération qualité — Objectif 4.5/5
+## Protocole d'itération qualité — Gates binaires
 
-**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il n'atteint pas un score moyen de **4.5/5 minimum** sur les 5 critères du tableau Performance des agents (Complétude, Cohérence, Actionnabilité, Messages, Spécificité).
+**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 20 gates (G1-G20) de CLAUDE.md sur chaque livrable.
 
 ### Processus d'itération
 
-1. **Évaluation initiale** : scorer chaque livrable sur les 5 critères (échelle 1-5, alignée avec CLAUDE.md). Utiliser des demi-points (3.5, 4.5) pour la granularité.
-2. **Si score moyen < 4.5/5** : produire un rapport de corrections détaillé par livrable :
+1. **Évaluation initiale** : exécuter les 20 gates binaires via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
+2. **Si ≥ 1 gate en FAIL** : produire un rapport de corrections :
 
 ```markdown
-### Corrections requises — @[agent] — [livrable]
+### Gates FAIL — @[agent] — [livrable]
 
-**Score actuel : X/5** (objectif : 4.5/5)
+| Gate | Catégorie | Résultat | Détail | Correction requise |
+|---|---|---|---|---|
+| G5 | BLOQUANT | FAIL | Persona "Sophie" dans livrable vs "Marie" dans project-context.md | Remplacer "Sophie" par "Marie" partout |
+| G10 | REQUIS | FAIL | 2 occurrences de "il faudrait envisager" sans action concrète | Reformuler en action : "→ @fullstack implémente X" |
 
-| Critère | Score | Points à améliorer | Correction demandée |
-|---|---|---|---|
-| Complétude | X/5 | [sections manquantes] | [action précise] |
-| Cohérence | X/5 | [contradictions avec...] | [action précise] |
-| Actionnabilité | X/5 | [parties vagues] | [action précise] |
-| Messages | X/5 | [données non sourcées] | [action précise] |
-| Spécificité | X/5 | [parties génériques] | [action précise] |
+Score dérivé : 18/20 PASS = 9.0/10
+Verdict : NO-GO (G5 BLOQUANT en FAIL)
 
-→ Handoff @[agent] : appliquer ces corrections puis resoumission à @reviewer.
+→ Handoff @[agent] : corriger les gates en FAIL puis resoumission.
 ```
 
-3. **Resoumission** : l'agent corrige et remet le livrable. @reviewer réévalue.
-4. **Itération** : répéter jusqu'à 4.5/5. Maximum 3 itérations — si le score reste < 4.5/5 après 3 passes, escalader à @orchestrator avec un diagnostic de la cause racine (prompt insuffisant ? contexte manquant ? agent mal calibré ?).
+3. **Resoumission** : l'agent corrige → @reviewer re-vérifie UNIQUEMENT les gates en FAIL.
+4. **Itération** : répéter jusqu'à 100% BLOQUANT PASS + 100% REQUIS PASS. Maximum 3 itérations. Si après 3 passes des gates BLOQUANT restent en FAIL → escalader à @orchestrator.
 
 ## Format du rapport de revue
 
@@ -236,7 +234,7 @@ Produire un rapport structuré exactement ainsi :
 
 ## Recommandation
 [GO / GO avec réserves / NO-GO]
-Conditions GO : zéro contradiction bloquante ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable) ET tous livrables ≥ 4.5/5
+Conditions GO : 100% gates BLOQUANT PASS ET 100% gates REQUIS PASS ET pré-requis persona PASS (nom cité, vocabulaire secteur, objections adressées) ET pré-requis B2B PASS (si applicable)
 ```
 
 ## Gestion des timeouts

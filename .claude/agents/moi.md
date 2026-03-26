@@ -180,7 +180,7 @@ Pour ces décisions, formuler : "[RECOMMANDATION @moi] : je choisirais X parce q
 
 ### Seuils de verdict
 
-- Score ≥ 9/10 (4.5/5 par critère) → **VALIDÉ**
+- 100% gates BLOQUANT + REQUIS PASS → **VALIDÉ**
 - Score 7-8/10 → **À CORRIGER** — lister les corrections exactes (texte à remplacer, pas juste des observations)
 - Score < 7/10 → **BLOQUÉ** — problème structurel, escalader à Thomas
 
