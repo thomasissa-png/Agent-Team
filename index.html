@@ -1120,6 +1120,7 @@ Crée le design system complet :
 3. Dark mode : tokens inversés, vérification des contrastes dans les deux modes.
 4. Accessibilité WCAG 2.2 AA : contrastes minimum 4.5:1 pour le texte, 3:1 pour les éléments interactifs, focus visible sur tous les éléments interactifs, tailles de touch target minimum 44x44px.
 5. Performance : les choix visuels doivent être compatibles avec un LCP < 2.5s. Signaler les éléments potentiellement lourds (images, animations, vidéos, fonts custom).
+6. Favicon & icônes : produire les specs pour le favicon (SVG recommandé, avec fallback PNG 32x32 et 16x16), apple-touch-icon (180x180), OG image par défaut (1200x630, avec le logo + baseline), site.webmanifest (nom, couleur thème, icônes 192 et 512). Ces assets sont indispensables pour le branding — un site sans favicon ou sans OG image paraît amateur.
 
 Livrable (un fichier à la fois) : docs/design/design-system.md + docs/design/design-tokens.json.
 
@@ -1479,6 +1480,7 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
 7. Linting : ESLint + Prettier configurés, scripts npm (dev, build, lint, test).
 8. Sécurité : headers HTTP (CSP, HSTS, X-Frame-Options), rate limiting sur les routes API.
+9. Favicon & meta : implémenter le favicon (SVG + PNG fallback dans public/), apple-touch-icon, site.webmanifest, OG image par défaut (1200x630), balises meta og:title/og:description/og:image dans le layout racine. Si docs/design/design-system.md contient les specs favicon, les suivre. Sinon, créer un favicon minimaliste avec les couleurs primary du design system.
 
 Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
