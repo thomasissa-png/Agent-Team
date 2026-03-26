@@ -664,7 +664,7 @@ Commence."`
 Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*). Crée docs/orchestration-plan.md en mode "CHECK-UP" avec la liste des audits à lancer. Marque chaque audit PENDING/EN COURS/COMPLETE pour permettre la reprise.
 
 Étape 1 — Audit de cohérence croisée :
-Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 20 gates binaires (PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 25 gates binaires (G1-G25, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
@@ -737,7 +737,7 @@ Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant
 Étape 2 — Lancement des audits :
 Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). Chaque agent reçoit un prompt ciblé sur le sujet et doit :
 1. Lire les livrables existants dans son domaine (docs/ + src/)
-2. Évaluer l'état actuel du sujet sur une échelle 1-5 avec justification
+2. Évaluer l'état actuel du sujet avec les gates binaires du framework (PASS/FAIL, classification BLOQUANT/REQUIS selon CLAUDE.md)
 3. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
 4. Proposer les corrections précises pour chaque problème
 5. Évaluer l'impact de chaque problème sur le persona principal (défini dans project-context.md)
@@ -772,7 +772,7 @@ Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 7. Validation persona et B2B (si applicable)
 8. Recommandation GO/NO-GO
 
-Critères de validation : chaque agent sélectionné a audité sa dimension, le reviewer a validé la cohérence et le persona, le score global est documenté sur l'échelle 1-5, les P0 sont corrigés (ou en attente de validation utilisateur), le plan d'action P1 est priorisé.`
+Critères de validation : chaque agent sélectionné a audité sa dimension, le reviewer a validé la cohérence et le persona, le verdict global est documenté (100% gates BLOQUANT PASS + 100% gates REQUIS PASS), les P0 sont corrigés (ou en attente de validation utilisateur), le plan d'action P1 est priorisé.`
       },
       {
         title:"Pivoter mon projet",
@@ -2258,11 +2258,11 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
 10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
-Identifie les angles morts et contradictions. Recommandation GO/NO-GO avec blockers classés P0 (critique) / P1 (majeur) / P2 (mineur). Livrable : docs/reviews/cross-review-report.md.
+Identifie les angles morts et contradictions. Applique les 25 gates binaires du framework (G1-G25, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2. Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
 
-Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), zéro blocker P0 non résolu pour un GO.`
+Critères de validation : chaque livrable a ses 25 gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
       },
       {
         title:"Revue intermédiaire (mid-projet)",
@@ -2287,7 +2287,7 @@ Livrable : docs/reviews/mid-review.md avec statut par axe (OK / Warning / Blocke
 
 Puis @legal : si des livrables existent dans docs/legal/, vérifie qu'ils sont toujours alignés avec l'état actuel du projet (le projet a pu évoluer depuis l'audit juridique initial). Signale les mises à jour nécessaires.
 
-Critères de validation : chaque axe a un verdict (OK/Warning/Blocker), les actions correctives sont assignées à un agent spécifique avec le chemin du livrable à corriger, les dimensions légale, performance et GEO sont couvertes.`
+Critères de validation : chaque axe a un verdict basé sur les gates applicables (PASS/FAIL, BLOQUANT/REQUIS), les actions correctives sont assignées à un agent spécifique avec le chemin du livrable à corriger, les dimensions légale, performance et GEO sont couvertes.`
       },
       {
         title:"Audit qualité & tests complets",
