@@ -1753,16 +1753,23 @@ Audit SEO complet :
 1. Technique : Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical URLs, hreflang si multilingue.
 2. On-page : meta title/description (< 60 / < 155 chars, avec CTA), headings H1-H3 (hiérarchie sémantique, un seul H1), alt texts images, URLs slug-friendly.
 3. Maillage interne : structure en silo, pages orphelines, anchor texts.
-4. Keyword map : via WebSearch — volume, difficulté, intention (informationnelle / navigationnelle / transactionnelle), page cible, priorisation P0/P1/P2.
-5. Contenu : lacunes par rapport aux concurrents, pages thin content, opportunités de contenu longue traîne.
+4. Keyword research approfondie (via WebSearch — données réelles, jamais inventées) :
+   a. Mots-clés primaires (5-10) : requêtes à fort volume ET forte intention commerciale. Pour chaque : volume mensuel estimé, difficulté (KD), intention (informationnelle / navigationnelle / transactionnelle / commerciale), CPC indicatif, page cible, position actuelle si disponible.
+   b. Mots-clés secondaires (15-30) : longue traîne autour des primaires. Groupés par cluster sémantique (topic cluster). Pour chaque cluster : page pilier + pages satellites.
+   c. Mots-clés concurrents : pour les 3-5 concurrents principaux, identifier les mots-clés sur lesquels ils rankent et pas nous (content gap analysis). Sources : WebSearch sur "site:concurrent.com [sujet]", People Also Ask, recherches associées.
+   d. Questions utilisateur : extraire les "People Also Ask" et questions fréquentes liées aux mots-clés primaires. Chaque question = opportunité de contenu FAQ ou article.
+   e. Intention par étape du funnel : mapper les mots-clés sur le parcours utilisateur (découverte → considération → décision → achat). Prioriser les mots-clés à forte intention de conversion.
+   f. Priorisation : matrice volume × difficulté × intention × pertinence persona. P0 = fort volume + faible difficulté + forte intention. P2 = faible volume ou forte difficulté.
+5. Contenu : lacunes par rapport aux concurrents (content gap), pages thin content (< 300 mots sans valeur), opportunités de contenu longue traîne. Plan de contenu avec calendrier de publication aligné sur les clusters de mots-clés.
+6. Stratégie de liens : opportunités de backlinks (guest posts, annuaires sectoriels, partenariats, mentions presse). Audit des backlinks concurrents via WebSearch.
 
 Audite en priorité les pages à plus fort trafic/conversion potentiel.
 
-Livrables (un fichier à la fois) : docs/seo/seo-strategy.md + docs/seo/keyword-map.md + docs/seo/metadata-templates.md.
+Livrables (un fichier à la fois) : docs/seo/seo-strategy.md + docs/seo/keyword-map.md (avec tableau complet des mots-clés) + docs/seo/metadata-templates.md.
 
 Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals actuels. Identifie les bottlenecks techniques (bundle size, images non optimisées, TTFB). Mets à jour docs/infra/performance-audit.md.
 
-Critère de qualité : chaque recommandation est actionnable avec la page cible, la priorité (P0/P1/P2), et l'impact estimé sur le trafic.`
+Critères de validation : le keyword map contient au minimum 20 mots-clés avec volume réel (pas inventé), chaque mot-clé a une page cible assignée, les clusters sémantiques sont formés, le content gap vs concurrents est documenté, chaque recommandation est actionnable avec priorité P0/P1/P2.`
       },
       {
         title:"Visibilité sur les IA génératives (GEO)",
