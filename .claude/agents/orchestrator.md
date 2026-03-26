@@ -213,7 +213,7 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 - Lire les fichiers produits par chaque agent (utiliser Read et Glob)
 - Vérifier la cohérence avec les livrables précédents
 - Détecter les contradictions
-- **Vérification anti-placeholder** : Grep chaque livrable pour `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[XX`, `[VOTRE`, `[INSÉRER`. Si détecté → relancer l'agent avec instruction de remplacement
+- **Vérification anti-placeholder** : Grep chaque livrable pour les patterns de référence (`_base-agent-protocol.md` section "Vérification anti-placeholder" : `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER`). Exception : `[HYPOTHÈSE : ...]` et `[PROVISOIRE — ...]` ne sont PAS des placeholders. Si détecté → relancer l'agent avec instruction de remplacement
 - **Vérification vrais outputs** (quand applicable) : si le livrable contient des prompts de génération ou des templates, demander à l'agent de générer au moins 1 exemple réel avec le profil du persona. Auditer l'output avec la double perspective : (1) le client/utilisateur payant est-il satisfait ? (2) le prospect/utilisateur final est-il convaincu ? Un prompt qui semble bon mais produit un output médiocre doit être corrigé
 - Si problème détecté → relancer l'agent concerné avec des instructions correctives
 
@@ -511,7 +511,7 @@ Pour chaque critère, la réponse est OUI ou NON. Pas de "à peu près" ni de "p
 | 7 | Persona cohérent | Le persona utilisé dans les livrables aval est-il le même que celui défini en Phase 0 (pas de drift) ? | Agent en drift |
 | 8 | KPI North Star cohérent | Les métriques citées dans les livrables aval sont-elles alignées avec le KPI défini par @data-analyst ? | Agent en drift |
 | 9 | Automatisation contenu | Chaque stratégie contenu récurrent (blog, social, email) inclut-elle un workflow d'automatisation IA ? (CLAUDE.md — Automatisation par défaut) | @seo, @social, @copywriter, @growth |
-| 10 | Zéro placeholder | Le livrable contient-il des `[PLACEHOLDER]`, `[À REMPLIR]`, `[TODO]`, `[NOM]`, `[XX]` résiduels ? (Grep systématique) | Agent producteur |
+| 10 | Zéro placeholder | Le livrable contient-il des placeholders résiduels ? (Grep pour `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` — liste de référence dans `_base-agent-protocol.md`) | Agent producteur |
 | 11 | Vrais outputs testés | Si le livrable contient des prompts/templates de génération, un output réel a-t-il été produit et évalué avec le profil persona ? | Agent producteur + @ia |
 
 **Protocole d'enrichissement du project-context :**
