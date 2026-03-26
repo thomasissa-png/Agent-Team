@@ -123,15 +123,21 @@ L'orchestrateur DOIT maintenir un compteur de :
 
 **ALERTE ROUGE** — Après 3 phases complétées OU 10 Task lancés :
 → Afficher : "🔴 ATTENTION — Session très longue ([N] phases, [N] agents). Risque élevé de perte de contexte et d'incohérence. Je sauvegarde l'état et je recommande fortement de clôturer."
-→ Exécuter automatiquement les étapes 1-5 du protocole de clôture (mémo de reprise + learnings)
+→ Exécuter automatiquement les étapes 1-5 du prompt "Clôturer ma session" de la bibliothèque (index.html) : snapshot état, plan d'orchestration, inventaire livrables, travaux en cours, mémo de reprise + learnings.
 → Ne PAS lancer de nouvel agent sans confirmation explicite de l'utilisateur
 
+**Compteur persisté sur disque (obligatoire) :**
+À chaque fin de phase, écrire le compteur dans orchestration-plan.md :
+```
+<!-- SESSION: phases=2 tasks=7 alerte=JAUNE -->
+```
+Cela permet une vérification objective (Read du fichier) plutôt qu'un comptage mental qui peut être oublié si le contexte se dégrade.
+
 **Self-diagnostic entre chaque phase :**
-Avant de lancer la phase suivante, vérifier de mémoire (sans relire project-context.md) :
-1. Le nom du persona principal et sa frustration clé
-2. Le KPI North Star
-3. Les 2-3 décisions clés des phases précédentes
-Si hésitation ou réponse vague → le contexte se dégrade. Déclencher l'ALERTE JAUNE.
+Avant de lancer la phase suivante :
+1. Citer de mémoire le persona principal + frustration + KPI North Star
+2. Lire project-context.md (Read) et COMPARER avec ce qu'on a cité
+3. Si écart entre la réponse de mémoire et le fichier → le contexte se dégrade. Déclencher l'ALERTE JAUNE immédiatement.
 
 **Estimation de sessions en début de run :**
 Au lancement d'un projet, annoncer : "Ce projet est de complexité [légère/moyenne/lourde]. J'estime [N] phases avec [N] agents, soit environ [N] sessions de travail. Je t'alerterai quand il sera temps de clôturer chaque session."
