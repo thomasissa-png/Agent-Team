@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gradient Agents — Dashboard</title>
-<meta name="description" content="19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement. 88 prompts prêts à l'emploi.">
+<meta name="description" content="19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement. 89 prompts prêts à l'emploi.">
 <meta property="og:title" content="Gradient Agents — Dashboard">
 <meta property="og:description" content="Une équipe de 19 agents IA spécialisés pour piloter votre projet de A à Z.">
 <meta property="og:type" content="website">
@@ -556,7 +556,7 @@ Continuité de session : rappelle à l'utilisateur de nommer sa session (claude 
       {
         title:"Quel prompt utiliser ? (guide rapide)",
         agents:["orchestrator"],
-        quand:"Tu ne sais pas par où commencer parmi les 88 prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
+        quand:"Tu ne sais pas par où commencer parmi les 89 prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
         prompt:`@orchestrator Mode sélecteur guidé. Ne lance aucun agent.
 
 Lis project-context.md si il existe. Puis pose-moi ces 3 questions (une à la fois si possible, sinon les 3 ensemble) :
@@ -644,7 +644,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 4. GO finale triple : livrables ≥ 4.5/5 ET score persona ≥ 9/10 ET score B2B ≥ 9/10 (si applicable).
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md.
-7. Phase 5 : checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
+7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 12 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope MVP) pour ma validation avant de lancer la conception.
 
 Gestion multi-sessions :
@@ -679,6 +679,7 @@ Pour chaque domaine qui a des livrables, lance l'agent spécialisé avec les ins
 - Cohérence visuelle → @design avec "Auditer la cohérence visuelle" (si design system + code)
 - Conformité juridique → @legal avec "Audit juridique & conformité"
 - Si en production → @infrastructure "Monitoring post-launch" + @data-analyst "Monitoring UX"
+- Si code existe dans src/ → @qa + @fullstack + @ux + @design avec "Revue finale page par page (dernier kilomètre)" — audit chirurgical de CHAQUE page, CHAQUE élément. C'est l'étape qui détecte les bugs que les audits macro manquent.
 
 Étape 3 — Audit stratégique (@elon) :
 Lance @elon avec le prompt "Audit stratégique first principles". Il note vision, exécution, moat, scalabilité, vitesse sur 10. Identifie le risque n°1 et le levier n°1.
@@ -2360,6 +2361,51 @@ Verdict sans filtre. Pas de langue de bois. Livrable : docs/reviews/elon-audit.m
 Critères de validation : chaque dimension est notée avec justification, le risque n°1 et le levier n°1 sont identifiés, le verdict est actionnable.`
       },
       {
+        title:"Revue finale page par page (dernier kilomètre)",
+        agents:["qa","fullstack","ux","design"],
+        quand:"Tout est développé, les tests E2E passent, mais tu veux t'assurer que CHAQUE page, CHAQUE bouton, CHAQUE texte fonctionne parfaitement avant de livrer. C'est le 'dernier kilomètre' — la différence entre un projet qui marche et un projet qui impressionne. 4 agents. Si coupure : 'Lis docs/qa/page-review-report.md, quelles pages restent à vérifier ?'",
+        prompt:`@qa Lis project-context.md et docs/product/functional-specs.md (features attendues). Lis docs/design/design-system.md et docs/copy/brand-voice.md si disponibles.
+
+Phase 1 — Crawl exhaustif :
+Glob src/app/**/page.tsx (ou équivalent selon le framework). Liste TOUTES les pages/routes du site. Pour chaque page : vérifier qu'elle est accessible (pas de 404/500), pas d'erreur console (Grep console.error dans le code source ET vérification runtime).
+
+Phase 2 — Vérification par page (12 dimensions par page) :
+Pour CHAQUE page identifiée, vérifier systématiquement :
+1. Contenu textuel : le texte correspond au copy approuvé (docs/copy/), zéro lorem ipsum, zéro placeholder [À REMPLIR], zéro texte en anglais si le site est en français, cohérence du ton avec brand-voice.md.
+2. Liens : chaque lien interne pointe vers une page existante (pas de 404), chaque lien externe est accessible (pas de lien mort), les ancres fonctionnent.
+3. Images et assets : toutes les images chargent (pas de broken image), alt text présent et descriptif, format optimisé (WebP/AVIF), lazy loading effectif, favicon et OG image présents.
+4. Formulaires : CHAQUE formulaire testé — chaque champ accepte les bonnes données, la validation affiche les bons messages d'erreur, la soumission fonctionne, la confirmation s'affiche, les cas limites (champ vide, email invalide, texte trop long).
+5. Interactions : CHAQUE élément cliquable fait ce qu'il doit — boutons, filtres, toggles, dropdowns, modales, onglets, accordéons. Feedback visuel présent (hover, focus, loading, success). Combinaisons testées (filtre + recherche, double-clic rapide).
+6. Responsive : chaque page testée sur 3 viewports (375px mobile, 768px tablette, 1280px desktop). Pas juste "ça s'affiche" mais "ça fonctionne ET c'est lisible" — les CTA sont visibles, le texte n'est pas tronqué, les images ne débordent pas, la navigation est utilisable.
+7. Dark mode : si le design system spécifie un dark mode, chaque composant de chaque page respecte les tokens dark. Pas de texte invisible sur fond sombre, pas de bordures qui disparaissent.
+8. États vides : chaque page/section qui affiche des données dynamiques a un empty state utile quand il y a 0 données (pas une page blanche ni un spinner infini).
+9. États pleins : avec beaucoup de données (longues listes, texte très long, noms très longs), la page ne casse pas — pagination, troncature, scroll fonctionnent.
+10. Gestion d'erreurs : si l'API échoue, le composant affiche un message d'erreur clair (pas un crash React ni une page blanche). Tester en simulant une erreur réseau.
+11. Performance par page : chaque page charge en < 3s sur 3G simulé. Identifier les pages lentes (bundle trop gros, images non optimisées, requêtes API lentes).
+12. SEO par page : meta title + description uniques et pertinents, heading H1 unique, données structurées JSON-LD si pertinent, canonical URL.
+
+Phase 3 — Cross-browser :
+Tester sur Chrome ET Firefox au minimum (Safari si possible). Vérifier les points critiques : layout, navigation, formulaires, animations CSS. Signaler les écarts.
+
+Phase 4 — Rapport :
+Produire docs/qa/page-review-report.md avec un tableau :
+| Page | Dimension | Statut | Détail du bug | Sévérité | Agent responsable |
+Pour chaque bug : description précise, étapes de reproduction, viewport/navigateur concerné.
+
+Puis @fullstack : lis docs/qa/page-review-report.md et corrige TOUS les bugs identifiés (P0, P1 ET P2 — aucun n'est optionnel). Un commit par page corrigée. Après correction, @qa re-vérifie chaque fix.
+
+Puis @ux : lis docs/qa/page-review-report.md et vérifie que les corrections respectent les parcours utilisateur de docs/ux/user-flows.md. Les fixes n'ont-ils pas cassé l'UX ?
+
+Puis @design : lis docs/qa/page-review-report.md et vérifie que les corrections respectent le design system. Les fixes visuels utilisent-ils les bons tokens ?
+
+Bonus — Tests de screenshot automatisés :
+@fullstack : configure des tests de comparaison visuelle Playwright (toPage.screenshot + comparaison pixel) sur les 5 pages les plus critiques. Ces tests détecteront automatiquement les régressions visuelles à chaque deploy futur.
+
+Critères de validation : chaque page a été vérifiée sur les 12 dimensions, zéro bug P0 restant, zéro bug P1 restant, les P2 sont corrigés aussi, les tests de screenshot sont en place pour la non-régression, le rapport couvre 100% des pages.
+
+Anti-timeout : ce prompt peut être long. Vérifier 3-5 pages par message maximum. Sauvegarder le rapport après chaque batch de pages. Si coupure : reprendre à la page suivante non vérifiée dans le rapport.`
+      },
+      {
         title:"Checklist jour de lancement",
         agents:["orchestrator","qa","infrastructure","legal"],
         quand:"Tout est développé, testé, prêt — tu es à J-1 du lancement. Cette checklist est ton filet de sécurité final. Mieux vaut reporter d'un jour que lancer avec un blocker.",
@@ -3018,7 +3064,7 @@ const CHANGELOG = [
     date:"2026-03-22",
     agent:"tous",
     type:"mise à jour",
-    description:"Bibliothèque de prompts refondée — 88 prompts organisés par phase projet, format simplifié copier-coller"
+    description:"Bibliothèque de prompts refondée — 89 prompts organisés par phase projet, format simplifié copier-coller"
   },
   {
     date:"2026-03-22",
@@ -3187,7 +3233,7 @@ const CHANGELOG = [
 <!-- ════ SECTION PROMPTS ════ -->
 <section id="prompts" aria-labelledby="titre-prompts">
   <h2 id="titre-prompts">Bibliothèque de Prompts</h2>
-  <p class="section-sub">88 prompts organisés par phase — copie, colle, c'est parti</p>
+  <p class="section-sub">89 prompts organisés par phase — copie, colle, c'est parti</p>
 
   <!-- Filtre par agent -->
   <div class="prompt-filter-wrap">

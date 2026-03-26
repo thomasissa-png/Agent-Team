@@ -232,7 +232,8 @@ Phase 4 (Acquisition) :
 Phase 5 (Audit & Validation) :
 - @reviewer → "Revue croisée GO/NO-GO"
 - @qa → "Audit qualité & tests complets"
-- Checklist jour de lancement
+- @qa + @fullstack + @ux + @design → "Revue finale page par page (dernier kilomètre)" — OBLIGATOIRE. Audit chirurgical de CHAQUE page, CHAQUE bouton, CHAQUE texte sur 12 dimensions. C'est la différence entre un site qui "marche" et un site à 9/10.
+- Checklist jour de lancement (GO/NO-GO final — après la revue page par page)
 - @infrastructure → "Monitoring post-launch"
 
 **Prompts conditionnels par type de projet** (la carte ci-dessus est le minimum — ces prompts s'ajoutent selon le contexte) :
@@ -501,8 +502,17 @@ Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "A
 `growth` → `social` (sinon — social a besoin du cadrage canaux de growth)
 Après Phase 4 : même vérification d'automatisation contenu pour @growth et @social
 
-**Phase 5 — Conformité :**
+**Phase 5 — Conformité & Validation :**
 `legal` (si non démarré en Phase 0)
+
+**Phase 5b — Revue finale chirurgicale (OBLIGATOIRE si du code existe dans src/) :**
+Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer la "Revue finale page par page" :
+1. @qa crawle TOUTES les pages et vérifie 12 dimensions par page (contenu, liens, images, formulaires, interactions, responsive, dark mode, états vides/pleins, erreurs, performance, SEO)
+2. @fullstack corrige TOUS les bugs (P0, P1 ET P2 — aucun n'est optionnel)
+3. @qa re-vérifie chaque fix
+4. @ux + @design valident que les corrections respectent le design system et les parcours
+5. @fullstack configure les tests de screenshot Playwright pour la non-régression
+Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).
 
 **Règles de parallélisation :**
 - Deux agents peuvent tourner en parallèle SI et SEULEMENT SI aucun ne dépend du livrable de l'autre
