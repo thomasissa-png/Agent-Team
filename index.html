@@ -992,6 +992,34 @@ Puis @growth : lis docs/product/pricing-dynamic.md et vérifie la cohérence ave
 Conformité : @legal vérifie les obligations de transparence tarifaire (affichage TTC, mentions obligatoires e-commerce, droit de rétractation), les règles de non-discrimination tarifaire par pays (réglementations EU), et la conformité des conditions de renouvellement automatique. Livrable : docs/legal/legal-audit.md section "Pricing".
 
 Critères de validation : chaque différentiel de prix est justifié par la valeur perçue (pas par le coût), les simulations de revenus couvrent 3 scénarios, les obligations légales de transparence tarifaire sont respectées, les métriques de suivi sont en place.`
+      },
+      {
+        title:"Vision long terme et moat",
+        agents:["elon","product-manager","creative-strategy"],
+        quand:"En début de projet pour poser les fondations stratégiques, ou quand le marché bouge (nouveau concurrent, pivot technologique). Complémentaire à l'audit first principles — ici on construit, là-bas on challenge. Si coupure : 'Lis docs/reviews/moat-analysis.md et docs/product/vision-long-terme.md, quels agents restent ?'",
+        prompt:`@elon Lis project-context.md (positionnement, concurrent principal, objectif 6 mois). Lis docs/strategy/brand-platform.md et docs/product/product-vision.md s'ils existent. S'ils n'existent pas, base l'analyse sur project-context.md seul.
+
+Audit du moat actuel — note chaque dimension sur 10 avec justification :
+1. Network effects : le produit gagne-t-il en valeur avec chaque nouvel utilisateur ? (marketplace, communauté, données partagées). Si non, est-ce activable ?
+2. Data moat : les données accumulées créent-elles un avantage irréproductible ? (modèles entraînés, historique utilisateur, benchmarks propriétaires). Quelles données collecter en priorité pour creuser le fossé ?
+3. Switching costs : que perd un utilisateur en partant ? (données, intégrations, habitudes, contenu créé). Comment augmenter ces coûts sans nuire à l'expérience ?
+4. Brand : la marque est-elle associée à une catégorie ? (Stripe = paiement dev, Notion = workspace). Comment devenir le mot réflexe de la catégorie ?
+5. Technologie : y a-t-il un avantage technique défendable ? (algorithme propriétaire, infrastructure unique, expertise rare). Durée de vie estimée de l'avantage.
+6. Vitesse d'exécution : le rythme d'itération est-il un moat en soi ? (shipping faster than competitors can copy).
+
+Synthèse : score moat global /10, top 2 leviers à renforcer, top 2 vulnérabilités.
+
+Livrable : docs/reviews/moat-analysis.md.
+
+Puis @product-manager : lis docs/reviews/moat-analysis.md et project-context.md. Traduis l'analyse moat en plan d'action produit :
+1. Roadmap moat : features qui renforcent chaque dimension du moat (pas juste des features utilisateur — des features défensives).
+2. Scénarios de disruption : 3 scénarios réalistes de menace (nouveau concurrent IA, changement réglementaire, commoditisation) et la réponse produit pour chacun.
+3. Vision 3-5 ans : où le produit doit être dans 3 ans pour que le moat soit inattaquable. Quels jalons intermédiaires.
+Livrable : docs/product/vision-long-terme.md.
+
+Puis @creative-strategy : lis docs/reviews/moat-analysis.md et docs/product/vision-long-terme.md. Évalue si le positionnement actuel (docs/strategy/brand-platform.md) soutient la vision long terme ou s'il faut le faire évoluer. Recommande les ajustements de messaging pour communiquer le moat aux utilisateurs. Livrable : docs/strategy/brand-platform.md section "Vision et moat".
+
+Critères de validation : chaque dimension du moat est notée avec justification factuelle (pas de "notre produit est unique" sans preuve), les scénarios de disruption sont réalistes, le plan d'action est directement implémentable, la vision 3-5 ans a des jalons mesurables.`
       }
     ]
   },
@@ -1249,6 +1277,33 @@ Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. R
 Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel d'activation : event par étape, taux de complétion cible, cohorte analysis par semaine, alerte si drop > 20% entre deux étapes. Définis le "activation rate" comme KPI clé de l'onboarding. Livrable : docs/analytics/tracking-plan.md section "Onboarding funnel".
 
 Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'action, les emails de réengagement sont rédigés, le funnel d'activation est trackable.`
+      },
+      {
+        title:"Design système de notifications",
+        agents:["ux","design","fullstack"],
+        quand:"Dès que le produit a des événements à communiquer à l'utilisateur (inscription, action d'un autre utilisateur, statut d'un process, alertes). Les notifications mal conçues sont la première cause de désactivation — trop = spam, pas assez = utilisateur perdu. Si coupure : 'Lis docs/ux/notification-system.md et docs/design/component-library.md section Notifications, quels agents restent ?'",
+        prompt:`@ux Lis project-context.md (persona, parcours utilisateur). Lis docs/ux/user-flows.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels événements déclenchent une notification ? Quels canaux sont disponibles (in-app, email, push, SMS) ? Quel est le volume attendu de notifications par utilisateur par jour ?
+
+Architecture du système de notifications :
+1. Taxonomie : classer chaque notification par type (transactionnelle, marketing, système, sociale) et par urgence (immédiate, importante, informative). Matrice type × canal × urgence — chaque case justifie pourquoi ce canal pour ce type.
+2. Canaux et hiérarchie : in-app (toast, badge, centre de notifications), email (digest vs temps réel), push (mobile/desktop), SMS (réservé aux critiques). Règle : ne jamais envoyer le même message sur 2 canaux simultanément — définir la cascade.
+3. Regroupement et fréquence : batching des notifications non urgentes (digest horaire ou quotidien), cap par utilisateur par jour (recommandation : max 5 push, max 3 emails non transactionnels), quiet hours (pas de notifications entre 22h et 8h sauf urgence).
+4. Centre de notifications : wireframe du centre de notifications in-app (liste chronologique, filtres par type, marquer comme lu/non lu, actions inline). État vide, état avec notifications, badge de count.
+5. Préférences utilisateur : écran de gestion des préférences (toggle par type × canal), opt-in/opt-out granulaire, fréquence de digest configurable.
+6. Parcours de permission : flow de demande de permission push (pas au premier chargement — attendre une action pertinente), fallback si permission refusée.
+
+Livrable : docs/ux/notification-system.md (wireframes + flows + matrice).
+
+Puis @design : lis project-context.md, docs/ux/notification-system.md et docs/design/design-system.md. Conçois les composants visuels : toast notification (success, warning, error, info), badge de count, centre de notifications (panneau latéral ou dropdown), carte de notification (avatar, texte, timestamp, action), écran de préférences. Respecte les tokens existants. Animations : slide-in pour les toasts (durée 300ms), auto-dismiss après 5s sauf action requise. Livrable : docs/design/component-library.md section "Notifications".
+
+Puis @fullstack : lis project-context.md, docs/ux/notification-system.md et docs/design/component-library.md section "Notifications". Implémente l'architecture technique :
+1. Table notifications en PostgreSQL (id, user_id, type, channel, title, body, read_at, created_at, metadata JSONB).
+2. Service de notification (src/lib/notifications.ts) : fonction send() qui route vers le bon canal selon la matrice.
+3. API routes : GET /api/notifications (liste paginée), PATCH /api/notifications/:id/read, PATCH /api/notifications/read-all, GET /api/notifications/preferences, PUT /api/notifications/preferences.
+4. Composants React : NotificationToast, NotificationCenter, NotificationBadge, NotificationPreferences.
+5. Real-time : Server-Sent Events ou polling (10s) pour les notifications in-app en temps réel.
+
+Critères de validation : la matrice type × canal × urgence est complète et justifiée, les wireframes couvrent tous les états (vide, normal, overflow), les préférences utilisateur sont granulaires, le cap quotidien est implémenté, les composants respectent le design system.`
       }
     ]
   },
@@ -1571,6 +1626,59 @@ Puis @fullstack : lis docs/infra/scalability-plan.md et implémente les optimisa
 Puis @ia : lis docs/infra/scalability-plan.md et évalue l'impact du scaling sur les coûts IA (plus d'utilisateurs = plus d'appels LLM). Mets à jour docs/ia/ai-cost-analysis.md avec les projections par palier d'utilisateurs. Recommande des optimisations (prompt caching, batching, modèle moins cher pour les requêtes simples).
 
 Critères de validation : les bottlenecks actuels sont identifiés et documentés, le plan de scaling est progressif avec des paliers clairs, le coût par palier est estimé, les optimisations prioritaires sont implémentées, le monitoring de charge est en place.`
+      },
+      {
+        title:"Data pipeline et ETL",
+        agents:["ia","infrastructure","fullstack"],
+        quand:"Le produit ingère des données externes (APIs tierces, fichiers uploadés, scraping, webhooks) ou transforme des données internes (agrégations, rapports, ML features). Sans pipeline structuré, les données arrivent en vrac et cassent en silence. Si coupure : 'Lis docs/ia/data-pipeline-architecture.md et docs/infra/infrastructure.md section Data pipelines, quels agents restent ?'",
+        prompt:`@ia Lis project-context.md (stack technique, IA utilisée). Lis docs/ia/ai-architecture.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quelles sources de données (APIs, fichiers, webhooks, scraping), quel volume (lignes/jour), quelles transformations nécessaires, quelle destination (PostgreSQL Replit, cache, vector store, export).
+
+Architecture data pipeline :
+1. Sources et ingestion : pour chaque source, documenter le format (JSON, CSV, XML, API REST/GraphQL), la fréquence de mise à jour (temps réel, horaire, quotidien, batch), l'authentification requise, le volume estimé. Schéma d'ingestion : pull (cron/scheduler) vs push (webhook). Rate limits et pagination.
+2. Transformation : schéma de transformation par source — mapping champs source → champs cible, validation (types, nulls, doublons), enrichissement (geocoding, NLP, classification), normalisation (dates, devises, encodages). Gestion des données invalides : rejet avec logging vs correction automatique vs quarantaine.
+3. Stockage : PostgreSQL Replit comme destination principale. Schéma de tables (staging → clean → aggregated). Indexation par colonnes de requête fréquentes. Partitionnement si volume > 1M lignes/mois. Rétention : archivage des données raw après transformation.
+4. Orchestration : scheduling des pipelines (crons Replit ou task queue). Ordre d'exécution (DAG de dépendances entre pipelines). Gestion des échecs : retry avec backoff exponentiel (3 tentatives), dead letter queue, alerte si échec après retries.
+5. Monitoring : dashboard de santé pipeline (dernière exécution, durée, lignes traitées, erreurs). Alertes : pipeline en échec, volume anormal (±50% vs moyenne), latence excessive. Logs structurés (source, timestamp, lignes_in, lignes_out, erreurs).
+6. Idempotence : chaque pipeline doit être re-exécutable sans dupliquer les données (upsert, deduplication par clé naturelle).
+
+Livrable : docs/ia/data-pipeline-architecture.md.
+
+Puis @infrastructure : lis docs/ia/data-pipeline-architecture.md. Configure l'environnement d'exécution : crons Replit pour le scheduling, variables d'environnement pour les credentials sources, monitoring des ressources (CPU/mémoire pendant les pipelines). Si le volume dépasse la capacité Replit, recommande une alternative (Railway, fly.io). Livrable : docs/infra/infrastructure.md section "Data pipelines".
+
+Puis @fullstack : lis docs/ia/data-pipeline-architecture.md et docs/infra/infrastructure.md. Implémente :
+1. Connecteurs sources dans src/lib/pipelines/ (un fichier par source).
+2. Transformateurs dans src/lib/pipelines/transforms/ (fonctions pures, testables).
+3. Schema Prisma pour les tables staging et clean.
+4. Route admin /api/admin/pipelines (status, trigger manuel, historique).
+5. Tests unitaires pour chaque transformateur.
+
+Critères de validation : chaque source a un connecteur avec gestion d'erreur, les transformations sont testées unitairement, les pipelines sont idempotents, le monitoring alerte en cas d'échec, le schéma PostgreSQL est optimisé (index, types corrects).`
+      },
+      {
+        title:"Fine-tuning et prompt engineering avancé",
+        agents:["ia","data-analyst"],
+        quand:"Le produit utilise des LLM et les prompts actuels sont soit trop coûteux, soit inconsistants en qualité. Optimiser avant de scaler — un prompt 2x meilleur coûte souvent 3x moins cher (modèle plus petit suffisant). Si coupure : 'Lis docs/ia/prompt-optimization.md et docs/ia/prompt-library.md, quels agents restent ?'",
+        prompt:`@ia Lis project-context.md (IA utilisée, budget IA). Lis docs/ia/ai-architecture.md et docs/ia/prompt-library.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels use cases LLM dans le produit, quels modèles utilisés, quel coût mensuel actuel, quels problèmes de qualité observés.
+
+Audit et optimisation des prompts :
+1. Inventaire : lister chaque appel LLM dans le produit (Grep sur les appels API). Pour chacun : use case, modèle actuel, tokens moyens (input + output), coût/appel, fréquence, qualité perçue (1-5).
+2. Stratégie d'optimisation par prompt :
+   - Few-shot : ajouter 2-3 exemples représentatifs pour les tâches de classification ou extraction.
+   - Chain-of-thought : pour les tâches de raisonnement, ajouter "Raisonne étape par étape" et structurer la réponse.
+   - Structured output : forcer le JSON/XML pour les réponses parsées programmatiquement (réduire les erreurs de parsing de >80%).
+   - System prompt : séparer les instructions stables (system) des données variables (user). Réduire la répétition.
+   - Prompt compression : identifier les instructions redondantes ou inutiles, mesurer l'impact de leur suppression.
+3. Sélection de modèle par tâche : matrice use case × modèle recommandé. Règle : utiliser le modèle le moins cher qui atteint la qualité requise. Haiku pour la classification/extraction simple, Sonnet pour la génération/raisonnement, Opus uniquement pour les tâches complexes multi-étapes.
+4. Prompt library : template structuré pour chaque prompt (nom, version, system prompt, user prompt template, variables, modèle, temperature, max_tokens, exemples de test).
+5. Fallback chains : si le modèle principal échoue (timeout, rate limit, réponse invalide), cascade vers un modèle de secours. Retry avec prompt simplifié si la réponse est hors format.
+6. A/B testing : framework pour tester 2 versions d'un prompt sur le même trafic. Métriques : qualité (évaluation humaine ou LLM-as-judge), coût, latence. Durée minimale de test : 100 exécutions par variante.
+7. Optimisation des coûts : prompt caching (réponses identiques pour les mêmes inputs), batching des requêtes non temps réel, estimation du coût mensuel après optimisation vs avant.
+
+Livrable : docs/ia/prompt-optimization.md + docs/ia/prompt-library.md (mis à jour ou créé).
+
+Puis @data-analyst : lis project-context.md et docs/ia/prompt-optimization.md. Configure le suivi des métriques LLM : coût par use case par jour, latence P50/P95, taux d'erreur par modèle, qualité par prompt (si LLM-as-judge est en place). Dashboard avec tendances sur 30 jours. Alerte si coût journalier > 120% de la moyenne ou si taux d'erreur > 5%. Livrable : docs/analytics/tracking-plan.md section "LLM metrics".
+
+Critères de validation : chaque prompt du produit est documenté dans la prompt library avec version et exemples de test, le coût mensuel estimé après optimisation est documenté, la matrice modèle × use case est justifiée, les fallback chains sont implémentées, le A/B testing framework est opérationnel.`
       }
     ]
   },
@@ -1943,6 +2051,41 @@ Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-v
 Puis @data-analyst : lis docs/growth/email-automation-plan.md et configure le tracking : events d'ouverture/clic/conversion par séquence, dashboard de performance email (taux par séquence, par cohorte, tendance), alertes si délivrabilité < 95% ou désabonnement > 1%. Mets à jour docs/analytics/tracking-plan.md.
 
 Critères de validation : chaque séquence a un trigger, un timing et un objectif mesurable, les templates sont rédigés et conformes RGPD, le tracking par séquence est configuré, les métriques cibles sont définies.`
+      },
+      {
+        title:"Automatisation marketing complète",
+        agents:["growth","ia","fullstack","copywriter"],
+        quand:"Le produit a une audience (même petite) et tu veux scaler le contenu sans y passer tes journées. Règle Gradient Agents : ne jamais recommander une stratégie de contenu qui suppose une production manuelle régulière. Un fondateur solo ne peut pas produire 20 posts/semaine — l'IA si. Si coupure : 'Lis docs/growth/marketing-automation-plan.md et docs/ia/prompt-library.md section Content automation, quels agents restent ?'",
+        prompt:`@growth Lis project-context.md (persona, canaux d'acquisition, budget). Lis docs/growth/growth-strategy.md, docs/seo/seo-strategy.md et docs/social/social-strategy.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels canaux de contenu actifs (blog, LinkedIn, Twitter/X, newsletter, YouTube), quelle fréquence cible, quel ton de marque, quels sujets.
+
+Rappel : cette stratégie applique la règle CLAUDE.md "Automatisation par défaut du contenu récurrent". Chaque canal DOIT documenter comment il s'automatise.
+
+Stratégie d'automatisation marketing :
+1. Audit des canaux de contenu : pour chaque canal actif, documenter le workflow actuel (manuel vs semi-auto vs full auto), la fréquence actuelle vs cible, le ROI estimé (trafic/leads par contenu publié).
+2. Pipeline de génération de contenu IA :
+   - Blog/SEO : template de prompt par type d'article (how-to, comparatif, case study, listicle). Input : keyword + brief → Output : article structuré avec meta title/description. Workflow : génération → review humain rapide (5 min) → publication.
+   - Social : repurposing automatique d'un article en 3-5 posts (LinkedIn, Twitter/X, thread). Adaptation du format et du ton par plateforme. Template de prompt par plateforme.
+   - Newsletter : agrégation automatique des contenus de la semaine + édito généré. Template avec sections récurrentes.
+   - Email nurturing : séquences déclenchées par comportement (voir prompt "Emailing automation" pour le détail).
+3. Scheduling et publication : choix de l'outil (Buffer, Typefully, Resend, ou API directe). Calendrier éditorial automatisé : X articles/semaine, Y posts sociaux/jour, Z newsletters/mois. Horaires optimaux par plateforme.
+4. Repurposing cross-canal : un contenu source (article, vidéo, podcast) → déclinaison automatique sur tous les canaux. Matrice source → déclinaisons avec prompt template pour chaque transformation.
+5. Triggers comportementaux : contenu personnalisé déclenché par des actions utilisateur (signup → welcome sequence, feature usage → tips, inactivité → réengagement). Mapper chaque trigger à un contenu.
+6. Métriques et feedback loop : taux d'engagement par contenu généré vs contenu manuel (objectif : ≥ 80% de la performance manuelle), coût par contenu (tokens IA + temps de review), volume de publication vs objectif. A/B testing automatisé : 2 variantes de titre/hook, sélection automatique après 100 impressions.
+7. Garde-fous qualité : checklist de review avant publication automatique (factualité, ton de marque, pas de hallucination, conformité RGPD), blacklist de sujets sensibles, approbation humaine requise pour les contenus controversés.
+
+Livrable : docs/growth/marketing-automation-plan.md.
+
+Puis @ia : lis docs/growth/marketing-automation-plan.md. Conçois les prompts de génération pour chaque type de contenu : system prompt (ton, contraintes, format), user prompt template (variables : sujet, keyword, audience), few-shot examples. Optimise pour le modèle le moins cher qui atteint la qualité requise. Estime le coût mensuel de la production automatisée. Livrable : docs/ia/prompt-library.md section "Content automation".
+
+Puis @fullstack : lis docs/growth/marketing-automation-plan.md et docs/ia/prompt-library.md. Implémente :
+1. Crons de génération dans src/scripts/ (article generator, social post generator).
+2. API routes : POST /api/admin/content/generate (type, sujet, canal), GET /api/admin/content/queue (contenus en attente de review), PATCH /api/admin/content/:id/approve.
+3. Intégration APIs de publication si applicable (Buffer, Resend, ou API social directe).
+4. Dashboard admin minimaliste pour la file de review.
+
+Puis @copywriter : lis docs/growth/marketing-automation-plan.md et docs/copy/brand-voice.md. Rédige les templates de contenu pour chaque canal avec le ton de marque : structure d'article type (intro hook, sections, CTA), format de post LinkedIn (hook → insight → CTA), format tweet/thread, template newsletter. Ces templates servent de few-shot pour les prompts IA. Livrable : docs/copy/content-templates.md.
+
+Critères de validation : chaque canal a un workflow automatisé documenté, les prompts de génération sont testés avec 3 exemples par type, le coût mensuel d'automatisation est estimé, les garde-fous qualité sont en place, le calendrier éditorial est réaliste pour un fondateur solo (review < 30 min/jour).`
       }
     ]
   },
@@ -2138,6 +2281,36 @@ Puis @fullstack : lis docs/infra/security-audit.md et corrige toutes les vulnér
 Puis @legal : lis docs/infra/security-audit.md et vérifie la conformité avec les obligations de sécurité RGPD (article 32 : mesures techniques et organisationnelles appropriées). Documente les mesures de sécurité dans le registre des traitements. Si des données sensibles (santé, financières) sont traitées, vérifier les obligations sectorielles. Mets à jour docs/legal/rgpd-checklist.md.
 
 Critères de validation : zéro vulnérabilité critique ou high restante, les headers de sécurité sont tous configurés, npm audit passe sans CVE critique, aucun secret dans le code ou les logs, le pentest léger ne révèle pas d'IDOR ou de privilege escalation.`
+      },
+      {
+        title:"Évaluation des outputs IA (evals)",
+        agents:["ia","qa","data-analyst"],
+        quand:"Le produit utilise des LLM en production et tu veux mesurer objectivement la qualité des réponses. Sans evals, tu navigues à l'aveugle — un changement de prompt ou de modèle peut dégrader silencieusement la qualité. Si coupure : 'Lis docs/ia/eval-framework.md et docs/qa/qa-strategy.md section LLM evals, quels agents restent ?'",
+        prompt:`@ia Lis project-context.md (IA utilisée, use cases LLM). Lis docs/ia/ai-architecture.md et docs/ia/prompt-library.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels use cases LLM dans le produit (génération de texte, classification, extraction, RAG, conversation), quels modèles utilisés, quels critères de qualité importants par use case.
+
+Framework d'évaluation des outputs LLM :
+1. Métriques par use case : définir les dimensions de qualité pour chaque use case LLM. Exemples :
+   - Génération de texte : pertinence (1-5), factualité (binaire), ton conforme au brand voice (1-5), format respecté (binaire), longueur dans la fourchette (binaire).
+   - RAG : faithfulness (la réponse est-elle fidèle aux sources ?), relevance (les sources récupérées sont-elles pertinentes ?), completeness (la réponse couvre-t-elle la question ?).
+   - Classification : accuracy, precision, recall, F1 par classe.
+   - Extraction : champs extraits vs attendus, taux d'erreur par champ.
+2. Golden dataset : pour chaque use case, créer un dataset de test avec input + output attendu + score de référence. Minimum 50 cas par use case (couvrir les edge cases : inputs longs, multilingue, ambigus, adversariaux). Format : JSON avec champs input, expected_output, tags, difficulty.
+3. LLM-as-judge : configurer un modèle évaluateur (Claude Sonnet recommandé) avec un prompt de scoring structuré. Le juge évalue chaque dimension sur l'échelle définie. Calibration : faire évaluer 20 cas par un humain ET par le juge, mesurer la corrélation (objectif : > 0.8).
+4. Pipeline d'évaluation automatisé : script qui exécute le golden dataset → collecte les outputs → les soumet au juge → agrège les scores. Exécution : à chaque changement de prompt ou de modèle, et en cron hebdomadaire sur la production.
+5. Alertes de dégradation : seuil minimum par métrique (ex : pertinence > 3.5/5, factualité > 95%). Si un score passe sous le seuil après un changement → rollback automatique du prompt ou alerte immédiate. Tendance : alerte si dégradation > 10% sur 7 jours.
+6. Dashboard de suivi : scores par use case, par modèle, par version de prompt. Comparaison avant/après chaque changement. Histogramme des scores pour identifier la distribution (un score moyen de 4/5 peut cacher des 1/5 fréquents).
+
+Livrable : docs/ia/eval-framework.md + golden datasets dans tests/evals/ (un fichier JSON par use case).
+
+Puis @qa : lis docs/ia/eval-framework.md. Intègre les evals dans la CI/CD :
+1. Test automatique : à chaque PR qui modifie un prompt ou un appel LLM, exécuter le golden dataset correspondant. Fail si score < seuil.
+2. Tests de non-régression : comparer les scores avant/après modification. Fail si dégradation > 5% sur une métrique.
+3. Tests adversariaux : inputs conçus pour faire halluciner ou dérailler le modèle (prompt injection, inputs vides, inputs très longs, langues non supportées). Le modèle doit répondre "je ne sais pas" ou refuser proprement.
+Livrable : docs/qa/qa-strategy.md section "LLM evals".
+
+Puis @data-analyst : lis docs/ia/eval-framework.md. Configure le tracking des scores en production : log chaque évaluation avec timestamp, use case, modèle, prompt version, scores par dimension. Dashboard avec filtres (période, use case, modèle). Cohorte analysis : la qualité varie-t-elle selon le type d'utilisateur ? Alerte si volume d'évaluations < seuil (le pipeline est peut-être cassé). Livrable : docs/analytics/tracking-plan.md section "LLM quality metrics".
+
+Critères de validation : chaque use case LLM a un golden dataset de ≥ 50 cas, le LLM-as-judge est calibré (corrélation > 0.8 avec évaluation humaine), le pipeline d'évaluation s'exécute en CI, les alertes de dégradation sont configurées, le dashboard est opérationnel.`
       }
     ]
   },
