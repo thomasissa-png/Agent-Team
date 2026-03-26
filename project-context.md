@@ -37,10 +37,10 @@
 - **Budget infra mensuel** : 0 (GitHub Pages)
 - **Budget acquisition mensuel** : 0
 - **Timeline** : En production
-- **Contraintes specifiques** : Les 59 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
+- **Contraintes specifiques** : Les 88 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
 
 ## Notes libres
-Mission actuelle : audit exhaustif des 59 prompts de la bibliotheque par les 18 agents du framework. Chaque agent evalue selon sa perspective propre.
+Mission actuelle : framework consolide a 9/10 avec 88 prompts. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
 
 ## Historique des interventions agents
 | Agent | Date | Fichiers | Decisions cles | Pourquoi |

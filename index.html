@@ -486,7 +486,7 @@ const PROMPTS = [
     items:[
       {
         title:"Définir mon projet (obligatoire en premier)",
-        agents:["orchestrator","legal"],
+        agents:["orchestrator"],
         quand:"Premier prompt à lancer — crée automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler. Astuce : lancez Claude avec claude -n \'setup-monprojet\' pour nommer cette session et la retrouver facilement.",
         prompt:`Lis templates/project-context.md pour la structure complète. Si project-context.md existe déjà à la racine, lis-le et propose de mettre à jour les champs modifiés (ne pas écraser les données existantes). Sinon, crée-le avec les informations ci-dessous. Remplis tous les champs. Voici les infos :
 
@@ -1010,10 +1010,6 @@ Définis la stratégie de pricing complète :
 6. Modélisation : estimation ARPU cible, projection MRR à 6 mois selon 3 scénarios (conservateur, base, optimiste). Hypothèses explicites pour chaque scénario.
 
 Livrable : docs/product/pricing-strategy.md.
-
-Puis @growth : lis docs/product/pricing-strategy.md et valide la cohérence avec la stratégie d'acquisition. Vérifie que le CAC estimé par canal est compatible avec la LTV du plan d'entrée (LTV/CAC > 3x). Signale les incohérences. Ajoute la section "Unit Economics" dans docs/growth/growth-strategy.md.
-
-Puis @legal : lis docs/product/pricing-strategy.md et vérifie la conformité des conditions commerciales (droit de rétractation, transparence tarifaire, CGV). Signale les obligations légales liées au pricing (affichage TVA, mentions obligatoires e-commerce). Note dans docs/legal/legal-audit.md.
 
 Section avancée (si multi-segments ou international) :
 7. Pricing dynamique : axes de différenciation tarifaire (usage, segment startup vs enterprise, géographie/PPP, engagement annuel vs mensuel). Justifier chaque différentiel par la valeur perçue.
@@ -2990,7 +2986,7 @@ const CHANGELOG = [
   <p class="hero-sub">Une équipe de 19 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement.</p>
   <div class="hero-stats">
     <div class="hero-stat"><span class="stat-num">19</span><span class="stat-label">Agents</span></div>
-    <div class="hero-stat"><span class="stat-num">77</span><span class="stat-label">Prompts</span></div>
+    <div class="hero-stat"><span class="stat-num">88</span><span class="stat-label">Prompts</span></div>
     <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
   </div>
 </div>
