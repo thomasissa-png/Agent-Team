@@ -881,7 +881,7 @@ Benchmark 3-5 concurrents via WebSearch (noms réels, positionnement, prix, forc
 
 Structurer le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
 
-Dans le brand-platform, inclure une section "Agents spécialisés recommandés" : analyser le persona, le parcours client et les risques projet pour identifier les agents custom à créer par @agent-factory (expert métier, testeur persona, validateur sectoriel). Justifier chaque recommandation par un lien direct avec le persona ou un risque projet.
+Dans le brand-platform, inclure une section "Agents spécialisés recommandés" : analyser le persona, le parcours client et les risques projet pour identifier les agents custom à créer par @agent-factory (expert métier, testeur-persona, testeur-client-du-persona, validateur sectoriel). Obligatoire : un agent testeur-persona (incarne l'utilisateur direct) et un agent testeur-client-du-persona (incarne le client/interlocuteur de notre persona — sauf B2C direct). Documenter aussi les personas des clients de nos personas dans personas.md (nom, rôle, frustrations, vocabulaire, critères d'évaluation).
 
 Livrables (un fichier à la fois) : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md.
 
@@ -1121,7 +1121,7 @@ Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (
 
 Pour chaque flow, inclure un bloc "Critères de validation UX" : test parcours persona (objectif atteignable sans aide), test charge cognitive (≤ 3 actions par écran), test time-to-value (≤ 3 étapes), edge cases UX (états vides, erreurs, retour après inactivité), accessibilité WCAG 2.2 AA.
 
-Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (testeurs persona, experts parcours métier) à créer par @agent-factory.
+Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (testeur-persona, testeur-client-du-persona, experts parcours métier) à créer par @agent-factory. Les 2 agents testeurs sont obligatoires par projet (sauf B2C direct pour le testeur-client-du-persona).
 
 Accessibilité : vérifier que chaque parcours est navigable au clavier et que la hiérarchie des headings est logique.
 
