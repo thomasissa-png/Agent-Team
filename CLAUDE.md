@@ -347,6 +347,36 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G24 | Registre tu/vous uniforme dans le livrable (0 alternance non justifiée) | REQUIS | Pour copy/contenu : Grep `tu \|ton \|votre \|vous ` — vérifier cohérence |
 | G25 | Chaque KPI/métrique a une formule de calcul explicite ET un seuil d'alerte défini | REQUIS | Pour analytics/KPI : chaque KPI a (formule ou trigger) + seuil. Grep `formule\|calcul\|seuil\|alerte` |
 
+**GATES TESTEUR-PERSONA (s'appliquent si agents testeurs créés — voir orchestrator.md Phases 1b, 2c, 2d, 5b)**
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| GP1 | Compréhension immédiate | BLOQUANT | "En 5 secondes, je comprends ce que ce site fait pour moi" |
+| GP2 | Valeur perçue | BLOQUANT | "La valeur promise justifie le prix affiché — j'en ai pour mon argent" |
+| GP3 | Crédibilité | BLOQUANT | "Ce site me donne confiance (design pro, preuves sociales, pas de bullshit)" |
+| GP4 | Parcours fluide | BLOQUANT | "Je sais où cliquer à chaque étape, je ne suis jamais perdu" |
+| GP5 | Pricing acceptable | REQUIS | "Le prix ne me fait pas fuir — le ROI est évident" |
+| GP6 | Recommandation | REQUIS | "Je recommanderais ce service à un collègue de mon métier" |
+| GP7 | Conviction | BLOQUANT | "Après avoir vu la landing + un essai, je suis convaincu de m'inscrire" |
+| GP8 | Look & feel | REQUIS | "Le design correspond à mon secteur — ni trop cheap ni trop corporate" |
+| GP9 | Outputs utiles | BLOQUANT | "Les documents/livrables que la plateforme génère me sont vraiment utiles" |
+| GP10 | Fidélisation | REQUIS | "Je vois pourquoi je resterais abonné mois après mois" |
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| GC1 | Professionnalisme | BLOQUANT | "Ce document fait professionnel — pas généré par IA" |
+| GC2 | Pertinence | BLOQUANT | "Le contenu répond précisément à mes attentes/critères" |
+| GC3 | Confiance | BLOQUANT | "Ce document me donne confiance dans le prestataire" |
+| GC4 | Action | BLOQUANT | "Après lecture, je suis enclin à contacter/signer/retenir ce prestataire" |
+| GC5 | Complétude | REQUIS | "Il ne manque aucune information critique" |
+| GC6 | Différenciation | REQUIS | "Ce livrable se distingue positivement de ce que je reçois habituellement" |
+| GC7 | Ton et registre | REQUIS | "Le ton est adapté à mon contexte" |
+| GC8 | Zéro erreur factuelle | BLOQUANT | "Aucune information fausse, incohérente ou inventée" |
+| GC9 | Copy convaincant | REQUIS | "Les arguments sont pertinents et hiérarchisés" |
+| GC10 | Design/mise en page | REQUIS | "La présentation est soignée, structurée, facile à lire" |
+
+**Conditions d'application** : les gates GP/GC s'appliquent uniquement si les agents testeur-persona et testeur-client-du-persona ont été créés (Phase 0b). Si non créés → N/A. **Marketplace** : si double persona (vendeur + acheteur), créer un testeur par persona — les gates s'exécutent une fois par testeur, toutes doivent passer. **B2C direct** : gates GC = N/A si le persona n'a pas de client professionnel.
+
 ### Verdict
 
 - **GO** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS
@@ -366,8 +396,6 @@ Les grilles persona (/10, 9 dimensions, seuil 9/10) et B2B (/10, 7 dimensions, s
 - Le persona est nommé dans le livrable (pas "l'utilisateur" mais le nom défini dans project-context.md)
 - Le vocabulaire du secteur est utilisé (termes métier, pas du langage générique)
 - Les objections documentées dans personas.md (si existe) sont adressées dans le livrable
-
-**Condition GO finale** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + gates persona PASS (>= 9/10) + gates B2B PASS (>= 9/10, si applicable).
 
 **Condition GO finale** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + gates persona PASS (>= 9/10) + gates B2B PASS (>= 9/10, si applicable).
 

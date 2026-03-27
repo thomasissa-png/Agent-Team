@@ -531,7 +531,8 @@ Après le checkpoint Phase 0, vérifier si les livrables de Phase 0 contiennent 
    - **Agent "testeur-client-du-persona"** : incarne le client/interlocuteur de notre persona (la personne avec qui notre persona interagit dans son métier). Évalue si les livrables produits PAR notre persona (via notre outil) satisfont les attentes de son client. (ex : MarchésFaciles → "acheteur-public" qui évalue les mémoires techniques ; ImmoCrew → "acheteur-immobilier" qui évalue les annonces)
    - Si @creative-strategy n'a pas recommandé ces 2 agents → les ajouter d'office et lancer @agent-factory
    - **Exception B2C direct / outil interne** : si le persona utilise le produit pour lui-même (pas dans un contexte professionnel avec des clients/interlocuteurs), l'agent `testeur-client-du-persona` n'est PAS requis. Seul l'agent `testeur-persona` est obligatoire. Critère : si la section "personas clients-de-clients" de personas.md est vide ou marquée N/A → ne pas créer l'agent
-   - Ces 2 agents sont invoqués systématiquement en Phase 2 (après la revue UX : évaluer l'UX et les contenus du point de vue persona/client — "est-ce que je comprends cette page ?", "est-ce que ce parcours me convainc ?") et Phase 5b (audit final page par page : revue exhaustive de l'expérience avec focus sur les corrections appliquées)
+   - **Marketplace / double persona** : créer un agent testeur-persona PAR persona principal (ex: `testeur-persona-vendeur` + `testeur-persona-acheteur`). Les gates GP1-GP10 s'exécutent une fois par testeur. Toutes les gates de TOUS les testeurs doivent être PASS. Idem pour les testeurs-client si applicable
+   - Ces 2+ agents sont invoqués en Phase 1b (stratégie), Phase 2c/2d (site + outputs), et Phase 5b (audit final)
 5. Après création → réinventarier les agents disponibles et ajuster le plan d'orchestration pour les intégrer dans les phases suivantes
 6. Si aucune recommandation et pas de persona identifié → passer directement à Phase 1 (cas rare : projets framework/outils sans utilisateur final)
 
@@ -552,6 +553,7 @@ Invoquer `testeur-persona` sur les livrables Phase 0 + Phase 1 :
 Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "Agents spécialisés recommandés". Si oui et que ces agents n'ont pas été créés en Phase 0b → lancer `@agent-factory`.
 
 **Phase 2c — Revue testeur-persona sur le site (OBLIGATOIRE si code existe) :**
+Vérifier que `.claude/agents/testeur-persona-*.md` existe (Glob). S'il n'existe pas → lancer `@agent-factory` pour le créer MAINTENANT (specs depuis personas.md) avant de continuer.
 Invoquer `testeur-persona` sur le site/app développé. Naviguer le site complet page par page du point de vue du persona.
 
 **Gates testeur-persona (GP — PASS/FAIL) :**
@@ -571,6 +573,7 @@ Invoquer `testeur-persona` sur le site/app développé. Naviguer le site complet
 Si 1+ gate FAIL → documenter les objections précises, relancer les agents concernés (@copywriter, @design, @fullstack, @ux selon le problème). Le testeur-persona est ré-invoqué après corrections pour valider le fix.
 
 **Phase 2d — Revue testeur-client-du-persona sur les outputs (OBLIGATOIRE si la plateforme génère des livrables) :**
+Vérifier que `.claude/agents/testeur-client-*.md` existe (Glob). S'il n'existe pas → lancer `@agent-factory` pour le créer MAINTENANT (specs depuis personas.md section clients-de-clients) avant de continuer.
 Invoquer `testeur-client-du-persona` sur les outputs générés par la plateforme. Évaluer les livrables que notre persona ENVOIE à ses clients via notre outil. Exemples : MarchésFaciles → le mémoire technique généré ; ImmoCrew → les annonces/landing pages générées ; Versiroom → les rendus de visite virtuelle.
 
 **Gates testeur-client-du-persona (GC — PASS/FAIL) :**
@@ -617,7 +620,7 @@ Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer
 4. @ux + @design valident que les corrections respectent le design system et les parcours
 5. @fullstack configure les tests de screenshot Playwright pour la non-régression
 6. **Testeur-persona** : ré-invoquer sur le site final corrigé. Toutes les gates GP1-GP10 doivent passer. Focus sur les corrections appliquées depuis Phase 2c
-7. **Testeur-client-du-persona** (si applicable) : ré-invoquer sur les outputs finaux. Toutes les gates GC1-GC10 doivent passer. Générer un output réel et le faire évaluer
+7. **Testeur-client-du-persona** (si applicable — même critère que Phase 2d : N/A si B2C direct/outil interne sans client professionnel) : ré-invoquer sur les outputs finaux. Toutes les gates GC1-GC10 doivent passer. Générer un output réel et le faire évaluer
 Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).
 
 **Règles de parallélisation :**
