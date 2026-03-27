@@ -84,9 +84,16 @@ Chaque critère DOIT être binaire (PASS/FAIL). Interdits : "devrait être intui
 
 #### Payload API (si applicable)
 - **Endpoint** : [METHOD /path]
+- **Authentification** : [publique / token Bearer / session cookie]
+- **Rate limit** : [X requêtes/min ou N/A]
 - **Request body** : [JSON schema simplifié]
 - **Response succès** : [JSON schema + status code]
 - **Response erreur** : [JSON schema + status codes possibles]
+
+#### Events analytics
+| Event | Trigger | Propriétés | Funnel |
+|---|---|---|---|
+| [nom_event] | [action qui déclenche] | [propriétés clés] | [acquisition/activation/retention/revenue] |
 
 #### Notes pour @qa
 [Scénarios de test spécifiques à dériver, cas de non-régression si modification d'existant]
@@ -101,11 +108,12 @@ Chaque critère DOIT être binaire (PASS/FAIL). Interdits : "devrait être intui
 ### Règles du template
 
 1. **Pas de critère d'acceptance subjectif.** Si un critère contient "intuitif", "rapide", "joli", "bien", "ergonomique" → le réécrire avec une métrique : "le temps de chargement est < 200ms", "le contraste est >= 4.5:1", "l'utilisateur atteint le CTA en 2 clics max"
-2. **Minimum 3 critères happy path + 2 critères erreur + 2 critères cas limites** par user story. Si une story a moins de 7 critères, elle n'est pas prête.
+2. **Minimum 3 critères happy path + 2 critères erreur + 2 critères cas limites + 1 critère permissions + 1 critère données existantes** par user story. Si une story a moins de 9 critères, elle n'est pas prête.
 3. **Les 5 états UI sont obligatoires** pour chaque story impliquant un écran interactif (Gate G21). Pour les stories purement backend/data, marquer "N/A — story backend sans UI"
 4. **Le payload API est obligatoire** pour chaque story qui crée, modifie ou supprime des données. Pour les stories de consultation, marquer "GET uniquement — pas de body"
 5. **Le persona est nommé**, pas "l'utilisateur". Le persona provient de `project-context.md` ou `docs/strategy/personas.md`
 6. **Les transitions sont obligatoires** — chaque story définit d'où vient l'utilisateur et où il va. Pas de story isolée sans contexte de navigation
+7. **Triage par complexité.** Pour les stories purement backend, data, ou configuration (sans écran interactif), utiliser un template allégé : Job-to-be-done + Critères Given/When/Then + Payload API + Events analytics. Les sections "Contexte de navigation", "5 états UI", et "Notes pour @ux" sont marquées "N/A — story sans UI". Cela réduit le volume de ~40% et prévient la dégradation qualité par épuisement de context window sur les functional-specs à 20+ stories
 
 ## Protocole d'entrée obligatoire
 
@@ -175,6 +183,13 @@ Avant de livrer `functional-specs.md`, vérifier que TOUS les parcours suivants 
 - [ ] Export de données (RGPD — droit à la portabilité)
 - [ ] Gestion des notifications / préférences
 
+**Droits RGPD (si applicable — EU) :**
+- [ ] Retrait du consentement (cookies, tracking, newsletters)
+- [ ] Accès aux données personnelles (art. 15)
+- [ ] Rectification des données (art. 16)
+- [ ] Opposition au traitement (art. 21)
+- [ ] Information sur les traitements IA (si IA générative utilisée)
+
 **Erreurs et edge cases transversaux :**
 - [ ] Session expirée → reconnexion
 - [ ] Perte de connexion → mode dégradé ou message
@@ -203,7 +218,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Chaque user story suit-elle le template obligatoire (tous les champs remplis, 0 champ manquant) ?
-□ Chaque user story a-t-elle >= 3 critères happy path + >= 2 critères erreur + >= 2 cas limites (minimum 7 critères) ?
+□ Chaque user story a-t-elle >= 3 critères happy path + >= 2 critères erreur + >= 2 cas limites + >= 1 permissions + >= 1 données existantes (minimum 9 critères) ?
 □ Tous les critères d'acceptance sont-ils binaires PASS/FAIL (0 critère subjectif : "intuitif", "rapide", "ergonomique") ?
 □ Les 5 états UI (Gate G21) sont-ils documentés pour chaque story avec écran interactif ?
 □ Le contexte de navigation est-il complet (origine + déclencheur + destination succès + destination erreur) ?
@@ -213,6 +228,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ @qa peut-il dériver ses tests UNIQUEMENT à partir des user stories, sans poser de question ?
 □ @fullstack peut-il coder UNIQUEMENT à partir des user stories, sans deviner de type/validation/comportement ?
 □ @ux peut-il wireframer UNIQUEMENT à partir des user stories, sans inventer de transition/état ?
+□ Chaque story définit-elle les events analytics que @data-analyst pourra intégrer au tracking-plan ?
 □ La priorisation est-elle chiffrée (RICE/ICE) et pas basée sur l'intuition ?
 □ Le scope V1 est-il complet — chaque feature retirée l'est-elle parce qu'elle n'apporte pas de valeur au persona (pas "trop longue à coder") ?
 □ Le plan de recherche utilisateur identifie-t-il les hypothèses critiques à valider en premier ?
