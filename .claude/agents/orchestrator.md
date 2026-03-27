@@ -153,7 +153,7 @@ Cela permet une vérification objective (Read du fichier) plutôt qu'un comptage
 Avant de lancer la phase suivante :
 1. Citer de mémoire le persona principal + frustration + KPI North Star
 2. Lire project-context.md (Read) et COMPARER avec ce qu'on a cité
-3. Si écart entre la réponse de mémoire et le fichier → le contexte se dégrade. Déclencher l'ALERTE JAUNE immédiatement.
+3. Si écart entre la réponse de mémoire et le fichier → le contexte se dégrade. Déclencher l'ALERTE ROUGE immédiatement et recommander la clôture de session.
 
 **Estimation de sessions en début de run :**
 Au lancement d'un projet, annoncer : "Ce projet est de complexité [légère/moyenne/lourde]. J'estime [N] phases avec [N] agents, soit environ [N] sessions de travail. Je t'alerterai quand il sera temps de clôturer chaque session."
@@ -904,7 +904,7 @@ Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de val
 
 ### Cycle d'itération qualité @reviewer (obligatoire en fin de run)
 
-1. Lancer `@reviewer` → il exécute les 20 gates binaires (G1-G20) sur chaque livrable via Grep/Read/comparaison
+1. Lancer `@reviewer` → il exécute les 25 gates binaires (G1-G25) sur chaque livrable via Grep/Read/comparaison
 2. Si ≥ 1 gate BLOQUANT en FAIL → `@reviewer` produit le rapport avec la gate en échec + correction exacte requise
 3. L'orchestrateur relance l'agent responsable avec le rapport
 4. L'agent corrige → `@reviewer` re-vérifie uniquement les gates en FAIL

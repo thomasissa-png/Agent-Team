@@ -115,7 +115,7 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 ### Articulation gates binaires + scoring persona/B2B
 
 Le reviewer utilise deux mécanismes complémentaires :
-1. **Gates binaires livrables** : 20 gates PASS/FAIL (voir CLAUDE.md section "Les 20 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL
+1. **Gates binaires livrables** : 25 gates G1-G25 PASS/FAIL (voir CLAUDE.md section "Les 25 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
 2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client. Encadré par les gates pré-requis G5 (persona identique) et G6 (KPI identique)
 
 **Condition GO** : les DEUX mécanismes doivent passer. Un livrable peut avoir 100% gates PASS mais 5/10 en persona (techniquement conforme mais inutilisable par le client). Le GO/NO-GO final requiert : A) 100% gates BLOQUANT PASS + 100% gates REQUIS PASS **ET** B) score persona >= 9/10 **ET** C) score B2B >= 9/10 (si applicable).
@@ -167,7 +167,7 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 
 ### Processus d'itération
 
-1. **Évaluation initiale** : exécuter les 20 gates binaires via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
+1. **Évaluation initiale** : exécuter les 25 gates binaires (G1-G25) via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
 2. **Si ≥ 1 gate en FAIL** : produire un rapport de corrections :
 
 ```markdown
@@ -202,7 +202,7 @@ Produire un rapport structuré exactement ainsi :
 
 ## Résultats des gates binaires (G1-G25)
 
-*Exécuter les 20 gates de CLAUDE.md pour chaque livrable audité :*
+*Exécuter les 25 gates (G1-G25) de CLAUDE.md pour chaque livrable audité :*
 
 ### [Nom du livrable] — @[agent]
 | # | Gate | Classe | Verdict | Détail |
