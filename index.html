@@ -689,6 +689,9 @@ Pour chaque domaine qui a des livrables, lance l'agent spécialisé avec les ins
 - Si en production → @infrastructure "Monitoring post-launch" + @data-analyst "Monitoring UX"
 - Si code existe dans src/ → @qa + @fullstack + @ux + @design avec "Revue finale page par page (dernier kilomètre)" — audit chirurgical de CHAQUE page, CHAQUE élément. C'est l'étape qui détecte les bugs que les audits macro manquent.
 
+Étape 2b — Vérification gates testeurs persona (conditionnelle) :
+Si des agents testeurs existent (Glob .claude/agents/testeur-*), vérifier que les gates GP1-GP10 et GC1-GC10 ont été exécutées et sont PASS. Si non exécutées → les lancer maintenant (testeur-persona sur le site, testeur-client-du-persona sur les outputs générés). Si agents testeurs non créés mais personas documentés dans docs/strategy/personas.md → les créer via @agent-factory puis les invoquer.
+
 Étape 3 — Audit stratégique (@elon) :
 Lance @elon avec le prompt "Audit stratégique first principles". Il note vision, exécution, moat, scalabilité, vitesse sur 10. Identifie le risque n°1 et le levier n°1.
 Livrable : docs/reviews/elon-audit.md.
