@@ -31,6 +31,10 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-26 | ImmoCrew | Admin valide avant automatisation complète — le flow de production reste déclenché manuellement tant que le pipeline n'est pas prouvé. | Auto-produce prêt mais désactivé, validation humaine d'abord |
 | 2026-03-26 | ImmoCrew | Résiliation = perte d'accès aux livrables — les livrables sont liés à l'abonnement actif, pas acquis à vie. | Décision business : incentive au maintien de l'abonnement |
 | 2026-03-26 | ImmoCrew | Valeurs business centralisées — jamais de prix hardcodé dans 15+ fichiers. Un fichier config unique (pricing.ts). | Changement de prix a nécessité une passe Grep sur tout le code |
+| 2026-03-27 | Agent-Team | Les outputs générés par la plateforme doivent être au niveau des meilleurs du secteur — WebSearch les références avant de produire. | "je veux que la création utilise toujours les meilleures références possibles par rapport au marché" |
+| 2026-03-27 | Agent-Team | Personas des clients de nos personas obligatoires — comprendre toute la chaîne de valeur (le mandataire ET son acheteur). | "je veux qu'il définisse non seulement les personas projet mais aussi les personas des clients de nos personas" |
+| 2026-03-27 | Agent-Team | Agents testeurs sur TOUS les angles : copy, design, contenu, pricing, conviction, recommandation, fidélisation. Pas de revue partielle. | "je veux qu'ils soient impliqués sur toutes les étapes, sur tous les angles" |
+| 2026-03-27 | Agent-Team | Les alertes de session ne doivent pas être frustantes — seule ROUGE conservée, pas de JAUNE qui interrompt. | "l'alerte arrive très tôt, c'est très frustrant et oblige à changer de session très souvent" |
 
 ---
 
@@ -63,4 +67,4 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 
 ---
 
-*Dernière mise à jour : 2026-03-26 — Sessions Gradient Agents + ImmoCrew S5*
+*Dernière mise à jour : 2026-03-27 — Sessions Gradient Agents + ImmoCrew S5*

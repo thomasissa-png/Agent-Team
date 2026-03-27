@@ -64,93 +64,53 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 25 gates bina
 
 | session 2026-03-26 | 2026-03-26 | index.html (89 prompts), CLAUDE.md (25 gates), orchestrator.md (carte reference + compteur session), reviewer.md (gates binaires), _base-agent-protocol.md (gates + learnings), fullstack.md (PostgreSQL + mindset), infrastructure.md (persistance Replit), moi.md (nouvel agent), product-manager.md (V1 pas MVP), docs/founder-preferences.md (nouveau), docs/reviews/prompts-quality-review.md | Session transformationnelle : (1) 6 prompts full IA crees + 5 techniques + 3 manquants + sélecteur guide, (2) refonte bibliotheque prompts (fusions, suppressions, reorg), (3) 3 prompts Tout-en-un optimises (autopilot parite qualite), (4) systeme gates binaires 25 PASS/FAIL remplace scoring 1-5, (5) cycle Idee/V1/Production/Croissance (plus de MVP/Beta), (6) prompt chirurgical 21 dimensions page par page, (7) pipeline contenu perpetuel avec anti-repetition, (8) protections PostgreSQL Replit, (9) agent @moi cree, (10) compteur session avec alertes, (11) learnings + founder-preferences cross-projets. | Session demandee par Thomas pour consolider le framework. Chaque changement audite par @ia/@elon/@qa a 9/10+ avant validation. Le scoring numerique 1-5 a ete remplace par des gates binaires sur proposition @elon (reproductible, pas d'inflation, chirurgical). Le concept MVP a ete supprime au profit de V1 complete (mindset IA). |
 
+| session 2026-03-27 | 2026-03-27 | CLAUDE.md (gates GP/GC, regles 13-14, seuils alertes), orchestrator.md (agents custom, anti-conflit, Phase 0b/1b/2c/2d/5a-bis/5b testeurs, marketplace), product-manager.md (template user story IA, checklist 25+ parcours, auto-eval 15 questions), seo.md (multi-moteurs Google+Bing, IndexNow, signaux sociaux), fullstack.md (valeurs business, UTF-8, calibration functional-specs), qa.md (Given/When/Then, 5 etats, payload API), data-analyst.md (events analytics consolidation), reviewer.md (gates 25, GP/GC), agent-factory.md (pattern testeurs standard), creative-strategy.md (personas clients-de-clients), _base-agent-protocol.md (calibration marche), copywriter.md (benchmark outputs), ia.md (benchmark outputs IA), index.html (6 prompts PM/QA alignes, point 9 autopilot), docs/founder-preferences.md (9 prefs ImmoCrew), docs/lessons-learned.md | Session massive : (1) Merge 50 commits dans master + references branche corrigees, (2) Learnings Versiroom + ImmoCrew integres (agents custom, anti-conflit, UTF-8, valeurs business, concurrents), (3) Seuils alertes releves + JAUNE supprime (6 phases / 18 Task producteurs, consultation ne compte pas), (4) SEO multi-moteurs Google+Bing (9 differences, IndexNow, signaux sociaux), (5) Template user story pipeline IA (Given/When/Then, 9 criteres min, 5 etats UI, payload API, events analytics, contexte navigation), (6) Checklist 25+ parcours user journey obligatoire, (7) Chaine inter-agents complete (PM→UX→fullstack→QA→data-analyst→reviewer), (8) Gates testeur-persona GP1-GP10 + testeur-client-du-persona GC1-GC10, (9) Agents testeurs obligatoires Phase 0b + invocations 1b/2c/2d/5b, (10) Personas clients-de-clients, (11) Calibration meilleures references marche, (12) Fix P1 QA : 20→25 gates + ALERTE JAUNE residuelle. | Session de consolidation et enrichissement massif. Chaque modification validee par @elon (first principles) puis @ia (audit 9.5/10) puis @qa (non-regression). Brainstorms @elon sur monetisation (value betting, service public, MarchesFaciles). |
+
 ---
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-03-26
+- **Date de cloture** : 2026-03-27
 - **Branche** : `claude/extract-project-context-BrqhN`
 
 ### Resume de la session
-Session transformationnelle du framework Gradient Agents. 30+ commits, 11 fichiers modifies. Axes principaux : (1) Bibliotheque de prompts refondee — 89 prompts, 10 categories, prompt chirurgical 21 dimensions, selecteur guide. (2) Systeme de qualite revolutionne — 25 gates binaires PASS/FAIL remplace le scoring subjectif 1-5 (reproductible, pas d'inflation). (3) Mindset IA renforce — cycle Idee/V1/Production/Croissance (plus de MVP/Beta), P2 tous corriges, choix techniques par valeur pas par facilite. (4) Agent @moi cree (proxy fondateur, Opus). (5) Pipeline contenu perpetuel avec anti-repetition + LLM-as-judge. (6) Protections PostgreSQL Replit (persistance). (7) Compteur de session avec alertes proactives. (8) Boucle learnings fermee + founder-preferences cross-projets.
+Session massive du framework Gradient Agents. 15+ commits, 15 fichiers modifies. Axes principaux : (1) Merge 50 commits dans master + references branche corrigees. (2) Learnings Versiroom + ImmoCrew integres (agents custom invocables, anti-conflit parallele, UTF-8, valeurs business centralisees, zero concurrent client-facing). (3) Seuils alertes releves : JAUNE supprime, ROUGE a 6 phases / 18 Task producteurs, distinction producteur/consultation. (4) SEO multi-moteurs Google+Bing (9 differences, IndexNow, signaux sociaux, Bing Webmaster Tools). (5) Template user story pipeline IA (Given/When/Then, 9 criteres min, 5 etats UI, payload API, events analytics, contexte navigation). (6) Checklist 25+ parcours user journey obligatoire. (7) Chaine inter-agents complete PM→UX→fullstack→QA→data-analyst→reviewer. (8) Gates testeur-persona GP1-GP10 + testeur-client-du-persona GC1-GC10 dans CLAUDE.md. (9) Agents testeurs obligatoires Phase 0b + invocations 1b/2c/2d/5a-bis/5b. (10) Personas clients-de-clients dans creative-strategy. (11) Calibration meilleures references marche dans _base-agent-protocol. (12) Fix QA : 20→25 gates partout + ALERTE JAUNE residuelle corrigee. (13) Brainstorms @elon : value betting, service public, MarchesFaciles.
 
 ### Livrables de cette session
 | Fichier | Statut | Notes |
 |---|---|---|
-| index.html | Complet | 89 prompts, 20 agents, 25 gates, 0 "4.5/5", 0 MVP actif, bug script fixe |
-| CLAUDE.md | Complet | 25 gates binaires, cycle V1, compteur session, learnings, founder-preferences |
-| orchestrator.md | Complet | Carte reference, Phase 5b chirurgicale, compteur session, gates |
-| reviewer.md | Complet | Rapport gates G1-G25, protocole iteration gates |
-| _base-agent-protocol.md | Complet | Self-check gates, anti-placeholder, vrais outputs |
-| fullstack.md | Complet | Mindset IA choix techniques, PostgreSQL persistance |
-| infrastructure.md | Complet | 7 protections PostgreSQL Replit |
-| moi.md | Complet | Nouvel agent, Opus, 25 dimensions, apprentissage continu |
-| product-manager.md | Complet | V1 pas MVP, scope V1 |
-| docs/founder-preferences.md | Complet | 12 preferences, 10 anti-patterns, style review |
-| docs/reviews/prompts-quality-review.md | Complet | Audit 6 prompts initiaux |
+| CLAUDE.md | Complet | Gates GP1-GP10 + GC1-GC10, regles 13 (UTF-8) + 14 (concurrents), seuils 6/18, 25 gates |
+| orchestrator.md | Complet | Agents custom, anti-conflit, Phase 0b/1b/2c/2d/5a-bis/5b testeurs, marketplace |
+| product-manager.md | Complet | Template user story IA, checklist 25+ parcours, auto-eval 15 questions |
+| seo.md | Complet | Multi-moteurs Google+Bing, 9 differences, IndexNow, signaux sociaux |
+| fullstack.md | Complet | Valeurs business, UTF-8, calibration functional-specs enrichie |
+| qa.md | Complet | Given/When/Then, 5 etats, payload API, events analytics |
+| data-analyst.md | Complet | Events analytics consolidation depuis functional-specs |
+| reviewer.md | Complet | 25 gates G1-G25, mention GP/GC |
+| agent-factory.md | Complet | Pattern agents testeurs standard |
+| creative-strategy.md | Complet | Personas clients-de-clients, exception B2C |
+| _base-agent-protocol.md | Complet | Calibration meilleures references marche |
+| copywriter.md | Complet | Benchmark outputs sectoriels |
+| ia.md | Complet | Benchmark outputs IA |
+| index.html | Complet | 6 prompts PM/QA alignes, point 9 autopilot (gates GP/GC) |
+| docs/founder-preferences.md | Complet | 9 preferences ImmoCrew, 14 anti-patterns |
 
 ### Travaux en cours / non termines
-Aucun blocker. Micro-corrections optionnelles :
-1. Quelques notes "/5" residuelles dans les prompts growth et ia (usage contextuel pour les evals LLM, pas le systeme de scoring principal)
-2. Merger la branche dans main pour que l'URL founder-preferences.md soit accessible cross-projets
+1. **Calibration marche dans 6 agents + 11 prompts** : la regle est dans _base-agent-protocol.md (lu par tous) et renforcee dans copywriter + ia. Mais fullstack, design, seo, social, growth, geo ne la renforcent pas individuellement, et 0/11 prompts client-facing de index.html ne la mentionnent. Learning P0 documente ci-dessous.
+2. **Brief MarchesFaciles** : @elon a prepare un brief complet (verbal, pas de fichier). A convertir en project-context.md pour lancer le projet.
+3. **Merger dans main** : la branche a des modifications significatives depuis le dernier merge.
 
 ### Prochaines actions recommandees
-1. **Merger dans main** : la branche contient toutes les ameliorations. L'URL founder-preferences.md pointe vers main. Priorite haute.
-2. **Test E2E PulseBoard ou ImmoCrew** : lancer un run complet autopilot pour valider les 25 gates, le prompt chirurgical, et le compteur de session en conditions reelles. Agent : @orchestrator. Priorite haute.
-3. **Mettre a jour README.md** : refleter les 20 agents, 89 prompts, 25 gates, cycle V1. Agent : edition directe. Priorite moyenne.
+1. **Propager la calibration marche** : appliquer les 9 corrections identifiees par @ia (6 agents + orchestrator + prompts + gates GC1/GC6). Priorite haute — c'est le dernier trou de qualite identifie.
+2. **Merger dans main** : pousser toutes les ameliorations sur main. Priorite haute.
+3. **Lancer MarchesFaciles** : creer le repo, convertir le brief @elon en project-context.md, lancer @orchestrator. Priorite haute si objectif monetisation rapide.
+4. **Test E2E autopilot** : valider les gates GP/GC, le template user story, et la chaine inter-agents en conditions reelles. Priorite haute.
 
 ### Blockers eventuels
-- Aucun blocker technique. Le framework est operationnel.
-- La branche doit etre mergee dans main pour que founder-preferences.md soit accessible par les autres projets.
+- Aucun blocker technique.
+- La calibration marche est partiellement implementee (protocole de base + 2 agents). Les 6 agents restants l'appliquent implicitement via _base-agent-protocol.md mais sans renforcement explicite.
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise). Le framework a 89 prompts, 20 agents, 25 gates binaires, cycle Idee/V1/Production/Croissance. Priorite : merger dans main puis test E2E autopilot sur un projet reel.
-```
-Session de consolidation majeure du framework Gradient Agents. 26 fichiers modifies, +679 lignes. Axes principaux : (1) Corrections M2/M5/C8 du framework-consistency-audit appliquees. (2) 5 nouvelles regles structurantes dans CLAUDE.md : delegation obligatoire aux agents (n°4), mindset IA pas equipe humaine (n°5), objectif qualite 9/10 (n°11), mise a jour branche obligatoire (n°12), automatisation contenu recurrent. (3) PostgreSQL Replit impose comme standard BDD (Supabase retire). (4) qa.md enrichi massivement : 10 nouvelles sections de tests (securite OWASP, email, SEO, visuels, resilience, contenu, mobile, B2B, accessibilite WCAG 2.2, non-regression). (5) reviewer.md : scoring persona /10 (9 dimensions) + B2B /10 (7 dimensions), condition GO triple, mapping dimension→agent. (6) orchestrator.md : Phases 3/4 parallelisees, template synthesis avec scores, critere automatisation contenu. (7) agent-factory.md : tools Write/Edit obligatoires par defaut. (8) Prompts frontend : mindset IA, automatisation, QA 10 categories, prompt Audit cible ajoute. Tests PulseBoard valides (creative-strategy + data-analyst).
-
-### Livrables de cette session
-| Fichier | Statut | Notes |
-|---|---|---|
-| CLAUDE.md | Complet | Regles n°4, n°5, n°11, n°12, scoring double, automatisation contenu |
-| .claude/agents/orchestrator.md | Complet | Phases 3/4 parallelisees, synthesis scores, critere automatisation, 9/10 |
-| .claude/agents/reviewer.md | Complet | Scoring persona 9 dims /10, B2B 7 dims /10, mapping agents, template rapport |
-| .claude/agents/qa.md | Complet | +10 sections tests, 10 questions auto-eval |
-| .claude/agents/fullstack.md | Complet | PostgreSQL Replit, timeouts services, prisma.ts |
-| .claude/agents/infrastructure.md | Complet | OWASP Top 10, delivrabilite email, Lighthouse mobile |
-| .claude/agents/product-manager.md | Complet | Execution-plan, RICE recalibre, mindset IA |
-| .claude/agents/agent-factory.md | Complet | Tools Write/Edit obligatoires, checklist validation |
-| .claude/agents/copywriter.md | Complet | Check persona + B2B double audience |
-| .claude/agents/seo.md | Complet | Pipeline contenu automatise |
-| .claude/agents/_base-agent-protocol.md | Complet | Auto-eval 9/10, 5 questions avec criteres |
-| index.html | Complet | Prompt Audit cible, QA 10 categories, automatisation, mindset IA, branche |
-| README.md | Complet | PostgreSQL Replit au lieu de Supabase |
-| INSTALL.md | Complet | Branche mise a jour |
-| tests/project-context-test.md | Complet | PostgreSQL Replit |
-| docs/strategy/brand-platform.md | Complet | Test PulseBoard — creative-strategy 449 lignes |
-| docs/analytics/kpi-framework.md | Complet | Test PulseBoard — data-analyst avec benchmarks sources |
-
-### Travaux en cours / non termines
-1. **Prompt "Audit cible" ameliore** : @ia a produit une version amelioree (pre-verification, 17 sujets, validation reviewer integree) mais les changements n'ont pas ete appliques dans index.html (contexte agent isole). A appliquer manuellement a la prochaine session.
-2. **Projet ImmoCrew** : project-context-immocrew.md est pret mais le projet n'est pas encore lance.
-
-### Prochaines actions recommandees
-1. **Appliquer les ameliorations du prompt "Audit cible"** : recuperer la version amelioree par @ia (17 sujets, pre-verification, validation reviewer). Agent : edition directe. Priorite : basse — le prompt actuel fonctionne.
-2. **Lancer ImmoCrew** : copier project-context-immocrew.md comme project-context.md dans un nouveau repo, lancer @orchestrator. Agent : @orchestrator. Priorite : haute si l'objectif est de monetiser rapidement.
-3. **Test E2E complet PulseBoard** : lancer un run complet @orchestrator en mode autopilot sur PulseBoard pour valider toutes les nouvelles boucles (agent-factory, revue UX, iteration 4.5/5, scoring persona/B2B). Agent : @orchestrator. Priorite : haute pour valider le framework a 9/10 en conditions reelles.
-
-### Blockers eventuels
-- Aucun blocker technique. Le framework est a 9/10 sur tous les axes audites.
-- Livrables de test PulseBoard (docs/strategy/brand-platform.md, docs/analytics/kpi-framework.md) presents dans le repo — les supprimer avant un vrai run pour eviter la confusion.
-
-### Commande de reprise suggeree
-
-Pour le **framework Gradient Agents** :
-```
-Lis project-context.md (memo de reprise). Le framework est consolide a 9/10. Il reste : (1) appliquer les ameliorations du prompt "Audit cible" dans index.html, (2) nettoyer les livrables de test PulseBoard, (3) optionnel : lancer un test E2E complet sur PulseBoard en mode autopilot.
-```
-
-Pour le **projet ImmoCrew** (nouveau repo) :
-```
-@orchestrator Lis project-context.md. Lance le projet ImmoCrew en mode autopilot. Phase 1 prioritaire : landing page + formulaire d'onboarding + espace client + Stripe. En parallele : @creative-strategy sur le brand platform et @copywriter sur les premiers livrables demo (avant/apres d'une annonce immobiliere reecrite). Objectif : site operationnel rapidement.
+Lis project-context.md (memo de reprise). Session 2026-03-27 : 15 fichiers modifies, gates GP/GC, template user story IA, SEO multi-moteurs. Priorite : (1) propager calibration marche dans 6 agents + 11 prompts (learning P0 ouvert), (2) merger dans main, (3) lancer MarchesFaciles ou test E2E autopilot.
 ```

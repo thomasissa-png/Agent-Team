@@ -26,6 +26,19 @@ Chaque entrée suit ce format :
 
 ---
 
+## Session 2026-03-27 — Gradient Agents (enrichissement massif + testeurs persona)
+
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Statut |
+|---|---|---|---|---|---|---|---|
+| 2026-03-27 | 2026-03-27 | problème | P1 | Références "20 gates" / "G1-G20" partout alors qu'il y en a 25 (G1-G25). Les gates G21-G25 risquaient d'être ignorées par le reviewer | Corrigé dans CLAUDE.md, orchestrator.md, reviewer.md, _base-agent-protocol.md | Quand on ajoute des gates, mettre à jour TOUS les compteurs textuels (pas juste les tableaux) | appliqué |
+| 2026-03-27 | 2026-03-27 | problème | P1 | "ALERTE JAUNE" résiduelle dans orchestrator.md (self-diagnostic) alors que JAUNE a été supprimée | Remplacé par ALERTE ROUGE | Après suppression d'un concept, Grep le terme dans TOUS les fichiers | appliqué |
+| 2026-03-27 | 2026-03-27 | problème | P0 | La calibration par les meilleures références marché est dans _base-agent-protocol.md mais pas renforcée dans 6/8 agents producteurs ni dans 0/11 prompts client-facing | Codifiée dans _base-agent-protocol.md + copywriter.md + ia.md | Propager dans fullstack, design, seo, social, growth, geo + 11 prompts index.html + orchestrator Task | ouvert |
+| 2026-03-27 | 2026-03-27 | pattern | P1 | Le pattern @elon valide → @orchestrator applique → @ia audite → @qa vérifie non-régression est très efficace pour les modifications structurelles | Appliqué sur toutes les modifications de cette session | Pattern "validation 4 couches" à capitaliser | appliqué |
+| 2026-03-27 | 2026-03-27 | insistance | P0 | Thomas insiste sur les personas des clients de nos personas — comprendre toute la chaîne de valeur, pas juste l'utilisateur direct | Personas clients-de-clients dans creative-strategy + agents testeurs obligatoires Phase 0b + gates GP/GC | Règle permanente : chaque projet B2B/service doit documenter les 2 niveaux de personas | appliqué |
+| 2026-03-27 | 2026-03-27 | insistance | P1 | Thomas veut que les seuils d'alerte ne soient pas frustrants — JAUNE trop tôt, forçait des changements de session inutiles | JAUNE supprimé, seule ROUGE à 6 phases / 18 Task producteurs, agents consultation exclus | Les alertes doivent être calibrées sur le coût réel en contexte, pas sur un compteur brut | appliqué |
+| 2026-03-27 | 2026-03-27 | préférence fondateur | P1 | [PRÉFÉRENCE FONDATEUR] : Thomas veut que les outputs générés par la plateforme soient au niveau des meilleurs du secteur, pas juste "corrects" | Règle calibration marché dans _base-agent-protocol.md | Les agents producteurs doivent WebSearch les meilleures références avant de produire | appliqué |
+| 2026-03-27 | 2026-03-27 | préférence fondateur | P1 | [PRÉFÉRENCE FONDATEUR] : Thomas veut des agents testeurs qui évaluent sur TOUS les angles (copy, design, contenu, pricing, conviction, recommandation, fidélisation) | Gates GP1-GP10 (persona) + GC1-GC10 (client-du-persona) dans CLAUDE.md | Gates structurées, pas des évaluations vagues | appliqué |
+
 ## Session 2026-03-26 — Gradient Agents (consolidation framework)
 
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Statut |
