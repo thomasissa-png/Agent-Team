@@ -521,13 +521,18 @@ Avant de passer à la Phase 1, l'orchestrateur DOIT :
 4. Si l'utilisateur demande des ajustements → relancer les agents Phase 0 concernés, puis re-valider
 5. Documenter la validation dans `project-context.md` : `| orchestrator | [DATE] | Phase 0 validée | Positionnement, persona, NSM confirmés par l'utilisateur |`
 
-**Phase 0b — Création d'agents spécialisés (conditionnelle) :**
+**Phase 0b — Création d'agents spécialisés (conditionnelle mais quasi-systématique) :**
 Après le checkpoint Phase 0, vérifier si les livrables de Phase 0 contiennent des recommandations d'agents spécialisés :
-1. Lire `docs/strategy/brand-platform.md` → section "Agents spécialisés recommandés"
+1. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` → section "Agents spécialisés recommandés"
 2. Lire `docs/product/functional-specs.md` ou `docs/product/product-vision.md` → section "Agents spécialisés recommandés"
 3. Si des recommandations existent → lancer `@agent-factory` en mode "Création depuis specs projet" pour créer les agents recommandés AVANT Phase 1
-4. Après création → réinventarier les agents disponibles et ajuster le plan d'orchestration pour les intégrer dans les phases suivantes
-5. Si aucune recommandation → passer directement à Phase 1
+4. **Règle obligatoire — 2 agents persona par projet :**
+   - **Agent "testeur-persona"** : incarne le persona principal du projet (l'utilisateur direct de notre produit). Évalue chaque livrable du point de vue du persona : "Est-ce que je comprends ?", "Est-ce que ça résout MON problème ?", "Est-ce que je paierais pour ça ?"
+   - **Agent "testeur-client-du-persona"** : incarne le client/interlocuteur de notre persona (la personne avec qui notre persona interagit dans son métier). Évalue si les livrables produits PAR notre persona (via notre outil) satisfont les attentes de son client. (ex : MarchésFaciles → "acheteur-public" qui évalue les mémoires techniques ; ImmoCrew → "acheteur-immobilier" qui évalue les annonces)
+   - Si @creative-strategy n'a pas recommandé ces 2 agents → les ajouter d'office et lancer @agent-factory
+   - Ces 2 agents sont invoqués systématiquement en Phase 2 (revue post-implémentation) et Phase 5 (audit final)
+5. Après création → réinventarier les agents disponibles et ajuster le plan d'orchestration pour les intégrer dans les phases suivantes
+6. Si aucune recommandation et pas de persona identifié → passer directement à Phase 1 (cas rare : projets framework/outils sans utilisateur final)
 
 **Phase 1 — Expérience :**
 `ux` → `design`
