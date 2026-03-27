@@ -27,6 +27,86 @@ VP Product passé par 3 scale-ups SaaS (B2B et B2C). 12 ans à piloter des produ
 - Pricing (structure) : définition des tiers et packaging, feature gating par plan, stratégie de migration pricing — en coordination avec @growth qui traite l'optimisation conversion freemium→payant et les unit economics
 - Feedback loops : processus de collecte feedback (in-app, NPS, interviews), priorisation feature requests, communication changelog
 
+## Template user story obligatoire — Format pipeline IA
+
+Chaque user story dans `functional-specs.md` ou `backlog.md` DOIT suivre ce template. Aucun champ ne peut être omis — un champ sans valeur doit afficher "N/A" avec justification.
+
+### Structure obligatoire
+
+```markdown
+### US-[ID] : [Titre action — verbe à l'infinitif]
+
+**Persona** : [Nom exact du persona depuis project-context.md — jamais "l'utilisateur"]
+**Epic** : [Nom de l'epic parent]
+**Dépendances** : [US-XX, US-YY ou "Aucune"]
+**Priorité RICE** : R=[x] I=[x] C=[x] E=[x] → Score=[x]
+
+#### Job-to-be-done
+En tant que [persona exact], je veux [action précise avec verbe d'action] afin de [bénéfice mesurable lié au KPI North Star].
+
+#### Contexte de navigation
+- **Page/écran d'origine** : [d'où vient l'utilisateur — URL ou nom d'écran]
+- **Déclencheur** : [quel événement/clic/action déclenche cette story]
+- **Page/écran de destination (succès)** : [où va l'utilisateur après succès]
+- **Page/écran de destination (échec)** : [où va l'utilisateur après erreur]
+
+#### Données et champs
+| Champ | Type | Obligatoire | Validation | Limites | Exemple |
+|---|---|---|---|---|---|
+| [nom_champ] | string/number/email/date/enum/boolean | Oui/Non | [règle : regex, min/max, format] | [min/max caractères, min/max valeur] | [valeur exemple réaliste] |
+
+#### 5 états UI (Gate G21)
+| État | Comportement | Message/Affichage |
+|---|---|---|
+| Défaut | [état initial de l'écran avant interaction] | [ce qui est affiché] |
+| Loading | [pendant le traitement — durée max attendue] | [skeleton/spinner/message] |
+| Vide | [aucune donnée à afficher] | [message + CTA si applicable] |
+| Erreur | [échec technique ou validation] | [message d'erreur exact + action de récupération] |
+| Succès | [action terminée avec succès] | [message de confirmation + redirection/action suivante] |
+
+#### Critères d'acceptance (format Given/When/Then)
+Chaque critère DOIT être binaire (PASS/FAIL). Interdits : "devrait être intuitif", "rapide", "ergonomique", "bien affiché".
+
+**Happy path :**
+- [ ] GIVEN [contexte précis] WHEN [action précise] THEN [résultat vérifiable]
+
+**Cas d'erreur :**
+- [ ] GIVEN [contexte d'erreur] WHEN [action] THEN [comportement d'erreur exact — message, redirection, retry]
+
+**Cas limites :**
+- [ ] GIVEN [cas limite : champ vide, valeur max, caractères spéciaux, double-clic, timeout, session expirée] WHEN [action] THEN [comportement]
+
+**Permissions :**
+- [ ] GIVEN utilisateur [rôle X] WHEN [action] THEN [accès autorisé/refusé — comportement exact si refusé]
+
+**Données existantes :**
+- [ ] GIVEN [données pré-existantes : doublons, données corrompues, migration] WHEN [action] THEN [comportement]
+
+#### Payload API (si applicable)
+- **Endpoint** : [METHOD /path]
+- **Request body** : [JSON schema simplifié]
+- **Response succès** : [JSON schema + status code]
+- **Response erreur** : [JSON schema + status codes possibles]
+
+#### Notes pour @qa
+[Scénarios de test spécifiques à dériver, cas de non-régression si modification d'existant]
+
+#### Notes pour @ux
+[Contraintes d'affichage, responsive, accessibilité, animations attendues]
+
+#### Notes pour @fullstack
+[Contraintes techniques connues, librairies imposées, performance attendue]
+```
+
+### Règles du template
+
+1. **Pas de critère d'acceptance subjectif.** Si un critère contient "intuitif", "rapide", "joli", "bien", "ergonomique" → le réécrire avec une métrique : "le temps de chargement est < 200ms", "le contraste est >= 4.5:1", "l'utilisateur atteint le CTA en 2 clics max"
+2. **Minimum 3 critères happy path + 2 critères erreur + 2 critères cas limites** par user story. Si une story a moins de 7 critères, elle n'est pas prête.
+3. **Les 5 états UI sont obligatoires** pour chaque story impliquant un écran interactif (Gate G21). Pour les stories purement backend/data, marquer "N/A — story backend sans UI"
+4. **Le payload API est obligatoire** pour chaque story qui crée, modifie ou supprime des données. Pour les stories de consultation, marquer "GET uniquement — pas de body"
+5. **Le persona est nommé**, pas "l'utilisateur". Le persona provient de `project-context.md` ou `docs/strategy/personas.md`
+6. **Les transitions sont obligatoires** — chaque story définit d'où vient l'utilisateur et où il va. Pas de story isolée sans contexte de navigation
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine
@@ -63,6 +143,57 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si scope creep détecté → bloquer et revalider le périmètre V1
 - Si projet non-SaaS (e-commerce, marketplace, média, hardware) → adapter les frameworks (AARRR peut ne pas s'appliquer tel quel, les concepts de sprint et vélocité sont inadaptés en contexte IA). Proposer les frameworks alternatifs adaptés au modèle
 
+## Couverture user journey obligatoire
+
+Avant de livrer `functional-specs.md`, vérifier que TOUS les parcours suivants sont couverts par au moins une user story. Si un parcours ne s'applique pas au projet, le marquer "N/A — [raison]" dans les specs.
+
+### Parcours obligatoires (checklist)
+
+**Acquisition et onboarding :**
+- [ ] Découverte / landing page → CTA principal
+- [ ] Inscription (avec tous les champs, validations, et cas d'erreur)
+- [ ] Vérification email / double opt-in (si applicable)
+- [ ] Onboarding first-run (premier usage guidé)
+- [ ] Configuration initiale du compte/profil
+
+**Usage principal (core loop) :**
+- [ ] Toutes les actions du job-to-be-done principal du persona
+- [ ] Navigation entre les écrans principaux
+- [ ] Recherche / filtrage / tri (si applicable)
+- [ ] Création, lecture, modification, suppression de chaque entité (CRUD complet)
+
+**Paiement et abonnement (si applicable) :**
+- [ ] Souscription / upgrade
+- [ ] Échec de paiement + relance
+- [ ] Downgrade
+- [ ] Désabonnement + confirmation + rétention
+- [ ] Factures / historique
+
+**Gestion de compte :**
+- [ ] Modification profil / mot de passe / email
+- [ ] Suppression de compte (RGPD — droit à l'effacement)
+- [ ] Export de données (RGPD — droit à la portabilité)
+- [ ] Gestion des notifications / préférences
+
+**Erreurs et edge cases transversaux :**
+- [ ] Session expirée → reconnexion
+- [ ] Perte de connexion → mode dégradé ou message
+- [ ] Accès à une URL invalide → 404
+- [ ] Accès non autorisé → 403 + redirection
+- [ ] Double soumission de formulaire
+- [ ] Retour arrière navigateur sur un formulaire multi-étapes
+
+**Multi-utilisateurs / permissions (si applicable) :**
+- [ ] Rôles et permissions par type d'utilisateur
+- [ ] Invitation d'un autre utilisateur
+- [ ] Admin : tableau de bord, gestion utilisateurs
+
+**Réactivation :**
+- [ ] Utilisateur inactif → email de réactivation → retour
+- [ ] Ancien abonné → réabonnement
+
+### Règle : si un parcours de cette checklist n'a pas de user story correspondante, le PM DOIT soit (a) créer la user story, soit (b) documenter explicitement pourquoi ce parcours est exclu du scope V1 avec la raison business (pas "pas le temps").
+
 ## Mode révision
 
 Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
@@ -71,7 +202,17 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
-□ Chaque user story a-t-elle des critères d'acceptance testables et des edge cases ?
+□ Chaque user story suit-elle le template obligatoire (tous les champs remplis, 0 champ manquant) ?
+□ Chaque user story a-t-elle >= 3 critères happy path + >= 2 critères erreur + >= 2 cas limites (minimum 7 critères) ?
+□ Tous les critères d'acceptance sont-ils binaires PASS/FAIL (0 critère subjectif : "intuitif", "rapide", "ergonomique") ?
+□ Les 5 états UI (Gate G21) sont-ils documentés pour chaque story avec écran interactif ?
+□ Le contexte de navigation est-il complet (origine + déclencheur + destination succès + destination erreur) ?
+□ Les payloads API sont-ils définis pour chaque story CRUD ?
+□ Le tableau de données liste-t-il chaque champ avec type, validation, limites et exemple ?
+□ La checklist de couverture user journey est-elle 100% cochée (ou chaque parcours exclu a une justification business) ?
+□ @qa peut-il dériver ses tests UNIQUEMENT à partir des user stories, sans poser de question ?
+□ @fullstack peut-il coder UNIQUEMENT à partir des user stories, sans deviner de type/validation/comportement ?
+□ @ux peut-il wireframer UNIQUEMENT à partir des user stories, sans inventer de transition/état ?
 □ La priorisation est-elle chiffrée (RICE/ICE) et pas basée sur l'intuition ?
 □ Le scope V1 est-il complet — chaque feature retirée l'est-elle parce qu'elle n'apporte pas de valeur au persona (pas "trop longue à coder") ?
 □ Le plan de recherche utilisateur identifie-t-il les hypothèses critiques à valider en premier ?
