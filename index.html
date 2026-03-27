@@ -898,7 +898,7 @@ Critères de validation : le positionnement est formulable en < 20 mots, aucun c
 Définis la vision produit et la roadmap :
 1. Vision produit : la description du monde une fois le problème résolu (en 3-5 phrases).
 2. Roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois] : chaque feature scorée Reach × Impact × Confidence / Effort, avec lien explicite au KPI North Star.
-3. Backlog initial avec user stories au format "En tant que [persona], je veux [action], afin de [bénéfice]" + critères d'acceptation par story.
+3. Backlog initial avec user stories au template obligatoire : "En tant que [persona], je veux [action], afin de [bénéfice]" + critères d'acceptation Given/When/Then (minimum 9 par story) + 5 états UI par écran + payload API si CRUD. Pour le backlog, un format allégé est acceptable (job-to-be-done + critères Given/When/Then + dépendances). Les specs complètes sont produites dans functional-specs.md.
 4. Contraintes techniques identifiées : dépendances, limites de la stack (voir project-context.md), intégrations tierces nécessaires.
 5. Risques produit : les 3 hypothèses les plus risquées et comment les valider.
 
@@ -952,14 +952,17 @@ Critère : chaque document doit être spécifique au projet (pas un template gé
         quand:"Après la roadmap, pour détailler les features avant développement. Les specs sont le contrat entre le product et le dev — chaque ambiguïté ici coûtera 10x en développement. Livrable potentiellement long. Si coupure : 'Lis docs/product/functional-specs.md, continue les specs à partir de la dernière feature documentée.'",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/analytics/tracking-plan.md si disponible (events à intégrer dans les specs).
 
-Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées :
-1. User stories avec critères d'acceptation vérifiables (Given/When/Then).
-2. Wireframes textuels (ASCII) de chaque écran avec les états (default, loading, empty, error, success).
-3. Règles métier : logique de calcul, conditions, limites, permissions par rôle.
-4. Cas limites et edge cases : que se passe-t-il si l'utilisateur fait X de manière inattendue ?
-5. Events tracking : quels events de docs/analytics/tracking-plan.md sont déclenchés à chaque étape.
-6. Dépendances : quelles autres features ou APIs sont nécessaires.
-7. Contraintes de performance : temps de réponse cible par action critique.
+Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées en suivant le template user story obligatoire de product-manager.md :
+1. User stories avec critères d'acceptation vérifiables (Given/When/Then) — minimum 9 critères par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes.
+2. Contexte de navigation par story : page d'origine, déclencheur, page destination succès, page destination échec.
+3. Tableau de données et champs : nom, type, obligatoire, validation, limites, exemple.
+4. 5 états UI par écran interactif (Gate G21) : défaut, loading, vide, erreur, succès — avec message/affichage exact.
+5. Payload API pour chaque story CRUD : endpoint, authentification, rate limit, request body, response succès, response erreur.
+6. Events analytics par story : event, trigger, propriétés, funnel (acquisition/activation/rétention/revenue).
+7. Règles métier : logique de calcul, conditions, limites, permissions par rôle.
+8. Cas limites et edge cases : que se passe-t-il si l'utilisateur fait X de manière inattendue ?
+9. Dépendances : quelles autres features ou APIs sont nécessaires.
+10. Notes pour @qa, @ux, @fullstack : contraintes spécifiques par agent consommateur.
 
 Dans les specs, inclure une section "Agents spécialisés recommandés" : identifier les agents custom nécessaires par user stories critiques, tests métier spécialisés, et parcours client. Fournir les specs de création pour @agent-factory (rôle, inputs/outputs, critère de succès).
 

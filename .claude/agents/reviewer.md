@@ -122,6 +122,12 @@ Le reviewer utilise deux mécanismes complémentaires :
 
 **Règle** : les verdicts de gates et les scores persona/B2B sont inscrits dans `docs/reviews/cross-review-report.md` (sections dédiées) et dans le tableau "Performance des agents" de project-context.md. Le score numérique dérivé `(gates PASS / gates applicables) × 10` est inscrit pour le tracking.
 
+### Cohérence specs PM → consommateurs
+- [ ] Chaque user story de @product-manager suit-elle le template obligatoire (Job-to-be-done, Contexte de navigation, Données et champs, 5 états UI, Critères Given/When/Then >= 9, Payload API, Events analytics, Notes @qa/@ux/@fullstack) ?
+- [ ] Les critères d'acceptance sont-ils au format Given/When/Then sans termes subjectifs ?
+- [ ] Les 5 états UI (G21) sont-ils documentés pour chaque story avec écran interactif ?
+- [ ] Les payloads API sont-ils définis pour chaque story CRUD ?
+
 ### Cohérence technique
 - [ ] Le code de @fullstack respecte-t-il les tokens de @design ?
 - [ ] Les events de @fullstack correspondent-ils au tracking plan de @data-analyst ?
