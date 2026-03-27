@@ -968,9 +968,9 @@ Dans les specs, inclure une section "Agents spécialisés recommandés" : identi
 
 Livrable : docs/product/functional-specs.md.
 
-Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Vérifie que chaque critère d'acceptation est testable automatiquement. Chaque parcours critique @ux doit avoir un test E2E correspondant. Vérifie les edge cases UX (états vides, erreurs, responsive 3 viewports). Signale les critères trop vagues. Ajoute dans docs/qa/qa-strategy.md.
+Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Dérive les tests directement depuis les critères Given/When/Then de chaque user story — chaque critère = au moins un test. Vérifie les 5 états UI (défaut, loading, vide, erreur, succès) par écran interactif. Utilise les payloads API pour écrire les tests d'intégration API (endpoint, auth, rate limit, schemas request/response). Vérifie que les events analytics sont testables (interception dynamique en E2E). Chaque parcours critique @ux doit avoir un test E2E correspondant. Vérifie les edge cases UX (responsive 3 viewports : 375px, 768px, 1280px). Signale les critères trop vagues ou subjectifs ("intuitif", "rapide"). Ajoute dans docs/qa/qa-strategy.md.
 
-Critères de validation : chaque feature a au moins 3 critères d'acceptation, chaque écran a un wireframe textuel avec tous les états, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
+Critères de validation : chaque user story a minimum 9 critères d'acceptation Given/When/Then (3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), chaque écran interactif a les 5 états UI documentés (Gate G21), chaque story CRUD a un payload API complet, chaque story a des events analytics, la checklist de couverture user journey (25+ parcours : acquisition, core loop, paiement, gestion compte, RGPD, erreurs, multi-users, réactivation) est 100% couverte, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
 
 Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structure (titres + résumé par feature) via Write, puis remplir feature par feature via Edit. Prioriser les features V1 critiques en premier.`
       },
@@ -1380,7 +1380,7 @@ Implémentation :
 
 Livrable : code dans src/.
 
-Puis @qa : lis docs/product/functional-specs.md et le code produit dans src/. Écris les tests unitaires Vitest et E2E Playwright des parcours critiques de cette feature. Cible : couverture > 80%. Vérifie que les critères d'acceptation des specs sont couverts par au moins un test. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour.
+Puis @qa : lis docs/product/functional-specs.md et le code produit dans src/. Dérive les tests depuis les critères Given/When/Then de chaque user story de cette feature — chaque critère = au moins un test. Teste les 5 états UI (défaut, loading, vide, erreur, succès) de chaque écran interactif. Utilise les payloads API des specs pour les tests d'intégration (endpoint, auth, schemas, codes d'erreur). Vérifie les events analytics par interception dynamique en E2E. Écris les tests unitaires Vitest et E2E Playwright. Cible : couverture > 80%. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour.
 
 Puis @data-analyst : vérifie que les events de tracking de cette feature sont cohérents avec docs/analytics/tracking-plan.md. Signale les events manquants ou mal nommés. Mets à jour le tracking plan si nécessaire.
 
@@ -1783,7 +1783,7 @@ Design API complet :
 
 Livrable : docs/dev-decisions.md section "API design" + types TypeScript dans src/lib/types/.
 
-Puis @qa : lis le design API et crée les tests d'intégration : chaque endpoint testé avec inputs valides, invalides et edge cases. Vérifie les codes de réponse, la validation, l'authentification. Livrable : docs/qa/qa-strategy.md section "API tests".
+Puis @qa : lis le design API et docs/product/functional-specs.md si disponible (les payloads API des user stories définissent endpoint, auth, rate limit, schemas request/response). Crée les tests d'intégration : chaque endpoint testé avec inputs valides, invalides et edge cases. Vérifie les codes de réponse, la validation, l'authentification, le rate limiting. Livrable : docs/qa/qa-strategy.md section "API tests".
 
 Critères de validation : chaque endpoint a ses types TypeScript (request + response), la validation est documentée, les codes d'erreur sont standardisés, les tests couvrent le happy path et les edge cases.`
       },
@@ -2087,7 +2087,7 @@ Mécanique de referral complète :
 
 Livrable : docs/growth/referral-program.md.
 
-Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles. User stories : "En tant qu'utilisateur, je veux inviter un collègue et recevoir [récompense]". Critères d'acceptation pour chaque flow. Mets à jour docs/product/functional-specs.md.
+Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles en suivant le template user story obligatoire : persona nommé (pas "utilisateur"), job-to-be-done, contexte de navigation, tableau de données/champs, 5 états UI par écran (Gate G21), critères d'acceptation Given/When/Then (minimum 9 par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), payload API si CRUD, events analytics. Mets à jour docs/product/functional-specs.md.
 
 Puis @fullstack : lis docs/growth/referral-program.md et docs/product/functional-specs.md. Implémente le système de referral : génération de liens uniques, tracking, attribution, interface in-app. Code dans src/.
 
@@ -2135,7 +2135,7 @@ Mécanique PLG complète :
 
 Livrable : docs/growth/plg-strategy.md.
 
-Puis @product-manager : lis docs/growth/plg-strategy.md et intègre les triggers d'upgrade dans le backlog comme user stories avec critères d'acceptation. Mets à jour docs/product/backlog.md.
+Puis @product-manager : lis docs/growth/plg-strategy.md et intègre les triggers d'upgrade dans le backlog en suivant le template user story obligatoire (format allégé pour le backlog : job-to-be-done avec persona nommé, critères d'acceptation Given/When/Then, dépendances). Mets à jour docs/product/backlog.md.
 
 Puis @ux : lis docs/growth/plg-strategy.md et conçois les wireframes des upgrade prompts (placement, timing, message, CTA). L'upgrade doit être une évidence, pas une interruption. Intègre dans docs/ux/wireframes.md.
 
@@ -2305,7 +2305,7 @@ Critères de validation : chaque axe a un verdict basé sur les gates applicable
         title:"Audit qualité & tests complets",
         agents:["qa","infrastructure"],
         quand:"Code développé, avant release. Les tests sont l'assurance vie du produit — ils protègent les fonctionnalités qui marchent pendant que tu développes les suivantes. Beaucoup de fichiers (tests + CI). Si coupure : 'Lis docs/qa/qa-strategy.md et .github/workflows/, qu'est-ce qui manque ?'",
-        prompt:`@qa Lis docs/product/functional-specs.md (critères d'acceptation par feature). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider) et docs/design/design-tokens.json (tokens à vérifier).
+        prompt:`@qa Lis docs/product/functional-specs.md (critères d'acceptation Given/When/Then par user story, 5 états UI par écran, payloads API, events analytics). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider) et docs/design/design-tokens.json (tokens à vérifier). Règle de dérivation : chaque critère Given/When/Then = au moins un test. Chaque état UI (défaut, loading, vide, erreur, succès) = un test par écran. Chaque payload API = tests d'intégration (endpoint, auth, schemas, codes d'erreur). Chaque event analytics = vérification par interception dynamique.
 
 Audit qualité complet :
 1. Tests unitaires Vitest : couverture cible > 80%. Identifier les modules non couverts.
