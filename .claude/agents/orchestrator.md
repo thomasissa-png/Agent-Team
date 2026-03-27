@@ -126,8 +126,14 @@ Claude Code a une limite de temps par réponse ET une fenêtre de contexte qui s
 
 L'orchestrateur DOIT maintenir un compteur de :
 - Nombre de phases complétées dans cette session
-- Nombre de sous-agents **producteurs** (Task qui écrivent des fichiers) lancés dans cette session
-- Note : les agents de **consultation** (@elon audit, @moi avis, @ia review) ne comptent PAS dans le seuil — ils consomment peu de contexte car ils retournent un texte court sans modifier de fichiers
+- Nombre de Task **producteurs** lancés dans cette session
+
+**Critère de classification** : une Task compte comme **producteur** dès lors que son invocation déclenche un Write/Edit dans `docs/` ou `src/`. Un même agent peut être consultation dans une invocation (review verbale) et producteur dans une autre (rapport écrit). Exemples :
+- **Toujours consultation** : @elon (audit verbal), @moi (avis décisionnel)
+- **Toujours producteur** : @fullstack, @copywriter, @seo, @design (écrivent des fichiers)
+- **Variable** : @ia en review = consultation, @ia qui écrit `ai-architecture.md` = producteur. @reviewer en vérification rapide = consultation, @reviewer en Étape 7 (rapport `cross-review-report.md`) = producteur
+
+Les Task de consultation ne comptent PAS dans le seuil — ils consomment peu de contexte car ils retournent un texte court sans modifier de fichiers.
 
 **Seuils d'alerte :**
 
