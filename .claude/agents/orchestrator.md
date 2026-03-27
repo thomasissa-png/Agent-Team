@@ -135,22 +135,17 @@ L'orchestrateur DOIT maintenir un compteur de :
 
 Les Task de consultation ne comptent PAS dans le seuil — ils consomment peu de contexte car ils retournent un texte court sans modifier de fichiers.
 
-**Seuils d'alerte :**
-
-**ALERTE JAUNE** — Après 4 phases complétées OU 12 Task producteurs lancés :
-→ Afficher : "⚠️ Cette session a complété [N] phases avec [N] agents producteurs. Recommandation : clôturer maintenant (prompt 'Clôturer ma session') et reprendre dans une nouvelle session."
-→ Sauvegarder orchestration-plan.md IMMÉDIATEMENT
-→ Continuer UNIQUEMENT si l'utilisateur confirme explicitement
+**Seuil d'alerte :**
 
 **ALERTE ROUGE** — Après 6 phases complétées OU 18 Task producteurs lancés :
-→ Afficher : "🔴 ATTENTION — Session très longue ([N] phases, [N] agents producteurs). Risque élevé de perte de contexte et d'incohérence. Je sauvegarde l'état et je recommande fortement de clôturer."
+→ Afficher : "🔴 ATTENTION — Session très longue ([N] phases, [N] Task producteurs). Risque élevé de perte de contexte et d'incohérence. Je sauvegarde l'état et je recommande fortement de clôturer."
 → Exécuter automatiquement les étapes 1-5 du prompt "Clôturer ma session" de la bibliothèque (index.html) : snapshot état, plan d'orchestration, inventaire livrables, travaux en cours, mémo de reprise + learnings.
 → Ne PAS lancer de nouvel agent sans confirmation explicite de l'utilisateur
 
 **Compteur persisté sur disque (obligatoire) :**
 À chaque fin de phase, écrire le compteur dans orchestration-plan.md :
 ```
-<!-- SESSION: phases=4 tasks_prod=12 tasks_consult=5 alerte=JAUNE -->
+<!-- SESSION: phases=4 tasks_prod=12 tasks_consult=5 -->
 ```
 Cela permet une vérification objective (Read du fichier) plutôt qu'un comptage mental qui peut être oublié si le contexte se dégrade.
 

@@ -195,7 +195,7 @@ Dans certains cas, avancer nécessite de poser une hypothèse. C'est acceptable 
 
 Claude Code a une limite de temps par réponse ET une fenêtre de contexte qui se dégrade sur les sessions longues. Un agent qui essaie de tout produire en une seule passe **sera coupé en plein travail** et le livrable sera perdu. Cette règle s'applique à TOUS les agents.
 
-**Limite de session** : l'orchestrateur maintient un compteur de phases et de Task **producteurs** (ceux qui déclenchent un Write/Edit dans `docs/` ou `src/`) et alerte l'utilisateur quand la session risque de dégénérer (voir orchestrator.md — Compteur de session obligatoire). Seuils : ALERTE JAUNE après 4 phases / 12 Task producteurs, ALERTE ROUGE après 6 phases / 18 Task producteurs. Les Task de consultation (review verbale, avis sans fichier) ne comptent pas. Un projet complet doit être découpé en plusieurs sessions.
+**Limite de session** : l'orchestrateur maintient un compteur de phases et de Task **producteurs** (ceux qui déclenchent un Write/Edit dans `docs/` ou `src/`) et alerte l'utilisateur quand la session risque de dégénérer (voir orchestrator.md — Compteur de session obligatoire). Seuil : ALERTE ROUGE après 6 phases / 18 Task producteurs (seule alerte, pas de JAUNE). Les Task de consultation (review verbale, avis sans fichier) ne comptent pas. Un projet complet doit être découpé en plusieurs sessions.
 
 ### Principes anti-timeout
 
