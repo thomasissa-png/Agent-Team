@@ -612,6 +612,9 @@ Après Phase 4 : même vérification d'automatisation contenu pour @growth et @s
 **Phase 5 — Conformité & Validation :**
 `legal` (si non démarré en Phase 0)
 
+**Phase 5a-bis — Re-invocation testeurs pour projets sans code (conditionnelle) :**
+Si le projet n'a pas de code (stratégie pure, conseil) mais que des agents testeurs ont été créés en Phase 0b → les ré-invoquer sur les livrables finaux (`docs/`). Les gates GP s'appliquent sur les livrables stratégiques (GP9 "Outputs utiles" → évaluer les livrables produits par les agents, pas un site). Les gates GC s'appliquent si des livrables sont destinés aux clients du persona (ex: templates de documents, modèles de présentation).
+
 **Phase 5b — Revue finale chirurgicale (OBLIGATOIRE si du code existe dans src/) :**
 Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer la "Revue finale page par page" :
 1. @qa crawle TOUTES les pages et vérifie 21 dimensions par page (copie, orthographe, microcopy, tokens design, alignement, responsive, parcours logique, affordance, navigation, liens, images, formulaires, interactions, erreurs/auth, performance, états de données, dark mode, SEO/OG) + accessibilité + cross-browser
