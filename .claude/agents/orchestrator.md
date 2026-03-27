@@ -539,11 +539,57 @@ Après le checkpoint Phase 0, vérifier si les livrables de Phase 0 contiennent 
 `ux` → `design`
 [PARALLELE] `copywriter` peut démarrer en parallèle de `ux` si `brand-platform.md` existe
 
+**Phase 1b — Revue testeur-persona sur la stratégie (si agents créés en 0b) :**
+Invoquer `testeur-persona` sur les livrables Phase 0 + Phase 1 :
+- Lire brand-platform.md, personas.md, functional-specs.md, user-flows.md, landing-page-copy.md
+- Évaluer : "Est-ce que cette promesse me parle ? Ce positionnement me convainc-il ? Ce parcours est-il logique pour moi ? Ce pricing me semble-t-il juste ?"
+- Si des objections majeures → BLOQUER et corriger AVANT de coder
+
 **Phase 2 — Développement :**
 `infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
 
 **Phase 2b — Agents spécialisés UX (conditionnelle) :**
 Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "Agents spécialisés recommandés". Si oui et que ces agents n'ont pas été créés en Phase 0b → lancer `@agent-factory`.
+
+**Phase 2c — Revue testeur-persona sur le site (OBLIGATOIRE si code existe) :**
+Invoquer `testeur-persona` sur le site/app développé. Naviguer le site complet page par page du point de vue du persona.
+
+**Gates testeur-persona (GP — PASS/FAIL) :**
+| # | Gate | Vérification |
+|---|---|---|
+| GP1 | Compréhension immédiate | "En 5 secondes, je comprends ce que ce site fait pour moi" |
+| GP2 | Valeur perçue | "La valeur promise justifie le prix affiché — j'en ai pour mon argent" |
+| GP3 | Crédibilité | "Ce site me donne confiance (design pro, preuves sociales, pas de bullshit)" |
+| GP4 | Parcours fluide | "Je sais où cliquer à chaque étape, je ne suis jamais perdu" |
+| GP5 | Pricing acceptable | "Le prix ne me fait pas fuir — le ROI est évident" |
+| GP6 | Recommandation | "Je recommanderais ce service à un collègue de mon métier" |
+| GP7 | Conviction | "Après avoir vu la landing + un essai, je suis convaincu de m'inscrire" |
+| GP8 | Look & feel | "Le design correspond à mon secteur — ni trop cheap ni trop corporate" |
+| GP9 | Outputs utiles | "Les documents/livrables que la plateforme génère me sont vraiment utiles" |
+| GP10 | Fidélisation | "Je vois pourquoi je resterais abonné mois après mois (pas juste un one-shot)" |
+
+Si 1+ gate FAIL → documenter les objections précises, relancer les agents concernés (@copywriter, @design, @fullstack, @ux selon le problème). Le testeur-persona est ré-invoqué après corrections pour valider le fix.
+
+**Phase 2d — Revue testeur-client-du-persona sur les outputs (OBLIGATOIRE si la plateforme génère des livrables) :**
+Invoquer `testeur-client-du-persona` sur les outputs générés par la plateforme. Évaluer les livrables que notre persona ENVOIE à ses clients via notre outil. Exemples : MarchésFaciles → le mémoire technique généré ; ImmoCrew → les annonces/landing pages générées ; Versiroom → les rendus de visite virtuelle.
+
+**Gates testeur-client-du-persona (GC — PASS/FAIL) :**
+| # | Gate | Vérification |
+|---|---|---|
+| GC1 | Professionnalisme | "Ce document fait professionnel — il ne ressemble pas à un truc généré par IA" |
+| GC2 | Pertinence | "Le contenu répond précisément à mes attentes/critères (cahier des charges, brief, demande)" |
+| GC3 | Confiance | "Ce document me donne confiance dans le prestataire qui me l'envoie" |
+| GC4 | Action | "Après lecture, je suis enclin à contacter/signer/valider/retenir ce prestataire" |
+| GC5 | Complétude | "Il ne manque aucune information critique que j'attends dans ce type de document" |
+| GC6 | Différenciation | "Ce livrable se distingue positivement de ce que je reçois habituellement" |
+| GC7 | Ton et registre | "Le ton est adapté à mon contexte (formel pour un AO public, engageant pour un particulier)" |
+| GC8 | Zéro erreur factuelle | "Aucune information fausse, incohérente ou inventée" |
+| GC9 | Copy convaincant | "Les arguments sont pertinents et hiérarchisés — je lis jusqu'au bout" |
+| GC10 | Design/mise en page | "La présentation est soignée, structurée, facile à lire" |
+
+Si 1+ gate FAIL → documenter les problèmes précis, relancer @copywriter/@design/@fullstack/@ia selon le problème. Le testeur-client-du-persona est ré-invoqué après corrections.
+
+**Exception** : si le persona utilise le produit pour lui-même (B2C direct, outil interne, developer tool) et n'a pas de client/interlocuteur professionnel identifiable → Phase 2d est marquée N/A. Seule Phase 2c est obligatoire.
 
 **Phase 3 — Contenu :**
 `copywriter` → [PARALLELE] `seo` + `geo` (les deux dépendent de copywriter mais pas l'un de l'autre)
@@ -570,6 +616,8 @@ Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer
 3. @qa re-vérifie chaque fix
 4. @ux + @design valident que les corrections respectent le design system et les parcours
 5. @fullstack configure les tests de screenshot Playwright pour la non-régression
+6. **Testeur-persona** : ré-invoquer sur le site final corrigé. Toutes les gates GP1-GP10 doivent passer. Focus sur les corrections appliquées depuis Phase 2c
+7. **Testeur-client-du-persona** (si applicable) : ré-invoquer sur les outputs finaux. Toutes les gates GC1-GC10 doivent passer. Générer un output réel et le faire évaluer
 Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).
 
 **Règles de parallélisation :**
