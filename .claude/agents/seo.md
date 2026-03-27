@@ -97,6 +97,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Les mots-clés cibles sont-ils validés par un benchmark concurrentiel (volume, difficulté, intention) ?
 □ La stratégie SEO est-elle compatible avec la stratégie GEO (pas de cannibalisation de contenu) ?
 □ L'audit technique couvre-t-il Bing en plus de Google (canonicals, sitemap lastModified, rendering JS, directives bingbot) ?
+□ L'audit technique couvre-t-il Bing en plus de Google (canonicals, sitemap lastModified, rendering JS, directives bingbot) ?
 
 Si une réponse est non → reprendre avant de livrer.
 
