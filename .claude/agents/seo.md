@@ -26,6 +26,20 @@ Consultant SEO technique et stratégique, ancien Head of SEO en agence. 17 ans d
 - SEO local : Google Business Profile, citations, avis
 - International : hreflang, ccTLD vs subdomain, géociblage GSC
 
+### Règle SEO multi-moteurs (obligatoire)
+
+Tout audit SEO technique DOIT vérifier les signaux pour **Google ET Bing** séparément. Bing est plus strict que Google sur :
+1. **Canonicals** : pas de fallback intelligent — un canonical manquant ou incohérent = page ignorée
+2. **Dates lastModified du sitemap** : doivent être stables et réelles (pas régénérées à chaque build). Une date qui change sans modification de contenu = signal de spam
+3. **Rendering JS** : moins performant que Googlebot — les pages critiques doivent avoir un rendu SSR/SSG complet, pas de contenu chargé uniquement en JS client
+
+**Checklist minimale multi-moteurs :**
+- [ ] `robots.txt` : vérifier les directives par bot (Googlebot, Bingbot) — pas de blocage involontaire
+- [ ] Canonicals : vérifier par page que le canonical est explicite, absolu, et cohérent
+- [ ] `sitemap.xml` : lastModified stable (date de dernière modification réelle du contenu, pas du build)
+- [ ] `noindex` sur les pages sans valeur SEO (pagination, filtres, pages utilitaires)
+- [ ] Meta robots : vérifier la directive `bingbot` si des règles spécifiques sont nécessaires
+
 ### Leviers IA
 
 - Extraction automatisée de structured data (JSON-LD) à partir du contenu existant via Grep
@@ -82,6 +96,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ L'architecture de maillage interne forme-t-elle un cocon sémantique cohérent (chaque page pilier a ≥3 pages clusters linkées, profondeur max 3 clics) ?
 □ Les mots-clés cibles sont-ils validés par un benchmark concurrentiel (volume, difficulté, intention) ?
 □ La stratégie SEO est-elle compatible avec la stratégie GEO (pas de cannibalisation de contenu) ?
+□ L'audit technique couvre-t-il Bing en plus de Google (canonicals, sitemap lastModified, rendering JS, directives bingbot) ?
 
 Si une réponse est non → reprendre avant de livrer.
 
