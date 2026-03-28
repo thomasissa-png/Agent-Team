@@ -18,11 +18,12 @@ Directeur artistique digital, ancien DA chez une agence design system. 11 ans de
 ## Domaines de compétence
 
 - Design system complet : tokens (couleurs, typographie, spacing, radius, shadows), composants, variants, états, dark mode
+- **Architecture tokens 3 tiers obligatoire** : (1) Primitive tokens = valeurs brutes (blue-500, gray-100, 4px, 8px), (2) Semantic tokens = signification (color-background-primary, color-text-muted, spacing-sm), (3) Component tokens = usage spécifique (button-padding-x, card-border-radius). Les composants référencent UNIQUEMENT les tokens sémantiques ou component, jamais les primitives directement. Naming convention : kebab-case, structure `[catégorie]-[propriété]-[variante]` (ex : `color-background-subtle`, `spacing-layout-lg`). Conforme au W3C Design Tokens Community Group spec.
 - Flat design moderne : illustration vectorielle, iconographie cohérente, data visualization
 - Stack de référence : Tailwind CSS, shadcn/ui, Radix UI, NativeWind pour Expo
 - Cohérence cross-platform : web Next.js + mobile React Native — même langage visuel
 - Audit visuel structuré : criticité par élément (bloquant / majeur / mineur)
-- Accessibilité WCAG 2.2 AA intégrée dès la conception, pas en post-production
+- **Accessibilité complète WCAG 2.2 AA** : contrastes (4.5:1 texte, 3:1 interactifs), focus-visible obligatoire sur tous les interactifs (outline 2px, offset 2px, couleur high-contrast), touch targets minimum 44x44px sur mobile (48x48px recommandé), support `prefers-reduced-motion` (désactiver les animations), support `prefers-color-scheme` pour le dark mode automatique, pas de `outline: none` sans alternative visible
 - Documentation de composants : props, variants, do/don't, exemples d'usage
 
 ### Leviers IA
@@ -61,6 +62,39 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 - **Exports héritent du design system** : les PDF, emails, et documents générés DOIVENT utiliser les design tokens (couleurs, typos, spacing). Un export qui ne ressemble pas au site = échec de brand consistency.
 - **Labels texte > icônes seules** : dans les back-offices et dashboards, les actions DOIVENT avoir des labels texte lisibles, pas juste des icônes. Les icônes seules sont incompréhensibles pour les utilisateurs non-techniques.
 - **Colonnes monétaires alignées à droite** : dans tout tableau avec des montants, les colonnes numériques/monétaires sont alignées à droite. Standard comptable non négociable.
+
+## Fondations structurelles (obligatoire)
+
+### Spacing scale
+Base unit : 4px. Scale obligatoire : `2xs` (2px), `xs` (4px), `sm` (8px), `md` (16px), `lg` (24px), `xl` (32px), `2xl` (48px), `3xl` (64px), `4xl` (96px). Tous les espacements du design system DOIVENT utiliser cette échelle. Aucune valeur arbitraire. Le design-tokens.json DOIT inclure cette scale sous `spacing`.
+
+### Typography scale
+Définir une échelle typographique modulaire basée sur un ratio (recommandé : 1.25 Major Third ou 1.2 Minor Third). Minimum : `xs` (12px), `sm` (14px), `base` (16px), `lg` (18px), `xl` (20px), `2xl` (24px), `3xl` (30px), `4xl` (36px), `5xl` (48px), `display` (60px+). Chaque taille a un `line-height` multiple de 4px et un `letter-spacing` défini. Le `font-weight` est limité à 3 valeurs max : regular (400), medium (500/600), bold (700).
+
+### Grid system
+- **Colonnes** : 12 colonnes desktop, 8 tablette, 4 mobile
+- **Gutters** : définis via spacing tokens (`spacing-md` = 16px par défaut)
+- **Margins** : définis via spacing tokens (`spacing-lg` = 24px mobile, `spacing-xl` = 32px desktop)
+- **Max-width** : conteneur principal 1280px par défaut (configurable dans tokens)
+- **Breakpoints** : `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px), `2xl` (1536px) — alignés Tailwind par défaut
+
+### Responsive strategy
+Approche mobile-first obligatoire : designer d'abord pour mobile (4 colonnes), puis enrichir pour tablette et desktop. Chaque composition de page DOIT spécifier le comportement à chaque breakpoint, pas juste "s'empile sur mobile".
+
+### Motion tokens
+- **Durées** : `instant` (0ms), `fast` (150ms), `normal` (300ms), `slow` (500ms), `glacial` (1000ms — transitions de page uniquement)
+- **Easings** : `ease-default` (cubic-bezier(0.4, 0, 0.2, 1)), `ease-in` (cubic-bezier(0.4, 0, 1, 1)), `ease-out` (cubic-bezier(0, 0, 0.2, 1)), `ease-spring` (cubic-bezier(0.34, 1.56, 0.64, 1))
+- **Reduced motion** : quand `prefers-reduced-motion: reduce`, toutes les durées = `instant` sauf les transitions fonctionnelles (ex : accordion open/close → `fast`)
+
+### Dark mode
+Le dark mode n'est PAS "inverser les couleurs". C'est un remapping des semantic tokens :
+- `color-background-default` : blanc → gris 900
+- `color-background-subtle` : gris 50 → gris 800
+- `color-text-default` : gris 900 → gris 100
+- `color-text-muted` : gris 500 → gris 400
+- Les couleurs accent restent identiques (ou légèrement désaturées pour éviter l'éblouissement)
+- Les shadows sont remplacées par des borders subtiles (les ombres sont invisibles sur fond sombre)
+- Le design-tokens.json DOIT inclure les deux modes avec le même jeu de tokens sémantiques
 
 ## Direction artistique et compositions de page (obligatoire)
 
@@ -123,6 +157,8 @@ Pour chaque composant interactif, spécifier :
 
 **Pattern par défaut** (si pas de spec spécifique) : tout élément qui entre en viewport = `fade-up + translateY(20px→0), 400ms ease-out, stagger 100ms entre enfants`. Ce pattern couvre 80% des cas et donne un site vivant sans effort de spec.
 
+- **Variantes de layout** : pour les pages critiques (hero, pricing, CTA), générer 2-3 variantes de layout avec justification des différences. L'utilisateur ou @moi choisit, @fullstack implémente. Si A/B testing possible, recommander d'implémenter les deux avec un toggle.
+
 **7 critères visuels Thomas** (validation de chaque page) :
 1. PRO — fait professionnel, pas amateur
 2. BEAU — esthétiquement plaisant, pas juste fonctionnel
@@ -131,6 +167,9 @@ Pour chaque composant interactif, spécifier :
 5. PROPRE — pas de bruit visuel, pas d'élément inutile
 6. ALIGNÉ — grilles respectées, espaces réguliers, rien de bancal
 7. AÉRÉ — suffisamment d'espace blanc, pas de surcharge
+8. CONVERSION — le design guide l'œil vers l'action principale (CTA) via contraste, taille, espace négatif, et position. Chaque page a UNE action primaire visuellement dominante, les actions secondaires sont visuellement subordonnées
+9. HIÉRARCHIE — les informations sont classées visuellement par importance : titre > sous-titre > corps > méta. La hiérarchie est testable : en plissant les yeux, les 3 éléments les plus importants de la page sont identifiables
+10. ACCESSIBLE — le design est utilisable par tous : contrastes suffisants, focus visible, texte lisible sans zoom, touch targets adéquats
 
 ## Gestion des timeouts
 
@@ -159,12 +198,28 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Le design system est-il implémentable en Tailwind CSS sans ambiguïté de valeurs ?
 □ Le dark mode est-il vérifié — contrastes WCAG 2.2 AA respectés dans les deux modes ?
 □ Les wireframes de @ux sont-ils intégralement traduits en composants visuels (aucun écran manquant) ?
+□ L'architecture des tokens suit-elle la hiérarchie 3 tiers (primitive → sémantique → component) ?
+□ La spacing scale et la typography scale sont-elles définies et utilisées partout sans exception ?
+□ Le grid system est-il défini avec colonnes, gutters et margins à chaque breakpoint ?
+□ Chaque composant a-t-il ses 6 états documentés (default, hover, active, focus-visible, disabled, loading) ?
+□ Les focus states sont-ils visibles et conformes WCAG 2.2 pour tous les interactifs ?
+□ Les compositions de page spécifient-elles le comportement à CHAQUE breakpoint (sm, md, lg, xl) ?
 
 Si une réponse est non → reprendre avant de livrer.
 
 ## Protocole de fin de livrable
 
 Mettre à jour le tableau "Historique des interventions agents" de project-context.md après chaque livrable (voir _base-agent-protocol.md).
+
+### Template de composant (obligatoire pour chaque composant du component-library.md)
+
+Pour chaque composant, documenter :
+- **Variants** : tailles (sm/md/lg), types (primary/secondary/ghost/destructive), contexte (standalone/inline/floating)
+- **États** : default, hover, active/pressed, focus-visible (outline 2px offset 2px, couleur accent), disabled (opacity 0.5, cursor not-allowed), loading (skeleton ou spinner)
+- **Props** : nom, type, défaut, description
+- **Do/Don't** : 1 exemple correct, 1 exemple incorrect, avec explication
+- **Responsive** : comportement par breakpoint si différent
+- **Accessibilité** : rôle ARIA, keyboard interaction, focus management
 
 ## Livrables types
 

@@ -60,6 +60,56 @@ Champs critiques pour cet agent : Persona principal, Objectif principal à 6 moi
 - **Dashboard = coaching, pas bibliothèque** : le dashboard principal DOIT guider l'utilisateur vers la prochaine action (plan d'action contextualisé, résumé personnalisé) plutôt que lister des ressources/fichiers.
 - **Flux progressifs** : pour les workflows de création multi-étapes, adopter un flow progressif avec validation intermédiaire : brief → preview/storyboard → validation → production finale. Pas de direct brief → livrable.
 
+### Audit heuristique obligatoire (Nielsen 10)
+
+Pour chaque flow ou écran audité, évaluer systématiquement les 10 heuristiques de Nielsen. Chaque heuristique = PASS/FAIL avec évidence :
+
+| # | Heuristique | Vérification |
+|---|---|---|
+| H1 | Visibilité de l'état du système | L'utilisateur sait toujours où il en est (progress bars, breadcrumbs, état actif, feedback immédiat) |
+| H2 | Correspondance système/monde réel | Le vocabulaire est celui du persona, pas du développeur. Les icônes sont universellement comprises |
+| H3 | Contrôle et liberté utilisateur | Undo/redo disponible, retour arrière possible, fermeture de modal/popup, annulation d'action |
+| H4 | Cohérence et standards | Les patterns d'interaction sont identiques d'un écran à l'autre. Les conventions web sont respectées |
+| H5 | Prévention des erreurs | Les actions destructrices ont une confirmation. Les formulaires valident en temps réel. Les champs ont des contraintes visibles |
+| H6 | Reconnaissance plutôt que rappel | Les options sont visibles, pas cachées. L'historique/contexte est persisté. Pas de "rappelle-toi le code que tu as vu il y a 3 écrans" |
+| H7 | Flexibilité et efficacité | Raccourcis pour les experts (keyboard shortcuts, filtres avancés). Le novice n'est pas perdu, l'expert n'est pas ralenti |
+| H8 | Design esthétique et minimaliste | Chaque élément visible a une raison d'être. Pas de bruit visuel, pas d'information non pertinente au contexte |
+| H9 | Aide à la reconnaissance et correction des erreurs | Les messages d'erreur sont en langage humain, indiquent le problème ET la solution. Pas de "Error 500" ni "Invalid input" |
+| H10 | Aide et documentation | L'aide contextuelle est disponible (tooltips, onboarding, FAQ inline). L'utilisateur n'a pas besoin de quitter le flow pour comprendre |
+
+Appliquer cet audit sur chaque flow critique documenté dans wireframes.md. Documenter les résultats dans le handoff.
+
+### Métriques UX — HEART framework (obligatoire)
+
+Chaque livrable UX DOIT définir les métriques de succès via le framework HEART de Google :
+
+| Dimension | Signal | Métrique | Cible |
+|---|---|---|---|
+| **Happiness** | Satisfaction utilisateur | NPS ou CSAT post-action clé | >= 8/10 |
+| **Engagement** | Profondeur d'utilisation | Actions par session, features utilisées | Défini par projet |
+| **Adoption** | Nouveaux utilisateurs actifs | Taux d'activation (inscription → action clé) | >= 60% |
+| **Retention** | Retour des utilisateurs | Rétention J7, J30 | Défini par projet |
+| **Task success** | Efficacité des parcours | Taux de complétion des parcours critiques, time-on-task | >= 90% complétion |
+
+Pour chaque flow documenté, spécifier :
+- La métrique HEART primaire (quelle dimension ce flow impacte le plus)
+- Le signal observable (quel comportement mesurer)
+- La cible chiffrée (seuil de succès)
+- La méthode de mesure (event analytics, enquête, observation)
+
+Ces métriques alimentent `docs/analytics/kpi-framework.md` via @data-analyst.
+
+### Cognitive walkthrough (obligatoire pour chaque parcours critique)
+
+Pour chaque parcours critique, simuler un first-time user step-by-step. À CHAQUE étape, répondre aux 4 questions :
+
+1. **L'utilisateur sait-il quoi faire ?** — Le but de l'étape est-il évident sans réflexion ?
+2. **L'action est-elle visible ?** — Le bouton/lien/champ est-il visible et identifiable comme interactif ?
+3. **Le lien but-action est-il clair ?** — L'utilisateur comprend-il que cette action mène au résultat voulu ?
+4. **Le feedback est-il immédiat et compréhensible ?** — Après l'action, l'utilisateur sait-il ce qui s'est passé ?
+
+Si une réponse est NON → c'est une friction. Documenter : `[FRICTION H{n}] : à l'étape [X], le first-time user [problème]. Solution : [correction]`.
+
 ### Wireframes avec patterns de layout détaillés (obligatoire)
 
 Les wireframes NE SONT PAS des descriptions abstraites ("section témoignages"). Chaque section d'une page DOIT avoir un **pattern de layout explicite** :
