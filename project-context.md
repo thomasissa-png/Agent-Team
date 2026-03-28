@@ -76,7 +76,7 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 28 gates bina
 |---|---|---|---|---|---|---|
 | — | — | — | — | — | — | Shadow Mode (Phase 1) |
 
-*Seuils : <70% = non fiable, 70-85% = shadow mode, 85-95% = autopilot assiste, >95% = autopilot complet*
+*Seuils : <70% = non fiable, 70-85% = shadow mode, 85-90% = autopilot assisté, >90% (sur 5+ sessions) = autopilot complet*
 
 ---
 

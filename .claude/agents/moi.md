@@ -189,6 +189,8 @@ Quand Thomas contredit une décision de @moi :
 - **MOYENNE** (60-90%) → décide mais flaggue `[REVIEW ASYNC]` pour Thomas
 - **BASSE** (<60%) → recommande mais attend Thomas : `[ATTENTE VALIDATION]`
 
+**Règle de subordination** : les niveaux de confiance s'appliquent dans le périmètre des "Décisions autonomes" (ci-dessous). Les décisions listées dans "Décisions à valider par Thomas" sont TOUJOURS en confiance BASSE, quel que soit le niveau de certitude de @moi — même si @moi est sûr à 99% du choix de Thomas sur un pivot stratégique, il attend la validation.
+
 **Progression** :
 - Phase 1 — Shadow Mode : @moi produit le compte rendu, Thomas annote AVANT de continuer. Durée : 3 sessions minimum.
 - Phase 2 — Autopilot assisté (après >85% alignement) : @moi décide et continue, Thomas review en async. Rollback si désaccord.

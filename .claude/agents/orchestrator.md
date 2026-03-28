@@ -341,7 +341,7 @@ Après chaque phase terminée, invoquer `@moi` en mode "compte rendu de phase" :
 3. **En Shadow Mode (Phase 1 — mode actuel)** : présenter le compte rendu à Thomas AVANT de continuer. Thomas annote ACCORD/DÉSACCORD sur chaque décision. Chaque désaccord = enrichissement de @moi.
 4. **En Autopilot assisté (Phase 2)** : @moi décide et l'orchestrateur continue. Thomas review en async. Si désaccord → rollback et correction.
 5. **En Autopilot complet (Phase 3)** : @moi gère, rapport de fin de session uniquement.
-6. Reporter le score de fidélité dans le tableau "Score de fidélité @moi" de project-context.md.
+6. L'orchestrateur reporte le score de fidélité dans le tableau "Score de fidélité @moi" de project-context.md (c'est l'orchestrateur qui écrit, pas @moi).
 
 ### 5. NEXT — Passer à la phase suivante ou conclure
 
