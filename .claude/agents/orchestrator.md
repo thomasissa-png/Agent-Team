@@ -386,6 +386,29 @@ L'autopilot est le défaut. Passer en standard **uniquement si** :
 
 Tous les autres cas → autopilot.
 
+### Profils de rigueur
+
+Le framework supporte deux profils selon l'enjeu du projet. L'utilisateur choisit dans project-context.md (champ Stade ou Notes libres). Si non spécifié, déduire du contexte.
+
+**Profil V1-Production** (défaut pour tout projet en V1/Production/Croissance) :
+- Toutes les 28 gates G1-G28 (BLOQUANT + REQUIS)
+- Gates testeur-persona GP1-GP10 et testeur-client GC1-GC10
+- Checkpoint validation specs obligatoire entre Phase 1 et Phase 2
+- Matrice de traçabilité US→tests obligatoire
+- Screenshots CI vs baselines (gate G26)
+- Jeu de données adversarial dans les tests
+- Pipeline pre-deploy complet (gate G28)
+
+**Profil Exploration** (pour validation d'idée, prototype, side project rapide) :
+- Gates BLOQUANT uniquement (pas les REQUIS ni les CONDITIONNEL)
+- Pas de gates GP/GC (pas d'agents testeurs)
+- Checkpoint specs allégé (@moi optionnel)
+- Tests E2E sur happy path uniquement (pas d'adversarial)
+- Pas de matrice de traçabilité
+- Le template user story peut être allégé (Given/When/Then + 3 états au lieu de 5)
+
+**Règle** : un projet Exploration qui évolue vers V1-Production DOIT passer par un audit complet (@reviewer) pour rattraper les gates manquantes. C'est une décision irréversible documentée dans project-context.md.
+
 ## Étape 1 — Initialisation et détection du mode
 
 Lire `project-context.md`. S'il est absent, générer le template et s'arrêter.
@@ -572,8 +595,17 @@ Invoquer `testeur-persona` sur les livrables Phase 0 + Phase 1 :
 - Évaluer : "Est-ce que cette promesse me parle ? Ce positionnement me convainc-il ? Ce parcours est-il logique pour moi ? Ce pricing me semble-t-il juste ?"
 - Si des objections majeures → BLOQUER et corriger AVANT de coder
 
+**Checkpoint validation specs (OBLIGATOIRE entre Phase 1 et Phase 2) :**
+Avant de lancer la Phase 2, vérifier que les specs sont implémentables sans ambiguïté :
+1. Invoquer `@moi` en mode quick-check sur `docs/product/functional-specs.md` : "Est-ce que @fullstack peut coder ça sans poser une seule question ?" Si non → retour à @product-manager pour clarifier.
+2. Vérifier que chaque user story a : Given/When/Then, 5 états UI, critères de validation binaires, events analytics.
+3. Vérifier que chaque écran interactif a ≥ 5 scénarios persona concrets (pas juste des états techniques — des histoires avec le persona nommé, des données réalistes, un contexte d'usage).
+4. Si le projet utilise de l'IA générative : `docs/ia/prompt-library.md` DOIT exister avec des test cases (input → output attendu) AVANT que @fullstack code. Séquence obligatoire : @ia produit prompt-library.md → validation → PUIS @fullstack implémente. Pas en parallèle.
+
 **Phase 2 — Développement :**
-`infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
+`infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E, produire matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
+
+**Séquencement IA obligatoire** : pour les features IA, l'ordre est strict : schema DB → API routes → UI basique (avec mocks) → intégration LLM → polish. La fondation doit être solide avant d'ajouter la couche probabiliste.
 
 **Phase 2b — Agents spécialisés UX (conditionnelle) :**
 Après la revue UX, vérifier si `docs/ux/user-flows.md` contient une section "Agents spécialisés recommandés". Si oui et que ces agents n'ont pas été créés en Phase 0b → lancer `@agent-factory`.

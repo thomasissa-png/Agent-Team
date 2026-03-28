@@ -85,7 +85,44 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 9 ans sur
 - Conformité design tokens : vérifier que couleurs/spacing/typographie correspondent à design-tokens.json
 - Dark mode : si supporté, chaque screenshot prise en mode clair ET sombre, contrastes vérifiés
 - États visuels composants : screenshots de tous les états (default, hover, focus, active, disabled, loading, error)
-- Responsive visual : screenshots sur 3 viewports (375, 768, 1280) pour chaque page critique
+- Responsive visual : screenshots sur 3 devices via Playwright device descriptors (`devices['iPhone 13']`, `devices['iPad']`, `devices['Desktop Chrome']`) pour chaque page critique — tester le device réel, pas juste la taille d'écran
+- **Gate G26 — Conformité visuelle** : les screenshots CI DOIVENT être comparées aux baselines approuvées. Seuil < 0.5% de pixels différents. Si aucune baseline → première exécution crée les baselines, review humain obligatoire. C'est une gate BLOQUANT.
+
+### Matrice de traçabilité (obligatoire — Gate G27)
+
+Chaque user story de `docs/product/functional-specs.md` DOIT avoir au moins 1 test E2E ou intégration correspondant. Documenter la traçabilité dans `docs/qa/TESTING.md` :
+
+```
+| User Story | Test correspondant | Statut |
+|---|---|---|
+| US-01 : Sophie s'inscrit | tests/e2e/auth.spec.ts:15 | PASS |
+| US-02 : Sophie ajoute un bien | tests/e2e/property.spec.ts:42 | PASS |
+```
+
+Si une story n'a pas de test correspondant → gate G27 FAIL. Vérifier par Grep que chaque US-XX mentionnée dans les specs a une entrée dans la matrice.
+
+### Pipeline pre-deploy (obligatoire — Gate G28)
+
+Avant tout déploiement, vérifier dans cet ordre :
+1. `tsc --noEmit` avec 0 erreur TypeScript
+2. ESLint avec 0 erreur (warnings tolérés)
+3. Tests unitaires PASS (Vitest)
+4. Tests E2E critiques PASS (Playwright sur parcours happy path)
+5. Grep pour clés API placeholders : `sk_test_`, `pk_test_`, `="..."`, `=xxx`, `=placeholder` dans src/ — aucun résultat autorisé
+
+Si un des 5 échoue → gate G28 FAIL, bloquer le déploiement.
+
+### Jeu de données adversarial (obligatoire)
+
+Les tests avec des données propres passent toujours. Les vrais bugs apparaissent avec des données toxiques. Fixtures de test obligatoires :
+- **Texte** : noms avec accents (éàç), emojis dans les champs (🏠), caractères spéciaux (&<>"'), texte vide, texte de 10 000 caractères
+- **Nombres** : montants à 0.00, montants négatifs, montants > 999 999, NaN, Infinity
+- **Dates** : 29 février, 31 décembre minuit, fuseaux horaires, dates au format US vs EU
+- **Emails** : emails avec +tag, domaines longs, emails sans TLD standard
+- **URLs** : URLs avec paramètres encodés, URLs sans protocole, URLs localhost
+- **Fichiers** : images de 0 bytes, images de 50 MB, fichiers non-image avec extension .jpg
+
+Chaque formulaire du projet DOIT être testé avec au moins 3 inputs adversariaux pertinents.
 
 ### Tests de résilience et gestion d'erreurs
 
@@ -135,7 +172,7 @@ Si project-context.md indique un modèle B2B :
 - Tests de parcours persona : reproduire le scénario complet du persona principal (inscription → activation → action clé → résultat) et vérifier que le time-to-value correspond aux specs UX (≤ 3 étapes si documenté)
 - Tests d'edge cases UX : états vides, états d'erreur, états de chargement, retour après inactivité — chaque état documenté dans les wireframes doit avoir un test
 - Tests d'accessibilité automatisés : axe-core intégré dans CHAQUE test E2E Playwright (pas seulement les tests dédiés accessibilité)
-- Tests multi-viewport (pas seulement responsive) : chaque parcours critique testé de bout en bout sur 3 viewports minimum (mobile 375px, tablet 768px, desktop 1280px). Ce ne sont PAS des tests de layout — ce sont des tests fonctionnels complets qui vérifient que l'expérience entière fonctionne (navigation, formulaires, interactions, clavier virtuel sur mobile, hover states sur desktop). Si un parcours échoue sur un viewport, c'est un bug bloquant.
+- Tests multi-device (pas seulement responsive) : chaque parcours critique testé de bout en bout sur 3 devices minimum via Playwright device descriptors (`devices['iPhone 13']`, `devices['iPad']`, `devices['Desktop Chrome']`). Ce ne sont PAS des tests de layout — ce sont des tests fonctionnels complets qui vérifient que l'expérience entière fonctionne (navigation, formulaires, interactions, clavier virtuel sur mobile, hover states sur desktop). Un iPhone Safari se comporte différemment d'un Chrome mobile à 375px — tester le device réel. Si un parcours échoue sur un device, c'est un bug bloquant.
 
 ### Tests d'accessibilité (WCAG 2.2 AA)
 
