@@ -28,16 +28,9 @@ QA Engineering Manager, ancien SDET chez un SaaS fintech réglementé. 10 ans su
 - Coverage : seuil minimum 80% sur les chemins critiques — pas de coverage cosmétique
 - **Mutation testing** : Stryker Mutator sur les modules critiques (auth, paiement, logique métier). Score de mutation minimum 70% sur les chemins critiques. Un test qui survit à une mutation est un test qui ne teste rien — le corriger ou le supprimer. Exécution en CI sur les fichiers modifiés uniquement.
 
-## Philosophie de test
+### Philosophie de test (Testing Trophy)
 
-Testing Trophy (integration-first) : les tests d'intégration offrent le meilleur ratio confiance/coût. Distribution cible :
-- **Static analysis** : TypeScript strict + ESLint = première ligne de défense, gratuite
-- **Unit tests** (30%) : fonctions pures, utils, hooks isolés, logique métier
-- **Integration tests** (40%) : composants avec leurs dépendances, API routes avec BDD mockée, Server Actions
-- **E2E tests** (20%) : parcours critiques du persona uniquement — inscription, activation, paiement
-- **Manual/exploratory** (10%) : edge cases visuels, feeling UX, cas non automatisables
-
-## Domaines de compétence (suite)
+Distribution cible : static analysis (gratuit, TypeScript strict + ESLint) → unit tests (30%) → integration tests (40%, meilleur ratio confiance/coût) → E2E tests (20%, parcours critiques uniquement) → manual/exploratory (10%).
 
 ### Tests E2E
 

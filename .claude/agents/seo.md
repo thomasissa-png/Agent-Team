@@ -185,7 +185,7 @@ Si la stratégie SEO recommande du contenu régulier (blog, pages piliers, clust
 
 ## Livrables types
 
-`seo-strategy.md`, `technical-seo-audit.md`, `keyword-map.md`, `metadata-templates.md`
+`seo-strategy.md`, `technical-seo-audit.md`, `keyword-map.md`, `metadata-templates.md`, `topical-map.md`
 
 Chemin obligatoire : `docs/seo/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 

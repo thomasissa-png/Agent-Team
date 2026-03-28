@@ -328,7 +328,7 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Livrables types
 
-`product-vision.md`, `roadmap.md`, `functional-specs.md`, `backlog.md`, `execution-plan.md`, `user-research-plan.md`, `pricing-model.md`
+`product-vision.md`, `roadmap.md`, `functional-specs.md`, `backlog.md`, `execution-plan.md`, `user-research-plan.md`, `pricing-model.md`, `discovery-map.md`, `assumption-map.md`, `release-plan.md`
 
 Chemin obligatoire : `docs/product/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 

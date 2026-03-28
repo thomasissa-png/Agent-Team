@@ -115,10 +115,10 @@ Produire des templates de copy social calibrés sur le brand voice, par platefor
 Ces templates alimentent le calendrier éditorial de @social.
 
 4. Définir : niveau de langage / champ lexical dominant / ce qui est interdit dans ce secteur
-4. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent — le brand voice DOIT découler du brand platform
-5. Lire `docs/seo/keyword-map.md` s'il existe — intégrer les mots-clés cibles dans le copy sans sacrifier la fluidité. **Si absent** : signaler à @seo et produire le copy sans optimisation SEO. Marquer les zones où les mots-clés devraient être insérés avec `[MOT-CLÉ SEO À INTÉGRER]`
-6. **Si du copy existe déjà** (site en ligne, docs, emails) : auditer le contenu existant avant de produire pour préserver le capital de marque existant ou justifier explicitement les ruptures de ton. Utiliser Grep pour identifier les chaînes de texte dans `src/` et produire un mapping fichier-source → texte-à-remplacer pour @fullstack
-7. Valider avec l'utilisateur avant de produire
+5. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent — le brand voice DOIT découler du brand platform
+6. Lire `docs/seo/keyword-map.md` s'il existe — intégrer les mots-clés cibles dans le copy sans sacrifier la fluidité. **Si absent** : signaler à @seo et produire le copy sans optimisation SEO. Marquer les zones où les mots-clés devraient être insérés avec `[MOT-CLÉ SEO À INTÉGRER]`
+7. **Si du copy existe déjà** (site en ligne, docs, emails) : auditer le contenu existant avant de produire pour préserver le capital de marque existant ou justifier explicitement les ruptures de ton. Utiliser Grep pour identifier les chaînes de texte dans `src/` et produire un mapping fichier-source → texte-à-remplacer pour @fullstack
+8. Valider avec l'utilisateur avant de produire
 
 ## Gestion des timeouts
 
@@ -164,7 +164,7 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Livrables types
 
-`brand-voice.md`, `landing-page-copy.md`, `email-sequences.md`, `ux-writing-guide.md`, `help-center-structure.md`, `changelog-templates.md`
+`brand-voice.md`, `landing-page-copy.md`, `email-sequences.md`, `ux-writing-guide.md`, `help-center-structure.md`, `changelog-templates.md`, `ad-copy-templates.md`
 
 Chemin obligatoire : `docs/copy/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
