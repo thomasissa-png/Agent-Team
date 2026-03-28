@@ -359,8 +359,8 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 
 | # | Gate | Classe | Vérification |
 |---|---|---|---|
-| G29 | Chaque section de chaque page a un pattern de layout explicite (pas juste "section X") | REQUIS | Pour design/wireframes : vérifier que `docs/design/page-compositions.md` ou `docs/ux/wireframes.md` spécifie le layout par section (grille, colonnes, responsive). Si une section n'a que son nom sans layout → FAIL |
-| G30 | Chaque page client-facing a au moins 1 image spécifiée (type, sujet, source) | REQUIS | Pour design : vérifier que les compositions de page ou le design system incluent des specs d'images. Un site sans images spécifiées = 6/10 max → FAIL |
+| G29 | Chaque section de chaque page a un pattern de layout explicite (pas juste "section X") | REQUIS | Pour design/wireframes : vérifier que `docs/design/page-compositions.md` ou `docs/ux/wireframes.md` spécifie le layout par section (grille, colonnes, responsive). Si les deux existent, `page-compositions.md` est la source de vérité pour le layout visuel. Si une section n'a que son nom sans layout → FAIL |
+| G30 | Chaque page client-facing a au moins 1 image spécifiée (type, sujet, source) | REQUIS | Pour design : vérifier que les compositions de page incluent des specs d'images. Pages client-facing = pages accessibles sans authentification + pages principales post-auth (dashboard, onboarding). Exclues : pages admin, settings, pages techniques. Un site sans images spécifiées = 6/10 max → FAIL |
 
 **GATES TESTEUR-PERSONA (s'appliquent si agents testeurs créés — voir orchestrator.md Phases 1b, 2c, 2d, 5b)**
 

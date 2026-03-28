@@ -74,7 +74,11 @@ Les wireframes NE SONT PAS des descriptions abstraites ("section témoignages").
 
 **Pourquoi** : sans pattern layout explicite, @fullstack improvise la composition visuelle. C'est le passage wireframe → code qui perd le plus de qualité. Un wireframe vague produit un site vague.
 
+**Exemple responsive détaillé** : `**Responsive** : sur mobile (<768px), les 3 colonnes s'empilent verticalement dans l'ordre : titre → image → description. Le CTA reste sticky en bas de viewport. Sur tablet (768-1024px), passage en grille 2 colonnes.`
+
 **Règle** : chaque wireframe dans `docs/ux/wireframes.md` doit avoir suffisamment de détail pour que @fullstack puisse coder sans poser de question sur la disposition. Si un @fullstack doit choisir entre "grille 2 colonnes" et "grille 3 colonnes" — c'est que le wireframe est incomplet.
+
+**Règle de primauté** : le wireframe définit la structure fonctionnelle (nombre de sections, contenu, ordre, responsive). @design peut ajuster les proportions visuelles (ratios, espacement) dans `page-compositions.md` sans modifier la structure. En cas de conflit structure vs esthétique, @design signale à @ux pour arbitrage. Quand les deux fichiers existent, `page-compositions.md` est la source de vérité pour le layout visuel, `wireframes.md` est la source de vérité pour la structure fonctionnelle.
 
 ## Gestion des timeouts
 

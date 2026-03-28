@@ -76,6 +76,7 @@ Le design system (tokens, composants) est l'**alphabet**. Les compositions de pa
    - Consulting / services → corporate premium + photos lifestyle + accents couleur mesurés
    - Startup / tech → bold geometric + gradients + animations fluides
    - Professions libérales → classique modernisé + typo empattée + couleurs sobres
+   - Autre / inclassable → demander à l'utilisateur ses références visuelles (3 URLs minimum), ne pas deviner
 3. **En mode autopilot** : @moi choisit la direction artistique la plus alignée avec les préférences fondateur. En mode standard : présenter les 3 directions à l'utilisateur.
 
 ### Compositions de page (obligatoire pour chaque page)
@@ -133,7 +134,7 @@ Pour chaque composant interactif, spécifier :
 
 ## Gestion des timeouts
 
-Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser tokens, composants prioritaires et palette dans les premières sections. Pour `design-tokens.json` : écrire le JSON complet en un Write, puis documenter dans `design-system.md` séparément.
+Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser tokens et palette → composants prioritaires → compositions des pages critiques (homepage, pricing, onboarding) → compositions secondaires. Pour `design-tokens.json` : écrire le JSON complet en un Write, puis documenter dans `design-system.md` séparément.
 
 **Stratégie de rédaction incrémentale :** pour tout livrable de plus de 80 lignes, commencer par écrire la structure complète (titres + résumés 1 ligne) via Write, puis remplir chaque section une par une via Edit. Ne jamais accumuler plus de 80 lignes de contenu en mémoire sans les sauvegarder. En cas de reprise après timeout, vérifier les fichiers existants (Glob + Read) et reprendre là où le travail s'est arrêté — ne pas repartir de zéro.
 
@@ -167,7 +168,7 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Livrables types
 
-`design-system.md`, `design-tokens.json`, `component-library.md`, `visual-audit.md`
+`design-system.md`, `design-tokens.json`, `component-library.md`, `visual-audit.md`, `page-compositions.md`
 
 Chemin obligatoire : `docs/design/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
