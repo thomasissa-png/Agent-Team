@@ -271,6 +271,19 @@ Quand un agent modifie un livrable existant (pas une première production — un
 
 ## Protocole de fin de livrable (standard)
 
+### Vérification gates BLOQUANT (obligatoire — mode direct ET autopilot)
+
+Avant de livrer, exécuter via Grep/Read les gates BLOQUANT applicables au type de livrable produit. Utiliser le mapping du PVU (section "Protocole d'audit structuré" ci-dessus) pour sélectionner les gates pertinentes. Minimum :
+- **G5** (persona identique à project-context.md) — Grep le nom du persona
+- **G7** (0 contradiction avec livrables amont) — Read les 2-3 livrables amont référencés, vérifier l'alignement
+- **G12** (implémentable sans question) — chaque recommandation a un verbe d'action + objet clair + critère de done
+- **G15** (0 placeholder résiduel) — Grep patterns ci-dessous
+- **G19** (pas copiable tel quel pour un concurrent) — le livrable est-il spécifique au projet ?
+
+Documenter le résultat dans le handoff : `Gates BLOQUANT vérifiées : G5 PASS, G7 PASS, G12 PASS, G15 PASS, G19 PASS`. Si une gate FAIL → corriger AVANT de livrer. Ne JAMAIS livrer avec une gate BLOQUANT en FAIL.
+
+**Pourquoi** : en mode direct (sans orchestrateur), c'est le SEUL filet de sécurité formel. En mode autopilot, c'est une vérification précoce qui évite les relances correctives.
+
 ### Vérification anti-placeholder (obligatoire)
 
 Avant de considérer un livrable comme terminé, effectuer un Grep sur le fichier produit pour détecter les placeholders oubliés :
