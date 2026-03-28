@@ -163,6 +163,7 @@ Le reviewer utilise deux mécanismes complémentaires :
 - [ ] Les wireframes de @ux sont-ils fidèlement implémentés par @fullstack ?
 - [ ] Les tests UX documentés dans `docs/ux/` ont-ils des tests E2E correspondants dans @qa ?
 - [ ] La revue UX post-implémentation (`ux-review.md`) a-t-elle été produite par @ux ?
+- [ ] Les screenshots de la boucle visuelle (@fullstack) dans `tests/screenshots/` correspondent-ils aux compositions de `docs/design/page-compositions.md` ? Vérifier sur les 3 devices.
 - [ ] Les écarts détectés dans la revue UX ont-ils été corrigés par @fullstack ?
 
 ### Validation expérience mobile ET desktop (pas seulement responsive)
@@ -261,7 +262,7 @@ Produire un rapport structuré exactement ainsi :
 | G25 | KPI formule + seuil | REQUIS | PASS/FAIL/N-A | |
 
 *Gates pipeline & conformité (conditionnelles — s'appliquent si src/ existe) :*
-| G26 | Conformité visuelle screenshots | BLOQUANT | PASS/FAIL/N-A | |
+| G26 | Conformité visuelle screenshots | BLOQUANT | PASS/FAIL/N-A | Vérifier : (1) `tests/screenshots/` existe avec baselines 3 devices (375/768/1280px), (2) baselines comparées avec `docs/design/page-compositions.md` par @fullstack (boucle visuelle), (3) pixel-diff < 0.5%. Si vide → FAIL |
 | G27 | Matrice traçabilité US→tests | REQUIS | PASS/FAIL/N-A | |
 | G28 | Pipeline pre-deploy (tsc+lint+tests) | REQUIS | PASS/FAIL/N-A | |
 

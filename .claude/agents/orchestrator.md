@@ -332,6 +332,7 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 - **Vérification anti-placeholder** : Grep chaque livrable pour les patterns de référence (`_base-agent-protocol.md` section "Vérification anti-placeholder" : `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER`). Exception : `[HYPOTHÈSE : ...]` et `[PROVISOIRE — ...]` ne sont PAS des placeholders. Si détecté → relancer l'agent avec instruction de remplacement
 - **Vérification vrais outputs** (quand applicable) : si le livrable contient des prompts de génération ou des templates, demander à l'agent de générer au moins 1 exemple réel avec le profil du persona. Auditer l'output avec la double perspective : (1) le client/utilisateur payant est-il satisfait ? (2) le prospect/utilisateur final est-il convaincu ? Un prompt qui semble bon mais produit un output médiocre doit être corrigé
 - Si problème détecté → relancer l'agent concerné avec des instructions correctives
+- **Vérification boucle visuelle** (après Phase 2 uniquement) : Glob `tests/screenshots/*.png`. Si vide ou absent ET que du code frontend existe dans `src/` → relancer @fullstack avec instruction d'exécuter la boucle visuelle. Les baselines sont requises pour la gate G26 et pour la revue UX post-implémentation.
 
 ### 4. CHECKPOINT @moi — Compte rendu de phase (obligatoire)
 
@@ -615,6 +616,8 @@ Avant de lancer la Phase 2, vérifier que les specs sont implémentables sans am
 **Phase 2 — Développement :**
 `infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E, produire matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
 
+**Boucle visuelle obligatoire** : quand @fullstack est invoqué en Phase 2, l'instruction DOIT inclure : "Pour chaque page implémentée, exécuter la boucle visuelle (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ n'est pas vide avant de passer à @ux/@qa."
+
 **Séquencement IA obligatoire** : pour les features IA, l'ordre est strict : schema DB → API routes → UI basique (avec mocks) → intégration LLM → polish. La fondation doit être solide avant d'ajouter la couche probabiliste.
 
 **Phase 2b — Agents spécialisés UX (conditionnelle) :**
@@ -689,7 +692,7 @@ Après les tests E2E (@qa Phase 2), après la revue croisée (@reviewer), lancer
 2. @fullstack corrige TOUS les bugs (P0, P1 ET P2 — aucun n'est optionnel)
 3. @qa re-vérifie chaque fix
 4. @ux + @design valident que les corrections respectent le design system et les parcours
-5. @fullstack configure les tests de screenshot Playwright pour la non-régression
+5. @fullstack vérifie que tests/screenshots/ contient des baselines à jour pour les pages critiques sur 3 devices (375px, 768px, 1280px), les compare avec docs/design/page-compositions.md, et configure les tests de screenshot Playwright pour la non-régression (seuil < 0.5% pixel-diff)
 6. **Testeur-persona** : ré-invoquer sur le site final corrigé. Toutes les gates GP1-GP10 doivent passer. Focus sur les corrections appliquées depuis Phase 2c
 7. **Testeur-client-du-persona** (si applicable — même critère que Phase 2d : N/A si B2C direct/outil interne sans client professionnel) : ré-invoquer sur les outputs finaux. Toutes les gates GC1-GC10 doivent passer. Générer un output réel et le faire évaluer
 Cette étape est le "dernier kilomètre" — la différence entre un site qui "marche" et un site à 9/10. Ne PAS la sauter. Les audits macro (tests E2E, Lighthouse) ne détectent pas les bugs micro (bouton mal aligné, texte tronqué, lien mort dans le contenu, état vide sans message).

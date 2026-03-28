@@ -351,7 +351,7 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 
 | # | Gate | Classe | Vérification |
 |---|---|---|---|
-| G26 | Conformité visuelle : screenshots CI vs baselines approuvées (< 0.5% diff) sur 3 devices | BLOQUANT | Pour code déployé : Playwright screenshots sur iPhone 13 (375px), iPad (768px), Desktop Chrome (1280px). Comparaison pixel-diff avec baselines approuvées. Seuil < 0.5% de pixels différents par screenshot. Si aucune baseline → première exécution crée les baselines, review humain obligatoire |
+| G26 | Conformité visuelle : screenshots CI vs baselines approuvées (< 0.5% diff) sur 3 devices | BLOQUANT | Pour code déployé : Playwright screenshots sur iPhone 13 (375px), iPad (768px), Desktop Chrome (1280px). Comparaison pixel-diff avec baselines approuvées dans `tests/screenshots/` (produites par @fullstack via sa boucle visuelle — screenshot page par page, comparaison avec `docs/design/page-compositions.md`, correction avant page suivante). Seuil < 0.5% de pixels différents par screenshot. Si `tests/screenshots/` vide → FAIL (boucle visuelle non exécutée). Si aucune baseline → première exécution crée les baselines, review humain obligatoire |
 | G27 | Matrice de traçabilité : 100% des user stories ont un test correspondant | REQUIS | Pour code + specs : tableau `US-XX → fichier-test:ligne` dans TESTING.md ou qa-strategy.md. Chaque user story de functional-specs.md DOIT avoir au moins 1 test E2E ou intégration. Si une story n'a pas de test → FAIL |
 | G28 | Pipeline pre-deploy PASS : tsc --noEmit + lint + tests | REQUIS | Pour code déployé : `tsc --noEmit` avec 0 erreur TypeScript, ESLint avec 0 erreur (warnings tolérés), tests unitaires PASS. Si un des 3 échoue → FAIL |
 

@@ -125,14 +125,16 @@ Classifier les features par niveau de risque :
 - Robots.txt : existe, autorise Google/Bing, référence sitemap, bloque /api/ et /dashboard/
 - Liens internes : aucun lien cassé (href vers 404) sur les pages publiques
 
-### Tests visuels et régression
+### Tests visuels et régression (boucle visuelle)
 
+- **Baselines source** : les baselines de référence sont dans `tests/screenshots/`, produites par @fullstack pendant le dev via la boucle visuelle (screenshot Playwright page par page, comparaison avec `docs/design/page-compositions.md`, correction avant page suivante). @qa utilise ces baselines existantes — ne PAS recréer de baselines indépendantes. Si `tests/screenshots/` est vide → signaler à @fullstack : "Boucle visuelle non exécutée — baselines manquantes dans tests/screenshots/."
 - Screenshot comparison : baseline par page/composant critique, seuil < 0.1% de pixels différents
 - Conformité design tokens : vérifier que couleurs/spacing/typographie correspondent à design-tokens.json
+- Comparaison compositions : chaque screenshot dans `tests/screenshots/` doit être cohérent avec les specs de `docs/design/page-compositions.md` (layout, images, animations). Si écart significatif détecté par @qa mais non corrigé par @fullstack → signaler comme bug bloquant
 - Dark mode : si supporté, chaque screenshot prise en mode clair ET sombre, contrastes vérifiés
 - États visuels composants : screenshots de tous les états (default, hover, focus, active, disabled, loading, error)
 - Responsive visual : screenshots sur 3 devices via Playwright device descriptors (`devices['iPhone 13']`, `devices['iPad']`, `devices['Desktop Chrome']`) pour chaque page critique — tester le device réel, pas juste la taille d'écran
-- **Gate G26 — Conformité visuelle** : les screenshots CI DOIVENT être comparées aux baselines approuvées. Seuil < 0.5% de pixels différents. Si aucune baseline → première exécution crée les baselines, review humain obligatoire. C'est une gate BLOQUANT.
+- **Gate G26 — Conformité visuelle** : les screenshots CI DOIVENT être comparées aux baselines approuvées dans `tests/screenshots/`. Seuil < 0.5% de pixels différents. Si aucune baseline → première exécution crée les baselines, review humain obligatoire. C'est une gate BLOQUANT.
 
 ### Matrice de traçabilité (obligatoire — Gate G27)
 

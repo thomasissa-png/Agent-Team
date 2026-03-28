@@ -196,7 +196,7 @@ Pour chaque user flow produit, inclure un bloc de critères de validation :
 
 Après que @fullstack a implémenté les parcours, @ux DOIT être réinvoqué pour une revue UX :
 
-1. Lire le code implémenté (`Glob src/**/*.{tsx,jsx}`) et comparer avec les wireframes
+1. Lire le code implémenté (`Glob src/**/*.{tsx,jsx}`) ET les screenshots de la boucle visuelle dans `tests/screenshots/` (si disponibles). Comparer avec les wireframes de `docs/ux/wireframes.md` et les compositions de `docs/design/page-compositions.md`. Les screenshots sur les 3 devices (375px, 768px, 1280px) sont la preuve visuelle — le code seul ne suffit pas. Si `tests/screenshots/` est vide, demander à @fullstack d'exécuter sa boucle visuelle avant la revue
 2. Identifier les écarts entre le wireframe et l'implémentation
 3. Vérifier que les edge cases documentés sont implémentés
 4. Produire un `ux-review.md` dans `docs/ux/` avec : écarts détectés, corrections demandées, validation ou NO-GO

@@ -652,7 +652,8 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable). Le scoring numérique est dérivé des gates pour le tracking.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (11 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
-7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
+7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa (gate G26).
+8. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
 9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
 10. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
@@ -1440,7 +1441,9 @@ Implémentation :
 - Accessibilité : aria-labels, focus management, keyboard navigation.
 - Performance : lazy loading si pertinent, pas de re-renders inutiles.
 
-Livrable : code dans src/.
+Boucle visuelle obligatoire : pour chaque page implémentée, prendre un screenshot Playwright sur 3 devices (iPhone 13, iPad, Desktop Chrome), comparer avec docs/design/page-compositions.md, corriger les écarts AVANT de passer à la page suivante. Sauvegarder les screenshots dans tests/screenshots/ comme baselines pour la gate G26.
+
+Livrable : code dans src/ + tests/screenshots/ (baselines visuelles).
 
 Puis @qa : lis docs/product/functional-specs.md et le code produit dans src/. Dérive les tests depuis les critères Given/When/Then de chaque user story de cette feature — chaque critère = au moins un test. Teste les 5 états UI (défaut, loading, vide, erreur, succès) de chaque écran interactif. Utilise les payloads API des specs pour les tests d'intégration (endpoint, auth, schemas, codes d'erreur). Vérifie les events analytics par interception dynamique en E2E. Écris les tests unitaires Vitest et E2E Playwright. Cible : couverture > 80%. Livrable : tests dans src/ + docs/qa/qa-strategy.md mis à jour.
 
@@ -1605,6 +1608,7 @@ Audite le code produit par @fullstack contre les specs du design system :
 3. États des composants : vérifie que hover/focus/disabled/error/loading sont implémentés pour chaque composant interactif. Focus visible (outline) obligatoire.
 4. Cohérence typographique : tailles, poids, line-height alignés avec l'échelle définie.
 5. Accessibilité : aria-labels, roles, tabindex, screen reader compatibility.
+6. Comparaison visuelle (gate G26) : prendre des screenshots Playwright des composants/pages implémentés sur 3 devices (375px, 768px, 1280px) et comparer avec docs/design/page-compositions.md. Les écarts de layout, espacement, proportions non détectables par lecture de code seule. Sauvegarder dans tests/screenshots/.
 
 Format du rapport : tableau par composant avec criticité (bloquant / majeur / mineur) et code correctif suggéré.
 
@@ -2424,7 +2428,8 @@ Audit qualité complet :
 9. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
 10. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
 11. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
-12. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
+12. Régression visuelle (Gate G26) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
+13. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) .
 
