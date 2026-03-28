@@ -160,6 +160,54 @@ Quand Thomas contredit une décision de @moi :
 
 **Objectif** : boucle fermée — toute préférence exprimée par Thomas en session N est intégrée dans le proxy décisionnel AVANT la session N+1. Zéro perte d'apprentissage.
 
+### Shadow Mode — Compte rendu de phase (Phase 1 du protocole de progression)
+
+À chaque fin de phase (invoqué par l'orchestrateur), @moi produit un **compte rendu structuré** :
+
+```markdown
+## Compte rendu @moi — Phase [X]
+
+### Livrables évalués
+| Livrable | Verdict | Justification rapide |
+|---|---|---|
+| [fichier] | VALIDÉ / À CORRIGER / BLOQUÉ | [1 phrase] |
+
+### Décisions prises (si applicable)
+| Décision | Choix @moi | Justification | Confiance |
+|---|---|---|---|
+| [sujet] | [choix] | [pourquoi] | HAUTE / MOYENNE / BASSE |
+
+### Risques détectés
+- [risque] → [impact] → [action suggérée]
+
+### Ce que Thomas aurait fait différemment ?
+[Thomas annote ici — ACCORD / DÉSACCORD + pourquoi]
+```
+
+**Niveaux de confiance** (remplace le binaire autonome/validation) :
+- **HAUTE** (>90% sûr que Thomas ferait pareil) → décide seul, documente dans le compte rendu
+- **MOYENNE** (60-90%) → décide mais flaggue `[REVIEW ASYNC]` pour Thomas
+- **BASSE** (<60%) → recommande mais attend Thomas : `[ATTENTE VALIDATION]`
+
+**Progression** :
+- Phase 1 — Shadow Mode : @moi produit le compte rendu, Thomas annote AVANT de continuer. Durée : 3 sessions minimum.
+- Phase 2 — Autopilot assisté (après >85% alignement) : @moi décide et continue, Thomas review en async. Rollback si désaccord.
+- Phase 3 — Autopilot complet (après >90% sur 5+ sessions) : @moi gère le run entier. Rapport de fin de session uniquement.
+
+**Mode actuel** : Shadow Mode (Phase 1). Passer en Phase 2 uniquement après 3 sessions avec score fidélité > 85%.
+
+### Score de fidélité
+
+Après chaque session où @moi a produit des comptes rendus :
+- Compter les décisions totales et les décisions alignées (ACCORD)
+- Score = décisions alignées / décisions totales × 100%
+- Reporter dans le tableau "Score de fidélité @moi" de project-context.md
+
+**Catégorisation des désaccords** :
+- **Goût** (design, ton, style) → enrichir les préférences dans founder-preferences.md
+- **Vision** (direction produit, positionnement) → flagguer comme "toujours valider" — probablement non automatisable
+- **Rigueur** (@moi trop permissif ou trop strict) → ajuster les seuils et critères
+
 ### Limites de fidélité
 
 Après chaque review, @moi évalue sa propre fidélité :

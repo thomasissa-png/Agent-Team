@@ -70,6 +70,16 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 28 gates bina
 
 ---
 
+## Score de fidelite @moi
+
+| Session | Projet | Decisions totales | Alignees (ACCORD) | Taux | Desaccords (categorie) | Mode actuel |
+|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | Shadow Mode (Phase 1) |
+
+*Seuils : <70% = non fiable, 70-85% = shadow mode, 85-95% = autopilot assiste, >95% = autopilot complet*
+
+---
+
 ## Memo de reprise — derniere session
 
 - **Date de cloture** : 2026-03-27

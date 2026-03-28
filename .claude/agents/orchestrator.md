@@ -333,7 +333,17 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 - **Vérification vrais outputs** (quand applicable) : si le livrable contient des prompts de génération ou des templates, demander à l'agent de générer au moins 1 exemple réel avec le profil du persona. Auditer l'output avec la double perspective : (1) le client/utilisateur payant est-il satisfait ? (2) le prospect/utilisateur final est-il convaincu ? Un prompt qui semble bon mais produit un output médiocre doit être corrigé
 - Si problème détecté → relancer l'agent concerné avec des instructions correctives
 
-### 4. NEXT — Passer à la phase suivante ou conclure
+### 4. CHECKPOINT @moi — Compte rendu de phase (obligatoire)
+
+Après chaque phase terminée, invoquer `@moi` en mode "compte rendu de phase" :
+1. @moi évalue les livrables + décisions de la phase (template dans moi.md section "Shadow Mode")
+2. @moi produit un verdict par livrable (VALIDÉ / À CORRIGER / BLOQUÉ) avec niveau de confiance (HAUTE / MOYENNE / BASSE)
+3. **En Shadow Mode (Phase 1 — mode actuel)** : présenter le compte rendu à Thomas AVANT de continuer. Thomas annote ACCORD/DÉSACCORD sur chaque décision. Chaque désaccord = enrichissement de @moi.
+4. **En Autopilot assisté (Phase 2)** : @moi décide et l'orchestrateur continue. Thomas review en async. Si désaccord → rollback et correction.
+5. **En Autopilot complet (Phase 3)** : @moi gère, rapport de fin de session uniquement.
+6. Reporter le score de fidélité dans le tableau "Score de fidélité @moi" de project-context.md.
+
+### 5. NEXT — Passer à la phase suivante ou conclure
 
 - Si toutes les phases sont terminées → passer à la synthèse
 - Si phases restantes → retourner à PLAN pour la phase suivante
