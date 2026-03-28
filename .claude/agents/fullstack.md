@@ -137,6 +137,14 @@ Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de do
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées : `[PROVISOIRE — à valider quand [livrable] sera disponible]`
 - **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 sites ou apps de référence dans le secteur du projet. Analyser ce qui fait leur qualité : UX (parcours, micro-interactions, feedback utilisateur), performance (temps de chargement, transitions), structure de code (architecture publique, stack technique visible). L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
+### Patterns techniques obligatoires (learnings cross-projets)
+
+- **Foundation first pour features IA** : l'ordre est strict — schema DB → API routes → UI basique (avec mocks) → intégration LLM → polish. La fondation doit être solide avant d'ajouter la couche probabiliste. Ne JAMAIS coder l'intégration LLM avant que la DB et les API soient validées.
+- **Replit autoscale : zéro fire-and-forget** — sur Replit autoscale, JAMAIS de `fire-and-forget` après la réponse HTTP. Tout save critique (photos, logs, données utilisateur) doit être `await` AVANT `NextResponse.json()`. Le worker est tué après envoi de la réponse.
+- **Valider les clés API contre les placeholders** — ne JAMAIS tester une clé API avec juste `if (key)`. Vérifier aussi que ce n'est pas un placeholder : `key !== "..."`, `!key.startsWith("sk_test_")` en production. Un placeholder truthy = timeout silencieux.
+- **Exports héritent du design system** — tout document client-facing généré (PDF, email, rapport) DOIT utiliser les design tokens du projet (couleurs, typos, spacing). Un PDF "simpliste" pour un produit premium est un échec de brand. Colonnes monétaires alignées à droite (standard comptable).
+- **Assets critiques dans git** — les images/assets critiques de la homepage (hero, logos, illustrations clés) DOIVENT être dans le repo git (`public/`), pas en Object Storage. Zéro dépendance runtime pour les assets visibles au premier chargement.
+
 ### Protocole projet existant (code déjà en place)
 
 Si du code existe déjà dans `src/` :

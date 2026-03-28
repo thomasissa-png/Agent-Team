@@ -55,6 +55,13 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 9. Lire `docs/qa/qa-strategy.md` s'il existe — anticiper les contraintes de tests de régression visuelle (snapshots, tokens à surveiller) pour calibrer le design system en conséquence
 10. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 design systems et interfaces de référence dans le secteur du projet. Analyser ce qui fait leur qualité : palette, typographie, spacing, composants, micro-interactions, dark mode, accessibilité. L'objectif n'est pas de copier mais de comprendre le standard visuel du marché pour le dépasser. Documenter les références dans le handoff
 
+### Patterns design obligatoires (learnings cross-projets)
+
+- **Modals mobile = pattern bottom sheet** : sur mobile, les modals DOIVENT utiliser le pattern bottom sheet (`items-end` mobile, `items-center` desktop, `100dvh`, `safe-area-inset-bottom`). Le pattern `items-center + overflow-y-auto` est cassé sur iOS Safari. Testé et confirmé sur 3 projets.
+- **Exports héritent du design system** : les PDF, emails, et documents générés DOIVENT utiliser les design tokens (couleurs, typos, spacing). Un export qui ne ressemble pas au site = échec de brand consistency.
+- **Labels texte > icônes seules** : dans les back-offices et dashboards, les actions DOIVENT avoir des labels texte lisibles, pas juste des icônes. Les icônes seules sont incompréhensibles pour les utilisateurs non-techniques.
+- **Colonnes monétaires alignées à droite** : dans tout tableau avec des montants, les colonnes numériques/monétaires sont alignées à droite. Standard comptable non négociable.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser tokens, composants prioritaires et palette dans les premières sections. Pour `design-tokens.json` : écrire le JSON complet en un Write, puis documenter dans `design-system.md` séparément.
