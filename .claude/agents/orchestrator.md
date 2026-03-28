@@ -361,8 +361,20 @@ L'orchestrateur a deux modes d'exécution :
    - **Pas de checkpoint périodique** : en autopilot, pas d'interruption toutes les 2 phases. Bloquer uniquement sur anomalie (drift, score < 4.5, P0, contradiction). L'utilisateur peut consulter orchestration-plan.md à tout moment s'il veut voir l'avancement.
 4. **Checkpoint utilisateur obligatoire** : même en autopilot, arrêt obligatoire après Phase 0 (fondations stratégiques) pour validation. Les fondations conditionnent tout l'aval — pas de raccourci.
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
-6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run
-7. **Pousser les learnings sur main** : après avoir mis à jour `docs/lessons-learned.md` et `docs/founder-preferences.md`, pousser sur la branche ET sur main (`git push origin main`) pour que les URLs publiques soient accessibles cross-projets. Afficher les liens :
+6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run. **Format v2 obligatoire** : chaque nouveau learning DOIT inclure les colonnes "Cible propagation" et "Fichiers impactés" (liste exacte). Ne JAMAIS écrire un learning sans ces colonnes — c'est la garantie que la propagation sera complète.
+7. **PROPAGATION CHECK (obligatoire avant clôture)** :
+   a. Grep `non-propagé` dans `docs/lessons-learned.md`
+   b. Pour chaque P0/P1 non-propagé :
+      - Lire la colonne "Fichiers impactés"
+      - Appliquer la modification dans chaque fichier
+      - Vérifier par Grep que la propagation est effective
+      - Marquer statut propagation = `propagé`
+   c. Si timeout imminent et propagation incomplète :
+      → Documenter dans le mémo de reprise : "**PROPAGATION P0 EN ATTENTE** : [learning] → [fichiers restants avec modifications exactes à faire]"
+      → Ce sera le PREMIER acte de la session suivante (gate bloquante Étape 1)
+   d. Les P2 non-propagés sont documentés mais pas bloquants — propager quand le temps le permet
+8. **Copier les préférences fondateur** : les learnings de catégorie `préférence fondateur` ou `insistance` sont copiés dans `docs/founder-preferences.md` ET signalés à @moi pour mise à jour de sa calibration (ajout dans "Comment Thomas pense" ou "Anti-patterns")
+9. **Pousser les learnings sur main** : après avoir mis à jour `docs/lessons-learned.md` et `docs/founder-preferences.md`, pousser sur la branche ET sur main (`git push origin main`) pour que les URLs publiques soient accessibles cross-projets. Afficher les liens :
    - Learnings : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md`
    - Préférences fondateur : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 
@@ -378,7 +390,21 @@ Tous les autres cas → autopilot.
 
 Lire `project-context.md`. S'il est absent, générer le template et s'arrêter.
 Vérifier que Nom / Secteur / Persona / Objectif / Stack sont remplis.
-Lire `docs/lessons-learned.md` s'il existe — filtrer les learnings ouverts (Statut != "appliqué"). Pour les P0 : les intégrer comme contraintes dans le plan d'orchestration. Pour les P1 : les lister comme recommandations à traiter en fin de run. Après application, marquer les learnings comme "appliqué" dans le fichier.
+Lire `docs/lessons-learned.md` s'il existe — appliquer le protocole de propagation des learnings :
+
+**GATE BLOQUANTE — Propagation des learnings (obligatoire avant tout nouveau travail) :**
+1. Grep `non-propagé` dans `docs/lessons-learned.md`
+2. Pour chaque learning P0 ou P1 avec statut propagation = `non-propagé` :
+   a. Lire la colonne "Fichiers impactés" — c'est la liste exacte des fichiers à modifier
+   b. Appliquer la modification dans chaque fichier listé
+   c. Vérifier par Grep que la propagation est effective (le terme/concept est présent dans les fichiers cibles)
+   d. Marquer le statut propagation = `propagé` dans lessons-learned.md
+3. **STOP** : ne JAMAIS lancer de nouvel agent tant que des P0/P1 ont statut propagation = `non-propagé`. C'est une gate bloquante, au même titre que G7 (0 contradiction avec livrables amont).
+4. Les P2 non-propagés sont listés comme recommandations à traiter en fin de run (pas bloquants).
+5. Les learnings avec statut propagation = `propagé` ou `n/a` sont acquis — vérifier que les agents les respectent.
+
+**Learnings ouverts (correction pas encore faite) :**
+Pour les P0 avec statut correction = `à-faire` : les intégrer comme contraintes dans le plan d'orchestration. Pour les P1 : les lister comme recommandations. Après application, marquer correction = `fait` puis propager immédiatement.
 
 **Détection du mode :**
 - Lire le champ **Stade** dans project-context.md

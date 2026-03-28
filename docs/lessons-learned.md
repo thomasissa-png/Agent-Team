@@ -7,22 +7,23 @@ Ce fichier est la mémoire partagée du framework Gradient Agents. Il capitalise
 
 ---
 
-## Structure par projet
+## Format du tableau de learnings (v2 — 2026-03-28)
 
-Chaque entrée suit ce format :
+Chaque learning suit ce format à 10 colonnes :
 
 ```
-## [Nom du projet] — [Date]
-
-### Ce qui a bien fonctionné
-- [Pattern, décision, agent qui a surperformé, chaîne qui a bien marché]
-
-### Ce qui a mal fonctionné
-- [Friction, timeout, livrable refusé par reviewer, chaîne cassée, donnée manquante]
-
-### Améliorations apportées au framework
-- [Correction concrète : nouvelle calibration, règle ajoutée, agent enrichi]
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
 ```
+
+**Colonnes ajoutées en v2** :
+- **Cible propagation** : `règle-globale` (CLAUDE.md) / `agent-spécifique` (agents/*.md) / `prompts` (index.html) / `documentation` (docs/) / `founder-prefs` (founder-preferences.md + moi.md) / `aucune` (note pour mémoire)
+- **Fichiers impactés** : liste EXACTE des fichiers à modifier pour propager le learning. Pas de vague "les agents concernés" — nommer les fichiers.
+- **Statut correction** : `fait` / `en-cours` / `à-faire` — le fix a-t-il été appliqué dans le fichier source ?
+- **Statut propagation** : `propagé` / `non-propagé` / `n/a` — le fix a-t-il été propagé dans TOUS les fichiers impactés ?
+
+**Règle** : un learning n'est considéré "terminé" que quand statut correction = `fait` ET statut propagation = `propagé` (ou `n/a` si aucune propagation nécessaire).
+
+**Migration** : les learnings existants (format v1, colonne unique "Statut") sont considérés comme correction=fait, propagation=propagé si Statut=appliqué. Les learnings avec Statut=ouvert sont migrés en correction=fait, propagation=non-propagé.
 
 ---
 

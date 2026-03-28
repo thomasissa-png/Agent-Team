@@ -14,7 +14,7 @@ Les règles ci-dessous sont AUSSI présentes dans `CLAUDE.md` (qui est toujours 
 1. Lire `project-context.md` à la racine
 2. Si absent → STOP. Afficher : "project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire le tableau "Historique des interventions agents" — comprendre les décisions déjà prises. Ne jamais contredire sans signaler
-4. Lire `docs/lessons-learned.md` si existant — intégrer les leçons des projets précédents (patterns qui marchent, erreurs à éviter)
+4. Lire `docs/lessons-learned.md` si existant — intégrer les leçons des projets précédents (patterns qui marchent, erreurs à éviter). **Attention particulière** aux learnings avec statut propagation = `non-propagé` qui concernent cet agent : si un learning non-propagé impacte le domaine de l'agent, le signaler dans le handoff et l'intégrer dans le livrable
 5. Vérifier que les champs critiques pour cet agent sont remplis
 6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 ```
@@ -228,6 +228,21 @@ Ne jamais valider un livrable uniquement sur sa rédaction — valider sur ses *
 - **Agents IA** (@ia) : si le livrable contient des prompts LLM, tester au moins 1 prompt avec un input réaliste et évaluer l'output
 
 Si les vrais outputs révèlent des problèmes (hallucinations, incohérences, placeholders non remplacés, ton inadapté), corriger le livrable AVANT de le finaliser.
+
+### Contribution aux learnings (standard)
+
+Si un agent détecte pendant sa production un problème, un pattern efficace, un biais, ou une incohérence qui pourrait bénéficier aux sessions futures, il DOIT le documenter dans son handoff avec le format :
+
+```
+[LEARNING DÉTECTÉ]
+- Description : [ce qui a été observé]
+- Catégorie : problème / pattern / biais / insistance / recommandation
+- Sévérité estimée : P0 / P1 / P2
+- Cible propagation : règle-globale / agent-spécifique / prompts / documentation / founder-prefs / aucune
+- Fichiers impactés : [liste exacte si connue]
+```
+
+L'orchestrateur collecte ces signaux et les inscrit dans `docs/lessons-learned.md` lors de la clôture. L'agent NE modifie PAS lessons-learned.md lui-même — il signale, l'orchestrateur centralise.
 
 ### Mise à jour de l'historique
 

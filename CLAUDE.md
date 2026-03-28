@@ -404,26 +404,33 @@ Les grilles persona (/10, 9 dimensions, seuil 9/10) et B2B (/10, 7 dimensions, s
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 
-Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec le format tableau structuré :
+Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec le format tableau v2 (10 colonnes) :
 
 ```markdown
 ## Session [date] — [Nom du projet]
 
-| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Statut |
-|---|---|---|---|---|---|---|---|
-| [nom] | [date] | problème/insistance/requête/biais/pattern/recommandation/performance-ia | P0/P1/P2 | [description] | [ce qui a été fait] | [ce qu'il faudrait changer dans le framework] | ouvert/appliqué/obsolète |
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
+|---|---|---|---|---|---|---|---|---|---|---|
+| [nom] | [date] | problème/insistance/requête/biais/pattern/recommandation/performance-ia/préférence fondateur | P0/P1/P2 | [description] | [ce qui a été fait] | [recommandation] | règle-globale/agent-spécifique/prompts/documentation/founder-prefs/aucune | [liste EXACTE des fichiers] | fait/en-cours/à-faire | propagé/non-propagé/n/a |
 ```
 
-**Catégories** : problème (bug/incohérence corrigé), insistance (utilisateur a demandé 2+ fois), requête (demande non couverte), biais (mindset humain détecté), pattern (ce qui a bien marché), recommandation (amélioration framework), performance-ia (coûts/latence/hallucinations).
+**Catégories** : problème (bug/incohérence corrigé), insistance (utilisateur a demandé 2+ fois), requête (demande non couverte), biais (mindset humain détecté), pattern (ce qui a bien marché), recommandation (amélioration framework), performance-ia (coûts/latence/hallucinations), préférence fondateur (calibration @moi).
 
-**Cycle de vie des learnings** :
-1. **Ouvert** : learning identifié, recommandation non encore appliquée
-2. **Appliqué** : la recommandation a été implémentée dans le framework (agent, prompt, CLAUDE.md)
-3. **Obsolète** : le learning n'est plus pertinent (contexte changé, problème disparu)
+**Colonnes de propagation (v2)** :
+- **Cible propagation** : où le learning doit être propagé (CLAUDE.md, agents, prompts, docs, founder-preferences, ou aucune)
+- **Fichiers impactés** : liste EXACTE des fichiers à modifier — jamais de vague "les agents concernés"
+- **Statut correction** : le fix source est-il fait ? (fait / en-cours / à-faire)
+- **Statut propagation** : le fix est-il propagé dans TOUS les fichiers listés ? (propagé / non-propagé / n/a)
 
-**Gestion du volume** : si le fichier contient plus de 30 learnings ouverts, synthétiser les récurrents en règles permanentes (dans CLAUDE.md ou les agents) et archiver les appliqués/obsolètes dans une section "## Archive" en bas du fichier.
+**Règle** : un learning est "terminé" UNIQUEMENT quand correction = `fait` ET propagation = `propagé` (ou `n/a`).
 
-**Boucle fermée** : à chaque reprise de session, l'orchestrateur DOIT lire les learnings ouverts P0/P1 et les intégrer dans son plan d'action — pas juste les signaler.
+**Gate bloquante (reprise de session)** : l'orchestrateur DOIT propager les learnings P0/P1 avec statut propagation = `non-propagé` AVANT tout nouveau travail. C'est une gate au même titre que G7.
+
+**Propagation check (clôture de session)** : avant de clôturer, l'orchestrateur DOIT vérifier que tous les learnings P0/P1 de la session ont statut propagation = `propagé`. Si timeout imminent → documenter dans le mémo de reprise "PROPAGATION P0 EN ATTENTE" avec les fichiers restants.
+
+**Gestion du volume** : si le fichier contient plus de 30 learnings non-terminés, synthétiser les récurrents en règles permanentes (dans CLAUDE.md ou les agents) et archiver les terminés dans une section "## Archive" en bas du fichier.
+
+**Boucle fermée** : la propagation se fait EN CLÔTURE (pas en reprise). La reprise ne fait que vérifier et rattraper les oublis. L'objectif : zéro learning P0/P1 non-propagé entre deux sessions.
 
 **Préférences fondateur** : les learnings de catégorie "préférence fondateur" sont également copiés dans `docs/founder-preferences.md`, source de vérité pour l'agent @moi. Ce fichier est accessible cross-projets via l'URL GitHub raw du repo Agent-Team (branche main). Voir la section "Sources de calibration" de `moi.md` pour le mécanisme complet.
 
