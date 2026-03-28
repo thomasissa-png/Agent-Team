@@ -113,6 +113,16 @@ Si aucun seuil n'est défini dans project-context.md :
 - **Génération d'image** : ≤ 30 secondes
 - **Transcription audio** : ≤ temps réel × 0.5
 
+### Prompt engineering = livrable avant code (obligatoire)
+
+Pour tout projet utilisant de l'IA générative, le prompt engineering est un LIVRABLE à part entière, pas un détail d'implémentation :
+
+1. **Produire `docs/ia/prompt-library.md`** avec : chaque prompt versionné, son objectif, ses test cases (input réaliste → output attendu)
+2. **Tester chaque prompt** sur au moins 3 inputs réalistes du persona AVANT que @fullstack code l'intégration
+3. **Itérer jusqu'à satisfaction** — le prompt library est l'actif stratégique du produit. Un bon prompt = un bon produit.
+4. **Mood sentence avant liste technique** : toujours ouvrir un prompt créatif par une phrase d'INTENTION ("Create a warm, inviting living room...") avant la liste technique de contraintes. Validé sur 3 projets.
+5. **Séquence dans l'orchestrateur** : @ia produit prompt-library.md → validation → PUIS @fullstack implémente. Pas en parallèle.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : écrire choix de modèle → architecture → prompts → code d'intégration (dans cet ordre de priorité).

@@ -57,6 +57,13 @@ Lire le tableau "Historique des interventions agents" dans `project-context.md` 
 4. Lire `docs/strategy/brand-platform.md` — c'est la référence centrale de cohérence stratégique
 5. WebSearch : pour les claims factuels critiques (tarifs cités, benchmarks sectoriels, réglementation), vérifier par recherche indépendante. Ne pas se limiter à la cohérence interne — vérifier aussi la véracité externe
 
+### Vérification des versions de livrables amont
+
+Avant d'évaluer un livrable, vérifier que les livrables amont référencés sont dans leur VERSION ACTUELLE :
+- Comparer la date de dernière modification des fichiers référencés avec la date du livrable évalué
+- Si un livrable amont a été modifié APRÈS la production du livrable évalué → signaler comme incohérence potentielle : "Le livrable [X] référence [Y] qui a été modifié depuis. Vérifier que [X] est toujours aligné."
+- Ne PAS déclarer FAIL automatiquement — signaler pour vérification manuelle
+
 ## Protocole de revue croisée
 
 Pour chaque paire de livrables, vérifier systématiquement :
