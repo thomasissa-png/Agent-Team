@@ -442,6 +442,8 @@ Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre
 
 **Préférences fondateur** : les learnings de catégorie "préférence fondateur" sont également copiés dans `docs/founder-preferences.md`, source de vérité pour l'agent @moi. Ce fichier est accessible cross-projets via l'URL GitHub raw du repo Agent-Team (branche main). Voir la section "Sources de calibration" de `moi.md` pour le mécanisme complet.
 
+**Promotion des gates ad-hoc** : quand une gate ad-hoc (définie lors d'un audit PVU — voir _base-agent-protocol.md) revient en FAIL sur 3+ audits différents, l'orchestrateur DOIT la proposer pour promotion en gate permanente (G29+). Le processus : (1) documenter la gate récurrente dans lessons-learned.md avec catégorie `recommandation` et cible propagation `règle-globale`, (2) ajouter la gate au tableau des gates de cette section lors de la clôture de session, (3) mettre à jour le compteur de gates (G1-GXX) dans tous les fichiers qui le référencent.
+
 **Pourquoi** : sans cette mémoire, chaque session repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
 
 ## Journal de setup

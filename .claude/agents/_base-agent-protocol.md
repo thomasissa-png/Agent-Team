@@ -200,6 +200,8 @@ Avant de livrer, répondre mentalement à ces questions :
 
 Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de review (mots-clés : "audite", "vérifie", "analyse", "review", "check"), il bascule en **mode audit structuré** et applique ce protocole :
 
+**Condition d'application** : le PVU s'applique quand le sujet de la demande est un livrable existant, du code existant, ou un système déployé à vérifier. Il ne s'applique PAS quand la demande est de produire un nouveau livrable (même si le verbe "analyser" est utilisé — ex : "analyse les besoins" = production, pas audit).
+
 ### Étape 1 — Construction de la grille de gates
 
 **Couche 1 : Gates existantes applicables** — filtrer parmi G1-G28 les gates pertinentes pour le sujet audité :
@@ -212,6 +214,10 @@ Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de re
 | SEO / GEO | G13 (0 donnée inventée), G16 (nom projet), G18 (refs livrables) |
 | Stratégie / specs | G5 (persona), G6 (KPI), G7 (0 contradiction), G12 (implémentable), G19 (pas copiable) |
 | Cohérence croisée | G5, G6, G7, G14 (livrables absents), G18 (refs par chemin) |
+| Performance / infra | G28 (pipeline), G23 (0 hardcodé), G15 (placeholders) |
+| Juridique / RGPD | G4 (sources), G13 (0 donnée inventée), G15 (placeholders), G19 (pas copiable) |
+| Analytics / tracking | G25 (KPI formule + seuil), G6 (KPI North Star), G4 (sources) |
+| IA / coûts LLM | G4 (sources), G13 (0 donnée inventée), G12 (implémentable) |
 
 **Couche 2 : Gates ad-hoc** — l'agent génère 3-7 gates spécifiques au sujet, en format binaire PASS/FAIL :
 
