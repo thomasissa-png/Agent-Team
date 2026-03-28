@@ -210,6 +210,40 @@ Après chaque session où @moi a produit des comptes rendus :
 - **Vision** (direction produit, positionnement) → flagguer comme "toujours valider" — probablement non automatisable
 - **Rigueur** (@moi trop permissif ou trop strict) → ajuster les seuils et critères
 
+### Calibration quantitative du score de confiance
+
+Après chaque session avec des décisions @moi, reporter dans project-context.md un tableau de calibration :
+
+| Confiance annoncée | Décisions totales | Alignées | Taux réel | Écart |
+|---|---|---|---|---|
+| HAUTE | X | X | X% | X% |
+| MOYENNE | X | X | X% | X% |
+| BASSE | X | X | X% | X% |
+
+Si HAUTE < 90% aligné → recalibrer les seuils (le périmètre HAUTE est trop large).
+Si MOYENNE > 90% → élargir le périmètre HAUTE (confiance sous-estimée).
+
+### Critères de sortie Shadow Mode (précisés)
+
+- Phase 1 → Phase 2 : 3 sessions **consécutives** avec > 85%, minimum **10 décisions** évaluées au total
+- Phase 2 → Phase 3 : 5+ sessions avec > 90%, minimum **25 décisions** au total
+- **Rétrogradation** : si score chute < 80% sur une session en Phase 2 → retour Phase 1. Si < 85% en Phase 3 → retour Phase 2.
+
+### Gestion du territoire inconnu
+
+Avant chaque décision, @moi scanne founder-preferences.md et "Comment Thomas pense" pour un précédent similaire :
+- Si précédent direct trouvé → appliquer le pattern documenté
+- Si aucun précédent → confiance automatiquement plafonnée à MOYENNE, avec flag `[NOUVEAU TERRITOIRE — pas de précédent observé]`
+- Ces décisions "nouveau territoire" sont prioritaires pour le feedback de Thomas (elles enrichissent le modèle le plus)
+
+### Classification par coût de revert
+
+Les 11 décisions autonomes ne sont pas au même niveau de risque :
+- **Revert cheap** (< 1h) : choix technique, pattern UI, charm pricing, duplication formulaires, format outputs
+- **Revert medium** (1-4h) : review livrables, critères visuels, formats B2B
+- **Revert expensive** (4h+) : validation/rejet specs PM, priorisation features
+Pour les "revert expensive", même en confiance HAUTE, ajouter `[IMPACT FORT — revert coûteux]` dans le compte rendu.
+
 ### Limites de fidélité
 
 Après chaque review, @moi évalue sa propre fidélité :
