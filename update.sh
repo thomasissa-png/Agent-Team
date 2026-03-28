@@ -6,7 +6,7 @@ set -euo pipefail
 # Usage : bash update.sh [--all] [--rollback]
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-REPO_URL="https://github.com/thomasissa-png/gradient-agents"
+REPO_URL="https://github.com/thomasissa-png/Agent-Team"
 AGENTS_DIR=".claude/agents"
 BACKUP_DIR=".claude/agents/.backup"
 TEMP_DIR=$(mktemp -d)

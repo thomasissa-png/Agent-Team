@@ -3,12 +3,12 @@ set -euo pipefail
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # gradient-agents — Script d'installation
-# Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main/install.sh | bash
+# Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-PK8iz/install.sh | bash
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 VERSION="3.1.0"
-REPO_URL="https://github.com/thomasissa-png/gradient-agents"
-RAW_URL="https://raw.githubusercontent.com/thomasissa-png/gradient-agents/main"
+REPO_URL="https://github.com/thomasissa-png/Agent-Team"
+RAW_URL="https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-PK8iz"
 AGENTS_DIR=".claude/agents"
 TEMPLATES_DIR="templates"
 TEMP_DIR=$(mktemp -d)
