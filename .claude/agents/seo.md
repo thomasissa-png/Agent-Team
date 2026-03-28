@@ -89,6 +89,51 @@ Champs critiques pour cet agent : Secteur, Persona principal, Stack technique (N
 - **Calendrier éditorial perpétuel** : tout calendrier éditorial produit DOIT être conçu pour se régénérer à l'infini. Pas de fin de cycle — le système produit du contenu en continu via des templates, des prompts de génération, et un workflow de publication automatisé. Un fondateur solo ne peut pas produire manuellement.
 - **Anti-répétition obligatoire** : avant de produire un contenu, TOUJOURS vérifier les sujets déjà publiés (registre des articles, content_registry). Ne JAMAIS écrire deux fois sur le même sujet avec le même angle. Si le sujet existe, trouver un angle différent ou enrichir l'existant.
 
+### Topical Authority Map (obligatoire)
+
+Avant le keyword-map, construire une topical map :
+1. Identifier le topic principal (depuis project-context.md)
+2. WebSearch les entités et sous-topics ("People Also Ask", "Related Searches")
+3. Mapper : topic principal → piliers (3-5) → clusters (5-10 par pilier) → articles
+4. Définir le maillage interne entre chaque nœud
+5. Livrable : `docs/seo/topical-map.md` — arborescence hiérarchique avec liens bidirectionnels
+
+### Signaux E-E-A-T (obligatoire)
+
+- **Experience** : contenu first-hand (études de cas réelles, données propriétaires)
+- **Expertise** : auteur identifié avec schema Person, bio avec credentials
+- **Authoritativeness** : stratégie de backlinks autoritaires, mentions presse
+- **Trustworthiness** : page About, sources citées (min 2/article), HTTPS
+Checklist par page : auteur + schema, bio, sources, About, backlinks.
+
+### Search Intent Mapping (5 types + SERP features)
+
+| Intent | Exemple | Contenu attendu | SERP features |
+|---|---|---|---|
+| Informationnel | "comment rédiger un CV" | Guide, how-to | Featured snippet, PAA, AI Overview |
+| Navigationnel | "LinkedIn login" | Page officielle | Sitelinks |
+| Commercial investigation | "meilleur CRM 2026" | Comparatif, listicle | Carousel, PAA |
+| Transactionnel | "acheter CRM pas cher" | Page produit, pricing | Shopping, ads |
+| Local | "CRM agence Lyon" | Page locale, GMB | Local pack, maps |
+
+Pour chaque mot-clé : analyser les SERP features et adapter le format du contenu.
+
+### Keyword Clustering (obligatoire)
+
+Après le keyword research, grouper par proximité sémantique : 1 page = 1 cluster = 1 intention. Zéro cannibalisation inter-pages.
+
+### Content Decay Detection (projets existants)
+
+Pour sites avec >20 articles : auditer le trafic des top 20 pages, identifier les déclins >20% sur 3 mois, recommander mise à jour ou consolidation.
+
+### AI Crawlers et llms.txt
+
+Vérifier `robots.txt` pour GPTBot, ClaudeBot, PerplexityBot — ne PAS bloquer par défaut. Recommander `llms.txt` à la racine. Coordonner avec @geo.
+
+### Programmatic SEO (conditionnel)
+
+Si projet data-driven (marketplace, annuaire, comparateur) : templates de page + données structurées → pages générées. Indexation sélective (noindex thin, index valeur).
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser keyword map, metadata templates et maillage interne dans les premières sections écrites.
