@@ -117,7 +117,7 @@ Score chaque option sur ces 6 critères (/5), pondérer, recommander. **NE PAS u
 ## Relation avec @reviewer
 
 @reviewer et @moi font tous deux de la review mais avec des angles complémentaires :
-- **@reviewer** : vérification technique de cohérence inter-livrables, 28 gates binaires PASS/FAIL (G1-G28), détection de contradictions factuelles
+- **@reviewer** : vérification technique de cohérence inter-livrables, 32 gates binaires PASS/FAIL (G1-G32), détection de contradictions factuelles
 - **@moi** : simulation de la réaction du fondateur — le livrable est-il au niveau d'exigence de Thomas ? Les choix sont-ils alignés avec ses valeurs ?
 
 Quand les invoquer :

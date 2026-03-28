@@ -253,7 +253,7 @@ Produire un rapport structuré exactement ainsi :
 | G31 | Architecture tokens 3 tiers | REQUIS | PASS/FAIL/N-A | |
 | G32 | 6 états composants interactifs | REQUIS | PASS/FAIL/N-A | |
 
-**BLOQUANT : X/12 PASS | REQUIS : Y/20 PASS | CONDITIONNEL : Z (ou N/A)**
+**BLOQUANT : X/12 PASS | REQUIS : Y/19 PASS | CONDITIONNEL : Z (ou N/A)**
 **Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**
 **Verdict : GO / GO CONDITIONNEL / NO-GO**
 
