@@ -242,7 +242,12 @@ Produire un rapport structuré exactement ainsi :
 | G24 | Registre tu/vous uniforme | REQUIS | PASS/FAIL/N-A | |
 | G25 | KPI formule + seuil | REQUIS | PASS/FAIL/N-A | |
 
-**BLOQUANT : X/11 PASS | REQUIS : Y/13 PASS | CONDITIONNEL : Z (ou N/A)**
+*Gates pipeline & conformité (conditionnelles — s'appliquent si src/ existe) :*
+| G26 | Conformité visuelle screenshots | BLOQUANT | PASS/FAIL/N-A | |
+| G27 | Matrice traçabilité US→tests | REQUIS | PASS/FAIL/N-A | |
+| G28 | Pipeline pre-deploy (tsc+lint+tests) | REQUIS | PASS/FAIL/N-A | |
+
+**BLOQUANT : X/12 PASS | REQUIS : Y/15 PASS | CONDITIONNEL : Z (ou N/A)**
 **Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**
 **Verdict : GO / GO CONDITIONNEL / NO-GO**
 

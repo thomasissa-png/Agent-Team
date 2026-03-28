@@ -343,7 +343,7 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 
 L'orchestrateur a deux modes d'exécution :
 
-**Mode autopilot (défaut)** : exécution continue avec checkpoints de sauvegarde. Checkpoint obligatoire après Phase 0 (fondations). Ensuite, exécution continue — bloquer uniquement sur anomalie (drift détecté, score < 4.5, P0 non résolu, contradiction entre livrables). Pas de checkpoint périodique.
+**Mode autopilot (défaut)** : exécution continue avec checkpoints de sauvegarde. Checkpoint obligatoire après Phase 0 (fondations). Ensuite, exécution continue — bloquer uniquement sur anomalie (drift détecté, gate BLOQUANT FAIL, P0 non résolu, contradiction entre livrables). Pas de checkpoint périodique.
 
 **Mode standard** : validation utilisateur entre chaque phase. Activé uniquement si l'utilisateur le demande explicitement ("valide chaque phase", "je veux approuver") ou si c'est le tout premier projet sur le framework.
 
@@ -358,7 +358,7 @@ L'orchestrateur a deux modes d'exécution :
    - **Détection de drift** : après chaque phase, vérifier que le persona principal et le KPI North Star dans les livrables produits sont toujours alignés avec ceux définis dans `project-context.md`. Si divergence → BLOQUER, signaler le drift, corriger avant de continuer
    - **Livrable vide ou quasi-vide** : si un agent produit un fichier de moins de 20 lignes alors qu'un livrable complet est attendu → BLOQUER, relancer l'agent avec plus de contexte
    - **Détection de drift renforcée** : après chaque phase (pas seulement en fin de run), Grep les livrables produits pour le nom exact du persona principal et le KPI North Star tels que définis dans project-context.md. Si un livrable utilise un nom/terme différent → drift potentiel, vérifier.
-   - **Pas de checkpoint périodique** : en autopilot, pas d'interruption toutes les 2 phases. Bloquer uniquement sur anomalie (drift, score < 4.5, P0, contradiction). L'utilisateur peut consulter orchestration-plan.md à tout moment s'il veut voir l'avancement.
+   - **Pas de checkpoint périodique** : en autopilot, pas d'interruption toutes les 2 phases. Bloquer uniquement sur anomalie (drift, gate BLOQUANT FAIL, P0, contradiction). L'utilisateur peut consulter orchestration-plan.md à tout moment s'il veut voir l'avancement.
 4. **Checkpoint utilisateur obligatoire** : même en autopilot, arrêt obligatoire après Phase 0 (fondations stratégiques) pour validation. Les fondations conditionnent tout l'aval — pas de raccourci.
 5. **À la fin** : invoquer @reviewer automatiquement pour une revue croisée complète
 6. **Enrichir** `docs/lessons-learned.md` avec les apprentissages du run. **Format v2 obligatoire** : chaque nouveau learning DOIT inclure les colonnes "Cible propagation" et "Fichiers impactés" (liste exacte). Ne JAMAIS écrire un learning sans ces colonnes — c'est la garantie que la propagation sera complète.
@@ -986,9 +986,9 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2). **En t
 
 Si un agent retourne un livrable de qualité insuffisante pendant une orchestration :
 
-1. **Détection** : après réception du livrable, évaluer rapidement les 5 critères de scoring. Si un critère est <3/5 :
-2. **Relance corrective** (max 1 fois) : relancer le même agent avec un prompt correctif ciblé : "Ton livrable [fichier] a un score [critère] insuffisant. Spécifiquement : [problème identifié]. Corrige uniquement ce point."
-3. **Si la relance échoue** : ne PAS relancer une deuxième fois. Escalader à l'utilisateur : "L'agent @[nom] n'a pas pu produire un livrable satisfaisant sur [critère] après correction. Options : A) Continuer avec le livrable actuel (risque de propagation), B) Intervenir manuellement sur [fichier], C) Sauter cette étape et y revenir plus tard."
+1. **Détection** : après réception du livrable, exécuter rapidement les gates BLOQUANT applicables. Si ≥ 1 gate BLOQUANT FAIL :
+2. **Relance corrective** (max 1 fois) : relancer le même agent avec un prompt correctif ciblé : "Ton livrable [fichier] a la gate [GXX] en FAIL. Spécifiquement : [problème identifié]. Corrige uniquement ce point."
+3. **Si la relance échoue** : ne PAS relancer une deuxième fois. Escalader à l'utilisateur : "L'agent @[nom] n'a pas pu produire un livrable passant la gate [GXX] après correction. Options : A) Continuer avec le livrable actuel (risque de propagation), B) Intervenir manuellement sur [fichier], C) Sauter cette étape et y revenir plus tard."
 4. **Documenter** : noter dans le point d'avancement de phase "Agent @[nom] relancé — raison : [critère insuffisant]" ou "Agent @[nom] escaladé — raison : [échec après relance]"
 
 ## Gestion du budget temps et complexité
