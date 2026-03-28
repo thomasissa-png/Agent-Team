@@ -991,6 +991,19 @@ Si un agent retourne un livrable de qualité insuffisante pendant une orchestrat
 3. **Si la relance échoue** : ne PAS relancer une deuxième fois. Escalader à l'utilisateur : "L'agent @[nom] n'a pas pu produire un livrable passant la gate [GXX] après correction. Options : A) Continuer avec le livrable actuel (risque de propagation), B) Intervenir manuellement sur [fichier], C) Sauter cette étape et y revenir plus tard."
 4. **Documenter** : noter dans le point d'avancement de phase "Agent @[nom] relancé — raison : [critère insuffisant]" ou "Agent @[nom] escaladé — raison : [échec après relance]"
 
+## Mode hotfix (intervention chirurgicale en production)
+
+Quand un bug critique est signalé en production et que le projet est déjà déployé :
+
+1. **Skip toutes les phases stratégiques** — pas de Phase 0, pas de revue specs, pas de checkpoint @moi
+2. **Binôme @fullstack + @qa uniquement** — @fullstack corrige, @qa vérifie la non-régression
+3. **Gate G28 obligatoire** (tsc --noEmit + tests PASS) avant deploy du fix
+4. **Scope minimal** — corriger UNIQUEMENT le bug signalé, pas de refactoring opportuniste
+5. **Documenter** dans project-context.md (historique) : "HOTFIX — [date] — [bug] — [fix appliqué]"
+6. **Learning automatique** — si le bug révèle un trou dans les tests ou les gates, créer un learning dans lessons-learned.md avec cible propagation = `agent-spécifique` ou `règle-globale`
+
+**Déclencheur** : l'utilisateur dit "hotfix", "bug en prod", "urgence production", ou équivalent.
+
 ## Gestion du budget temps et complexité
 
 Avant de lancer une orchestration, estimer la complexité globale :

@@ -196,6 +196,61 @@ Avant de livrer, répondre mentalement à ces questions :
 
 ---
 
+## Protocole d'audit structuré — PVU (standard)
+
+Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de review (mots-clés : "audite", "vérifie", "analyse", "review", "check"), il bascule en **mode audit structuré** et applique ce protocole :
+
+### Étape 1 — Construction de la grille de gates
+
+**Couche 1 : Gates existantes applicables** — filtrer parmi G1-G28 les gates pertinentes pour le sujet audité :
+
+| Type d'audit | Gates applicables (minimum) |
+|---|---|
+| Code / feature | G15 (placeholders), G21 (5 états UI), G23 (0 hardcodé), G26 (screenshots), G28 (pipeline) |
+| Contenu / copy | G8 (ton brand), G10 (0 vague), G15 (placeholders), G16-G17 (spécificité), G24 (registre) |
+| Design / UI | G21 (5 états), G22 (contrastes WCAG), G23 (tokens), G26 (screenshots) |
+| SEO / GEO | G13 (0 donnée inventée), G16 (nom projet), G18 (refs livrables) |
+| Stratégie / specs | G5 (persona), G6 (KPI), G7 (0 contradiction), G12 (implémentable), G19 (pas copiable) |
+| Cohérence croisée | G5, G6, G7, G14 (livrables absents), G18 (refs par chemin) |
+
+**Couche 2 : Gates ad-hoc** — l'agent génère 3-7 gates spécifiques au sujet, en format binaire PASS/FAIL :
+
+```
+| # | Gate | Classe | Méthode de vérification |
+|---|---|---|---|
+| A1 | [description précise] | BLOQUANT/REQUIS | [Grep X / Read Y / test Z] |
+```
+
+**Règle** : les gates ad-hoc sont définies AVANT l'audit, pas après. Définir les critères d'abord, évaluer ensuite.
+
+### Étape 2 — Exécution et rapport
+
+```markdown
+## Audit [sujet] — @[agent]
+
+### Gates existantes applicables
+| # | Gate | Verdict | Évidence |
+|---|---|---|---|
+| GXX | [description] | PASS/FAIL | [preuve par Grep/Read] |
+
+### Gates ad-hoc
+| # | Gate | Classe | Verdict | Évidence |
+|---|---|---|---|---|
+| A1 | [description] | BLOQUANT | PASS/FAIL | [preuve] |
+
+### Verdict : GO / GO CONDITIONNEL / NO-GO
+- X gates BLOQUANT PASS / Y total
+- Actions correctives : [si FAIL]
+```
+
+### Étape 3 — Learnings
+
+Chaque gate FAIL génère un `[LEARNING DÉTECTÉ]` dans le handoff (voir section "Contribution aux learnings"). Si une gate ad-hoc revient en FAIL sur 3+ audits différents → la signaler pour promotion en gate permanente (G29+).
+
+**Partie variable** : chaque agent a ses gates ad-hoc récurrentes (spécifiques à son domaine). Les documenter dans la section d'auto-évaluation de l'agent.
+
+---
+
 ## Notification de changement (standard)
 
 Quand un agent modifie un livrable existant (pas une première production — une modification) :

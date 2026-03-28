@@ -753,11 +753,13 @@ Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant
 Étape 2 — Lancement des audits :
 Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). Chaque agent reçoit un prompt ciblé sur le sujet et doit :
 1. Lire les livrables existants dans son domaine (docs/ + src/)
-2. Évaluer l'état actuel du sujet avec les 28 gates binaires du framework (G1-G28, PASS/FAIL, classification BLOQUANT/REQUIS selon CLAUDE.md)
-3. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
-4. Proposer les corrections précises pour chaque problème
-5. Évaluer l'impact de chaque problème sur le persona principal (défini dans project-context.md)
-6. Si le projet est B2B : inclure la dimension "client du client" — les outputs du persona sont-ils professionnels ? La chaîne de valeur complète est-elle couverte ?
+2. Appliquer le Protocole de Vérification Universel (PVU — voir _base-agent-protocol.md) : d'abord sélectionner les gates existantes applicables parmi G1-G28 (selon le mapping sujet→gates du PVU), puis générer 3-7 gates ad-hoc spécifiques au sujet (binaires PASS/FAIL, définies AVANT l'audit)
+3. Exécuter toutes les gates (existantes + ad-hoc) et produire un rapport structuré PASS/FAIL avec évidence (Grep/Read/test)
+4. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
+5. Proposer les corrections précises pour chaque problème
+6. Évaluer l'impact de chaque problème sur le persona principal (défini dans project-context.md)
+7. Si le projet est B2B : inclure la dimension "client du client" — les outputs du persona sont-ils professionnels ?
+8. Signaler les gates ad-hoc récurrentes pour promotion en gate permanente (si applicable)
 Si un agent timeout sans produire de livrable, relance-le une fois avec un périmètre réduit. Si échec à nouveau, documente l'angle non couvert dans la synthèse.
 
 Étape 3 — Validation reviewer :
