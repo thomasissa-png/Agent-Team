@@ -1001,6 +1001,60 @@ Si un agent retourne un livrable de qualité insuffisante pendant une orchestrat
 3. **Si la relance échoue** : ne PAS relancer une deuxième fois. Escalader à l'utilisateur : "L'agent @[nom] n'a pas pu produire un livrable passant la gate [GXX] après correction. Options : A) Continuer avec le livrable actuel (risque de propagation), B) Intervenir manuellement sur [fichier], C) Sauter cette étape et y revenir plus tard."
 4. **Documenter** : noter dans le point d'avancement de phase "Agent @[nom] relancé — raison : [critère insuffisant]" ou "Agent @[nom] escaladé — raison : [échec après relance]"
 
+## Estimation de coût par phase (obligatoire)
+
+Afficher en début de run une estimation de coût basée sur le nombre d'agents :
+- Chaque Task producteur Opus : ~$3-5 (input ~80K tokens + output ~15K tokens)
+- Chaque Task producteur Sonnet : ~$0.75-1.50
+- Chaque Task consultation (review, avis) : ~$1-2
+
+Format en début de run :
+```
+💰 Estimation de coût : [N] agents Opus × ~$4 + [N] agents Sonnet × ~$1 = ~$XX-YY
+```
+
+Après chaque phase, afficher le cumul estimé dans orchestration-plan.md (section métriques live).
+
+## Circuit breaker — Agents fragiles (mémoire inter-session)
+
+En Étape 1 (initialisation), lire `docs/lessons-learned.md` section "Agents fragiles" (si elle existe). Pour chaque agent fragile documenté :
+- Adapter la stratégie : prompt enrichi avec le contexte de l'échec passé, tentative unique au lieu de 2, fallback direct si le même type d'échec se reproduit
+- Si un agent échoue pendant le run, documenter dans lessons-learned.md section "Agents fragiles" :
+
+```
+## Agents fragiles
+| Agent | Type d'échec | Fréquence | Dernière occurrence | Contournement |
+|---|---|---|---|---|
+| @creative-strategy | Timeout sur WebSearch + blog plan | 2x | 2026-03-28 | Réduire le scope, questions précises |
+```
+
+## Métriques live dans orchestration-plan.md
+
+Après chaque phase, mettre à jour un bloc métriques live dans orchestration-plan.md :
+
+```
+## Métriques live
+| Phase | Agents | Parallèles | Relances | P0 | Coût estimé | Statut |
+|---|---|---|---|---|---|---|
+| 0 | 4 | 1 (legal) | 0 | 0 | ~$12 | COMPLETE |
+| 1 | 3 | 1 (copywriter) | 1 (@design G22) | 0 | ~$9 | EN COURS |
+```
+
+L'utilisateur peut Read orchestration-plan.md à tout moment pour voir l'état du run.
+
+## Compression de contexte entre phases
+
+Après chaque phase, résumer les décisions clés en 5-10 bullet points. Ce résumé remplace le détail dans la mémoire de travail de l'orchestrateur. Les livrables complets restent sur disque (Read à la demande). Format :
+
+```
+### Résumé Phase [X]
+- Persona : [nom] — validé
+- Positionnement : [1 phrase]
+- KPI North Star : [métrique]
+- Décisions clés : [2-3 bullets]
+- Gates FAIL corrigées : [liste ou "aucune"]
+```
+
 ## Mode hotfix (intervention chirurgicale en production)
 
 Quand un bug critique est signalé en production et que le projet est déjà déployé :

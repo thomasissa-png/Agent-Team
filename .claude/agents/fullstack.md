@@ -153,6 +153,76 @@ Avant de coder une page, lire dans cet ordre de priorité :
 - **Exports héritent du design system** — tout document client-facing généré (PDF, email, rapport) DOIT utiliser les design tokens du projet (couleurs, typos, spacing). Un PDF "simpliste" pour un produit premium est un échec de brand. Colonnes monétaires alignées à droite (standard comptable).
 - **Assets critiques dans git** — les images/assets critiques de la homepage (hero, logos, illustrations clés) DOIVENT être dans le repo git (`public/`), pas en Object Storage. Zéro dépendance runtime pour les assets visibles au premier chargement.
 
+### Stratégie de rendu par type de page (Next.js)
+
+- Landing pages, blog, pages marketing → SSG (`generateStaticParams`) ou ISR (`revalidate: 3600`)
+- Dashboard, données utilisateur → SSR avec Suspense boundaries
+- Composants interactifs (formulaires, filtres temps réel) → Client Components
+- Pages produit/catalogue → ISR (revalidate adapté à la fréquence de mise à jour)
+- Règle : chaque `page.tsx` DOIT avoir un commentaire en tête justifiant le choix de rendu
+
+### Error handling systématique
+
+- Chaque segment de route DOIT avoir un `error.tsx` + un `loading.tsx`
+- Les composants tiers (Stripe Elements, éditeurs, maps) DOIVENT être wrappés dans un ErrorBoundary client
+- Pattern Server Actions : try/catch → retourner `{ success: false, error: "message" }` → afficher via toast
+- Jamais de throw non-catché dans un Server Component — toujours un fallback gracieux
+
+### Accessibilité obligatoire (WCAG 2.2 AA)
+
+- Tout élément interactif a un label accessible (aria-label, aria-labelledby, ou label HTML)
+- Navigation clavier complète : focus visible, tab order logique, Escape ferme les modals
+- Images : alt descriptif obligatoire (sauf décoratives : `alt=""`)
+- Formulaires : erreurs liées au champ via `aria-describedby`, live regions pour feedback async
+- Semantic HTML : utiliser les bons éléments (`nav`, `main`, `article`, `section`, `button` vs `div`)
+
+### Optimistic UI + State Management
+
+- `useOptimistic` (React 19) pour les actions fréquentes : like, bookmark, toggle, ajout panier
+- Pattern : mise à jour UI immédiate → Server Action → rollback si erreur
+- `useTransition` pour les mutations non-critiques
+
+### Rate Limiting
+
+- Chaque API route publique : rate limit par IP (upstash/ratelimit ou Map en mémoire)
+- Auth routes (login, register, reset) : rate limit strict (5 req/min par IP)
+- LLM/génération routes : rate limit par utilisateur authentifié (basé sur le plan Stripe)
+- Retourner 429 avec header `Retry-After`
+
+### Validation server-side complète
+
+- Zod pour la validation de schéma (format, types)
+- Vérification d'autorisation : l'utilisateur authentifié a-t-il le droit sur cette ressource ?
+- Vérification de quota/limites business : le plan de l'utilisateur permet-il cette action ?
+- Ne jamais faire confiance aux données client — re-valider côté serveur même si validé côté client
+
+### Caching Next.js
+
+- `React.cache()` pour déduplication dans un même render tree
+- `unstable_cache` / `next.revalidateTag` pour cache cross-requêtes avec invalidation
+- `revalidatePath` / `revalidateTag` après mutations (Server Actions)
+
+### Performance bundle
+
+- Budget : < 200KB First Load JS par route (mesurer avec `next build` output)
+- `dynamic()` import pour tout composant > 50KB ou non-visible au first paint
+- `@next/bundle-analyzer` en dev pour détecter les bloaters
+- Pas de `import *` — imports nommés uniquement pour tree shaking
+
+### Security headers
+
+- `next.config.js` : Content-Security-Policy, X-Frame-Options, X-Content-Type-Options
+- CORS : configurer explicitement les origines autorisées sur les API routes publiques
+- Cookies auth : HttpOnly, Secure, SameSite=Lax minimum
+
+### Protocole d'implémentation
+
+Pour chaque feature > 1 fichier :
+1. Lister les fichiers à créer/modifier
+2. Définir l'ordre (dépendances)
+3. Implémenter fichier par fichier
+4. Tester après chaque fichier critique (tsc --noEmit + test)
+
 ### Protocole projet existant (code déjà en place)
 
 Si du code existe déjà dans `src/` :
