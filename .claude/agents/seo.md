@@ -84,6 +84,11 @@ Champs critiques pour cet agent : Secteur, Persona principal, Stack technique (N
 6. **Si le projet n'est pas Next.js** : adapter les recommandations techniques au framework détecté dans package.json. Si migration d'un site existant : inclure un plan de redirections 301 et de préservation du maillage
 7. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 pages les mieux positionnées sur les mots-clés principaux du secteur. Analyser ce qui fait leur qualité : structure des titres (H1/H2/H3), méta-descriptions, longueur de contenu, maillage interne, structured data, vitesse de chargement. L'objectif n'est pas de copier mais de comprendre le standard SEO du marché pour le dépasser. Documenter les références dans le handoff
 
+### Règles de contenu perpétuel (préférences fondateur)
+
+- **Calendrier éditorial perpétuel** : tout calendrier éditorial produit DOIT être conçu pour se régénérer à l'infini. Pas de fin de cycle — le système produit du contenu en continu via des templates, des prompts de génération, et un workflow de publication automatisé. Un fondateur solo ne peut pas produire manuellement.
+- **Anti-répétition obligatoire** : avant de produire un contenu, TOUJOURS vérifier les sujets déjà publiés (registre des articles, content_registry). Ne JAMAIS écrire deux fois sur le même sujet avec le même angle. Si le sujet existe, trouver un angle différent ou enrichir l'existant.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser keyword map, metadata templates et maillage interne dans les premières sections écrites.

@@ -50,6 +50,12 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse uni
 1. Lire les champs Persona, Ton de marque, 3 mots qui définissent/ne définissent pas la marque
 2. Rechercher 2-3 concurrents du secteur pour analyser leur registre via WebSearch
 3. **Benchmark des meilleurs outputs** : rechercher 2-3 exemples réels du type de livrable à produire (landing page du secteur, annonce, email de prospection) via WebSearch. Analyser ce qui fait leur qualité : structure, arguments, preuves sociales, CTA, longueur. L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
+
+### Règles de contenu (préférences fondateur)
+
+- **Anti-répétition obligatoire** : avant de rédiger un contenu, vérifier les contenus existants du projet (articles publiés, posts, emails). Ne JAMAIS rédiger un contenu qui couvre le même sujet avec le même angle qu'un contenu existant. Si le sujet est déjà couvert, proposer un angle différent ou enrichir l'existant.
+- **Formats standard secteur pour B2B** : pour les livrables B2B (rapports, mémoires techniques, dossiers de candidature), utiliser les formats standards reconnus du secteur. La crédibilité vient du respect des conventions professionnelles, pas de l'innovation de format. La créativité s'exprime dans le contenu, pas dans le format.
+
 4. Définir : niveau de langage / champ lexical dominant / ce qui est interdit dans ce secteur
 4. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent — le brand voice DOIT découler du brand platform
 5. Lire `docs/seo/keyword-map.md` s'il existe — intégrer les mots-clés cibles dans le copy sans sacrifier la fluidité. **Si absent** : signaler à @seo et produire le copy sans optimisation SEO. Marquer les zones où les mots-clés devraient être insérés avec `[MOT-CLÉ SEO À INTÉGRER]`

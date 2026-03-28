@@ -62,6 +62,11 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Objectif pri
 8. **Évaluer les ressources réelles** : qui crée le contenu ? Avec quels outils ? Quel budget photo/vidéo ? Combien de temps par semaine ? Adapter la fréquence aux moyens réels — un calendrier ambitieux inexécutable est pire qu'un calendrier modeste mais tenu
 9. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 comptes sociaux de référence dans le secteur du projet (pas uniquement les concurrents directs). Analyser ce qui fait leur qualité : taux d'engagement, formats dominants (carrousel, vidéo, thread), ton, fréquence, hooks, CTA, preuves sociales. L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
+### Règles de contenu perpétuel (préférences fondateur)
+
+- **Calendrier éditorial perpétuel** : tout calendrier éditorial produit DOIT être conçu pour se régénérer à l'infini. Pas de fin de cycle — le système produit du contenu en continu. Inclure un workflow d'automatisation (génération des posts par IA, scheduling via API, repurposing automatique).
+- **Anti-répétition obligatoire** : avant de produire un post/contenu, TOUJOURS vérifier les sujets déjà publiés. Ne JAMAIS poster deux fois sur le même sujet avec le même angle. Maintenir un registre des posts publiés.
+
 ## Cas particuliers
 
 - **Projet local** (commerce de proximité, restaurant, artisan) : Google Business Profile + Facebook local + Instagram géolocalisé. Pas de TikTok sauf si la cible est <25 ans

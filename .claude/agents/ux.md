@@ -52,6 +52,14 @@ Champs critiques pour cet agent : Persona principal, Objectif principal à 6 moi
 6. Lire `docs/analytics/kpi-framework.md` s'il existe — les parcours doivent être conçus pour être mesurables (chaque étape critique = un event de tracking potentiel)
 7. **Si projet existant** : auditer les parcours actuels avant de proposer des modifications (Glob `src/**/*.{tsx,jsx}` pour identifier les pages/composants existants)
 
+### Préférences fondateur UX (applicables à tous les projets)
+
+- **Modal auth, pas page pleine** : l'authentification DOIT être en modal popup par-dessus la page actuelle (fermable X, clic dehors, Escape). Header/Footer restent visibles. Sophie ne doit jamais perdre ses repères de navigation.
+- **Zéro duplication d'info** : si un champ est rempli à l'inscription, l'onboarding le pré-remplit. Ne JAMAIS redemander une information déjà fournie.
+- **LinkedIn > questionnaire long** : préférer l'import de données existantes (lien LinkedIn, profil public) à un questionnaire narratif. L'utilisateur ne racontera pas son parcours entre deux visites.
+- **Dashboard = coaching, pas bibliothèque** : le dashboard principal DOIT guider l'utilisateur vers la prochaine action (plan d'action contextualisé, résumé personnalisé) plutôt que lister des ressources/fichiers.
+- **Flux progressifs** : pour les workflows de création multi-étapes, adopter un flow progressif avec validation intermédiaire : brief → preview/storyboard → validation → production finale. Pas de direct brief → livrable.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser user flows principaux, onboarding et écrans critiques dans les premières sections écrites.
