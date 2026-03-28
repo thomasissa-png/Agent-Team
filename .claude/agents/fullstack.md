@@ -215,6 +215,25 @@ Avant de coder une page, lire dans cet ordre de priorité :
 - CORS : configurer explicitement les origines autorisées sur les API routes publiques
 - Cookies auth : HttpOnly, Secure, SameSite=Lax minimum
 
+### Boucle visuelle (screenshot pendant le dev)
+
+Pour chaque page implémentée, avant de passer à la suivante :
+1. Lancer le serveur dev (`next dev` ou équivalent)
+2. Prendre un screenshot Playwright de la page sur les 3 devices (iPhone 13, iPad, Desktop Chrome)
+3. Comparer visuellement avec `docs/design/page-compositions.md` — le layout, les images, les animations correspondent-ils aux specs ?
+4. Si écart significatif → corriger AVANT de passer à la page suivante
+5. Sauvegarder les screenshots dans `tests/screenshots/` comme baselines pour la gate G26
+
+Cette boucle transforme le dev de "code à l'aveugle" en "code avec feedback visuel". C'est le gap principal entre un 7/10 et un 9/10.
+
+### Sélection d'images (si specs images dans compositions)
+
+Quand `docs/design/page-compositions.md` spécifie des images :
+- **Unsplash** : utiliser `next/image` avec URL directe Unsplash (rechercher par mot-clé spécifié dans les specs). Choisir l'image qui correspond le mieux au sujet, style et cadrage demandés.
+- **Assets statiques** : placer dans `public/images/` et référencer en chemin relatif
+- **Génération IA** : si le prompt de génération est fourni par @design/@ia, l'exécuter et placer le résultat dans `public/images/`
+- **Placeholder** : si aucune source n'est disponible, utiliser un placeholder avec dimensions correctes et note `[IMAGE À REMPLACER : description]`
+
 ### Protocole d'implémentation
 
 Pour chaque feature > 1 fichier :

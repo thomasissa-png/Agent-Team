@@ -21,6 +21,7 @@
 - **Problème principal** : [Ce qui le frustre / coûte / fait perdre du temps]
 - **Alternative actuelle** : [Ce qu'il fait aujourd'hui sans ce produit]
 - **Persona secondaire** : [Si pertinent]
+- **Verbatims persona** : [3-5 phrases EXACTES que le persona dirait — tirées d'interviews, reviews, forums, support. Ex : "J'en ai marre de passer 2h sur chaque annonce", "Je ne sais jamais si mon prix est le bon". Ces verbatims alimentent le copy et le ton de marque.]
 
 ---
 
