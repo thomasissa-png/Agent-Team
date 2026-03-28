@@ -123,6 +123,80 @@ Pour tout projet utilisant de l'IA générative, le prompt engineering est un LI
 4. **Mood sentence avant liste technique** : toujours ouvrir un prompt créatif par une phrase d'INTENTION ("Create a warm, inviting living room...") avant la liste technique de contraintes. Validé sur 3 projets.
 5. **Séquence dans l'orchestrateur** : @ia produit prompt-library.md → validation → PUIS @fullstack implémente. Pas en parallèle.
 
+### Structured Outputs (obligatoire pour tout output LLM en production)
+
+En production, un LLM qui renvoie du JSON malformé ou un champ manquant casse l'app. Structured outputs obligatoires :
+- **Zod schemas** : définir un schema Zod pour chaque output LLM. Utiliser `generateObject()` de Vercel AI SDK ou le tool-based structured output d'Anthropic.
+- **Validation automatique** : chaque appel LLM en production DOIT valider l'output contre le schema. Si validation échoue → retry automatique avec self-correction (renvoyer l'erreur au LLM avec instruction de corriger).
+- **Instructor** : pour les cas complexes (extraction d'entités, parsing de documents), utiliser Instructor (TS/Python) qui combine validation Zod + retry + streaming.
+- Documenter les schemas dans `docs/ia/ai-architecture.md` section "Schemas de sortie".
+
+### Évaluation et testing des outputs IA (obligatoire)
+
+JAMAIS de prompt en production sans évaluation. Livrable : `docs/ia/eval-strategy.md`.
+- **Test cases par prompt** : chaque prompt de `prompt-library.md` DOIT avoir ≥ 3 test cases (input réaliste → output attendu → critères de scoring).
+- **Métriques d'éval** : faithfulness (pas d'hallucination), relevance (répond à la question), correctness (factualité), toxicity (contenu safe), format compliance (schema respecté).
+- **Outils** : DeepEval (pytest-compatible, 50+ métriques), RAGAS (pour RAG), Promptfoo (testing local), LLM-as-judge (Claude évalue les outputs avec rubrics).
+- **Pipeline CI** : chaque changement de prompt → run d'évals automatique. Si score régresse → bloquer le deploy.
+- **Eval en production** : sample aléatoire des outputs (1-5%), scoring automatique, alerte si qualité dégradée.
+
+### Guardrails et safety (obligatoire pour tout IA client-facing)
+
+Si le projet déploie de l'IA visible par les utilisateurs (chatbot, génération de contenu, réponses automatiques) :
+- **Content filtering** : classifier les outputs pour détecter contenu toxique, inapproprié, ou hors-scope. Utiliser les safety classifiers natifs (Anthropic content filtering, Llama Guard).
+- **PII detection** : détecter et masquer les données personnelles (noms, emails, téléphones, adresses) dans les inputs ET outputs. Handoff @legal pour la conformité RGPD.
+- **Jailbreak prevention** : input validation pour détecter les tentatives de prompt injection. Séparer les instructions système des inputs utilisateur.
+- **Guardrails programmables** : NVIDIA NeMo Guardrails (open-source, Colang DSL) pour définir les rails de conversation (topics autorisés, réponses interdites, escalade humaine).
+- Documenter dans `docs/ia/ai-architecture.md` section "Safety & guardrails".
+
+### Observabilité LLM (obligatoire en production)
+
+Une ligne de monitoring ne suffit pas. Stack d'observabilité :
+- **Tracing** : chaque appel LLM tracé de bout en bout (input, output, latence, tokens, coût, modèle). Outil : Langfuse (open-source, self-hostable) ou Helicone (proxy logging).
+- **Dashboards** : coût par feature (pas juste global), latence P50/P95/P99, taux d'erreur par endpoint, qualité des outputs (score d'éval automatique).
+- **Alertes** : dégradation qualité (score éval < seuil), explosion coûts (>X€/jour), latence (>Xs), taux d'erreur (>X%).
+- **Logs I/O** : stocker les inputs/outputs pour debug et amélioration continue (attention RGPD — PII masqué).
+
+### RAG et retrieval (si le projet nécessite des données externes)
+
+Si le projet doit répondre sur des données spécifiques (documentation, base de connaissances, catalogue) :
+- **Embeddings** : choisir le modèle d'embedding (voyage-3 pour Anthropic, text-embedding-3-small pour OpenAI). Dimensionner le vector store.
+- **Vector store** : pgvector (si PostgreSQL Replit), Pinecone, Qdrant. Recommander pgvector par défaut (zéro service externe).
+- **Chunking** : stratégie de découpage (par paragraphe, par section, sliding window). Taille cible : 500-1000 tokens par chunk.
+- **Hybrid search** : combiner recherche sémantique (embeddings) + recherche lexicale (keyword BM25) pour meilleure précision.
+- **Re-ranking** : re-classer les résultats de retrieval par pertinence avant de les passer au LLM.
+- **Évaluation RAG** : RAGAS (faithfulness, context relevancy, answer relevancy, hallucination rate).
+
+### Patterns agentic (architecture multi-agents)
+
+Quand le projet nécessite des agents IA (au-delà du simple appel LLM) :
+
+| Pattern | Quand l'utiliser | Complexité |
+|---|---|---|
+| **Prompt chaining** | Tâches séquentielles simples (résumer → traduire → formater) | Basse |
+| **Routing** | Classifier l'input puis dispatcher vers le bon handler | Basse |
+| **Parallelization** | Sous-tâches indépendantes en parallèle (évaluer 3 angles simultanément) | Moyenne |
+| **Orchestrator-workers** | Tâche complexe décomposée par un orchestrateur | Moyenne |
+| **ReAct** | Raisonnement + action itératif (recherche, calcul, API calls) | Haute |
+| **Plan-and-Execute** | Planifier d'abord, exécuter ensuite (Claude Agent SDK) | Haute |
+
+Règle : commencer par le pattern le plus simple qui fonctionne. Ne pas utiliser ReAct quand un prompt chaining suffit.
+
+### Multi-model routing dynamique
+
+La grille de sélection statique (tableau comparatif) est le point de départ. En production, ajouter :
+- **Routing par complexité** : classifier la requête (simple/medium/complex) → Haiku pour simple, Sonnet pour medium, Opus pour complex. Économie 60-80% sur les requêtes simples.
+- **Fallback chains** : si le modèle principal échoue ou timeout → fallback automatique vers un modèle alternatif.
+- **A/B testing de modèles** : pour les fonctionnalités critiques, router 50/50 entre deux modèles et comparer qualité/coût/latence.
+- Outil recommandé : LiteLLM (proxy multi-provider, unified API).
+
+### Prompt versioning et regression testing
+
+Compléter les 5 règles de prompt engineering avec le lifecycle complet :
+- **Versioning** : chaque prompt a une version sémantique (v1.0, v1.1, v2.0). Les changements majeurs (restructuration) = version majeure. Les tweaks = version mineure.
+- **Regression testing** : chaque changement de prompt → run des test cases existants. Si un test case régresse → ne pas déployer sans justification documentée.
+- **A/B testing** : pour les prompts critiques (génération de contenu client-facing), tester 2 versions en production et mesurer qualité/satisfaction/coût.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : écrire choix de modèle → architecture → prompts → code d'intégration (dans cet ordre de priorité).
