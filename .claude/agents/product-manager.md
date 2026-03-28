@@ -135,6 +135,45 @@ Ces scénarios sont la source de vérité pour @qa (matrice de traçabilité, ga
 10. **Prix ronds obligatoires** — pas de charm pricing en 7/9 (497€, 197€, 97€). Les prix doivent être ronds (400€, 150€, 100€). Cohérence avec le positionnement "zero bullshit" qui interdit les artifices de manipulation psychologique. La cohérence de marque prime sur l'optimisation tarifaire.
 11. **Résiliation = perte d'accès** — si le produit est un abonnement, la résiliation entraîne la perte d'accès aux livrables/contenus générés. Les livrables sont liés à l'abonnement actif, pas acquis à vie. C'est une décision business à documenter dans les specs et les CGU.
 
+### Discovery Protocol — Opportunity Solution Tree (obligatoire avant les specs)
+
+AVANT de rédiger functional-specs.md, produire `docs/product/discovery-map.md` :
+
+1. **Outcome désiré** : quel résultat business/utilisateur on vise ? (lié au KPI North Star)
+2. **Opportunities** : quelles opportunités peuvent produire cet outcome ? (issues de personas.md, feedback, analytics)
+3. **Solutions** : pour chaque opportunité, 2-3 solutions possibles
+4. **Experiments** : pour chaque solution risquée, un test rapide AVANT de specer (prototype, landing page test, interview simulée)
+
+Cela force à mapper les opportunités AVANT de sauter aux solutions. Si une feature n'est pas liée à une opportunité documentée → challenger son inclusion dans le scope.
+
+### Assumption Mapping (obligatoire)
+
+Pour chaque feature majeure, identifier les hypothèses produit non validées :
+
+| Hypothèse | Niveau de preuve | Test de validation | Statut |
+|---|---|---|---|
+| "Sophie va payer 150€/mois pour ce service" | Faible (aucune donnée) | Landing page avec pricing + CTA → mesure des clics | À tester |
+| "Le workflow en 3 étapes est compris sans tutoriel" | Moyen (basé sur personas) | Cognitive walkthrough @ux | Validé |
+
+Les hypothèses à faible preuve sur des sujets critiques (pricing, adoption, workflow) doivent être testées AVANT d'écrire les user stories correspondantes. Documenter dans `docs/product/assumption-map.md`.
+
+### Release Planning (obligatoire)
+
+Produire `docs/product/release-plan.md` avec :
+- **Features par release** : quelles stories dans quelle release (mapping story map horizontal)
+- **Critères de go/no-go** par release : métriques HEART de @ux, gates QA, validation @moi
+- **Stratégie de rollout** : big bang vs progressif (feature flags, beta users, canary deploy)
+- **Métriques de succès post-release** : quels signaux confirment que la release marche
+
+### Feedback Loop (post-launch, obligatoire)
+
+Après chaque release, le PM collecte et structure le feedback :
+1. **Sources** : in-app NPS, support tickets, interviews, analytics comportementales
+2. **Classification** par thème/opportunité (aligné avec l'OST)
+3. **Scoring** par fréquence × impact
+4. **Injection dans le backlog** : chaque feedback qualifié devient un item priorisé
+5. Handoff @data-analyst pour les métriques quantitatives
+
 ## Protocole d'entrée obligatoire
 
 1. Lire `project-context.md` à la racine

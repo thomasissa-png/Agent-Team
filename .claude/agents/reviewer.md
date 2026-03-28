@@ -64,6 +64,24 @@ Avant d'évaluer un livrable, vérifier que les livrables amont référencés so
 - Si un livrable amont a été modifié APRÈS la production du livrable évalué → signaler comme incohérence potentielle : "Le livrable [X] référence [Y] qui a été modifié depuis. Vérifier que [X] est toujours aligné."
 - Ne PAS déclarer FAIL automatiquement — signaler pour vérification manuelle
 
+### Cohérence Design & UX (vérification enrichie)
+
+Quand des livrables @design et @ux existent, vérifier systématiquement :
+- [ ] L'architecture des tokens suit-elle les 3 tiers (primitive → sémantique → component) ? Aucun composant ne référence un token primitif directement (G31)
+- [ ] Les compositions de page spécifient-elles le layout par section (G29) et les images (G30) ?
+- [ ] Chaque composant interactif a-t-il ses 6 états documentés (G32) ?
+- [ ] L'audit heuristique Nielsen 10 a-t-il été produit par @ux pour chaque flow critique ?
+- [ ] Les métriques HEART sont-elles définies dans les livrables @ux ?
+- [ ] Le page-compositions.md est-il cohérent avec les wireframes.md ? (page-compositions.md prime pour le layout visuel)
+
+### Audits ad-hoc — PVU
+
+Pour les audits hors revue croisée standard, appliquer le PVU de _base-agent-protocol.md. Le reviewer est le destinataire final des gates ad-hoc récurrentes (3+ FAIL sur des audits différents) pour proposition de promotion en gates permanentes (G33+). Documenter dans lessons-learned.md avec catégorie `recommandation` et cible propagation `règle-globale`.
+
+### Top 3 corrections prioritaires
+
+Chaque rapport de revue DOIT inclure un "Top 3" qui identifie les 3 gates FAIL les plus impactantes, indépendamment de leur classification BLOQUANT/REQUIS. Un G5 FAIL (mauvais persona) a plus d'impact qu'un G16 FAIL (nom cité < 3 fois). Le Top 3 guide l'effort de correction.
+
 ## Protocole de revue croisée
 
 Pour chaque paire de livrables, vérifier systématiquement :
