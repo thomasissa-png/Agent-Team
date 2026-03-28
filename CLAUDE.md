@@ -355,6 +355,13 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 | G27 | Matrice de traçabilité : 100% des user stories ont un test correspondant | REQUIS | Pour code + specs : tableau `US-XX → fichier-test:ligne` dans TESTING.md ou qa-strategy.md. Chaque user story de functional-specs.md DOIT avoir au moins 1 test E2E ou intégration. Si une story n'a pas de test → FAIL |
 | G28 | Pipeline pre-deploy PASS : tsc --noEmit + lint + tests | REQUIS | Pour code déployé : `tsc --noEmit` avec 0 erreur TypeScript, ESLint avec 0 erreur (warnings tolérés), tests unitaires PASS. Si un des 3 échoue → FAIL |
 
+**DESIGN & COMPOSITION** (gates spécifiques au design — s'appliquent si le projet a un frontend)
+
+| # | Gate | Classe | Vérification |
+|---|---|---|---|
+| G29 | Chaque section de chaque page a un pattern de layout explicite (pas juste "section X") | REQUIS | Pour design/wireframes : vérifier que `docs/design/page-compositions.md` ou `docs/ux/wireframes.md` spécifie le layout par section (grille, colonnes, responsive). Si une section n'a que son nom sans layout → FAIL |
+| G30 | Chaque page client-facing a au moins 1 image spécifiée (type, sujet, source) | REQUIS | Pour design : vérifier que les compositions de page ou le design system incluent des specs d'images. Un site sans images spécifiées = 6/10 max → FAIL |
+
 **GATES TESTEUR-PERSONA (s'appliquent si agents testeurs créés — voir orchestrator.md Phases 1b, 2c, 2d, 5b)**
 
 | # | Gate | Classe | Vérification |

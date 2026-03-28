@@ -62,6 +62,75 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 - **Labels texte > icônes seules** : dans les back-offices et dashboards, les actions DOIVENT avoir des labels texte lisibles, pas juste des icônes. Les icônes seules sont incompréhensibles pour les utilisateurs non-techniques.
 - **Colonnes monétaires alignées à droite** : dans tout tableau avec des montants, les colonnes numériques/monétaires sont alignées à droite. Standard comptable non négociable.
 
+## Direction artistique et compositions de page (obligatoire)
+
+Le design system (tokens, composants) est l'**alphabet**. Les compositions de page sont les **phrases**. Sans compositions, @fullstack improvise le layout — c'est là que le site passe de 7/10 à 5/10.
+
+### Direction artistique (obligatoire en début de mission)
+
+1. **Références visuelles** : lire le champ "Références visuelles (URLs)" de project-context.md s'il existe. Sinon, WebSearch "best [secteur] websites design 2026" et proposer **3 directions artistiques** avec URLs de référence. Chaque direction = un style (minimaliste, editorial, bold, organic, corporate premium) + pourquoi il matche le positionnement du projet.
+2. **Mapping sectoriel par défaut** (si aucune préférence utilisateur) :
+   - SaaS B2B → minimaliste + illustrations isométriques + couleurs froides
+   - E-commerce mode → editorial magazine + photos plein cadre + typo serif
+   - Immobilier premium → clean editorial + photos grand angle + blanc dominant
+   - Consulting / services → corporate premium + photos lifestyle + accents couleur mesurés
+   - Startup / tech → bold geometric + gradients + animations fluides
+   - Professions libérales → classique modernisé + typo empattée + couleurs sobres
+3. **En mode autopilot** : @moi choisit la direction artistique la plus alignée avec les préférences fondateur. En mode standard : présenter les 3 directions à l'utilisateur.
+
+### Compositions de page (obligatoire pour chaque page)
+
+Pour chaque page du site, produire un livrable `docs/design/page-compositions.md` avec :
+
+```markdown
+## [Nom de la page]
+
+### Section Hero
+- Layout : plein largeur, 2 colonnes (60% texte / 40% visuel) sur desktop, empilé sur mobile
+- Image : [type] photo lifestyle bureau moderne, lumière naturelle, cadrage large — source : Unsplash "modern office workspace"
+- Animation entrée : fade-up titre (400ms) → fade-up sous-titre (600ms, stagger 200ms) → fade-in CTA (800ms)
+- Breakpoints : sur mobile, image passe au-dessus du texte, CTA pleine largeur
+
+### Section Témoignages
+- Layout : grille 3 colonnes, chaque carte = avatar rond 48px + nom bold + citation italic + rating étoiles
+- Fond : neutre (background-subtle token), spacing 24px entre cartes
+- Animation : cards scroll-triggered, fade-up avec stagger 100ms
+- Mobile : stack vertical, 1 carte par ligne
+```
+
+Ce livrable est la **source de vérité** pour @fullstack. Sans lui, le fullstack improvise.
+
+### Spécifications d'images (obligatoire par page)
+
+Pour chaque image du site, spécifier :
+- **Type** : photo lifestyle / illustration vectorielle / icône / data viz / screenshot produit
+- **Sujet** : description précise de ce que l'image montre
+- **Style** : lumineux/sombre, saturé/désaturé, couleurs dominantes, cadrage
+- **Source recommandée** : Unsplash (collection/mot-clé), génération IA (DALL-E/Midjourney prompt), illustration custom, screenshot réel
+- **Dimensions** : ratio et taille minimum (ex : 16:9, min 1200px largeur)
+
+**Règle** : un site sans images spécifiées est un site à 6/10 maximum. Chaque page client-facing DOIT avoir au moins 1 image spécifiée.
+
+### Spécifications d'animations (obligatoire par composant interactif)
+
+Pour chaque composant interactif, spécifier :
+- **Élément** : quel composant
+- **Trigger** : hover / scroll-in-view / click / page-load
+- **Animation** : scale, translateY, opacity, rotation, etc.
+- **Durée + easing** : ex 400ms ease-out
+- **Stagger** : si enfants multiples, délai entre chaque (ex 100ms)
+
+**Pattern par défaut** (si pas de spec spécifique) : tout élément qui entre en viewport = `fade-up + translateY(20px→0), 400ms ease-out, stagger 100ms entre enfants`. Ce pattern couvre 80% des cas et donne un site vivant sans effort de spec.
+
+**7 critères visuels Thomas** (validation de chaque page) :
+1. PRO — fait professionnel, pas amateur
+2. BEAU — esthétiquement plaisant, pas juste fonctionnel
+3. BRAND-ALIGNED — cohérent avec la direction artistique choisie
+4. MÊME IDENTITÉ — le site entier "sent" la même marque, page après page
+5. PROPRE — pas de bruit visuel, pas d'élément inutile
+6. ALIGNÉ — grilles respectées, espaces réguliers, rien de bancal
+7. AÉRÉ — suffisamment d'espace blanc, pas de surcharge
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser tokens, composants prioritaires et palette dans les premières sections. Pour `design-tokens.json` : écrire le JSON complet en un Write, puis documenter dans `design-system.md` séparément.

@@ -137,6 +137,14 @@ Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de do
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées : `[PROVISOIRE — à valider quand [livrable] sera disponible]`
 - **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 sites ou apps de référence dans le secteur du projet. Analyser ce qui fait leur qualité : UX (parcours, micro-interactions, feedback utilisateur), performance (temps de chargement, transitions), structure de code (architecture publique, stack technique visible). L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
+### Compositions de page, images et animations (obligatoire)
+
+Avant de coder une page, lire dans cet ordre de priorité :
+1. **`docs/design/page-compositions.md`** — les compositions de page définissent le layout de chaque section (grille, split, full-width), les breakpoints responsive, et le contenu visuel. C'est la source de vérité du layout. Si ce fichier n'existe pas → signaler à @design et utiliser des patterns standards (hero full-width, grille 3 colonnes, alternance texte/image).
+2. **Images spécifiées** — chaque image dans les compositions a un type, sujet, style et source. Implémenter : pour Unsplash, utiliser `next/image` avec une URL directe ; pour les assets statiques, placer dans `public/` ; pour les images générées, utiliser le prompt fourni.
+3. **Animations spécifiées** — chaque composant interactif a un trigger, une animation et un timing. Implémenter avec Framer Motion ou CSS transitions selon la complexité. **Pattern par défaut** si pas de spec : `fade-up + translateY(20px→0), 400ms ease-out` sur scroll-in-view, avec `stagger 100ms` entre enfants.
+4. **Direction artistique** — les radius, ombres, espacements, styles d'images doivent être cohérents avec la DA choisie dans `docs/design/page-compositions.md`. Ne pas mélanger les styles (pas de card ultra-arrondie dans un design minimaliste angular).
+
 ### Patterns techniques obligatoires (learnings cross-projets)
 
 - **Foundation first pour features IA** : l'ordre est strict — schema DB → API routes → UI basique (avec mocks) → intégration LLM → polish. La fondation doit être solide avant d'ajouter la couche probabiliste. Ne JAMAIS coder l'intégration LLM avant que la DB et les API soient validées.

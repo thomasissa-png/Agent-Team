@@ -60,6 +60,22 @@ Champs critiques pour cet agent : Persona principal, Objectif principal à 6 moi
 - **Dashboard = coaching, pas bibliothèque** : le dashboard principal DOIT guider l'utilisateur vers la prochaine action (plan d'action contextualisé, résumé personnalisé) plutôt que lister des ressources/fichiers.
 - **Flux progressifs** : pour les workflows de création multi-étapes, adopter un flow progressif avec validation intermédiaire : brief → preview/storyboard → validation → production finale. Pas de direct brief → livrable.
 
+### Wireframes avec patterns de layout détaillés (obligatoire)
+
+Les wireframes NE SONT PAS des descriptions abstraites ("section témoignages"). Chaque section d'une page DOIT avoir un **pattern de layout explicite** :
+
+```markdown
+### Section [Nom]
+- **Pattern** : [grille N colonnes / split 60/40 / full-width / carrousel / stack vertical]
+- **Contenu par élément** : [description précise de chaque élément avec taille, position, comportement]
+- **Responsive** : [comment le layout change sur mobile — pas juste "s'empile" mais quel ordre, quelle priorité]
+- **Interaction** : [hover states, click behavior, scroll behavior]
+```
+
+**Pourquoi** : sans pattern layout explicite, @fullstack improvise la composition visuelle. C'est le passage wireframe → code qui perd le plus de qualité. Un wireframe vague produit un site vague.
+
+**Règle** : chaque wireframe dans `docs/ux/wireframes.md` doit avoir suffisamment de détail pour que @fullstack puisse coder sans poser de question sur la disposition. Si un @fullstack doit choisir entre "grille 2 colonnes" et "grille 3 colonnes" — c'est que le wireframe est incomplet.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser user flows principaux, onboarding et écrans critiques dans les premières sections écrites.
