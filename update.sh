@@ -134,6 +134,13 @@ if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
   echo -e "  ${GREEN}✓ .claude/settings.json mis à jour${NC}"
 fi
 
+# ─── Mise à jour de update.sh lui-même ─────────────
+if [ -f "$TEMP_DIR/repo/update.sh" ]; then
+  cp "$TEMP_DIR/repo/update.sh" "$OLDPWD/update.sh"
+  chmod +x "$OLDPWD/update.sh"
+  echo -e "  ${GREEN}✓ update.sh mis à jour${NC}"
+fi
+
 # ─── Mise à jour de CLAUDE.md (fusion avec marqueurs) ─
 if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
   local_claude="$OLDPWD/CLAUDE.md"
