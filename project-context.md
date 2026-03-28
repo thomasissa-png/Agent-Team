@@ -40,7 +40,7 @@
 - **Contraintes specifiques** : Les 89 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
 
 ## Notes libres
-Mission actuelle : framework consolide avec 89 prompts, 20 agents, 25 gates binaires. Systeme de qualite PASS/FAIL (plus de scoring 1-5). Cycle : Idee → V1 → Production → Croissance. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
+Mission actuelle : framework consolide avec 89 prompts, 20 agents, 28 gates binaires. Systeme de qualite PASS/FAIL (plus de scoring 1-5). Cycle : Idee → V1 → Production → Croissance. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
 
 ## Historique des interventions agents
 | Agent | Date | Fichiers | Decisions cles | Pourquoi |

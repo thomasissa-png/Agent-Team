@@ -180,7 +180,7 @@ Quand on passe un livrable existant à améliorer :
 
 ## Auto-évaluation (standard)
 
-**Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 25 gates binaires G1-G25 (PASS/FAIL) — voir CLAUDE.md. Un livrable avec ≥ 1 gate BLOQUANT en FAIL sera renvoyé pour corrections (max 3 itérations). Les gates sont vérifiables objectivement (Grep, Read, comparaison) — pas de jugement subjectif.
+**Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 28 gates binaires G1-G28 (PASS/FAIL) — voir CLAUDE.md. Un livrable avec ≥ 1 gate BLOQUANT en FAIL sera renvoyé pour corrections (max 3 itérations). Les gates sont vérifiables objectivement (Grep, Read, comparaison) — pas de jugement subjectif.
 
 Avant de livrer, répondre mentalement à ces questions :
 
