@@ -1138,6 +1138,16 @@ Conçois les parcours utilisateur complets :
 
 Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (default, loading, empty, error, success). Chaque écran doit indiquer les points de sortie et les fallback UX.
 
+Pour chaque flow critique, appliquer l'audit heuristique Nielsen 10 (visibilité état système, correspondance monde réel, contrôle utilisateur, cohérence, prévention erreurs, reconnaissance vs rappel, flexibilité, minimalisme, aide aux erreurs, documentation). Documenter PASS/FAIL par heuristique.
+
+Pour chaque flow, définir les métriques HEART (Happiness, Engagement, Adoption, Retention, Task success) : dimension primaire, signal observable, cible chiffrée, méthode de mesure.
+
+Pour chaque parcours critique, simuler un cognitive walkthrough : à chaque étape, l'utilisateur sait-il quoi faire ? L'action est-elle visible ? Le lien but-action est-il clair ? Le feedback est-il immédiat ? Toute réponse NON = friction documentée avec solution.
+
+Mobile UX : thumb zones (actions principales dans la zone basse), bottom navigation (si app), touch targets >= 44x44px, safe areas, keyboard avoidance.
+
+Form UX : inline validation au blur, progressive disclosure, smart defaults (pré-remplir depuis contexte), auto-save pour formulaires longs, multi-step si >7 champs.
+
 Pour chaque flow, inclure un bloc "Critères de validation UX" : test parcours persona (objectif atteignable sans aide), test charge cognitive (≤ 3 actions par écran), test time-to-value (≤ 3 étapes), edge cases UX (états vides, erreurs, retour après inactivité), accessibilité WCAG 2.2 AA.
 
 Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (testeur-persona, testeur-client-du-persona, experts parcours métier) à créer par @agent-factory. Les 2 agents testeurs sont obligatoires par projet (sauf B2C direct pour le testeur-client-du-persona).
@@ -1159,10 +1169,13 @@ Critères de validation : chaque parcours a un objectif mesurable, chaque écran
 Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs design systems d'apps similaires dans le secteur du projet. Analyse ce qui fait leur qualité (tokens, composants, cohérence, accessibilité) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Crée le design system complet :
-1. Tokens : couleurs (primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark), typographies (heading + body, échelle, line-height), espacements (échelle 4/8/12/16/24/32/48/64), ombres (subtle, medium, elevated), border-radius.
-2. Composants de base : boutons (primary, secondary, ghost, destructive — avec états hover/focus/disabled/loading), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, tables, alerts, badges, tooltips.
-3. Dark mode : tokens inversés, vérification des contrastes dans les deux modes.
-4. Accessibilité WCAG 2.2 AA : contrastes minimum 4.5:1 pour le texte, 3:1 pour les éléments interactifs, focus visible sur tous les éléments interactifs, tailles de touch target minimum 44x44px.
+1. Architecture tokens 3 tiers : (1) Primitive = valeurs brutes (blue-500, 4px), (2) Semantic = signification (color-background-primary, spacing-sm), (3) Component = usage spécifique (button-padding-x). Les composants ne référencent JAMAIS les primitives directement.
+2. Fondations structurelles : spacing scale (base 4px, de 2xs à 4xl), typography scale modulaire (ratio 1.25, de xs 12px à display 60px+ avec line-height multiple de 4px), grid system (12 col desktop, 8 tablette, 4 mobile, breakpoints Tailwind), motion tokens (durées instant/fast/normal/slow + easings + reduced-motion).
+3. Couleurs : primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark.
+4. Composants de base : boutons (primary, secondary, ghost, destructive), inputs, cards, modals, navigation, tables, alerts, badges, tooltips. Chaque composant documenté avec ses 6 états (default, hover, active, focus-visible, disabled, loading), ses variants (sm/md/lg), props, do/don't, responsive, et accessibilité ARIA.
+5. Dark mode : remapping des semantic tokens (pas juste "inverser"), shadows → borders subtiles, accent désaturé. Vérification contrastes dans les deux modes.
+6. Accessibilité WCAG 2.2 AA : contrastes 4.5:1 texte + 3:1 interactifs, focus-visible obligatoire (outline 2px offset 2px), touch targets 44x44px min, prefers-reduced-motion supporté, pas de outline:none sans alternative.
+7. Validation : chaque page évaluée sur les 10 critères visuels (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE).
 5. Performance : les choix visuels doivent être compatibles avec un LCP < 2.5s. Signaler les éléments potentiellement lourds (images, animations, vidéos, fonts custom).
 6. Favicon & icônes : produire les specs pour le favicon (SVG recommandé, avec fallback PNG 32x32 et 16x16), apple-touch-icon (180x180), OG image par défaut (1200x630, avec le logo + baseline), site.webmanifest (nom, couleur thème, icônes 192 et 512). Ces assets sont indispensables pour le branding — un site sans favicon ou sans OG image paraît amateur.
 
@@ -2379,7 +2392,10 @@ Audit UX sur les parcours critiques :
 2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles.
 3. Rétention : fréquence d'usage, features les plus/moins utilisées, patterns des power users vs churners.
 4. Accessibilité : navigation clavier, screen reader, contrastes, hiérarchie des headings.
-5. Mobile : parcours critiques testés sur 375px, touch targets, temps de chargement.
+5. Mobile : parcours critiques testés sur device descriptors (iPhone 13, iPad), thumb zones, touch targets, temps de chargement.
+6. Audit heuristique Nielsen 10 : évaluer chaque parcours critique sur les 10 heuristiques (PASS/FAIL avec évidence).
+7. Métriques HEART : pour chaque flow audité, évaluer Happiness, Engagement, Adoption, Retention, Task success. Comparer aux cibles.
+8. Cognitive walkthrough : simuler un first-time user sur les 2-3 parcours les plus critiques. 4 questions par étape (sait quoi faire ? action visible ? lien clair ? feedback immédiat ?).
 
 Pour chaque friction identifiée : description, impact estimé, solution proposée, effort de correction.
 3-5 quick wins priorisés par impact/effort.
