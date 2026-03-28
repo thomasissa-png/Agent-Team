@@ -35,6 +35,25 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-27 | Agent-Team | Personas des clients de nos personas obligatoires — comprendre toute la chaîne de valeur (le mandataire ET son acheteur). | "je veux qu'il définisse non seulement les personas projet mais aussi les personas des clients de nos personas" |
 | 2026-03-27 | Agent-Team | Agents testeurs sur TOUS les angles : copy, design, contenu, pricing, conviction, recommandation, fidélisation. Pas de revue partielle. | "je veux qu'ils soient impliqués sur toutes les étapes, sur tous les angles" |
 | 2026-03-27 | Agent-Team | Les alertes de session ne doivent pas être frustantes — seule ROUGE conservée, pas de JAUNE qui interrompt. | "l'alerte arrive très tôt, c'est très frustrant et oblige à changer de session très souvent" |
+| 2026-03-28 | Sarani S6 | Prompt engineering = livrable à part entière, avant le code. Pas un détail d'implémentation — un actif stratégique. | "le meilleur prompt du monde possible avant toute implémentation" |
+| 2026-03-28 | Sarani S6 | Documents client-facing (devis, proposals, PDF) = même niveau de design que le site web. Un devis "simpliste" pour une agence de designers est rédhibitoire. | Thomas juge "simpliste" un devis sans branding |
+| 2026-03-28 | Sarani S7 | Proposals en lien web, pas PDF, pour tout ce qui est interactif. PDF réservé aux devis/factures. | "Option 1 = lien web magnifique" |
+| 2026-03-28 | Sarani S7 | Flux progressifs avec points de validation : brief → storyboard → final. Pas de direct brief → livrable. | Thomas préfère les flux avec validation intermédiaire |
+| 2026-03-28 | Sarani S7 | 7 critères visuels pour tout livrable visuel : PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ QUE LE SITE, PROPRE, ALIGNÉ, AÉRÉ. | Grille de validation visuelle Thomas, chaque critère doit passer |
+| 2026-03-28 | Sarani S7 | Colonnes monétaires alignées à droite dans les tableaux — standard comptable non négociable. | Thomas a demandé 2+ fois |
+| 2026-03-28 | Sarani S6 | Labels texte > icônes seules pour les actions back-office. Les icônes seules sont incompréhensibles. | Thomas a trouvé les icônes d'action incompréhensibles (3+ demandes) |
+| 2026-03-28 | Mandataire S6 | Dashboard = coaching personnalisé, pas bibliothèque de fichiers. La valeur est le plan d'action contextualisé. | "le dashboard doit commencer par un résumé personnalisé puis un plan d'action structuré" |
+| 2026-03-28 | Mandataire S6 | 10 scénarios d'usage concrets par écran pour tester les personas — pas des critères abstraits. | "Sophie doit simuler 10 scénarios concrets" |
+| 2026-03-28 | Mandataire S6 | Screenshots obligatoires pour validation UI — le code "qui marche en théorie" ne suffit pas. | Thomas teste en prod sur mobile, envoie des screenshots |
+| 2026-03-28 | Archi S26c | Persistance > vitesse pour les données critiques. 2-3s de latence acceptable, donnée perdue inacceptable. | Photos galerie perdues = critère n°1 d'échec |
+| 2026-03-28 | Archi S26c | Formats standard du secteur > créativité pour les livrables B2B. Crédibilité > originalité. | "format portail immo standard (T3 60 m²) plutôt que titres créatifs" |
+| 2026-03-28 | Archi S26c | Zéro écran cassé ou placeholder gris — chaque composant a un loading + fallback propre. | "un utilisateur ne doit jamais voir un écran cassé" |
+| 2026-03-28 | Archi S26c | Assets critiques homepage dans le repo git, pas en Object Storage. Zéro dépendance runtime pour le hero. | Images hero disparaissaient à chaque deploy (5+ fois) |
+| 2026-03-28 | Archi S26c | Modals mobile = pattern bottom sheet (items-end, 100dvh, safe-area). items-center + overflow cassé sur iOS Safari. | 4+ demandes de fix modal auth mobile |
+| 2026-03-28 | Archi S27 | Valider les clés API contre les placeholders, pas juste truthy. `key !== "..."` obligatoire. | Placeholder truthy = 8s timeout avant fallback |
+| 2026-03-28 | Archi S26c | Replit autoscale : JAMAIS de fire-and-forget après réponse HTTP. Tout save critique doit être await avant return. | Photos et logs perdus silencieusement |
+| 2026-03-28 | Archi S27b | Zéro donnée inventée pour les benchmarks — mesurer sur exemples réels, jamais "à sec". | "assure-toi que ce soit des exemples réels et pas du vent" |
+| 2026-03-28 | Archi S26c | Fondateur teste en production sur mobile — les screenshots sont le critère de vérité, pas le code. QA doit simuler le parcours mobile réel. | Envoie des screenshots à chaque bug |
 
 ---
 
@@ -54,17 +73,25 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 12. Valeurs business hardcodées dans les composants (prix, emails, URLs)
 13. Pages auth sans Header/Footer (perte de repères de navigation)
 14. Redemander une info déjà fournie (duplication formulaires)
+15. Fire-and-forget après réponse HTTP sur Replit (données perdues silencieusement)
+16. Icônes seules sans labels texte dans le back-office
+17. Livrables B2B avec format "créatif" au lieu du format standard du secteur
+18. Écran cassé ou placeholder gris visible par l'utilisateur
+19. Assets critiques en Object Storage au lieu de git
+20. Clé API placeholder évaluée truthy (`sk_test_xxx` en production)
+21. PDF "simpliste" pour un document client-facing — doit être au niveau du site
+22. Audit "en théorie" sans screenshots réels comme preuve
 
 ---
 
 ## Style de review de Thomas
 
 - Exige des corrections EXACTES (texte à remplacer), pas des observations vagues
-- Itère jusqu'à 9/10 — ne valide pas en dessous
+- Vérifie via 100% gates PASS — ne valide pas en dessous
 - Vérifie la cohérence inter-livrables (Grep cross-fichiers)
 - Pose des questions directes quand quelque chose manque
 - Fait confiance aux agents mais vérifie les résultats
 
 ---
 
-*Dernière mise à jour : 2026-03-27 — Sessions Gradient Agents + ImmoCrew S5*
+*Dernière mise à jour : 2026-03-28 — Sessions Gradient Agents + Sarani S6-S7 + Mandataire S5-S6 + Architecture S26c-S27b*

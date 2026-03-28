@@ -95,6 +95,22 @@ Chaque critère DOIT être binaire (PASS/FAIL). Interdits : "devrait être intui
 |---|---|---|---|
 | [nom_event] | [action qui déclenche] | [propriétés clés] | [acquisition/activation/retention/revenue] |
 
+#### Scénarios persona concrets (min 5 par écran interactif)
+Chaque scénario est une HISTOIRE avec le persona nommé, des données réalistes, et un contexte d'usage :
+```
+1. [Persona] ouvre [écran] un [jour/moment], il/elle a [contexte]. Il/elle veut [action]. Résultat attendu : [ce qui se passe].
+2. [Persona] revient après [durée], ses données ont [changé/pas changé]. Il/elle s'attend à [comportement].
+3. [Persona] fait une erreur : [action incorrecte]. Le système [réaction attendue].
+```
+Ces scénarios sont la source de vérité pour @qa (matrice de traçabilité, gate G27).
+
+#### Definition of Done (checklist @fullstack)
+- [ ] UI implémentée conforme aux 5 états
+- [ ] API fonctionnelle (payload testé)
+- [ ] Scénarios persona reproductibles
+- [ ] Test E2E écrit (référencé dans matrice traçabilité)
+- [ ] Screenshot conforme au design
+
 #### Notes pour @qa
 [Scénarios de test spécifiques à dériver, cas de non-régression si modification d'existant]
 
@@ -113,6 +129,8 @@ Chaque critère DOIT être binaire (PASS/FAIL). Interdits : "devrait être intui
 4. **Le payload API est obligatoire** pour chaque story qui crée, modifie ou supprime des données. Pour les stories de consultation, marquer "GET uniquement — pas de body"
 5. **Le persona est nommé**, pas "l'utilisateur". Le persona provient de `project-context.md` ou `docs/strategy/personas.md`
 6. **Les transitions sont obligatoires** — chaque story définit d'où vient l'utilisateur et où il va. Pas de story isolée sans contexte de navigation
+8. **Scénarios persona concrets obligatoires** (min 5 par écran interactif). Pas des états techniques abstraits mais des histoires avec le persona nommé, des données réalistes du projet, un contexte d'usage réel. Ces scénarios alimentent la matrice de traçabilité @qa (gate G27) et les tests E2E.
+9. **Definition of Done par story** — checklist que @fullstack coche et que @qa vérifie : UI conforme, API testée, scénarios reproductibles, test E2E écrit, screenshot conforme.
 7. **Triage par complexité.** Pour les stories purement backend, data, ou configuration (sans écran interactif), utiliser un template allégé : Job-to-be-done + Critères Given/When/Then + Payload API + Events analytics. Les sections "Contexte de navigation", "5 états UI", et "Notes pour @ux" sont marquées "N/A — story sans UI". Cela réduit le volume de ~40% et prévient la dégradation qualité par épuisement de context window sur les functional-specs à 20+ stories
 
 ## Protocole d'entrée obligatoire
