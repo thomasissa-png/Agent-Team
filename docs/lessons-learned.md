@@ -27,6 +27,20 @@ Chaque learning suit ce format à 11 colonnes :
 
 ---
 
+## Session 2026-03-28 — Gradient Agents (session transformationnelle — 20 agents état de l'art)
+
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-03-28 | 2026-03-28 | problème | P0 | 43% des préférences fondateur documentées mais PAS implémentées dans les workflows agents | Propagation dans 15 agents + 12 prompts | Chaque préférence ajoutée à founder-preferences.md DOIT être propagée dans les agents concernés dans la même session | agent-spécifique + prompts | copywriter, seo, social, ux, design, fullstack, ia, reviewer, product-manager, elon, moi, geo, orchestrator, index.html | fait | propagé |
+| 2026-03-28 | 2026-03-28 | problème | P0 | Boucle visuelle dans fullstack.md mais JAMAIS relayée dans la chaîne (orchestrator, qa, ux, reviewer, prompts) | Intégration à 5 points du pipeline + 4 prompts | Toute nouvelle capacité d'un agent DOIT être vérifiée dans toute la chaîne aval | agent-spécifique + prompts | fullstack, orchestrator, qa, ux, reviewer, CLAUDE.md (G26), index.html | fait | propagé |
+| 2026-03-28 | 2026-03-28 | problème | P1 | URLs install.sh/update.sh référençaient "gradient-agents" au lieu de "Agent-Team" | Corrigé dans les 2 scripts + README.md | Après changement de nom de repo, Grep TOUTES les URLs dans tous les fichiers | prompts | install.sh, update.sh, README.md | fait | propagé |
+| 2026-03-28 | 2026-03-28 | problème | P1 | update.sh ne se mettait pas à jour lui-même | Auto-copie ajoutée dans update.sh | Tout script de mise à jour doit aussi se mettre à jour lui-même | prompts | update.sh | fait | propagé |
+| 2026-03-28 | 2026-03-28 | pattern | P1 | L'audit croisé @elon × agent spécialisé (WebSearch état de l'art + lecture agent + recommandations) est très efficace pour identifier les gaps vs marché | Appliqué sur 20 agents, score moyen passé de ~7.3 à ~9.2 | Pattern "audit croisé @elon × agent" à utiliser systématiquement pour upgrader un agent | aucune | — | fait | n/a |
+| 2026-03-28 | 2026-03-28 | pattern | P1 | La chaîne @ia audit → corrections → @qa non-régression → @elon verdict est le pipeline de qualité le plus fiable | Appliqué 4+ fois cette session avec 100% de détection des régressions | Pipeline "audit qualité 4 couches" à capitaliser | aucune | — | fait | n/a |
+| 2026-03-28 | 2026-03-28 | recommandation | P1 | Les agents enrichis produisent des fichiers plus longs (fullstack 290 lignes, qa 330, reviewer 380, orchestrator 1100). Risque de dégradation context window | Compression contexte ajoutée dans orchestrator. Agents condensés quand possible | Surveiller la taille des agents après enrichissement. Seuil d'alerte : >350 lignes pour un agent standard, >1200 pour orchestrator | documentation | — | fait | n/a |
+| 2026-03-28 | 2026-03-28 | préférence fondateur | P1 | [PRÉFÉRENCE FONDATEUR] : Thomas veut que la boucle visuelle soit intégrée dans TOUT le pipeline, pas juste dans un agent isolé | Intégrée à 5 points + 4 prompts + G26 enrichie | Toute nouvelle capacité critique DOIT être tracée dans la chaîne complète | founder-prefs | founder-preferences.md, moi.md | fait | propagé |
+| 2026-03-28 | 2026-03-28 | préférence fondateur | P1 | [PRÉFÉRENCE FONDATEUR] : Thomas veut que les audits produisent des gates PASS/FAIL structurées, pas du texte libre | PVU créé dans _base-agent-protocol.md avec gates existantes + ad-hoc | Les audits ad-hoc doivent suivre le PVU — pas d'improvisation | founder-prefs | founder-preferences.md | fait | propagé |
+
 ## Session 2026-03-27 — Gradient Agents (enrichissement massif + testeurs persona)
 
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |

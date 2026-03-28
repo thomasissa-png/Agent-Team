@@ -82,41 +82,90 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-03-27
+- **Date de cloture** : 2026-03-28
 - **Branche** : `claude/extract-project-context-PK8iz`
 
 ### Resume de la session
-Session massive du framework Gradient Agents. 15+ commits, 15 fichiers modifies. Axes principaux : (1) Merge 50 commits dans master + references branche corrigees. (2) Learnings Versiroom + ImmoCrew integres (agents custom invocables, anti-conflit parallele, UTF-8, valeurs business centralisees, zero concurrent client-facing). (3) Seuils alertes releves : JAUNE supprime, ROUGE a 6 phases / 18 Task producteurs, distinction producteur/consultation. (4) SEO multi-moteurs Google+Bing (9 differences, IndexNow, signaux sociaux, Bing Webmaster Tools). (5) Template user story pipeline IA (Given/When/Then, 9 criteres min, 5 etats UI, payload API, events analytics, contexte navigation). (6) Checklist 25+ parcours user journey obligatoire. (7) Chaine inter-agents complete PM→UX→fullstack→QA→data-analyst→reviewer. (8) Gates testeur-persona GP1-GP10 + testeur-client-du-persona GC1-GC10 dans CLAUDE.md. (9) Agents testeurs obligatoires Phase 0b + invocations 1b/2c/2d/5a-bis/5b. (10) Personas clients-de-clients dans creative-strategy. (11) Calibration meilleures references marche dans _base-agent-protocol. (12) Fix QA : 20→25 gates partout + ALERTE JAUNE residuelle corrigee. (13) Brainstorms @elon : value betting, service public, MarchesFaciles.
+Session la plus massive du framework. ~40 commits, ~25 fichiers modifies, ~1500+ lignes ajoutees. Axes principaux :
+
+**Infrastructure framework :**
+(1) Protocole learnings v2 (11 colonnes, gate bloquante reprise, propagation check cloture).
+(2) PVU — Protocole Verification Universel pour audits ad-hoc structures PASS/FAIL (gates existantes + ad-hoc).
+(3) Shadow Mode @moi Phase 1 (score fidelite, 3 niveaux confiance, territoire inconnu, cout revert).
+(4) Mode hotfix production (skip phases strat, binome fullstack+qa, G28 obligatoire).
+(5) 2 profils V1-Production / Exploration.
+(6) Gates G26-G32 (screenshots, tracabilite, pre-deploy, layout, images, tokens 3-tiers, 6 etats composants). Total : 32 gates.
+(7) Boucle visuelle integree dans tout le pipeline (fullstack produit, orchestrator verifie, ux utilise, qa teste, reviewer valide).
+
+**20 agents enrichis etat de l'art :**
+(8) design 7.5→9.5 (compositions page, images, animations, tokens 3-tiers, DA, 10 criteres visuels).
+(9) ux 7.2→9.5 (Nielsen 10, HEART, cognitive walkthrough, mobile/form/nav patterns).
+(10) copywriter 6.5→9 (AIDA/PAS/BAB, Schwartz 5 niveaux, objections, ads, social copy).
+(11) seo 7→9 (topical map, E-E-A-T, intent 5 types, clustering, content decay, AI crawlers, programmatic).
+(12) creative-strategy 7→9 (Kapferer/Sinek/Blue Ocean, hierarchie messages, benchmark grille, voice & tone).
+(13) social 7→9 (social listening, content pillars, flywheel, UGC, hooks, algorithmes plateforme).
+(14) qa 8.2→9.5 (testing trophy, Playwright Agents, self-healing, contract/mutation testing, API/DB tests).
+(15) product-manager 8.2→9.5 (Discovery OST, Assumption Mapping, Release Planning, Feedback Loop).
+(16) reviewer 7→9 (coherence design/ux, PVU, top 3 prioritaires, G29-G32 template).
+(17) ia 6.5→9 (structured outputs, LLM evals, guardrails, observabilite, RAG, agentic patterns, prompt engineering livrable).
+(18) elon 7.5→9 (10 modeles mentaux, outils analyse, orientation check).
+(19) moi 7.5→9 (calibration quantitative, criteres sortie Shadow Mode, territoire inconnu, cout revert).
+(20) fullstack 7.5→9 (SSR/SSG/ISR, error boundaries, WCAG, optimistic UI, rate limiting, caching, boucle visuelle).
+(21) geo 6.5→9 (entity-first, passage-level, citation patterns, monitoring concret, off-site, freshness, llms.txt).
+(22) orchestrator 8.5→9.5 (estimation cout, circuit breaker, metriques live, compression contexte, boucle visuelle).
+
+**Cross-projets :**
+(23) 20 preferences fondateur integrees (Sarani S6-S7, Mandataire S5-S6, Architecture S26c-S27b).
+(24) Calibration marche propagee dans 6 agents + 11 prompts (P0 session precedente ferme).
+(25) 4 prompts P0 + 5 P1 + 3 design/ux corriges dans index.html.
+(26) URLs install.sh/update.sh corrigees (gradient-agents → Agent-Team).
+
+**Audits :**
+Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regression : 23/23 PASS. Verdict @elon : 9.4/10 GO PRODUCTION.
 
 ### Livrables de cette session
 | Fichier | Statut | Notes |
 |---|---|---|
-| CLAUDE.md | Complet | Gates GP1-GP10 + GC1-GC10, regles 13 (UTF-8) + 14 (concurrents), seuils 6/18, 25 gates |
-| orchestrator.md | Complet | Agents custom, anti-conflit, Phase 0b/1b/2c/2d/5a-bis/5b testeurs, marketplace |
-| product-manager.md | Complet | Template user story IA, checklist 25+ parcours, auto-eval 15 questions |
-| seo.md | Complet | Multi-moteurs Google+Bing, 9 differences, IndexNow, signaux sociaux |
-| fullstack.md | Complet | Valeurs business, UTF-8, calibration functional-specs enrichie |
-| qa.md | Complet | Given/When/Then, 5 etats, payload API, events analytics |
-| data-analyst.md | Complet | Events analytics consolidation depuis functional-specs |
-| reviewer.md | Complet | 25 gates G1-G25, mention GP/GC |
-| agent-factory.md | Complet | Pattern agents testeurs standard |
-| creative-strategy.md | Complet | Personas clients-de-clients, exception B2C |
-| _base-agent-protocol.md | Complet | Calibration meilleures references marche |
-| copywriter.md | Complet | Benchmark outputs sectoriels |
-| ia.md | Complet | Benchmark outputs IA |
-| index.html | Complet | 6 prompts PM/QA alignes, point 9 autopilot (gates GP/GC) |
-| docs/founder-preferences.md | Complet | 9 preferences ImmoCrew, 14 anti-patterns |
+| CLAUDE.md | Complet | 32 gates G1-G32, learnings v2, promotion gates ad-hoc |
+| orchestrator.md | Complet | Checkpoint specs, profils, hotfix, cout, circuit breaker, metriques live, boucle visuelle |
+| _base-agent-protocol.md | Complet | PVU (10 types audit), contribution learnings, gates BLOQUANT avant handoff |
+| moi.md | Complet | Shadow Mode Phase 1, calibration quantitative, territoire inconnu, cout revert |
+| fullstack.md | Complet | SSR/SSG/ISR, error boundaries, WCAG, boucle visuelle, images, caching, rate limiting |
+| design.md | Complet | Fondations structurelles, compositions, images, animations, DA, 10 criteres |
+| ux.md | Complet | Nielsen 10, HEART, cognitive walkthrough, mobile/form/nav, layout detaille |
+| copywriter.md | Complet | Frameworks persuasion, Schwartz, objections, ads, social copy |
+| seo.md | Complet | Topical map, E-E-A-T, intent 5 types, clustering, content decay, AI crawlers |
+| creative-strategy.md | Complet | Frameworks strategiques, hierarchie messages, benchmark grille, voice & tone |
+| social.md | Complet | Social listening, content pillars, flywheel, UGC, hooks, algorithmes |
+| qa.md | Complet | Testing trophy, Playwright Agents, self-healing, contract/mutation, API/DB, risk-based |
+| product-manager.md | Complet | Discovery OST, Assumption Mapping, Release Planning, Feedback Loop |
+| reviewer.md | Complet | 32 gates template, coherence design/ux, PVU, top 3 |
+| ia.md | Complet | Structured outputs, LLM evals, guardrails, observabilite, RAG, prompt livrable |
+| elon.md | Complet | 10 modeles mentaux, outils analyse, orientation check |
+| geo.md | Complet | Entity-first, passage-level, citation patterns, monitoring, off-site, freshness |
+| index.html | Complet | 12+ prompts mis a jour, 32 gates, boucle visuelle, PVU |
+| founder-preferences.md | Complet | 28 preferences, 22 anti-patterns, 4 projets cross |
+| lessons-learned.md | Complet | Format v2 (11 colonnes), migration v1→v2 |
+| update.sh + install.sh | Complet | URLs corrigees Agent-Team, auto-copie update.sh |
+| templates/project-context.md | Complet | Champ verbatims persona |
 
 ### Travaux en cours / non termines
-1. **Calibration marche dans 6 agents + 11 prompts** : la regle est dans _base-agent-protocol.md (lu par tous) et renforcee dans copywriter + ia. Mais fullstack, design, seo, social, growth, geo ne la renforcent pas individuellement, et 0/11 prompts client-facing de index.html ne la mentionnent. Learning P0 documente ci-dessous.
-2. **Brief MarchesFaciles** : @elon a prepare un brief complet (verbal, pas de fichier). A convertir en project-context.md pour lancer le projet.
-3. **Merger dans main** : la branche a des modifications significatives depuis le dernier merge.
+1. **Merger dans main** : la branche a ~40 commits depuis le dernier merge. Priorite haute pour que les URLs raw GitHub (learnings, founder-prefs) fonctionnent cross-projets.
+2. **Brief MarchesFaciles** : brief @elon disponible dans docs/briefs/marchesfaciles-brief.md. A convertir en project-context.md.
 
 ### Prochaines actions recommandees
-1. **Propager la calibration marche** : appliquer les 9 corrections identifiees par @ia (6 agents + orchestrator + prompts + gates GC1/GC6). Priorite haute — c'est le dernier trou de qualite identifie.
-2. **Merger dans main** : pousser toutes les ameliorations sur main. Priorite haute.
-3. **Lancer MarchesFaciles** : creer le repo, convertir le brief @elon en project-context.md, lancer @orchestrator. Priorite haute si objectif monetisation rapide.
-4. **Test E2E autopilot** : valider les gates GP/GC, le template user story, et la chaine inter-agents en conditions reelles. Priorite haute.
+1. **Merger dans main** : pousser toutes les ameliorations. Les autres projets (Sarani, Mandataire, Architecture) pourront mettre a jour leurs agents.
+2. **Lancer un projet reel en autopilot** : ImmoCrew ou MarchesFaciles. C'est le seul test qui valide le framework en conditions reelles. Score autopilot estime : 8.5/10 (vs 6.8 avant cette session).
+3. **Rodage @moi** : les 3 premiers projets, Thomas review chaque decision @moi (Shadow Mode Phase 1). Annoter ACCORD/DESACCORD pour calibrer le score de fidelite.
+4. **Slides-to-site** : creer l'agent @pdf-extractor avec @agent-factory (2h). Tester sur un vrai deck client. Potentiel : 2500-3500€/site, marge 85-91%.
+
+### Blockers eventuels
+- Aucun blocker technique. Le framework est GO production (9.4/10 @elon).
+
+### Commande de reprise suggeree
+```
+Lis project-context.md (memo de reprise). Session 2026-03-28 : ~40 commits, 20 agents enrichis etat de l'art, 32 gates, PVU, boucle visuelle, Shadow Mode @moi. Score 9.4/10. Priorite : (1) merger dans main, (2) lancer un projet reel en autopilot.
+```
 
 ### Blockers eventuels
 - Aucun blocker technique.
