@@ -890,11 +890,19 @@ Critères de validation : chaque learning est classé avec référence, les modi
         quand:"Tout début de projet, avant de coder ou rédiger quoi que ce soit. Fondation de toute la chaîne — un mauvais positionnement contamine tout l'aval. 4 fichiers à produire. Si coupure : 'Lis docs/strategy/, quels fichiers manquent ?'",
         prompt:`@creative-strategy Analyse project-context.md. Si les champs Secteur, Persona principal, Problème principal ou Alternative actuelle sont insuffisants (un persona sans frustration concrète, un secteur trop vague comme "Tech"), pose-moi les questions ciblées pour les compléter avant de continuer.
 
-Benchmark 3-5 concurrents via WebSearch (noms réels, positionnement, prix, forces/faiblesses). Produis la plateforme de marque complète :
-1. Positionnement : territoire de marque, promesse (< 20 mots), preuve (ce qui rend la promesse crédible), ton de marque avec exemples.
-2. Personas détaillés : profil, jobs-to-be-done, frustrations quantifiées, objections à l'achat, critères de décision, vocabulaire utilisé par le persona.
-3. Benchmark concurrentiel : matrice des espaces occupés vs libres, opportunité de positionnement différenciant.
-4. Brief créatif : guidelines pour tous les agents aval (copy, design, growth).
+Utilise ta boîte à outils stratégique : choisir le framework adapté au contexte (Prisme de Kapferer pour marques complexes, Golden Circle Sinek pour purpose-driven, Blue Ocean Canvas + ERRC pour différenciation radicale, Category Design si nouvelle catégorie, Perceptual Mapping pour visualiser la position vs concurrents). Documenter le framework choisi et pourquoi.
+
+Benchmark 3-5 concurrents via WebSearch sur une grille systématique : positionnement déclaré (tagline, hero, about), proposition de valeur, ton et registre, pricing positioning, canaux d'acquisition visibles, visuels et identité, points faibles. Produire un Strategy Canvas (Blue Ocean) si applicable.
+
+Produis la plateforme de marque complète :
+1. Positionnement : territoire de marque, promesse (< 20 mots), preuve, ton de marque avec exemples. Framework utilisé documenté.
+2. Hiérarchie de messages (obligatoire) : message principal (tagline), 3-4 messages de soutien (Claim + RTB par pilier), messages par persona, messages par étape funnel (awareness/consideration/decision), elevator pitch (30s), boilerplate (presse/partenaires).
+3. Voice & Tone specs : voice constante (3-4 traits avec Do/Don't), tone variable par contexte (erreur vs succès, onboarding vs support), vocabulaire prescrit/proscrit, 2-3 exemples avant/après.
+4. Personas détaillés : profil, jobs-to-be-done, frustrations quantifiées, objections à l'achat, critères de décision, vocabulaire utilisé par le persona.
+5. Benchmark concurrentiel : matrice des espaces occupés vs libres, Strategy Canvas, opportunité de positionnement différenciant.
+6. Brief créatif : guidelines pour tous les agents aval (copy, design, growth).
+7. Brand Architecture (si multi-produits) : monolithique / endorsed / house of brands. Règles de naming et hiérarchie visuelle.
+8. Triggers de réévaluation : quand relancer le positionnement (nouveau concurrent, conversion < 2%, NPS < 30, pivot).
 
 Structurer le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
 
@@ -1223,14 +1231,20 @@ Critères de validation : le guide est suffisamment précis pour que deux rédac
 
 Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures landing pages du secteur du projet. Analyse ce qui fait leur qualité (structure, arguments, design, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
+Identifier le niveau de conscience Schwartz du visiteur cible (Unaware → Problem-Aware → Solution-Aware → Product-Aware → Most-Aware). Adapter le copy par section : hero = niveau de conscience dominant, FAQ = objections des Product-Aware.
+
+Choisir le framework de persuasion adapté par section : AIDA (Attention-Interest-Desire-Action) pour le flow global, PAS (Problem-Agitate-Solution) pour les sections problème, BAB (Before-After-Bridge) pour les témoignages. Documenter le framework utilisé par section : [Framework : AIDA].
+
+Extraire les 3-5 objections principales du persona (depuis personas.md ou project-context.md). Chaque objection DOIT être traitée dans le copy : FAQ (objections explicites), social proof (objections de confiance), garanties (objections de risque).
+
 Rédige le copy complet de la landing page :
-1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (la proposition de valeur en 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus").
-2. Social proof : type (témoignages, logos clients, chiffres clés, mentions presse) — si pas encore disponible, proposer un placeholder réaliste avec note "[A remplacer par données réelles]".
-3. Bénéfices : 3-4 bénéfices orientés résultat (pas features), chacun avec titre + description + preuve.
+1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (proposition de valeur 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus"). [Framework : AIDA — Attention]
+2. Social proof : témoignages, logos clients, chiffres clés, mentions presse. Chaque preuve cible une objection spécifique.
+3. Bénéfices : 3-4 bénéfices orientés résultat (ratio bénéfices/features >= 3:1), chacun avec titre + description + preuve. [Framework : FAB]
 4. Comment ça marche : 3 étapes simples du parcours utilisateur.
-5. Pricing preview : lien vers la page pricing ou aperçu des plans (si docs/product/pricing-strategy.md existe).
-6. FAQ : 5-7 questions réelles du persona (objections déguisées en questions).
-7. CTA final : répétition du CTA principal avec urgence contextuelle.
+5. Pricing preview : lien vers la page pricing ou aperçu des plans. Prix ronds obligatoires (pas de charm pricing).
+6. FAQ : 5-7 questions réelles du persona (= objections déguisées). Chaque réponse traite l'objection + apporte une preuve.
+7. CTA final : répétition du CTA principal avec urgence contextuelle. [Framework : AIDA — Action]
 
 Performance : les choix de contenu doivent être compatibles avec un LCP < 2.5s (pas de vidéo autoplay, images optimisées, contenu above the fold priorisé).
 
@@ -2037,14 +2051,16 @@ Critères de validation : chaque canal a un CAC estimé et une timeline, le budg
 Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs comptes sociaux du secteur du projet. Analyse ce qui fait leur qualité (ton, formats, engagement, fréquence, communauté) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Stratégie social media complète :
-1. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps (pas où "il faut être"). Justification par plateforme.
-2. Ligne éditoriale : thèmes récurrents, ratio contenu (éducatif/inspirant/promotionnel — règle 70/20/10), ton par plateforme.
-3. Formats natifs : carrousels, threads, vidéos courtes, polls, stories — adaptés aux algorithmes de chaque plateforme en 2026.
-4. Rythme de publication : fréquence réaliste selon les ressources (mieux 3 posts/semaine bien faits que 7 bâclés).
-5. KPIs par plateforme : reach, engagement rate, clicks, conversions. Benchmarks sectoriels.
-6. Split organique/paid : recommandation de budget paid par plateforme si budget > 0, objectifs par campagne.
-7. Outils : planning (Buffer, Hootsuite), analytics, création visuelle.
-8. Automatisation : workflow de génération et scheduling des posts via IA (prompts de génération par format, scheduling via API, repurposing automatique d'un format vers un autre). Un fondateur solo ne crée pas 15 posts/semaine manuellement.
+1. Social Listening & Monitoring : keywords à monitorer (marque, concurrents, secteur, pain points), outils (Brand24/Mention ou alertes Google en budget zéro), cadence hebdomadaire, boucle insights → ajustement calendrier.
+2. Content Pillars : définir 3-5 piliers spécifiques au projet (PAS génériques). Répartition cible (ex: 40% éducation, 25% preuves sociales, 20% engagement, 15% produit). Framework 3E : chaque post doit Éduquer, Divertir, OU Engager. Chaque post rattaché à un pilier.
+3. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps. Justification par plateforme + algorithme spécifique (LinkedIn: dwell time + commentaires, Instagram: saves > likes, TikTok: watch time, X: replies > retweets).
+4. Hooks & Copywriting : formules obligatoires (pattern interrupt, question provocante, stat choc, storytelling open loop, how-to avec chiffre). Adaptation par plateforme.
+5. Social Flywheel : la stratégie est une boucle, pas une ligne — contenu → engagement actif (réponses, DMs) → construction communauté (hashtag brandé) → UGC/advocacy → amplification → nouveau contenu.
+6. Stratégie UGC : hashtag brandé, protocole de re-share (permission, crédit, format), intégration au calendrier (X% des posts = UGC curé).
+7. Formats natifs : carrousels, threads, vidéos courtes, polls, stories — adaptés aux algorithmes 2026.
+8. Rythme de publication : fréquence réaliste (3 posts/semaine > 7 bâclés).
+9. KPIs par plateforme : reach, engagement rate, clicks, conversions. Benchmarks sectoriels.
+10. Automatisation : workflow de génération et scheduling des posts via IA, repurposing automatique. Un fondateur solo ne crée pas 15 posts/semaine manuellement.
 
 Livrable : docs/social/social-strategy.md.
 
@@ -2359,14 +2375,19 @@ Critères de validation : chaque axe a un verdict basé sur les gates applicable
         quand:"Code développé, avant release. Les tests sont l'assurance vie du produit — ils protègent les fonctionnalités qui marchent pendant que tu développes les suivantes. Beaucoup de fichiers (tests + CI). Si coupure : 'Lis docs/qa/qa-strategy.md et .github/workflows/, qu'est-ce qui manque ?'",
         prompt:`@qa Lis docs/product/functional-specs.md (critères d'acceptation Given/When/Then par user story, 5 états UI par écran, payloads API, events analytics). S'il n'existe pas, pose-moi les questions pour identifier les parcours critiques à tester. Lis docs/analytics/tracking-plan.md (events à valider) et docs/design/design-tokens.json (tokens à vérifier). Règle de dérivation : chaque critère Given/When/Then = au moins un test. Chaque état UI (défaut, loading, vide, erreur, succès) = un test par écran. Chaque payload API = tests d'intégration (endpoint, auth, schemas, codes d'erreur). Chaque event analytics = vérification par interception dynamique.
 
+Philosophie de test : Testing Trophy (integration-first). Distribution cible : static analysis (TypeScript strict + ESLint) → unit tests (30%) → integration tests (40%) → E2E tests (20%) → manual/exploratory (10%). Prioriser par risque : critique (paiement, auth, données perso) = couverture maximale, standard = unit + integration.
+
 Audit qualité complet :
-1. Tests unitaires Vitest : couverture cible > 80%. Identifier les modules non couverts.
-2. Tests E2E Playwright : chaque parcours critique a au moins un test E2E. Scénarios : onboarding, conversion, paiement (si applicable), parcours d'erreur.
-3. Tracking validation : vérifier que chaque event du tracking-plan est implémenté et déclenché correctement (Grep statique + interception dynamique en E2E).
-4. Lighthouse CI : scores cibles Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90. Deux profils : desktop ET mobile (throttling 3G).
-5. Sécurité OWASP : XSS, CSRF, injection, auth bypass, rate limiting, headers HTTP, permissions horizontales (IDOR), audit dépendances (npm audit).
-6. Accessibilité WCAG 2.2 AA : navigation clavier complète, screen reader (structure ARIA, landmarks, headings), contrastes, touch targets ≥ 44px, zoom 200%.
-7. Responsive : tests fonctionnels complets (pas juste layout) sur mobile (375px), tablette (768px), desktop (1280px).
+1. Tests unitaires Vitest : couverture cible > 80%. Mutation testing Stryker sur modules critiques (score mutation > 70%).
+2. Tests E2E Playwright : chaque parcours critique a un test E2E. Utiliser les Playwright Test Agents : Planner (explorer l'app, générer plan), Generator (créer les tests avec locators getByRole), Healer (auto-réparer les locators cassés en CI). Locators résilients obligatoires : getByRole > getByLabel > getByText > data-testid. JAMAIS de sélecteurs CSS fragiles.
+3. Contract testing : pour chaque API externe (Stripe, Resend, OAuth), définir un contrat (schema JSON expected) testé à chaque CI run. Si le schema change → test échoue immédiatement.
+4. Tests API REST : chaque endpoint testé avec méthodes autorisées ET interdites (GET sur POST-only → 405). Status codes couverts : 200/201/204, 400, 401, 403, 404, 409, 422, 429, 500. Pagination, idempotence.
+5. Tests DB : migrations réversibles (up/down), seeds reproductibles, intégrité FK, transactions + rollback.
+6. Tracking validation : Grep statique + interception dynamique en E2E.
+7. Lighthouse CI : Performance > 90, Accessibility > 95, Best Practices > 90, SEO > 90. Desktop ET mobile.
+8. Sécurité OWASP : XSS, CSRF, injection, auth bypass, rate limiting, IDOR, audit dépendances.
+9. Accessibilité WCAG 2.2 AA : navigation clavier, screen reader, contrastes, focus-visible, touch targets ≥ 44px, prefers-reduced-motion, zoom 200%.
+10. Multi-device : tests fonctionnels complets via device descriptors Playwright (iPhone 13, iPad, Desktop Chrome) — pas juste des viewport sizes.
 8. Email : test des templates (rendu multi-client Gmail/Outlook, liens fonctionnels, delivrabilité SPF/DKIM).
 9. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
 10. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
