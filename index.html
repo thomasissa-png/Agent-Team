@@ -651,7 +651,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 3. 11 critères de cohérence (Étape 6) après chaque phase.
 4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable). Le scoring numérique est dérivé des gates pour le tracking.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
-6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (10 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
+6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (11 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
 7. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
 9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
@@ -3037,7 +3037,7 @@ Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et d
 - Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
 Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
-Format tableau v2 pour chaque learning (10 colonnes obligatoires) :
+Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
 | Session | Date | Catégorie | Sévérité (P0/P1/P2) | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
 
 Colonnes ajoutées (OBLIGATOIRES) :

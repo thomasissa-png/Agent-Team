@@ -9,7 +9,7 @@ Ce fichier est la mémoire partagée du framework Gradient Agents. Il capitalise
 
 ## Format du tableau de learnings (v2 — 2026-03-28)
 
-Chaque learning suit ce format à 10 colonnes :
+Chaque learning suit ce format à 11 colonnes :
 
 ```
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |

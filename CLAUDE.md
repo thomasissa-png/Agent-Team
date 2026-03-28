@@ -404,7 +404,7 @@ Les grilles persona (/10, 9 dimensions, seuil 9/10) et B2B (/10, 7 dimensions, s
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 
-Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec le format tableau v2 (10 colonnes) :
+Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre à jour `docs/lessons-learned.md` avec le format tableau v2 (11 colonnes) :
 
 ```markdown
 ## Session [date] — [Nom du projet]
