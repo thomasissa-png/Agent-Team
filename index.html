@@ -920,6 +920,10 @@ Critères de validation : le positionnement est formulable en < 20 mots, aucun c
         quand:"Après la stratégie de marque — ou directement, l'agent créera les prérequis en posant des questions",
         prompt:`@product-manager Lis docs/strategy/brand-platform.md (positionnement, personas). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (positionnement, personas détaillés, ton de marque, concurrents) et génère-le avant de continuer.
 
+Produire le Discovery Protocol (Opportunity Solution Tree) : outcome désiré (lié au KPI North Star) → opportunités → solutions → experiments. Livrable : docs/product/discovery-map.md. Chaque feature de la roadmap DOIT être liée à une opportunité documentée.
+
+Produire l'Assumption Mapping : hypothèses critiques par feature, niveau de preuve, test de validation. Livrable : docs/product/assumption-map.md.
+
 Définis la vision produit et la roadmap :
 1. Vision produit : la description du monde une fois le problème résolu (en 3-5 phrases).
 2. Roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois] : chaque feature scorée Reach × Impact × Confidence / Effort, avec lien explicite au KPI North Star.
@@ -976,6 +980,10 @@ Critère : chaque document doit être spécifique au projet (pas un template gé
         agents:["product-manager","qa"],
         quand:"Après la roadmap, pour détailler les features avant développement. Les specs sont le contrat entre le product et le dev — chaque ambiguïté ici coûtera 10x en développement. Livrable potentiellement long. Si coupure : 'Lis docs/product/functional-specs.md, continue les specs à partir de la dernière feature documentée.'",
         prompt:`@product-manager Lis docs/product/roadmap.md et docs/product/backlog.md. S'ils n'existent pas, pose-moi les questions pour les créer (features prioritaires, persona, objectif à 6 mois) et génère-les avant de continuer. Lis aussi docs/analytics/tracking-plan.md si disponible (events à intégrer dans les specs).
+
+AVANT de rédiger les specs, produire le Discovery Protocol : docs/product/discovery-map.md (Opportunity Solution Tree : outcome désiré → opportunités → solutions → experiments). Chaque feature doit être liée à une opportunité documentée.
+
+Produire l'Assumption Mapping : docs/product/assumption-map.md. Pour chaque feature majeure : hypothèse, niveau de preuve, test de validation, statut. Les hypothèses à faible preuve sur des sujets critiques (pricing, adoption) doivent être testées AVANT d'écrire les user stories.
 
 Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles détaillées en suivant le template user story obligatoire de product-manager.md :
 1. User stories avec critères d'acceptation vérifiables (Given/When/Then) — minimum 9 critères par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes.
@@ -1502,6 +1510,12 @@ Critères de validation : le tableau comparatif contient au moins 3 modèles ave
 
 Seuils bloquants : le pipeline doit échouer si un seuil n'est pas atteint (pas de warning ignoré).
 
+Philosophie Testing Trophy : static analysis → unit (30%) → integration (40%) → E2E (20%). Pipeline CI : tsc --noEmit → ESLint → Vitest → Playwright E2E parcours critiques.
+
+Playwright Agents en CI : activer le Healer pour auto-réparer les locators cassés. Si réparation réussie → committer le fix auto. Si échec → bloquer le deploy.
+
+Contract testing : inclure les tests de contrats API (Pact/Zod) dans le pipeline CI. Mutation testing Stryker sur les fichiers modifiés (pas full codebase).
+
 Livrables : .github/workflows/ci.yml + docs/qa/qa-strategy.md.
 
 Puis @infrastructure : lis docs/infra/infrastructure.md s'il existe. Configure :
@@ -1921,6 +1935,18 @@ Critères de validation : le bug est reproduit et corrigé, un test de non-régr
 
 Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures pages positionnées du secteur du projet. Analyse ce qui fait leur qualité (structure, mots-clés, maillage, données structurées, contenu) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
+Construire la topical authority map AVANT le keyword-map : topic principal → piliers (3-5) → clusters (5-10 par pilier) → articles. Maillage interne bidirectionnel entre chaque nœud. Livrable : docs/seo/topical-map.md.
+
+Signaux E-E-A-T obligatoires : schema Person pour les auteurs, bio avec credentials, page About, sources citées (min 2/article), stratégie de backlinks autoritaires.
+
+Search Intent Mapping 5 types : informationnel, navigationnel, commercial investigation, transactionnel, local. Pour chaque mot-clé : analyser les SERP features (AI Overview, featured snippet, PAA, vidéo) et adapter le format du contenu.
+
+Keyword Clustering : grouper les mots-clés par proximité sémantique. 1 page = 1 cluster = 1 intention. Zéro cannibalisation inter-pages.
+
+Content Decay (si site existant) : auditer les top 20 pages, identifier les déclins >20% sur 3 mois.
+
+AI Crawlers : vérifier robots.txt pour GPTBot, ClaudeBot, PerplexityBot — ne PAS bloquer. Recommander llms.txt. Coordonner avec @geo.
+
 Audit SEO complet :
 1. Technique : Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical URLs, hreflang si multilingue.
 2. On-page : meta title/description (< 60 / < 155 chars, avec CTA), headings H1-H3 (hiérarchie sémantique, un seul H1), alt texts images, URLs slug-friendly.
@@ -2077,6 +2103,12 @@ Critères de validation : les plateformes sont justifiées par le persona (pas p
         prompt:`@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur, "aha moment").
 
 Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs emails d'onboarding SaaS du secteur du projet. Analyse ce qui fait leur qualité (structure, copywriting, timing, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
+Choisir le framework de persuasion par email : AIDA pour les emails d'activation, PAS pour les emails de récupération de panier/churn. Documenter le framework par email : [Framework : PAS].
+
+Identifier le niveau de conscience Schwartz du destinataire pour chaque email de la séquence (de Unaware pour les premiers emails à Product-Aware pour les emails de conversion). Adapter le contenu et le CTA au niveau.
+
+Extraire les 3-5 objections du persona et les traiter dans la séquence : au moins 1 email dédié à chaque objection majeure.
 
 Crée la séquence de 5 emails :
 1. Bienvenue (J+0) : rappel de la promesse, première action à faire, lien direct vers le produit. Pas de présentation corporate — la valeur d'abord.
