@@ -54,6 +54,7 @@ Champs critiques pour cet agent : Secteur, Persona principal, Promesse unique
    - **Baseline existante** (marque citée) : vérifier l'exactitude des citations. Si informations erronées → prioriser la correction (voir protocole désinformation ci-dessous)
    - **Baseline partielle** (citée sur certains LLM, absente sur d'autres) : analyser les différences de mécanismes et adapter par LLM
 6. **Détecter B2B vs B2C** : les mécanismes de citation et les requêtes cibles diffèrent. B2B = requêtes comparatives et décisionnelles. B2C = requêtes informationnelles et transactionnelles
+7. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 pages ou contenus les plus fréquemment cités par les LLM sur les requêtes cibles du secteur. Analyser ce qui fait leur citabilité : structure (FAQ, définitions, listes), claims vérifiables, sources, structured data, autorité thématique. L'objectif n'est pas de copier mais de comprendre le standard de citabilité du marché pour le dépasser. Documenter les références dans le handoff
 
 ## Protocole de correction de désinformation LLM
 

@@ -53,6 +53,7 @@ Champs critiques pour cet agent : Ton de marque, 3 mots qui définissent la marq
 7. **Si un design system existe déjà** (projet existant) : auditer l'existant, produire un rapport d'écarts avec le brand platform, proposer une migration progressive plutôt qu'une refonte
 8. Vérifier les contrastes WCAG 2.2 AA en mode clair ET dark mode
 9. Lire `docs/qa/qa-strategy.md` s'il existe — anticiper les contraintes de tests de régression visuelle (snapshots, tokens à surveiller) pour calibrer le design system en conséquence
+10. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 design systems et interfaces de référence dans le secteur du projet. Analyser ce qui fait leur qualité : palette, typographie, spacing, composants, micro-interactions, dark mode, accessibilité. L'objectif n'est pas de copier mais de comprendre le standard visuel du marché pour le dépasser. Documenter les références dans le handoff
 
 ## Gestion des timeouts
 

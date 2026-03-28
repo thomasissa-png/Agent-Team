@@ -1115,6 +1115,8 @@ Critères de validation : chaque dimension du moat est notée avec justification
         quand:"Après la stratégie — ou directement, l'agent créera les prérequis manquants. Les parcours sont le squelette de ton produit.",
         prompt:`@ux Lis docs/strategy/brand-platform.md (personas, jobs-to-be-done). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (personas détaillés, jobs-to-be-done, positionnement) et génère-le avant de continuer. Lis aussi docs/product/functional-specs.md si disponible (features, critères d'acceptation).
 
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures expériences utilisateur du secteur du projet. Analyse ce qui fait leur qualité (parcours, onboarding, conversion, rétention) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
 Conçois les parcours utilisateur complets :
 1. Onboarding : du premier contact à la première valeur (time-to-value cible < 3 min). Chaque étape justifiée — supprimer toute étape qui n'apporte pas de valeur immédiate.
 2. Activation : le "aha moment" — l'action qui prédit la rétention. Définir clairement quelle action = activation.
@@ -1142,6 +1144,8 @@ Critères de validation : chaque parcours a un objectif mesurable, chaque écran
         quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent. Pour reprendre : 'Lis docs/design/design-system.md et docs/design/design-tokens.json, complète ce qui manque.'",
         prompt:`@design Lis docs/design/art-direction.md (direction artistique retenue : palette, typographie, style composants). S'il n'existe pas, lis docs/strategy/brand-platform.md et pose-moi les questions pour définir la direction artistique d'abord (palette, polices, style). Lis aussi docs/ux/wireframes.md et docs/strategy/personas.md si disponibles.
 
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs design systems d'apps similaires dans le secteur du projet. Analyse ce qui fait leur qualité (tokens, composants, cohérence, accessibilité) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
 Crée le design system complet :
 1. Tokens : couleurs (primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark), typographies (heading + body, échelle, line-height), espacements (échelle 4/8/12/16/24/32/48/64), ombres (subtle, medium, elevated), border-radius.
 2. Composants de base : boutons (primary, secondary, ghost, destructive — avec états hover/focus/disabled/loading), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, tables, alerts, badges, tooltips.
@@ -1163,6 +1167,8 @@ Critères de validation : tous les tokens sont définis dans design-tokens.json,
         agents:["copywriter","creative-strategy","geo"],
         quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants. La voix de marque est ce qui rend ton produit reconnaissable même sans logo. Couvre ton, vocabulaire, UX writing ET territoire verbal propriétaire. Si coupure : 'Lis docs/copy/brand-voice.md et docs/strategy/verbal-identity.md, quel agent reste ?'",
         prompt:`@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer.
+
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs exemples de brand voice du secteur du projet. Analyse ce qui fait leur qualité (ton, vocabulaire, cohérence, différenciation) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Produis le brand voice guide complet :
 1. Ton et registre : description du ton (ex : "expert et bienveillant"), registre de langue (soutenu/courant/familier), exemples concrets de ce qu'on dit vs ce qu'on ne dit pas.
@@ -1189,6 +1195,8 @@ Critères de validation : le guide est suffisamment précis pour que deux rédac
         agents:["copywriter","seo","geo"],
         quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas. 3 agents en chaîne. Si coupure : 'Lis docs/copy/landing-page-copy.md, quel agent n'a pas terminé ?'",
         prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/value-proposition.md. S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
+
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures landing pages du secteur du projet. Analyse ce qui fait leur qualité (structure, arguments, design, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Rédige le copy complet de la landing page :
 1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (la proposition de valeur en 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus").
@@ -1369,6 +1377,8 @@ Critères de validation : la matrice type × canal × urgence est complète et j
         agents:["fullstack","qa","data-analyst"],
         quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer. Si coupure sur une feature complexe : 'Lis docs/dev-decisions.md et src/, où en est l'implémentation de [feature] ?'",
         prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer.
+
+Avant de coder, recherche via WebSearch 2-3 exemples réels des meilleures implémentations UX de features similaires dans le secteur du projet. Analyse ce qui fait leur qualité (UX, interactions, performance, edge cases) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder.
 Lis docs/design/design-system.md et docs/design/design-tokens.json pour les composants UI — s'ils n'existent pas, utilise les conventions du code existant dans src/.
@@ -1870,6 +1880,8 @@ Critères de validation : le bug est reproduit et corrigé, un test de non-régr
         quand:"Contenu rédigé, site en production ou pré-lancement. Le SEO est un investissement long terme — commencer tôt.",
         prompt:`@seo Lis project-context.md (persona, secteur). Lis docs/copy/landing-page-copy.md et docs/strategy/brand-platform.md. S'ils n'existent pas, pose-moi les questions sur le persona cible, les mots-clés de marque et le contenu principal du site pour calibrer l'audit.
 
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures pages positionnées du secteur du projet. Analyse ce qui fait leur qualité (structure, mots-clés, maillage, données structurées, contenu) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
 Audit SEO complet :
 1. Technique : Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical URLs, hreflang si multilingue.
 2. On-page : meta title/description (< 60 / < 155 chars, avec CTA), headings H1-H3 (hiérarchie sémantique, un seul H1), alt texts images, URLs slug-friendly.
@@ -1899,6 +1911,8 @@ Critères de validation : le keyword map contient au minimum 20 mots-clés avec 
         agents:["geo","copywriter"],
         quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity. En 2026, la visibilité IA est aussi stratégique que le SEO classique.",
         prompt:`@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, ALERTE : "Les livrables SEO (docs/seo/) sont absents. Le GEO complète le SEO, il ne le remplace pas. Recommandation : lancer d'abord le prompt 'Stratégie SEO technique & éditoriale' pour obtenir le keyword map et l'audit technique, puis relancer ce prompt GEO." Si l'utilisateur confirme de continuer sans SEO, pose les questions pour travailler avec project-context.md seul. Lis aussi docs/strategy/brand-platform.md (entités de marque) et docs/strategy/verbal-identity.md si disponible.
+
+Avant de produire, recherche via WebSearch 2-3 exemples réels des pages les plus citées par les LLM dans le secteur du projet. Analyse ce qui fait leur qualité (structure, claims vérifiables, entités, format citable) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Analyse et plan GEO :
 1. Audit de visibilité actuelle : interroger ChatGPT, Claude, Gemini, Perplexity sur les requêtes clés du secteur via WebSearch. La marque est-elle mentionnée ? Les concurrents le sont-ils ?
@@ -1936,6 +1950,8 @@ Critères de validation : chaque page prioritaire a une stratégie SEO + GEO com
         quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier. Le contenu est le seul canal d'acquisition qui s'apprécie avec le temps. Contenu long (articles piliers). Si coupure : 'Lis docs/copy/content-strategy.md, combien d'articles sont rédigés ? Continue.'",
         prompt:`@copywriter Lis docs/seo/keyword-map.md (mots-clés cibles avec volume et difficulté). S'il n'existe pas, pose-moi les questions pour le créer (secteur, persona, mots-clés principaux) et génère-le avant de continuer. Lis aussi docs/copy/brand-voice.md, docs/strategy/brand-platform.md, et docs/geo/geo-strategy.md si disponible.
 
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures stratégies de contenu du secteur du projet. Analyse ce qui fait leur qualité (piliers, fréquence, formats, engagement, SEO) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
 Définis la stratégie de contenu complète :
 1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
 2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues, glossaire. Pour chaque type : objectif (SEO, conversion, autorité, GEO), fréquence, format, KPI de mesure.
@@ -1969,6 +1985,8 @@ Critères de validation : chaque article du calendrier a un mot-clé cible uniqu
         quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le bon canal au bon moment vaut mieux que tous les canaux en même temps. Pour reprendre : 'Lis docs/growth/acquisition-plan.md, docs/social/ et docs/copy/, quels agents restent ?'",
         prompt:`@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Lis aussi project-context.md (budget acquisition, objectif 6 mois) et docs/product/pricing-strategy.md si disponible (pour le calcul LTV).
 
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs funnels d'acquisition du secteur du projet. Analyse ce qui fait leur qualité (canaux, unit economics, conversion, automatisation) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
+
 Définis la stratégie d'acquisition :
 1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/effort pour CE persona et CE budget. Justification par canal (pas de liste générique).
 2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, automatisabilité IA (note /5 — ce canal peut-il être automatisé à 80%+ via IA ?).
@@ -1990,6 +2008,8 @@ Critères de validation : chaque canal a un CAC estimé et une timeline, le budg
         agents:["social","copywriter","legal"],
         quand:"Besoin d'une présence organique sur les réseaux. Les réseaux sociaux sont un marathon, pas un sprint — la régularité bat la viralité. 3 agents. Si coupure : 'Lis docs/social/social-strategy.md, quel agent n'a pas terminé ?'",
         prompt:`@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Lis aussi project-context.md (présence existante, budget).
+
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs comptes sociaux du secteur du projet. Analyse ce qui fait leur qualité (ton, formats, engagement, fréquence, communauté) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Stratégie social media complète :
 1. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps (pas où "il faut être"). Justification par plateforme.
@@ -2014,6 +2034,8 @@ Critères de validation : les plateformes sont justifiées par le persona (pas p
         agents:["copywriter","growth","legal"],
         quand:"Besoin de convertir les inscrits en utilisateurs actifs puis en payants. L'email est le canal avec le meilleur ROI — s'il est bien fait. 3 agents. Si coupure : 'Lis docs/copy/email-sequences.md, quels agents restent ?'",
         prompt:`@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur, "aha moment").
+
+Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs emails d'onboarding SaaS du secteur du projet. Analyse ce qui fait leur qualité (structure, copywriting, timing, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Crée la séquence de 5 emails :
 1. Bienvenue (J+0) : rappel de la promesse, première action à faire, lien direct vers le produit. Pas de présentation corporate — la valeur d'abord.
@@ -3206,8 +3228,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Créez un repo git et ouvrez Claude Code dessus</span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-BrqhN dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-BrqhN</code>) dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
+            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-PK8iz dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
+            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-PK8iz</code>) dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
@@ -3227,8 +3249,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>à la racine de votre repo git</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-BrqhN dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-BrqhN</code>) dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
+            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-PK8iz dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
+            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-PK8iz</code>) dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
@@ -3248,8 +3270,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents depuis https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-BrqhN. Clone dans /tmp, écrase les agents dans .claude/agents/ mais FUSIONNE le CLAUDE.md (remplace uniquement le bloc entre les marqueurs GRADIENT-AGENTS-START et GRADIENT-AGENTS-END, conserve le reste intact). Ne touche pas à project-context.md, docs/, src/ ni au code existant.">Copier</button>
-            <em>"Mets à jour l'équipe Gradient Agents depuis <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-BrqhN</code>). Écrase les agents, <strong>fusionne</strong> CLAUDE.md, ne touche pas au reste."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents depuis https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-PK8iz. Clone dans /tmp, écrase les agents dans .claude/agents/ mais FUSIONNE le CLAUDE.md (remplace uniquement le bloc entre les marqueurs GRADIENT-AGENTS-START et GRADIENT-AGENTS-END, conserve le reste intact). Ne touche pas à project-context.md, docs/, src/ ni au code existant.">Copier</button>
+            <em>"Mets à jour l'équipe Gradient Agents depuis <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b claude/extract-project-context-PK8iz</code>). Écrase les agents, <strong>fusionne</strong> CLAUDE.md, ne touche pas au reste."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir</span></div>

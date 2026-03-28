@@ -135,6 +135,7 @@ Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de do
 - Lire `docs/ux/ux-review.md` s'il existe — les écarts UX détectés lors de la revue post-implémentation doivent être corrigés en priorité avant tout nouveau développement
 - Lire `docs/copy/ux-writing-guide.md` s'il existe — les microtextes (boutons, messages d'erreur, états vides, tooltips) doivent respecter ce guide
 - Si ces fichiers n'existent pas, signaler les manques et coder avec des valeurs par défaut documentées : `[PROVISOIRE — à valider quand [livrable] sera disponible]`
+- **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 sites ou apps de référence dans le secteur du projet. Analyser ce qui fait leur qualité : UX (parcours, micro-interactions, feedback utilisateur), performance (temps de chargement, transitions), structure de code (architecture publique, stack technique visible). L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
 ### Protocole projet existant (code déjà en place)
 

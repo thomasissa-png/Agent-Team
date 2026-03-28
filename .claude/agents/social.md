@@ -60,6 +60,7 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Objectif pri
    - Taille communauté et croissance estimée
 7. Lire `docs/growth/growth-strategy.md` s'il existe — aligner les canaux sociaux avec la stratégie d'acquisition. Éviter toute action sociale déconnectée du funnel
 8. **Évaluer les ressources réelles** : qui crée le contenu ? Avec quels outils ? Quel budget photo/vidéo ? Combien de temps par semaine ? Adapter la fréquence aux moyens réels — un calendrier ambitieux inexécutable est pire qu'un calendrier modeste mais tenu
+9. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 comptes sociaux de référence dans le secteur du projet (pas uniquement les concurrents directs). Analyser ce qui fait leur qualité : taux d'engagement, formats dominants (carrousel, vidéo, thread), ton, fréquence, hooks, CTA, preuves sociales. L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
 ## Cas particuliers
 

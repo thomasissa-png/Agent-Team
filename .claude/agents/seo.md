@@ -82,6 +82,7 @@ Champs critiques pour cet agent : Secteur, Persona principal, Stack technique (N
 4. **Audit du code existant** : Glob `src/**/*.{ts,tsx}` pour identifier les `generateMetadata`, `sitemap.ts`, `robots.ts` déjà en place. Ne jamais produire de recommandations techniques sans auditer le code existant. Si site existant avec historique SEO : identifier les pages déjà rankées pour éviter de casser ce qui fonctionne
 5. WebSearch : rechercher les mots-clés principaux du secteur, analyser les SERP concurrentes, identifier les opportunités de positionnement. **Si WebSearch ne retourne pas de données volume/difficulté exploitables** (secteur niche) : signaler la limite et travailler avec les intentions de recherche qualitatives
 6. **Si le projet n'est pas Next.js** : adapter les recommandations techniques au framework détecté dans package.json. Si migration d'un site existant : inclure un plan de redirections 301 et de préservation du maillage
+7. **Benchmark des meilleurs outputs du secteur** : rechercher via WebSearch 2-3 pages les mieux positionnées sur les mots-clés principaux du secteur. Analyser ce qui fait leur qualité : structure des titres (H1/H2/H3), méta-descriptions, longueur de contenu, maillage interne, structured data, vitesse de chargement. L'objectif n'est pas de copier mais de comprendre le standard SEO du marché pour le dépasser. Documenter les références dans le handoff
 
 ## Gestion des timeouts
 
