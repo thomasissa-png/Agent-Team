@@ -122,7 +122,7 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 ### Articulation gates binaires + scoring persona/B2B
 
 Le reviewer utilise deux mécanismes complémentaires :
-1. **Gates binaires livrables** : 28 gates G1-G28 PASS/FAIL (voir CLAUDE.md section "Les 28 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
+1. **Gates binaires livrables** : 32 gates G1-G32 PASS/FAIL (voir CLAUDE.md section "Les 32 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
 2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client. Encadré par les gates pré-requis G5 (persona identique) et G6 (KPI identique)
 
 **Condition GO** : les DEUX mécanismes doivent passer. Un livrable peut avoir 100% gates PASS mais 5/10 en persona (techniquement conforme mais inutilisable par le client). Le GO/NO-GO final requiert : A) 100% gates BLOQUANT PASS + 100% gates REQUIS PASS **ET** B) score persona >= 9/10 **ET** C) score B2B >= 9/10 (si applicable).
@@ -170,11 +170,11 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 
 ## Protocole d'itération qualité — Gates binaires
 
-**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 28 gates (G1-G28) de CLAUDE.md sur chaque livrable. Si des agents testeurs ont été créés (testeur-persona, testeur-client-du-persona), vérifier aussi que les gates GP1-GP10 et GC1-GC10 (voir CLAUDE.md section "GATES TESTEUR-PERSONA") ont été exécutées et sont PASS. Si les gates GP/GC n'ont pas été exécutées → signaler à l'orchestrateur comme phase manquante (Phases 2c/2d/5b non exécutées).
+**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 32 gates (G1-G32) de CLAUDE.md sur chaque livrable. Si des agents testeurs ont été créés (testeur-persona, testeur-client-du-persona), vérifier aussi que les gates GP1-GP10 et GC1-GC10 (voir CLAUDE.md section "GATES TESTEUR-PERSONA") ont été exécutées et sont PASS. Si les gates GP/GC n'ont pas été exécutées → signaler à l'orchestrateur comme phase manquante (Phases 2c/2d/5b non exécutées).
 
 ### Processus d'itération
 
-1. **Évaluation initiale** : exécuter les 28 gates binaires (G1-G28) via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
+1. **Évaluation initiale** : exécuter les 32 gates binaires (G1-G32) via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
 2. **Si ≥ 1 gate en FAIL** : produire un rapport de corrections :
 
 ```markdown
@@ -207,9 +207,9 @@ Produire un rapport structuré exactement ainsi :
 ## Résumé technique
 [3 lignes : état général de cohérence, blocages critiques, recommandation GO/NO-GO]
 
-## Résultats des gates binaires (G1-G28)
+## Résultats des gates binaires (G1-G32)
 
-*Exécuter les 28 gates (G1-G28) de CLAUDE.md pour chaque livrable audité :*
+*Exécuter les 32 gates (G1-G32) de CLAUDE.md pour chaque livrable audité :*
 
 ### [Nom du livrable] — @[agent]
 | # | Gate | Classe | Verdict | Détail |
@@ -247,7 +247,13 @@ Produire un rapport structuré exactement ainsi :
 | G27 | Matrice traçabilité US→tests | REQUIS | PASS/FAIL/N-A | |
 | G28 | Pipeline pre-deploy (tsc+lint+tests) | REQUIS | PASS/FAIL/N-A | |
 
-**BLOQUANT : X/12 PASS | REQUIS : Y/15 PASS | CONDITIONNEL : Z (ou N/A)**
+*Gates design & composition (conditionnelles — s'appliquent si le projet a un frontend) :*
+| G29 | Layout explicite par section | REQUIS | PASS/FAIL/N-A | |
+| G30 | Images spécifiées par page | REQUIS | PASS/FAIL/N-A | |
+| G31 | Architecture tokens 3 tiers | REQUIS | PASS/FAIL/N-A | |
+| G32 | 6 états composants interactifs | REQUIS | PASS/FAIL/N-A | |
+
+**BLOQUANT : X/12 PASS | REQUIS : Y/20 PASS | CONDITIONNEL : Z (ou N/A)**
 **Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**
 **Verdict : GO / GO CONDITIONNEL / NO-GO**
 

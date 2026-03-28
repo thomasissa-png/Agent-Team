@@ -972,7 +972,7 @@ Invoquer `@reviewer` via Task pour une revue croisée de cohérence avant de val
 
 ### Cycle d'itération qualité @reviewer (obligatoire en fin de run)
 
-1. Lancer `@reviewer` → il exécute les 28 gates binaires (G1-G28) sur chaque livrable via Grep/Read/comparaison
+1. Lancer `@reviewer` → il exécute les 32 gates binaires (G1-G32) sur chaque livrable via Grep/Read/comparaison
 2. Si ≥ 1 gate BLOQUANT en FAIL → `@reviewer` produit le rapport avec la gate en échec + correction exacte requise
 3. L'orchestrateur relance l'agent responsable avec le rapport
 4. L'agent corrige → `@reviewer` re-vérifie uniquement les gates en FAIL
