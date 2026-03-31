@@ -149,7 +149,7 @@ docs/
 ├── copy/              ← @copywriter : brand-voice.md, landing-page-copy.md, email-sequences.md, ux-writing-guide.md
 ├── seo/               ← @seo : seo-strategy.md, keyword-map.md, metadata-templates.md
 ├── geo/               ← @geo : geo-strategy.md, content-restructuring.md, llm-content-templates.md
-├── growth/            ← @growth : growth-strategy.md, acquisition-plan.md, funnel-audit.md
+├── growth/            ← @growth : growth-strategy.md, acquisition-plan.md, funnel-audit.md, earned-media-plan.md, press-release-templates.md, media-kit.md
 ├── sales/             ← @sales-enablement : sales-playbook.md, proposal-templates.md, objection-handling.md, sales-deck.md, roi-calculator-specs.md
 ├── social/            ← @social : social-strategy.md, editorial-calendar.md, content-templates.md
 ├── legal/             ← @legal : legal-audit.md, cgu-draft.md, privacy-policy.md, rgpd-checklist.md

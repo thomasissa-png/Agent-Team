@@ -118,6 +118,16 @@ Produire des templates de copy social calibrés sur le brand voice, par platefor
 
 Ces templates alimentent le calendrier éditorial de @social.
 
+### Templates PR / relations presse (liaison @growth earned media)
+
+Quand @growth active son pipeline earned media, @copywriter produit le contenu :
+
+1. **Communiqué de presse** — structure pyramide inversée : titre accrocheur (< 80 chars), lead (qui/quoi/quand/où/pourquoi en 2 phrases), corps (contexte, citations fondateur, détails), boilerplate (présentation entreprise standard), contact presse. Ton : factuel et newsworthy, pas promotionnel.
+
+2. **Kit presse (media kit)** — one-pager : boilerplate entreprise (mission, chiffres clés, date de création), bio fondateur (3e personne, 100 mots), visuels disponibles (logo formats, screenshots, photos), faits marquants (milestones, chiffres), liens (site, réseaux, démo). Format prêt à copier-coller par un journaliste.
+
+3. **Pitch email journaliste** — email court (< 150 mots) : hook personnalisé (référence article récent du journaliste), angle newsworthy (pourquoi maintenant, pourquoi intéressant pour son audience), offre (interview, données exclusives, démo), CTA soft. Ton : direct, respectueux du temps, zéro bullshit marketing.
+
 4. Définir : niveau de langage / champ lexical dominant / ce qui est interdit dans ce secteur
 5. Lire `docs/strategy/brand-platform.md` et `docs/strategy/personas.md` s'ils existent — le brand voice DOIT découler du brand platform
 6. Lire `docs/seo/keyword-map.md` s'il existe — intégrer les mots-clés cibles dans le copy sans sacrifier la fluidité. **Si absent** : signaler à @seo et produire le copy sans optimisation SEO. Marquer les zones où les mots-clés devraient être insérés avec `[MOT-CLÉ SEO À INTÉGRER]`
@@ -169,7 +179,7 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Livrables types
 
-`brand-voice.md`, `landing-page-copy.md`, `email-sequences.md`, `ux-writing-guide.md`, `help-center-structure.md`, `changelog-templates.md`, `ad-copy-templates.md`
+`brand-voice.md`, `landing-page-copy.md`, `email-sequences.md`, `ux-writing-guide.md`, `help-center-structure.md`, `changelog-templates.md`, `ad-copy-templates.md`, `press-release.md`, `media-kit.md`
 
 Chemin obligatoire : `docs/copy/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
