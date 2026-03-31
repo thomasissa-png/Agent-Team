@@ -657,6 +657,22 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
 9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
 10. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
+11. Learnings cross-projets (renforcements obligatoires) :
+    - Zéro fausse promesse : le copy ne promet QUE des features implémentées.
+    - Anti-témoignage fictif : jamais de noms de personas comme faux témoignages.
+    - Conviction-first : CTAs en fin de parcours, pas au premier écran (sauf pages d'action).
+    - Anti-placeholder galerie : jamais d'images identiques labellées différemment.
+    - Backoffice = même design system que le front.
+    - Self-fetch Next.js : JAMAIS l'URL publique, toujours 127.0.0.1:PORT.
+    - React Hooks AVANT tout return conditionnel.
+    - Stale-while-revalidate pour tout fetch > 3 secondes.
+    - Seuil réécriture : si 10+ edits avec erreurs récurrentes, réécrire le fichier en entier.
+    - Migrations SQL idempotentes : ALTER IF NOT EXISTS pour chaque colonne.
+    - Flux progressifs IA : brief → storyboard → final (jamais de génération directe).
+    - Protocole migration modèle IA : lire doc API, tester 3+ exemples, propager à TOUS les builders.
+    - Parcours d'achat testé end-to-end obligatoire avant livraison.
+    - Bugs corrigés immédiatement : jamais de bug documenté "en attente".
+    - Agents testeurs calibrés VALEUR : évaluer la valeur perçue, pas juste la conformité technique.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à la livraison totale du projet qui fonctionne.
@@ -1152,6 +1168,7 @@ Conçois les parcours utilisateur complets :
 3. Conversion : du gratuit au payant (si applicable). Points de friction identifiés, triggers d'upgrade contextuels.
 4. Rétention : boucles d'engagement (notifications, emails, contenu), fréquence d'usage cible.
 5. Architecture de navigation : hiérarchie des pages, navigation principale, actions rapides.
+6. Conviction-first : les CTAs de conversion (achat, upgrade) apparaissent en fin de parcours/section, APRÈS la démonstration de valeur — pas au premier écran. Exception : les pages dont le seul but est l'action (pricing, signup). Concevoir pour convaincre d'abord, convertir ensuite.
 
 Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (default, loading, empty, error, success). Chaque écran doit indiquer les points de sortie et les fallback UX.
 
@@ -1190,6 +1207,8 @@ Crée le design system complet :
 2. Fondations structurelles : spacing scale (base 4px, de 2xs à 4xl), typography scale modulaire (ratio 1.25, de xs 12px à display 60px+ avec line-height multiple de 4px), grid system (12 col desktop, 8 tablette, 4 mobile, breakpoints Tailwind), motion tokens (durées instant/fast/normal/slow + easings + reduced-motion).
 3. Couleurs : primary, secondary, accent, neutral, success, warning, error — avec variantes light/dark.
 4. Composants de base : boutons (primary, secondary, ghost, destructive), inputs, cards, modals, navigation, tables, alerts, badges, tooltips. Chaque composant documenté avec ses 6 états (default, hover, active, focus-visible, disabled, loading), ses variants (sm/md/lg), props, do/don't, responsive, et accessibilité ARIA.
+4b. Backoffice = même design system : les pages admin/backoffice utilisent les MÊMES tokens et composants que le front. Pas de UI au rabais pour les pages internes — un backoffice avec un design incohérent est un anti-pattern.
+4c. Anti-placeholder galerie : JAMAIS d'images identiques labellées différemment dans les maquettes ou les exemples. Chaque image/illustration doit être unique ou clairement marquée "[Image à remplacer : description]".
 5. Dark mode : remapping des semantic tokens (pas juste "inverser"), shadows → borders subtiles, accent désaturé. Vérification contrastes dans les deux modes.
 6. Accessibilité WCAG 2.2 AA : contrastes 4.5:1 texte + 3:1 interactifs, focus-visible obligatoire (outline 2px offset 2px), touch targets 44x44px min, prefers-reduced-motion supporté, pas de outline:none sans alternative.
 7. Validation : chaque page évaluée sur les 10 critères visuels (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE).
@@ -1218,6 +1237,9 @@ Produis le brand voice guide complet :
 3. Exemples par contexte : landing page (hero, bénéfices, CTA), email (objet, corps), in-app (messages de succès, erreurs, empty states), social media (LinkedIn, Twitter/X).
 4. Guide UX writing : messages d'erreur (empathiques, actionnables), empty states (utiles, pas juste "rien ici"), tooltips (concis), CTAs (verbes d'action spécifiques), microcopy de formulaires.
 5. Règles de formatage : majuscules, ponctuation, emojis (oui/non), longueur max par type de texte.
+6. Garde-fous cross-projets :
+   - Zéro fausse promesse : le copy ne promet QUE des features réellement implémentées. Un bénéfice affiché doit être livré.
+   - Anti-témoignage fictif : JAMAIS utiliser les noms de personas comme faux témoignages. Les témoignages sont réels ou absents.
 
 Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md.
 
@@ -1246,9 +1268,14 @@ Choisir le framework de persuasion adapté par section : AIDA (Attention-Interes
 
 Extraire les 3-5 objections principales du persona (depuis personas.md ou project-context.md). Chaque objection DOIT être traitée dans le copy : FAQ (objections explicites), social proof (objections de confiance), garanties (objections de risque).
 
+Règles anti-bullshit :
+- Zéro fausse promesse : le copy ne promet QUE des features réellement implémentées. Un bénéfice listé sur la landing DOIT être disponible en V1.
+- Anti-témoignage fictif : JAMAIS utiliser les noms de personas (Sophie, Marie...) comme faux témoignages. Les témoignages sont réels ou absents. Utiliser des placeholders "[Témoignage réel à ajouter]" si non disponibles.
+- Conviction-first : les CTAs apparaissent en fin de section/parcours, pas au premier écran (sauf hero). L'objectif est de convaincre d'abord, convertir ensuite. Exception : les pages dont le seul but est l'action (pricing, signup).
+
 Rédige le copy complet de la landing page :
 1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (proposition de valeur 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus"). [Framework : AIDA — Attention]
-2. Social proof : témoignages, logos clients, chiffres clés, mentions presse. Chaque preuve cible une objection spécifique.
+2. Social proof : témoignages RÉELS, logos clients, chiffres clés, mentions presse. Chaque preuve cible une objection spécifique.
 3. Bénéfices : 3-4 bénéfices orientés résultat (ratio bénéfices/features >= 3:1), chacun avec titre + description + preuve. [Framework : FAB]
 4. Comment ça marche : 3 étapes simples du parcours utilisateur.
 5. Pricing preview : lien vers la page pricing ou aperçu des plans. Prix ronds obligatoires (pas de charm pricing).
@@ -1280,6 +1307,8 @@ Produis 2-3 directions artistiques sous forme de brief visuel textuel. Pour chaq
 6. Style des composants : radius (sharp/rounded/pill), ombres (flat/subtle/elevated), densité (aérée/compacte).
 7. Iconographie : style recommandé (outline/solid/duotone), librairie (Lucide, Heroicons, Phosphor).
 8. Impact performance : estimation du poids visuel (fonts custom, images, animations). Compatible avec LCP < 2.5s ?
+
+Anti-placeholder galerie : dans les moodboards et exemples visuels, JAMAIS d'images identiques labellées différemment. Chaque visuel doit être unique ou clairement marqué "[Image à remplacer : description]".
 
 Recommande la direction la plus alignée avec le positionnement de marque ET les attentes visuelles du persona, avec justification. La palette et la typographie doivent parler au persona — un CMO de 38 ans n'a pas les mêmes codes visuels qu'un dev indie de 25 ans.
 
@@ -1467,6 +1496,7 @@ Intègre Stripe :
 4. Portail client : lien vers le Stripe Customer Portal pour la gestion autonome.
 5. Sécurité : vérification du webhook signature, pas de prix en frontend, vérification côté serveur de l'état de l'abonnement.
 6. Edge cases : paiement échoué (retry logic), carte expirée, changement de devise, remboursement.
+7. Parcours d'achat testé end-to-end OBLIGATOIRE : le flow complet signup → sélection plan → paiement → confirmation → accès premium doit être testé avec un scénario E2E Playwright avant validation. Ne JAMAIS livrer un paiement non testé de bout en bout.
 
 Livrables : code dans src/app/api/stripe/ + src/lib/stripe.ts (helper functions).
 
@@ -1491,6 +1521,8 @@ Architecture IA complète :
 4. Limites : tokens max input/output, rate limiting, budget plafond mensuel avec alerte à 80%.
 5. UX de l'IA : latence perçue (streaming vs batch), animations de chargement, fallback UI si le modèle est indisponible.
 6. Conformité : données envoyées au modèle (PII ? données sensibles ?), data processing agreement avec le fournisseur.
+7. Flux progressifs obligatoires : pour les features IA complexes (génération de documents, workflows multi-étapes), suivre le flux brief → storyboard → final. Ne JAMAIS générer un output final en une seule passe — valider chaque étape intermédiaire.
+8. Protocole migration modèle : si un changement de modèle est envisagé, lire la doc API, identifier les params spécifiques, tester 3+ exemples réels, propager à TOUS les builders.
 
 Livrable : docs/ia/ai-architecture.md.
 
@@ -1515,6 +1547,8 @@ Critères de validation : le tableau comparatif contient au moins 3 modèles ave
 6. Security : audit des dépendances (npm audit / Snyk).
 
 Seuils bloquants : le pipeline doit échouer si un seuil n'est pas atteint (pas de warning ignoré).
+
+Vérification self-fetch en CI : Grep le codebase pour les appels à l'URL publique du site dans les Server Components et API routes. JAMAIS l'URL publique — toujours 127.0.0.1:PORT ou appel direct de la fonction.
 
 Philosophie Testing Trophy : static analysis → unit (30%) → integration (40%) → E2E (20%). Pipeline CI : tsc --noEmit → ESLint → Vitest → Playwright E2E parcours critiques.
 
@@ -1553,6 +1587,7 @@ Analyse avancée :
 3. Optimisation prompts : réduis les tokens de 20%+ sans perte de qualité. Techniques : suppression des instructions redondantes, few-shot → zero-shot si possible, output structuré.
 4. Fallback chain : modèle principal → fallback 1 → fallback 2 → réponse dégradée gracieuse.
 5. Budget plafond : alerte à 80% du budget mensuel, coupure automatique à 100% (ou dégradation vers un modèle moins cher).
+6. Protocole migration modèle : avant de changer de modèle, lire la doc API, identifier les paramètres spécifiques, tester sur 3+ exemples réels du use case, puis propager le changement à TOUS les builders/prompts qui utilisent ce modèle.
 
 Livrable : docs/ia/model-selection.md.
 
@@ -1583,7 +1618,12 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
 7. Linting : ESLint + Prettier configurés, scripts npm (dev, build, lint, test).
 8. Sécurité : headers HTTP (CSP, HSTS, X-Frame-Options), rate limiting sur les routes API.
-9. Favicon & meta : implémenter le favicon (SVG + PNG fallback dans public/), apple-touch-icon, site.webmanifest, OG image par défaut (1200x630), balises meta og:title/og:description/og:image dans le layout racine. Si docs/design/design-system.md contient les specs favicon, les suivre. Sinon, créer un favicon minimaliste avec les couleurs primary du design system.
+9. Règles dev cross-projets :
+   - Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours utiliser 127.0.0.1:PORT ou appeler la fonction directement.
+   - React Hooks : TOUS les hooks DOIVENT être appelés AVANT tout return conditionnel dans un composant. Un hook après un early return = crash React.
+   - Seuil de réécriture : si un fichier cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier.
+   - Migrations SQL idempotentes : utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque colonne. Les migrations doivent être re-exécutables sans erreur.
+10. Favicon & meta : implémenter le favicon (SVG + PNG fallback dans public/), apple-touch-icon, site.webmanifest, OG image par défaut (1200x630), balises meta og:title/og:description/og:image dans le layout racine. Si docs/design/design-system.md contient les specs favicon, les suivre. Sinon, créer un favicon minimaliste avec les couleurs primary du design system.
 
 Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
@@ -1605,7 +1645,7 @@ Critères de validation : le projet démarre avec npm run dev sans erreur, TypeS
         quand:"Après l'implémentation des premiers composants — pour détecter les écarts avant qu'ils se propagent. Le handoff est le moment où la qualité se perd le plus souvent.",
         prompt:`@design Lis docs/design/design-tokens.json et docs/design/design-system.md (tokens de référence). S'ils n'existent pas, signale-le — cet audit nécessite un design system défini. Lis le code implémenté dans src/ (composants, styles, classes Tailwind).
 
-Audite le code produit par @fullstack contre les specs du design system :
+Audite le code produit par @fullstack contre les specs du design system (pages publiques ET backoffice/admin — le backoffice utilise le MÊME design system) :
 1. Tokens respectés : vérifie que les couleurs, tailles, espacements dans le code correspondent aux tokens définis. Signale les valeurs hardcodées (ex : "text-blue-500" au lieu du token sémantique). Format : tableau avec fichier, ligne, valeur actuelle, valeur attendue.
 2. Contrastes WCAG 2.2 AA : vérifie les ratios de contraste sur les combinaisons texte/fond en clair et dark mode. Chaque combinaison avec son ratio calculé.
 3. États des composants : vérifie que hover/focus/disabled/error/loading sont implémentés pour chaque composant interactif. Focus visible (outline) obligatoire.
@@ -1656,7 +1696,7 @@ Architecture RAG complète :
 2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options : OpenAI text-embedding-3-small, Voyage AI, Cohere embed-v3, ou modèle open source (BGE, E5). Benchmark sur un échantillon du corpus réel.
 3. Vector store : choix de la base vectorielle avec justification (Pinecone, Qdrant, Weaviate, pgvector). Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement (cloud vs self-hosted selon budget).
 4. Retrieval : stratégie de recherche (similarity search, MMR pour diversité, hybrid search BM25 + vectoriel). Nombre de chunks à récupérer (top-k), seuil de similarité minimum, re-ranking optionnel.
-5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe).
+5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe). Protocole migration modèle : avant de changer de modèle, lire la doc API, tester 3+ requêtes RAG réelles, vérifier la qualité des citations.
 6. Évaluation : métriques (faithfulness, relevance, answer correctness), dataset de test avec questions/réponses attendues, pipeline d'évaluation automatisé.
 7. Coût : estimation mensuelle détaillée (embeddings + stockage vectoriel + tokens LLM) selon le volume de requêtes estimé.
 
@@ -1727,7 +1767,7 @@ Performance budget et plan d'optimisation :
 2. Bundle analysis : analyser le bundle actuel (next build + @next/bundle-analyzer). Identifier les dépendances lourdes (> 50KB gzipped), les imports non tree-shakés, le code mort. Pour chaque dépendance lourde : alternative plus légère ou stratégie de lazy loading.
 3. Image optimization : audit des images (format, taille, responsive). Convertir en WebP/AVIF, utiliser next/image avec sizes et priority. Lazy loading pour les images below the fold. Budget : aucune image > 200KB, hero image < 100KB.
 4. Lazy loading : code splitting par route (automatique Next.js), lazy loading des composants lourds (éditeurs, graphiques, maps) avec dynamic() et Suspense. Les composants above the fold ne sont JAMAIS lazy loaded.
-5. Caching : stratégie de cache par type de ressource (static assets : 1 an, API responses : selon fraîcheur, pages ISR : revalidate selon le contenu). Headers Cache-Control documentés. CDN : vérifier que les assets statiques sont servis depuis le CDN le plus proche.
+5. Caching : stratégie de cache par type de ressource (static assets : 1 an, API responses : selon fraîcheur, pages ISR : revalidate selon le contenu). Headers Cache-Control documentés. CDN : vérifier que les assets statiques sont servis depuis le CDN le plus proche. Stale-while-revalidate obligatoire pour tout fetch dont la latence dépasse 3 secondes — afficher les données en cache puis rafraîchir en arrière-plan.
 6. Monitoring continu : intégrer web-vitals pour mesurer LCP, CLS, INP en production. Alertes si dégradation > 20% sur 24h. Dashboard dans docs/analytics/dashboard-specs.md.
 7. CI/CD gate : ajouter un check de taille de bundle dans la CI (erreur si le budget est dépassé). Outil : bundlesize ou size-limit.
 
@@ -1804,7 +1844,7 @@ Audit et optimisation des prompts :
    - Structured output : forcer le JSON/XML pour les réponses parsées programmatiquement (réduire les erreurs de parsing de >80%).
    - System prompt : séparer les instructions stables (system) des données variables (user). Réduire la répétition.
    - Prompt compression : identifier les instructions redondantes ou inutiles, mesurer l'impact de leur suppression.
-3. Sélection de modèle par tâche : matrice use case × modèle recommandé. Règle : utiliser le modèle le moins cher qui atteint la qualité requise. Haiku pour la classification/extraction simple, Sonnet pour la génération/raisonnement, Opus uniquement pour les tâches complexes multi-étapes.
+3. Sélection de modèle par tâche : matrice use case × modèle recommandé. Règle : utiliser le modèle le moins cher qui atteint la qualité requise. Haiku pour la classification/extraction simple, Sonnet pour la génération/raisonnement, Opus uniquement pour les tâches complexes multi-étapes. Protocole migration modèle : avant chaque changement, lire la doc API du nouveau modèle, identifier les params spécifiques, tester 3+ exemples réels, propager à TOUS les builders. Flux progressifs pour les générations complexes : brief → storyboard → final (ne jamais générer un output final en une seule passe).
 4. Prompt library : template structuré pour chaque prompt (nom, version, system prompt, user prompt template, variables, modèle, temperature, max_tokens, exemples de test).
 5. Fallback chains : si le modèle principal échoue (timeout, rate limit, réponse invalide), cascade vers un modèle de secours. Retry avec prompt simplifié si la réponse est hors format.
 6. A/B testing : framework pour tester 2 versions d'un prompt sur le même trafic. Métriques : qualité (évaluation humaine ou LLM-as-judge), coût, latence. Durée minimale de test : 100 exécutions par variante.
@@ -1825,7 +1865,7 @@ Critères de validation : chaque prompt du produit est documenté dans la prompt
 Architecture base de données complète (PostgreSQL Replit) :
 1. Schéma de données : diagramme ERD textuel avec toutes les tables, colonnes (nom, type, contraintes), relations (1:1, 1:N, N:N), clés primaires et étrangères.
 2. Indexation : index par colonne de requête fréquente (WHERE, JOIN, ORDER BY). Index composites si pertinent. Justifier chaque index par un use case de requête réel.
-3. Migrations : stratégie de migration (Prisma migrate ou Drizzle). Convention de nommage des migrations. Gestion des données existantes lors des migrations destructives.
+3. Migrations : stratégie de migration (Prisma migrate ou Drizzle). Convention de nommage des migrations. Gestion des données existantes lors des migrations destructives. Migrations SQL idempotentes OBLIGATOIRES : utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque colonne. Chaque migration doit être re-exécutable sans erreur (important pour les redéploiements Replit).
 4. Seed data : script de seed pour l'environnement de développement (données réalistes, pas juste "test1, test2").
 5. Performance : requêtes N+1 à éviter (recommander eager loading), pagination (cursor-based pour les listes longues), dénormalisation stratégique si volume > 100K lignes.
 6. Sécurité : Row Level Security (RLS) si multi-tenant, chiffrement des colonnes sensibles, audit trail (created_at, updated_at, deleted_at soft delete).
@@ -1892,7 +1932,7 @@ Critères de validation : tous les flows d'auth sont documentés avec états d'e
 
 Plan de migration de données :
 1. Inventaire : schéma source vs schéma cible. Pour chaque table/colonne : ajout, suppression, renommage, transformation de type, split/merge.
-2. Script de migration : script idempotent (re-exécutable sans doublon). Étapes numérotées avec rollback pour chaque étape. Transactions pour l'atomicité.
+2. Script de migration : script idempotent (re-exécutable sans doublon). Utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque modification de schéma. Étapes numérotées avec rollback pour chaque étape. Transactions pour l'atomicité.
 3. Transformation des données : pour chaque colonne transformée, règle de conversion explicite (ex : "status string → status enum", "fullName → firstName + lastName"). Gestion des valeurs NULL et invalides.
 4. Downtime : estimation du temps de migration selon le volume. Stratégie zero-downtime si possible (migration en 2 phases : ajout colonnes → migration données → suppression anciennes colonnes). Communication utilisateurs si downtime nécessaire.
 5. Rollback : plan de rollback complet en cas d'échec. Backup avant migration (obligatoire). Procédure de restauration testée.
@@ -1916,7 +1956,7 @@ Protocole de debug structuré :
 1. Reproduction : confirmer le bug (environnement, navigateur, utilisateur, données). Si non reproductible, identifier les conditions (volume, timing, données spécifiques).
 2. Isolation : réduire le périmètre — front ou back ? Quel composant ? Quelle route API ? Quel service ? Utiliser les logs et le réseau (onglet Network) pour identifier la couche fautive.
 3. Diagnostic : lire les logs d'erreur (Sentry si configuré, console, logs serveur). Identifier la stacktrace. Grep le codebase pour le message d'erreur. Vérifier les derniers commits qui touchent la zone impactée (git log --oneline -- path/to/file).
-4. Correction : fix minimal (pas de refactoring pendant un fix de bug). Test de non-régression (le fix ne casse rien d'autre). Code review du fix.
+4. Correction : fix minimal (pas de refactoring pendant un fix de bug). Test de non-régression (le fix ne casse rien d'autre). Code review du fix. Seuil de réécriture : si le fichier bugué cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier plutôt que de patcher. Bugs corrigés immédiatement : ne JAMAIS documenter un bug sans le corriger dans la même session.
 5. Prevention : pourquoi le bug est passé à travers les tests ? Ajouter le test manquant. Si c'est un pattern récurrent, documenter l'anti-pattern.
 6. Post-mortem léger : si le bug a impacté des utilisateurs, documenter : quand détecté, temps de résolution, impact, cause racine, actions préventives.
 
@@ -2120,7 +2160,7 @@ Extraire les 3-5 objections du persona et les traiter dans la séquence : au moi
 Crée la séquence de 5 emails :
 1. Bienvenue (J+0) : rappel de la promesse, première action à faire, lien direct vers le produit. Pas de présentation corporate — la valeur d'abord.
 2. Activation feature clé (J+1) : guide vers le "aha moment" — l'action qui prédit la rétention. Avec screenshot/GIF si possible.
-3. Social proof (J+3) : témoignage ou résultat d'un utilisateur similaire au persona. Si pas encore disponible, proposer un placeholder "[A remplacer par témoignage réel]".
+3. Social proof (J+3) : témoignage RÉEL ou résultat d'un utilisateur similaire au persona. JAMAIS de faux témoignage avec des noms de personas fictifs. Si pas encore disponible, utiliser un placeholder "[À remplacer par témoignage réel]".
 4. Upgrade (J+7) : proposition de valeur du plan payant, contextualisée par l'usage de l'utilisateur. Pas de pression — de la valeur.
 5. Réengagement (J+14) : pour les utilisateurs inactifs. Question ouverte ("qu'est-ce qui t'a bloqué ?") + incentive si pertinent.
 
@@ -2235,7 +2275,7 @@ Critères de validation : chaque segment a une stratégie de traitement, les sig
 Mécanique PLG complète :
 1. Free tier : features incluses (suffisantes pour démontrer la valeur — le free tier doit résoudre le problème principal, pas être une version castrée), limites (nombre d'objets, de collaborateurs, de requêtes). Le piège classique : un free tier trop limité = pas de valeur = pas de conversion.
 2. Triggers d'upgrade : les moments où l'utilisateur atteint une limite naturelle et le passage au payant est logique (pas frustrant). Chaque trigger doit être un moment de succès, pas de blocage.
-3. In-app upgrade prompts : placement, timing et contenu. Règles : max 1 prompt par session, jamais pendant une action critique, toujours contextuel, toujours montrer la valeur du tier supérieur (pas juste le prix).
+3. In-app upgrade prompts : placement, timing et contenu. Règles : max 1 prompt par session, jamais pendant une action critique, toujours contextuel, toujours montrer la valeur du tier supérieur (pas juste le prix). Conviction-first : le prompt apparaît APRÈS un moment de succès (valeur démontrée), pas au milieu d'un parcours.
 4. Time-to-value : combien de temps pour le "aha moment". Objectif : < 5 minutes. Chaque étape entre l'inscription et le "aha moment" doit être mesurée et optimisée.
 5. Métriques PLG : taux de conversion free → paid (cible : 2-5% pour freemium, 15-25% pour free trial), temps médian avant upgrade, feature adoption rate par tier, expansion revenue (upgrades + add-ons).
 6. Recommandation freemium vs free trial : avec justification basée sur le persona et le type de produit.
@@ -2306,7 +2346,7 @@ Rappel : cette stratégie applique la règle CLAUDE.md "Automatisation par défa
 Stratégie d'automatisation marketing :
 1. Audit des canaux de contenu : pour chaque canal actif, documenter le workflow actuel (manuel vs semi-auto vs full auto), la fréquence actuelle vs cible, le ROI estimé (trafic/leads par contenu publié).
 2. Pipeline de génération de contenu IA :
-   - Blog/SEO : template de prompt par type d'article (how-to, comparatif, case study, listicle). Input : keyword + brief → Output : article structuré avec meta title/description. Workflow : génération → review humain rapide (5 min) → publication.
+   - Blog/SEO : template de prompt par type d'article (how-to, comparatif, case study, listicle). Input : keyword + brief → Output : article structuré avec meta title/description. Flux progressif obligatoire : brief → plan/storyboard → rédaction → review (ne jamais générer un article final en une seule passe). Workflow : génération → review humain rapide (5 min) → publication.
    - Social : repurposing automatique d'un article en 3-5 posts (LinkedIn, Twitter/X, thread). Adaptation du format et du ton par plateforme. Template de prompt par plateforme.
    - Newsletter : agrégation automatique des contenus de la semaine + édito généré. Template avec sections récurrentes.
    - Email nurturing : séquences déclenchées par comportement (voir prompt "Emailing automation" pour le détail).
@@ -2377,7 +2417,12 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
 10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
-Identifie les angles morts et contradictions. Applique les 32 gates binaires du framework (G1-G32, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2. Livrable : docs/reviews/cross-review-report.md.
+Identifie les angles morts et contradictions. Applique les 32 gates binaires du framework (G1-G32, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
+
+Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
+Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
+
+Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
 
@@ -2416,6 +2461,10 @@ Critères de validation : chaque axe a un verdict basé sur les gates applicable
 
 Philosophie de test : Testing Trophy (integration-first). Distribution cible : static analysis (TypeScript strict + ESLint) → unit tests (30%) → integration tests (40%) → E2E tests (20%) → manual/exploratory (10%). Prioriser par risque : critique (paiement, auth, données perso) = couverture maximale, standard = unit + integration.
 
+Règles cross-projets :
+- Parcours d'achat testé end-to-end OBLIGATOIRE : le flow complet signup → sélection plan → paiement Stripe → confirmation → accès premium doit être testé avec un scénario E2E réel (pas juste des tests unitaires).
+- Bugs corrigés immédiatement : tout bug identifié pendant l'audit est corrigé dans la même session — ne JAMAIS laisser un bug documenté "en attente". Avec une équipe IA, le coût de correction est quasi nul.
+
 Audit qualité complet :
 1. Tests unitaires Vitest : couverture cible > 80%. Mutation testing Stryker sur modules critiques (score mutation > 70%).
 2. Tests E2E Playwright : chaque parcours critique a un test E2E. Utiliser les Playwright Test Agents : Planner (explorer l'app, générer plan), Generator (créer les tests avec locators getByRole), Healer (auto-réparer les locators cassés en CI). Locators résilients obligatoires : getByRole > getByLabel > getByText > data-testid. JAMAIS de sélecteurs CSS fragiles.
@@ -2448,9 +2497,9 @@ Critères de validation : couverture > 80%, zéro blocker critique non résolu, 
         quand:"Produit en production avec trafic. Les données sont la vérité — pas les opinions. 3 agents. Si coupure : 'Lis docs/ux/ux-audit.md, quels agents restent ?'",
         prompt:`@ux Lis docs/ux/user-flows.md (parcours définis). S'il n'existe pas, pose-moi les questions pour le créer (parcours critiques, étapes, points de décision) et génère-le avant de continuer. Lis aussi les données analytics fournies (coller dans le prompt ou dans project-context.md Notes libres).
 
-Audit UX sur les parcours critiques :
+Audit UX sur les parcours critiques (calibration VALEUR — évaluer la valeur perçue par le persona, pas juste la conformité technique) :
 1. Onboarding : time-to-value actuel, taux d'abandon par étape, étapes de friction.
-2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles.
+2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles. Conviction-first : les CTAs de conversion apparaissent-ils APRÈS la démonstration de valeur (pas avant) ? Exception : pages d'action (pricing, signup).
 3. Rétention : fréquence d'usage, features les plus/moins utilisées, patterns des power users vs churners.
 4. Accessibilité : navigation clavier, screen reader, contrastes, hiérarchie des headings.
 5. Mobile : parcours critiques testés sur device descriptors (iPhone 13, iPad), thumb zones, touch targets, temps de chargement.
@@ -2483,7 +2532,8 @@ Audite en first principles — pas de complaisance :
 5. Vitesse (note /10) : combien de temps entre une idée et sa mise en production ? Qu'est-ce qui peut être supprimé/automatisé ?
 6. Risque n°1 : le plus gros risque d'échec — pas le risque évident, le risque que personne ne veut voir.
 7. Levier n°1 : la chose qui, si elle était 10x mieux, changerait tout.
-8. Théâtre vs valeur : qu'est-ce qui a l'air bien mais ne crée pas de valeur réelle ?
+8. Théâtre vs valeur : qu'est-ce qui a l'air bien mais ne crée pas de valeur réelle ? Les agents testeurs évaluent-ils la VALEUR perçue par le persona (pas juste la conformité technique) ?
+9. Valeur perçue : le persona paierait-il pour ce produit dans son état actuel ? Les outputs (documents, rapports, résultats) sont-ils réellement utiles ou juste impressionnants visuellement ?
 
 Verdict sans filtre. Pas de langue de bois. Livrable : docs/reviews/elon-audit.md.
 
@@ -2798,7 +2848,7 @@ Audit de performance complet :
 1. Core Web Vitals : LCP, CLS, INP — mesure via Lighthouse CI et WebPageTest sur mobile ET desktop. Objectifs : LCP < 2.5s, CLS < 0.1, INP < 200ms. Tester sur les 5 pages à plus fort trafic en priorité.
 2. Bundle analysis : taille totale JS/CSS, tree-shaking effectif, code splitting, chunks > 100KB à identifier (webpack-bundle-analyzer ou équivalent). Identifier les dépendances inutilisées ou surdimensionnées.
 3. Assets : images non optimisées (format WebP/AVIF, dimensions, lazy loading, srcset), fonts (subset, display swap, preload), scripts tiers bloquants (analytics, chat widgets, pixels pub — lister chacun avec son coût en ms).
-4. API : latence P50/P95/P99 par endpoint, requêtes N+1, absence de cache, réponses > 1MB. Identifier les endpoints critiques pour l'UX (ceux bloquant le rendu).
+4. API : latence P50/P95/P99 par endpoint, requêtes N+1, absence de cache, réponses > 1MB. Identifier les endpoints critiques pour l'UX (ceux bloquant le rendu). Vérifier que tout fetch > 3s utilise stale-while-revalidate (afficher les données en cache puis rafraîchir en arrière-plan).
 5. Infrastructure : TTFB par région (tester depuis les pays cibles), compression (gzip/brotli), CDN (cache hit ratio), HTTP/2-3, cache headers (stratégie immutable vs revalidation).
 6. Sécurité liée à la performance : headers de sécurité (CSP, HSTS) qui peuvent impacter le chargement, scripts tiers non sécurisés.
 7. Budget performance : définir un budget (JS < 200KB gzipped, total page < 1MB, LCP < 2.5s, TTFB < 800ms) et mesurer l'écart actuel par page.
@@ -2821,7 +2871,7 @@ Critères de validation : chaque bottleneck a une sévérité, une correction, u
         quand:"Incohérences entre pages/composants, refonte visuelle, ou doute sur la conformité accessibilité. Recommandé avant chaque release majeure. Audit page par page. Si coupure : 'Lis docs/design/visual-audit.md, quelles pages restent à auditer ?'",
         prompt:`@design Lis docs/design/design-system.md (tokens de référence) et docs/strategy/brand-platform.md (positionnement, ton). S'ils n'existent pas, pose-moi les questions pour les créer (couleurs principales, typographies, espacements, composants existants, identité de marque) et génère-les avant de continuer.
 
-Audit de cohérence visuelle complet :
+Audit de cohérence visuelle complet (inclut les pages admin/backoffice — le backoffice utilise le MÊME design system que le front) :
 1. Tokens : vérifier page par page que les couleurs, typographies, espacements et rayons de bordure respectent le design system. Lister chaque écart avec la page/composant concerné et le fichier source (chemin dans src/).
 2. Hiérarchie visuelle : les CTA sont-ils correctement hiérarchisés (primaire/secondaire/tertiaire) ? Les titres suivent-ils une hiérarchie H1 > H2 > H3 cohérente et sémantique (pas juste visuelle) ?
 3. Contrastes WCAG 2.2 AA : vérifier les ratios de contraste texte/fond (minimum 4.5:1 pour le texte normal, 3:1 pour le texte large). Signaler chaque violation avec la valeur mesurée et la valeur cible. Conformité RGAA obligatoire si le site est dans le périmètre légal.
