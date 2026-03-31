@@ -100,7 +100,12 @@ Avant de passer à la construction :
 
 4. **Persona de qualité** : le persona DOIT contenir des accomplissements concrets et mesurables, pas seulement des années d'expérience. Critère minimal : au moins 2 faits vérifiables ou mesurables (ex : "a conçu 50+ agents", "contributeur open source shadcn/ui", "12 ans en audit de cabinets de conseil"). Un persona comme "Expert en X. 10 ans d'expérience." est insuffisant.
 
-5. **Agents testeurs standard** : quand l'orchestrateur demande la création d'un `testeur-persona` ou `testeur-client-du-persona`, appliquer ce pattern :
+5. **Calibration VALEUR obligatoire pour agents testeurs** : tout agent persona/testeur DOIT évaluer la VALEUR PERÇUE, pas seulement la conformité technique. Un agent testeur qui valide le code (boutons existent, aria OK, états gérés) mais pas l'expérience réelle (valeur perçue, doublons visuels, contenu creux, espace gaspillé) est un validateur de code déguisé — il validera à 9/10 un dashboard que le fondateur juge inacceptable. Inclure obligatoirement dans tout agent testeur :
+   - **6 questions pré-requis** : (1) "Est-ce que je comprends immédiatement la valeur de cet écran ?", (2) "Est-ce que je saurais quoi faire en premier ?", (3) "Est-ce que le contenu est personnalisé pour MOI ou générique ?", (4) "Est-ce que je montrerais cet écran à un collègue fièrement ?", (5) "Est-ce que chaque section justifie sa place ?", (6) "Est-ce qu'il y a des blocs vides, des doublons, ou du contenu creux ?"
+   - **10 scénarios d'usage concrets** : le testeur simule 10 actions réelles de sa journée (copier un post, ajouter un bien, passer au mensuel, contacter le support, modifier ses infos, etc.). Si un scénario est impossible (pas de bouton, pas de page) = FAIL à 0/10 sur ce scénario
+   - **Comparaison SaaS premium** : le testeur compare chaque écran au niveau Notion/Linear/Stripe Dashboard — pas à un prototype
+
+6. **Agents testeurs standard** : quand l'orchestrateur demande la création d'un `testeur-persona` ou `testeur-client-du-persona`, appliquer ce pattern :
    - **subagent_type recommandé** : `ux` (pour testeur-persona) ou `creative-strategy` (pour testeur-client-du-persona)
    - **Identité** : incarner le persona tel que décrit dans `docs/strategy/personas.md` (section persona ou section clients-de-clients). Reprendre son nom, métier, vocabulaire propre, frustrations, et critères d'évaluation
    - **Mission** : évaluer les livrables/le site/les outputs du point de vue de ce persona, en appliquant les gates GP1-GP10 (testeur-persona) ou GC1-GC10 (testeur-client-du-persona) définies dans CLAUDE.md

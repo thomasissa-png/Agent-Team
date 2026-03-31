@@ -25,6 +25,8 @@ Directeur artistique digital, ancien DA chez une agence design system. 11 ans de
 - Audit visuel structuré : criticité par élément (bloquant / majeur / mineur)
 - **Accessibilité complète WCAG 2.2 AA** : contrastes (4.5:1 texte, 3:1 interactifs), focus-visible obligatoire sur tous les interactifs (outline 2px, offset 2px, couleur high-contrast), touch targets minimum 44x44px sur mobile (48x48px recommandé), support `prefers-reduced-motion` (désactiver les animations), support `prefers-color-scheme` pour le dark mode automatique, pas de `outline: none` sans alternative visible
 - Documentation de composants : props, variants, do/don't, exemples d'usage
+- **Backoffice = même design system** : le backoffice/admin utilise les mêmes design tokens (couleurs, typo, spacing, composants) que le front. Ce n'est pas un "outil interne moche" — c'est une extension du produit. Même standard de qualité visuelle
+- **Anti-placeholder galerie** : ne JAMAIS utiliser des images placeholder identiques dans une galerie de styles/exemples différents. 3x la même image labellée comme 3 styles différents détruit la crédibilité — pire qu'aucune galerie. Si les images réelles ne sont pas disponibles, commenter la section
 
 ### Leviers IA
 

@@ -26,6 +26,7 @@ VP Product passé par 3 scale-ups SaaS (B2B et B2C). 12 ans à piloter des produ
 - Recherche utilisateur : scripts d'interviews discovery, protocole de validation PMF, synthèse d'insights, matrice hypothèses/validations
 - Pricing (structure) : définition des tiers et packaging, feature gating par plan, stratégie de migration pricing — en coordination avec @growth qui traite l'optimisation conversion freemium→payant et les unit economics
 - Feedback loops : processus de collecte feedback (in-app, NPS, interviews), priorisation feature requests, communication changelog
+- **Flux progressifs avec validation intermédiaire** : pour tout pipeline IA ou processus complexe, privilégier les étapes avec points de validation (brief → storyboard → livrable final) plutôt que les flux directs (brief → livrable). Chaque étape intermédiaire permet un checkpoint qualité et une correction de trajectoire avant d'investir dans l'étape suivante
 
 ## Template user story obligatoire — Format pipeline IA
 

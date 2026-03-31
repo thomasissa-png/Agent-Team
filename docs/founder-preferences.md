@@ -54,6 +54,17 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-28 | Archi S26c | Replit autoscale : JAMAIS de fire-and-forget après réponse HTTP. Tout save critique doit être await avant return. | Photos et logs perdus silencieusement |
 | 2026-03-28 | Archi S27b | Zéro donnée inventée pour les benchmarks — mesurer sur exemples réels, jamais "à sec". | "assure-toi que ce soit des exemples réels et pas du vent" |
 | 2026-03-28 | Archi S26c | Fondateur teste en production sur mobile — les screenshots sont le critère de vérité, pas le code. QA doit simuler le parcours mobile réel. | Envoie des screenshots à chaque bug |
+| 2026-03-28 | Sarani S8 | **Conviction-first, not conversion-first** — chaque page suit l'INTENTION du visiteur. CTAs commerciaux en fin de parcours, pas en hero (sauf pages d'action). | About restructurée, Services H1 reformulé, Blog CTA adouci |
+| 2026-03-28 | Sarani S8 | **H1 uniques par page** — si le H1 pourrait être sur une autre page du site, il est trop générique. | Services avait le même H1 que Homepage → reformulé |
+| 2026-03-28 | Sarani S9 | **Vérifier chaque changement après application** — ne JAMAIS dire "fait" sans Grep/Read de confirmation. Si demandé 2+ fois = bug de process. | Thomas a demandé 4+ fois la même correction |
+| 2026-03-28 | Mandataire S7 | **Zéro fausse promesse** — ne jamais écrire un texte promettant une feature non implémentée. Reformuler honnêtement. | "on récupère tout automatiquement" mais scraping inexistant |
+| 2026-03-28 | Mandataire S7 | **Agents persona calibrés sur la VALEUR** — un testeur qui valide le code mais pas la valeur perçue est inutile. Score 9/10→6/10 après recalibration. Learning le plus impactant cross-projets. | @mandataire validait des écrans que Thomas jugeait inacceptables |
+| 2026-03-28 | Archi S28 | **Acheter = achat DIRECT** — clic→auth si nécessaire→Stripe. Zéro page intermédiaire, zéro checkbox rétractation. | "Pourquoi ça m'amène sur une autre page pricing ?" |
+| 2026-03-28 | Archi S28 | **Boutons = état réel contextuel** — "Voir" si existe, "Générer" si pas encore, "Regénérer" si déjà fait. Jamais de lien vers liste globale depuis une fiche. | "Voir les dossiers" renvoyait vers la liste globale |
+| 2026-03-28 | Archi S28 | **Backoffice = même qualité que le site** — même design system, même standard visuel. Ce n'est pas un outil interne moche. | "que ce soit propre comme le reste du site" |
+| 2026-03-28 | Sarani S7 | **7 critères visuels** — PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ. Chaque critère 10/10. | Grille de validation visuelle Thomas |
+| 2026-03-28 | Archi S28 | **Parcours d'achat testé end-to-end** — CTA→auth→checkout Stripe→retour pour CHAQUE persona AVANT déploiement. Backend/frontend pricing synchronisés. | Parcours d'achat jamais testé, prix désynchronisés |
+| 2026-03-28 | Mandataire S6 | **Bugs identifiés = corrigés immédiatement** — quand un agent identifie un bug, le corriger sans demander confirmation. La perfection est le standard. | Thomas : "je ne suis pas là pour tester" — frustration 5+ fois |
 
 ---
 
@@ -81,6 +92,14 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 20. Clé API placeholder évaluée truthy (`sk_test_xxx` en production)
 21. PDF "simpliste" pour un document client-facing — doit être au niveau du site
 22. Audit "en théorie" sans screenshots réels comme preuve
+23. Copy qui promet une feature non implémentée (fausse promesse)
+24. Agent persona qui note le code au lieu de la valeur perçue (validateur déguisé)
+25. Galerie avec images placeholder identiques entre styles différents
+26. Témoignages fictifs avec noms de personas du projet
+27. Migration modèle IA sans lire la doc API ni tester
+28. Correction de prompt sur un builder sans propager aux autres
+29. Dire "fait" sans vérification (Grep/Read) après un changement
+30. Laisser un bug identifié "en attente" au lieu de le corriger immédiatement
 
 ---
 
@@ -94,4 +113,4 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 
 ---
 
-*Dernière mise à jour : 2026-03-28 — Sessions Gradient Agents + Sarani S6-S7 + Mandataire S5-S6 + Architecture S26c-S27b*
+*Dernière mise à jour : 2026-03-31 — Sessions Gradient Agents + Sarani S6-S9 + Mandataire S5-S7 + Architecture S26c-S28*

@@ -83,6 +83,10 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie de tout prod
 
 **Partie variable** : chaque agent peut ajouter des règles anti-timeout spécifiques à son type de production (code, contenu, stratégie).
 
+### Seuil de réécriture (10+ edits)
+
+Quand un fichier a été édité 10+ fois dans une session avec des erreurs structurelles récurrentes (parenthèses non matchées, JSX cassé, types incohérents), il est plus rapide et fiable de le **réécrire en entier** (Write) que de continuer à patcher (Edit). Indicateurs : 3+ erreurs de compilation consécutives sur le même fichier, ou le fichier a accumulé des incohérences visibles.
+
 ### Résumé exécutif pour livrables longs
 
 Si un livrable dépasse 300 lignes, inclure une section **"Résumé exécutif"** (max 20 lignes) en tête de fichier. Ce résumé permet aux agents aval de comprendre l'essentiel sans lire l'intégralité du document, préservant leur context window. Format :

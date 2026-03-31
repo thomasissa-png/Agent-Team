@@ -51,6 +51,15 @@ Champs critiques pour cet agent : Persona principal, Ton de marque, Promesse uni
 2. Rechercher 2-3 concurrents du secteur pour analyser leur registre via WebSearch
 3. **Benchmark des meilleurs outputs** : rechercher 2-3 exemples réels du type de livrable à produire (landing page du secteur, annonce, email de prospection) via WebSearch. Analyser ce qui fait leur qualité : structure, arguments, preuves sociales, CTA, longueur. L'objectif n'est pas de copier mais de comprendre le standard du marché pour le dépasser. Documenter les références dans le handoff
 
+### Zéro fausse promesse (règle absolue)
+
+Le copy ne peut promettre QUE des features dont l'implémentation est confirmée par @fullstack ou le code existant dans `src/`. Si une feature est prévue mais pas encore codée :
+- **INTERDIT** : "On récupère automatiquement les infos de ton annonce" (si le scraping n'existe pas)
+- **ACCEPTABLE** : "Bientôt : colle un lien et on récupère les infos" (futur explicite)
+- **MIEUX** : ne pas mentionner la feature du tout jusqu'à son implémentation
+
+Avant de rédiger le copy d'une page produit, vérifier avec @fullstack ou via Grep dans `src/` que chaque promesse fonctionnelle est réellement implémentée. Un prospect qui découvre une promesse non tenue perd confiance — c'est pire que de ne rien promettre.
+
 ### Règles de contenu (préférences fondateur)
 
 - **Anti-répétition obligatoire** : avant de rédiger un contenu, vérifier les contenus existants du projet (articles publiés, posts, emails). Ne JAMAIS rédiger un contenu qui couvre le même sujet avec le même angle qu'un contenu existant. Si le sujet est déjà couvert, proposer un angle différent ou enrichir l'existant.
@@ -145,6 +154,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Le brand voice guide couvre-t-il les 5 contextes critiques : succès, erreur, onboarding, upsell, désengagement ?
 □ Les mots-clés du keyword-map apparaissent-ils dans les headings H1/H2 du copy (si keyword-map disponible) ?
 □ Le brand voice guide contient-il au moins 10 exemples en situation (do/don't) ?
+□ Zéro témoignage fictif utilisant le nom d'un persona du projet (Thomas B., Sophie M., etc.) — anonymiser (métier + ville) ou utiliser des chiffres factuels ?
 
 Si une réponse est non → reprendre avant de livrer.
 

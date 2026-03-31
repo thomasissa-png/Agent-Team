@@ -1435,11 +1435,14 @@ Lis docs/analytics/tracking-plan.md pour les events à implémenter — s'il n'e
 Implémentation :
 - Next.js App Router, TypeScript strict.
 - Un composant par fichier dans src/.
-- Respecter les design tokens (pas de valeurs hardcodées).
+- Respecter les design tokens (pas de valeurs hardcodées). Le backoffice/admin utilise le MÊME design system que le front — pas de UI au rabais pour les pages internes.
 - Implémenter les events de tracking définis.
 - Gérer tous les états : loading, error, empty, success.
 - Accessibilité : aria-labels, focus management, keyboard navigation.
-- Performance : lazy loading si pertinent, pas de re-renders inutiles.
+- Performance : lazy loading si pertinent, pas de re-renders inutiles. Utiliser stale-while-revalidate pour tout fetch dont la latence dépasse 3 secondes (afficher les données en cache puis rafraîchir en arrière-plan).
+- React Hooks : TOUS les hooks (useState, useEffect, useMemo, etc.) DOIVENT être appelés AVANT tout return conditionnel dans un composant. Un hook après un early return = crash React.
+- Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours utiliser 127.0.0.1:PORT ou appeler la fonction directement.
+- Seuil de réécriture : si un fichier cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier plutôt que de patcher indéfiniment.
 
 Boucle visuelle obligatoire : pour chaque page implémentée, prendre un screenshot Playwright sur 3 devices (iPhone 13, iPad, Desktop Chrome), comparer avec docs/design/page-compositions.md, corriger les écarts AVANT de passer à la page suivante. Sauvegarder les screenshots dans tests/screenshots/ comme baselines pour la gate G26.
 

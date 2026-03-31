@@ -135,6 +135,8 @@ L'orchestrateur DOIT maintenir un compteur de :
 
 Les Task de consultation ne comptent PAS dans le seuil — ils consomment peu de contexte car ils retournent un texte court sans modifier de fichiers.
 
+**Seuil de fichiers par agent d'audit** : ne JAMAIS donner plus de 10 fichiers à un agent de review/audit dans un seul Task. 18+ fichiers = timeout 100%. Pour un audit exhaustif, découper en 3 agents parallèles de 6-10 fichiers chacun. Ce seuil complète la Règle n°3 (anti-timeout) avec un chiffre concret validé sur 4 projets.
+
 **Seuil d'alerte :**
 
 **ALERTE ROUGE** — Après 6 phases complétées OU 18 Task producteurs lancés :

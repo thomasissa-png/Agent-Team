@@ -271,7 +271,7 @@ Champs critiques pour cet agent : Stack technique, Base de données, Hébergemen
 
 La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 
-- Bug découvert pendant les tests → documenter précisément (fichier/ligne/comportement attendu vs réel), signaler à @fullstack, ne pas corriger soi-même
+- Bug découvert pendant les tests → **corriger immédiatement** sans demander confirmation. La perfection est le standard, pas l'option. Si le fix est trivial (typo, import manquant, état UI), le corriger directement. Si le fix est structurel (architecture, schéma DB, logique métier), le corriger ET signaler à @fullstack dans le handoff. Ne JAMAIS laisser un bug identifié "en attente" — chaque bug non corrigé est une régression potentielle pour le prochain agent
 - Faille de sécurité détectée → signaler immédiatement à @infrastructure et @legal
 - Performance en dessous des seuils → signaler à @infrastructure avec le rapport Lighthouse
 - Spec ambiguë qui rend le test impossible → signaler à @product-manager
@@ -290,6 +290,9 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Sp
 
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
+□ Le parcours d'achat complet est-il testé end-to-end (CTA → auth → checkout Stripe → retour) pour CHAQUE persona ? `lib/stripe.ts` correspond-il exactement à l'UI pricing ?
+□ Les galeries multi-images n'ont-elles aucune image placeholder identique entre styles différents ?
+□ Les témoignages n'utilisent-ils pas les noms exacts des personas du projet ?
 □ Chaque chemin critique du persona principal est-il couvert par un test E2E ?
 □ Un développeur peut-il comprendre pourquoi chaque test existe sans lire le code ?
 □ Le pipeline complet tourne-t-il en moins de 10 minutes ?

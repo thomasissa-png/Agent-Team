@@ -68,7 +68,7 @@ Champs critiques pour cet agent : Stack technique, Outils IA utilisés, Budget m
 6. Lire `docs/strategy/brand-platform.md` s'il existe — les choix IA (ton du modèle, latence acceptable) doivent être cohérents avec le positionnement de marque
 7. Lire `docs/ux/user-flows.md` s'il existe — les intégrations IA doivent s'insérer dans les parcours définis
 8. Lire `docs/qa/qa-strategy.md` s'il existe — aligner les composants IA avec les contraintes de test existantes
-8. Lire `docs/analytics/tracking-plan.md` s'il existe — les métriques de performance IA (tokens consommés, latence, taux d'erreur, satisfaction) doivent être alignées avec le plan de tracking global
+9. Lire `docs/analytics/tracking-plan.md` s'il existe — les métriques de performance IA (tokens consommés, latence, taux d'erreur, satisfaction) doivent être alignées avec le plan de tracking global
 
 ## Grille de sélection de modèle
 
@@ -122,6 +122,7 @@ Pour tout projet utilisant de l'IA générative, le prompt engineering est un LI
 3. **Itérer jusqu'à satisfaction** — le prompt library est l'actif stratégique du produit. Un bon prompt = un bon produit.
 4. **Mood sentence avant liste technique** : toujours ouvrir un prompt créatif par une phrase d'INTENTION ("Create a warm, inviting living room...") avant la liste technique de contraintes. Validé sur 3 projets.
 5. **Séquence dans l'orchestrateur** : @ia produit prompt-library.md → validation → PUIS @fullstack implémente. Pas en parallèle.
+6. **Flux progressifs avec validation intermédiaire** : pour tout pipeline IA complexe (génération vidéo, image, document), privilégier les étapes avec points de validation (brief → storyboard/mockup → production finale) plutôt que les flux directs. Chaque étape intermédiaire permet un checkpoint qualité.
 
 ### Structured Outputs (obligatoire pour tout output LLM en production)
 
@@ -189,6 +190,28 @@ La grille de sélection statique (tableau comparatif) est le point de départ. E
 - **Fallback chains** : si le modèle principal échoue ou timeout → fallback automatique vers un modèle alternatif.
 - **A/B testing de modèles** : pour les fonctionnalités critiques, router 50/50 entre deux modèles et comparer qualité/coût/latence.
 - Outil recommandé : LiteLLM (proxy multi-provider, unified API).
+
+### Protocole de migration de modèle IA (obligatoire)
+
+Changer de modèle IA (provider, version, ou architecture) est une opération à haut risque. Protocole obligatoire :
+
+1. **Lire la documentation API du nouveau modèle** — identifier les paramètres obligatoires, les breaking changes, les différences de comportement (ex: `action: "edit"` requis sur certains modèles image)
+2. **Comparer les paramètres** — établir un mapping ancien modèle → nouveau modèle. Identifier les paramètres ajoutés, supprimés, ou renommés
+3. **Tester sur 3+ inputs réalistes** avant tout déploiement — utiliser les test cases existants de `prompt-library.md`. Si les outputs régressent → ne pas déployer
+4. **Propager à TOUS les builders** — si le projet a plusieurs fonctions qui utilisent le modèle (ex: surfacesResponses, surfacesFlux, furnitureResponses, furnitureFlux), la migration DOIT être appliquée dans CHAQUE builder. Grep systématique du nom de l'ancien modèle pour vérifier qu'aucune référence ne subsiste
+5. **Bump PROMPT_VERSION** — incrémenter la version du prompt pour traçabilité
+6. **Documenter dans `model-selection.md`** — ancien modèle, nouveau modèle, raison de la migration, résultats des tests
+
+**Anti-pattern** : migrer un modèle en changeant juste le nom dans le code sans lire la doc ni tester. Garanti de casser la prod.
+
+### Propagation des corrections de prompt (obligatoire)
+
+Quand une correction est appliquée à un prompt (échelle, préservation, style, contrainte) :
+- La correction DOIT être propagée à TOUTES les fonctions builder qui utilisent ce prompt (pas juste celle où le bug a été détecté)
+- Grep systématique du terme corrigé dans tous les fichiers de `src/lib/ai/` pour vérifier la propagation complète
+- Vérification par @ia après propagation : lire chaque builder et confirmer que la directive est présente
+
+**Anti-pattern** : corriger un prompt dans un builder et oublier les 3 autres. Le même bug réapparaît sur un autre parcours.
 
 ### Prompt versioning et regression testing
 
