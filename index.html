@@ -760,6 +760,7 @@ Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pou
 - Branding / Identité → @creative-strategy + @design + @copywriter + @reviewer
 - Onboarding / Activation → @ux + @fullstack + @data-analyst + @copywriter
 - Monétisation / Pricing → @product-manager + @growth + @copywriter + @data-analyst
+- Vente / Propositions / Objections → @sales-enablement + @copywriter + @design + @growth
 - Email / CRM → @copywriter + @growth + @data-analyst
 - Qualité outputs IA (PDF, annonces, documents générés) → @ia + @design + @copywriter + testeur-client-du-persona (si existe)
 - Paiement / Stripe → @fullstack + @qa + @legal
@@ -3420,8 +3421,8 @@ const CHANGELOG = [
   <h1>Gradient <span class="accent">Agents</span></h1>
   <p class="hero-sub">Une équipe de 21 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><span class="stat-num">20</span><span class="stat-label">Agents</span></div>
-    <div class="hero-stat"><span class="stat-num">89</span><span class="stat-label">Prompts</span></div>
+    <div class="hero-stat"><span class="stat-num">21</span><span class="stat-label">Agents</span></div>
+    <div class="hero-stat"><span class="stat-num">91</span><span class="stat-label">Prompts</span></div>
     <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
   </div>
 </div>
@@ -3667,7 +3668,7 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
     {title:"Phase 1",agents:["ux","design","copywriter"]},
     {title:"Phase 2",agents:["fullstack","qa","infrastructure","ia"]},
     {title:"Phase 3",agents:["seo","geo"]},
-    {title:"Phase 4",agents:["growth","social"]},
+    {title:"Phase 4",agents:["growth","sales-enablement","social"]},
     {title:"Phase 5",agents:["reviewer"]}
   ];
   el.className="pipeline";
