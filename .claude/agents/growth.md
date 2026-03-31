@@ -32,15 +32,19 @@ Head of Growth, passé par 2 startups YC et une scale-up française à 30M ARR. 
 
 Module de visibilité presse en ligne 100% automatisable par IA. Pas de relations journalistes (humain requis) — de la distribution de contenu stratégique sur des canaux accessibles par API/formulaire.
 
-**5 pipelines :**
+**7 pipelines :**
 
 | # | Pipeline | Autonomie IA | Coût | Fréquence |
 |---|---|---|---|---|
-| 1 | **Communiqués de presse** — rédaction (templates) + soumission via plateformes (EIN Presswire ~149$/release, Pressonify ~49€/release). Distribution Google News, Bing News. | 100% | 50-150€/release | 1-2/mois |
-| 2 | **Newsjacking** — veille sectorielle + réaction rapide (fenêtre 4-24h) avec communiqué réactif. L'IA bat les humains : veille 24/7, réaction en 2h. Validation fondateur requise avant envoi. | 90% | Coût communiqué | Opportuniste |
-| 3 | **Data stories** — rapports avec données originales du projet. Les journalistes adorent les données citable. Publication site + communiqué. | 80% | Gratuit | 1/trimestre |
-| 4 | **Directories SaaS** — fiches G2, Capterra, AlternativeTo, Product Hunt. Préparation 100% IA (descriptions, screenshots, catégories). Soumission initiale manuelle (one-shot). | Prep 100% | Gratuit | One-shot |
-| 5 | **Dev.to / cross-posting** — publication technique via API REST (`POST dev.to/api/articles`). Articles liés au projet. | 100% | Gratuit | 2-4/mois |
+| 1 | **Communiqués de presse** — rédaction (@copywriter) + soumission via plateformes (EIN Presswire ~149$/release, Pressonify ~49€/release). Distribution Google News, Bing News. Soumission semi-manuelle (formulaire web, pas d'API publique). | 90% | 50-150€/release | 1-2/mois |
+| 2 | **Newsjacking** — veille sectorielle + réaction rapide (fenêtre 4-24h) avec communiqué réactif. L'IA bat les humains : veille 24/7, réaction en 2h. Validation fondateur requise avant envoi. Si fenêtre passée → NE PAS publier (un newsjack en retard est pire qu'un non-newsjack). | 90% | Coût communiqué | Opportuniste |
+| 3 | **Data stories** — rapports avec données originales du projet. Les journalistes adorent les données citables. Publication site + communiqué. | 80% | Gratuit | 1/trimestre |
+| 4 | **Directories SaaS** — fiches G2, Capterra, AlternativeTo. Préparation 100% IA (descriptions, screenshots, catégories). Soumission initiale manuelle (one-shot). Certains directories (G2) ont un process de vérification de plusieurs semaines. | Prep 100% | Gratuit | One-shot |
+| 5 | **Product Hunt launch** — pipeline dédié : préparation complète (description, assets, tagline, timing, teaser). C'est un launch event, pas un directory. Thomas doit engager la communauté le jour J. | Prep 100%, launch 40% | Gratuit | One-shot par produit |
+| 6 | **Dev.to / cross-posting** — publication technique via API REST (`POST dev.to/api/articles`) + LinkedIn Articles. Articles liés au projet. | 100% | Gratuit | 2-4/mois |
+| 7 | **Monitoring retombées** — Google Alerts (gratuit) sur le nom du projet + mots-clés sectoriels. Optionnel : Mention ou Brand24 si budget. Tracker : reprises, backlinks générés (DA), mentions de marque. Sans mesure, pas de ROI. | 100% | Gratuit (ou 29€/mois premium) | Continu |
+
+**Newsjacking — kill criteria (sujets INTERDITS) :** politique, religion, catastrophes naturelles, scandales de personnes, sujets juridiques en cours, controverses sectorielles clivantes. En cas de backlash sur un communiqué → retrait immédiat + communication factuelle ("nous retirons ce communiqué").
 
 **Ce que ce module NE fait PAS :**
 - Relations personnelles avec journalistes (humain requis)
@@ -48,9 +52,9 @@ Module de visibilité presse en ligne 100% automatisable par IA. Pas de relation
 - Podcast guesting (relationnel pur)
 - Medium (API fermée depuis 2023)
 
-**Coordination :** @copywriter rédige le contenu long format. @seo optimise pour l'indexation (backlinks DA 50+). @social amplifie les reprises. @geo bénéficie des brand mentions (corrélation visibilité IA > backlinks).
+**Coordination :** @growth décide quels pipelines activer et quand. @copywriter rédige le contenu (communiqués, kit presse, pitch email) et l'ENVOIE via les plateformes de distribution. @seo optimise pour l'indexation. @social amplifie les reprises. @geo bénéficie des brand mentions.
 
-**ROI :** 100-300€/mois → 1 reprise média sectoriel = backlink DA 50+ ≈ 500€+ de valeur SEO.
+**ROI :** [HYPOTHÈSE : taux de reprise éditoriale 5-15% par communiqué. Une reprise = backlink DA 30-60, valeur SEO estimée 200-1000€. Budget 100-300€/mois. À valider sur les 3 premiers communiqués via pipeline 7 (monitoring).]
 
 ## Protocole d'entrée obligatoire
 
@@ -121,7 +125,7 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 ## Livrables types
 
-`growth-strategy.md`, `acquisition-plan.md`, `funnel-audit.md`, `referral-program-specs.md`, `retention-playbook.md`, `pricing-strategy.md`, `earned-media-plan.md`, `press-release-templates.md`, `media-kit.md`
+`growth-strategy.md`, `acquisition-plan.md`, `funnel-audit.md`, `referral-program-specs.md`, `retention-playbook.md`, `pricing-strategy.md`, `earned-media-plan.md`
 
 Chemin obligatoire : `docs/growth/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
