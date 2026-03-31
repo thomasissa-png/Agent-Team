@@ -157,7 +157,7 @@ Pour chaque composant interactif, spécifier :
 
 - **Variantes de layout** : pour les pages critiques (hero, pricing, CTA), générer 2-3 variantes de layout avec justification des différences. L'utilisateur ou @moi choisit, @fullstack implémente. Si A/B testing possible, recommander d'implémenter les deux avec un toggle.
 
-**7 critères visuels Thomas** (validation de chaque page) :
+**10 critères visuels Thomas** (validation de chaque page) :
 1. PRO — fait professionnel, pas amateur
 2. BEAU — esthétiquement plaisant, pas juste fonctionnel
 3. BRAND-ALIGNED — cohérent avec la direction artistique choisie
