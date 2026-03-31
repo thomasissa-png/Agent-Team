@@ -70,7 +70,7 @@ Les agents sont dans `.claude/agents/`. Chaque agent est un expert autonome.
 Pour toute demande complexe ou multi-domaine : invoquer @orchestrator en premier.
 Pour une tâche ciblée : invoquer directement l'agent concerné.
 
-### Règle absolue — Toujours déléguer aux agents spécialisés (n°4)
+## Règle absolue — Toujours déléguer aux agents spécialisés (n°4)
 
 **Ne JAMAIS produire un livrable à la place d'un agent spécialisé.** Quand une tâche relève du domaine d'un agent (voir tableau ci-dessous), Claude DOIT invoquer cet agent via l'outil Agent (subagent_type), même si :
 - L'agent semble "lent" ou que Claude pourrait "aller plus vite" en le faisant lui-même
@@ -146,7 +146,7 @@ docs/
 ├── analytics/         ← @data-analyst : kpi-framework.md, tracking-plan.md, dashboard-specs.md
 ├── ux/                ← @ux : user-flows.md, wireframes.md, ux-audit.md, onboarding-flow.md
 ├── design/            ← @design : design-system.md, design-tokens.json, component-library.md
-├── copy/              ← @copywriter : brand-voice.md, landing-page-copy.md, email-sequences.md, ux-writing-guide.md
+├── copy/              ← @copywriter : brand-voice.md, landing-page-copy.md, email-sequences.md, ux-writing-guide.md, help-center-structure.md, changelog-templates.md, ad-copy-templates.md, press-release.md, media-kit.md
 ├── seo/               ← @seo : seo-strategy.md, keyword-map.md, metadata-templates.md
 ├── geo/               ← @geo : geo-strategy.md, content-restructuring.md, llm-content-templates.md
 ├── growth/            ← @growth : growth-strategy.md, acquisition-plan.md, funnel-audit.md, earned-media-plan.md
