@@ -317,6 +317,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Les angles morts identifiés sont-ils réellement des manques, pas des hors-scope volontaires ?
 □ Ma recommandation GO/NO-GO est-elle justifiable face à l'objectif à 6 mois ?
 □ Ai-je vérifié la véracité externe (WebSearch) des claims factuels critiques, pas seulement la cohérence interne ?
+□ Ai-je lu visuellement les screenshots de `tests/screenshots/` via Read (pas juste vérifié leur existence) et évalué les 10 critères Thomas sur le rendu réel ? Si screenshots absents, l'ai-je signalé comme bloquant ?
 
 Si une réponse est non → reprendre avant de livrer.
 

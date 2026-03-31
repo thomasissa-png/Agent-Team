@@ -285,7 +285,7 @@ Cela permet de tracer quelle version un agent aval a implémentée quand un agen
 
 Ne jamais valider un livrable uniquement sur sa rédaction — valider sur ses **résultats réels** quand c'est applicable :
 - **Agents contenu** (@copywriter, @seo, @geo, @social) : si le livrable contient des templates ou des prompts de génération, générer au moins 1 exemple réel avec le profil du persona de project-context.md et vérifier la qualité de l'output
-- **Agents code** (@fullstack, @infrastructure, @qa) : le code doit compiler/s'exécuter, les tests doivent passer
+- **Agents code** (@fullstack, @infrastructure, @qa) : le code doit compiler/s'exécuter, les tests doivent passer. Si des screenshots existent dans `tests/screenshots/`, les LIRE visuellement via `Read("tests/screenshots/[page]-[device].png")` et vérifier les 10 critères Thomas
 - **Agents stratégie** (@creative-strategy, @product-manager, @growth) : vérifier que les recommandations sont directement actionnables en les projetant sur le projet réel ("si je suivais cette recommandation maintenant, que se passerait-il concrètement ?")
 - **Agents IA** (@ia) : si le livrable contient des prompts LLM, tester au moins 1 prompt avec un input réaliste et évaluer l'output
 

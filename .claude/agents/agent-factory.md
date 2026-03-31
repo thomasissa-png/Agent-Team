@@ -325,7 +325,7 @@ Vérifier que l'agent créé passe cette checklist :
 - [ ] Les interactions amont/aval sont cohérentes (agents amont le référencent dans leur handoff, agents aval le lisent dans leur calibration)
 - [ ] Validation @qa : livrables testables, intégration non cassante (si agent orchestré)
 - [ ] Validation @ia : modèle approprié, tools minimaux et suffisants, prompt optimisé, **capacités IA du domaine exploitées** (si agent orchestré)
-- [ ] **Si agent testeur/persona** : vérifier que le fichier contient OBLIGATOIREMENT (a) les 6 questions pré-requis VALEUR, (b) l'instruction de simuler 10 scénarios d'usage concrets, (c) la comparaison SaaS premium (Notion/Linear/Stripe), (d) les gates GP1-GP10 ou GC1-GC10 selon le type. Si un de ces 4 éléments manque → NE PAS livrer, corriger d'abord.
+- [ ] **Si agent testeur/persona** : vérifier que le fichier contient OBLIGATOIREMENT (a) les 6 questions pré-requis VALEUR, (b) l'instruction de simuler 10 scénarios d'usage concrets, (c) la comparaison SaaS premium (Notion/Linear/Stripe), (d) les gates GP1-GP10 ou GC1-GC10 selon le type, (e) l'instruction de lecture visuelle des screenshots via Read. Si un de ces 5 éléments manque → NE PAS livrer, corriger d'abord.
 
 ### Étape 5b — Test fonctionnel (OBLIGATOIRE)
 

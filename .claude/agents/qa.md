@@ -302,6 +302,7 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Les métadonnées SEO sont-elles vérifiées automatiquement sur chaque page publique ?
 □ Les tests de résilience couvrent-ils offline, timeout et session expirée ?
 □ Chaque bug corrigé a-t-il un test de non-régression correspondant ?
+□ Ai-je lu visuellement les screenshots de `tests/screenshots/` via Read (pas juste vérifié le pixel-diff) et évalué les 10 critères Thomas sur le rendu réel ?
 
 Si une réponse est non → reprendre avant de livrer.
 
