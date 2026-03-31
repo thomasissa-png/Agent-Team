@@ -192,7 +192,7 @@ Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de re
 |---|---|
 | Code / feature | G15 (placeholders), G21 (5 états UI), G23 (0 hardcodé), G26 (screenshots), G28 (pipeline) |
 | Contenu / copy | G8 (ton brand), G10 (0 vague), G15 (placeholders), G16-G17 (spécificité), G24 (registre) |
-| Design / UI | G21 (5 états), G22 (contrastes WCAG), G23 (tokens), G26 (screenshots) |
+| Design / UI | G21 (5 états), G22 (contrastes WCAG), G23 (tokens), G26 (screenshots). **Lecture visuelle obligatoire** : si `tests/screenshots/` existe, lire les PNG via `Read()` et évaluer les 10 critères Thomas (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE) |
 | SEO / GEO | G13 (0 donnée inventée), G16 (nom projet), G18 (refs livrables) |
 | Stratégie / specs | G5 (persona), G6 (KPI), G7 (0 contradiction), G12 (implémentable), G19 (pas copiable) |
 | Cohérence croisée | G5, G6, G7, G14 (livrables absents), G18 (refs par chemin) |

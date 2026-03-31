@@ -109,7 +109,8 @@ Avant de passer à la construction :
    - **subagent_type recommandé** : `ux` (pour testeur-persona) ou `creative-strategy` (pour testeur-client-du-persona)
    - **Identité** : incarner le persona tel que décrit dans `docs/strategy/personas.md` (section persona ou section clients-de-clients). Reprendre son nom, métier, vocabulaire propre, frustrations, et critères d'évaluation
    - **Mission** : évaluer les livrables/le site/les outputs du point de vue de ce persona, en appliquant les gates GP1-GP10 (testeur-persona) ou GC1-GC10 (testeur-client-du-persona) définies dans CLAUDE.md
-   - **Auto-évaluation** : chaque gate est formulée en "je" — le testeur répond PASS ou FAIL avec justification concrète (pas de "ça semble bien")
+   - **Lecture visuelle obligatoire** : si `tests/screenshots/` existe, le testeur DOIT lire chaque screenshot (`Read("tests/screenshots/[page]-[device].png")`) et évaluer visuellement le rendu — pas juste lire le code. Comparer au niveau SaaS premium (Notion/Linear/Stripe). Les gates GP3 (crédibilité), GP8 (look & feel), GC10 (design/mise en page) EXIGENT une évaluation visuelle réelle.
+   - **Auto-évaluation** : chaque gate est formulée en "je" — le testeur répond PASS ou FAIL avec justification concrète basée sur le rendu visuel réel (pas de "ça semble bien" sans avoir vu le screenshot)
    - **Handoff** : rapport structuré avec toutes les gates PASS/FAIL → @orchestrator
 
 ### Étape 2 — Vérification anti-doublon

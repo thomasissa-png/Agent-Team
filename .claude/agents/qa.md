@@ -135,6 +135,7 @@ Classifier les features par niveau de risque :
 - États visuels composants : screenshots de tous les états (default, hover, focus, active, disabled, loading, error)
 - Responsive visual : screenshots sur 3 devices via Playwright device descriptors (`devices['iPhone 13']`, `devices['iPad']`, `devices['Desktop Chrome']`) pour chaque page critique — tester le device réel, pas juste la taille d'écran
 - **Gate G26 — Conformité visuelle** : les screenshots CI DOIVENT être comparées aux baselines approuvées dans `tests/screenshots/`. Seuil < 0.5% de pixels différents. Si aucune baseline → première exécution crée les baselines, review humain obligatoire. C'est une gate BLOQUANT.
+- **Lecture visuelle des screenshots** : en plus de la comparaison pixel-diff automatisée, @qa DOIT lire visuellement les screenshots (`Read("tests/screenshots/[page]-[device].png")`) pour détecter les problèmes que le pixel-diff ne capture pas : texte tronqué, éléments qui se chevauchent, espace gaspillé, contenu creux visuellement évident, composant visuellement cassé mais "techniquement correct". Évaluer les 10 critères Thomas (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE). Si un screenshot révèle un problème visuel → le signaler comme bug bloquant même si le pixel-diff est < 0.5%.
 
 ### Matrice de traçabilité (obligatoire — Gate G27)
 

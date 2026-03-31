@@ -160,7 +160,8 @@ Le reviewer utilise deux mécanismes complémentaires :
 - [ ] Les wireframes de @ux sont-ils fidèlement implémentés par @fullstack ?
 - [ ] Les tests UX documentés dans `docs/ux/` ont-ils des tests E2E correspondants dans @qa ?
 - [ ] La revue UX post-implémentation (`ux-review.md`) a-t-elle été produite par @ux ?
-- [ ] Les screenshots de la boucle visuelle (@fullstack) dans `tests/screenshots/` correspondent-ils aux compositions de `docs/design/page-compositions.md` ? Vérifier sur les 3 devices.
+- [ ] Les screenshots de la boucle visuelle (@fullstack) dans `tests/screenshots/` correspondent-ils aux compositions de `docs/design/page-compositions.md` ? **Lire visuellement chaque screenshot** via `Read("tests/screenshots/[page]-[device].png")` — ne JAMAIS valider un rendu visuel sans regarder le screenshot réel. Vérifier sur les 3 devices (mobile 375px, tablet 768px, desktop 1280px).
+- [ ] **Évaluation visuelle des 10 critères Thomas** sur chaque screenshot lu : PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE. Un score < 7/10 sur un critère = FAIL avec justification visuelle concrète.
 - [ ] Les écarts détectés dans la revue UX ont-ils été corrigés par @fullstack ?
 
 ### Validation expérience mobile ET desktop (pas seulement responsive)

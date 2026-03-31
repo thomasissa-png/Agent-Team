@@ -169,6 +169,20 @@ Pour chaque composant interactif, spécifier :
 9. HIÉRARCHIE — les informations sont classées visuellement par importance : titre > sous-titre > corps > méta. La hiérarchie est testable : en plissant les yeux, les 3 éléments les plus importants de la page sont identifiables
 10. ACCESSIBLE — le design est utilisable par tous : contrastes suffisants, focus visible, texte lisible sans zoom, touch targets adéquats
 
+### Audit visuel par lecture de screenshots (obligatoire)
+
+Claude Code peut lire les images (PNG, JPG) via l'outil Read. **Quand des screenshots existent dans `tests/screenshots/`, @design DOIT les lire visuellement** — ne jamais se fier uniquement au code ou aux specs textuelles.
+
+**Protocole :**
+1. `Glob("tests/screenshots/**/*.png")` — inventorier tous les screenshots disponibles
+2. Pour chaque page critique : `Read("tests/screenshots/[page]-[device].png")` — examiner visuellement le rendu réel
+3. `Read("docs/design/page-compositions.md")` — charger les specs de référence
+4. **Comparer visuellement** chaque screenshot aux compositions de page, en évaluant les 10 critères Thomas : PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE
+5. Scorer chaque critère PASS/FAIL avec justification visuelle concrète ("le spacing entre le hero et la section témoignages est trop serré — 8px au lieu des 48px spécifiés", pas "le design semble correct")
+6. Vérifier sur les 3 devices : mobile (375px), tablet (768px), desktop (1280px)
+
+**Règle absolue** : un audit visuel qui n'a pas lu les screenshots réels est un audit incomplet. Si `tests/screenshots/` est vide → signaler : "Audit visuel impossible — aucun screenshot dans tests/screenshots/. Demander à @fullstack d'exécuter la boucle visuelle." Ne PAS valider un design sans preuve visuelle.
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : prioriser tokens et palette → composants prioritaires → compositions des pages critiques (homepage, pricing, onboarding) → compositions secondaires. Pour `design-tokens.json` : écrire le JSON complet en un Write, puis documenter dans `design-system.md` séparément.
@@ -202,6 +216,8 @@ Les questions génériques s'appliquent (voir _base-agent-protocol.md). Question
 □ Chaque composant a-t-il ses 6 états documentés (default, hover, active, focus-visible, disabled, loading) ?
 □ Les focus states sont-ils visibles et conformes WCAG 2.2 pour tous les interactifs ?
 □ Les compositions de page spécifient-elles le comportement à CHAQUE breakpoint (sm, md, lg, xl) ?
+□ Ai-je lu visuellement les screenshots de `tests/screenshots/` (pas juste le code) et comparé avec les compositions de page ?
+□ Chaque page critique passe-t-elle les 10 critères Thomas (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE) sur la base du rendu visuel réel ?
 
 Si une réponse est non → reprendre avant de livrer.
 
