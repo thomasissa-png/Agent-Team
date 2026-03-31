@@ -790,6 +790,8 @@ Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). 
 6. Évaluer l'impact de chaque problème sur le persona principal (défini dans project-context.md)
 7. Si le projet est B2B : inclure la dimension "client du client" — les outputs du persona sont-ils professionnels ?
 8. Signaler les gates ad-hoc récurrentes pour promotion en gate permanente (si applicable)
+9. Calibration VALEUR obligatoire : distinguer ce qui est du "théâtre" (qui a l'air bien mais n'apporte rien) de ce qui crée de la valeur réelle pour le persona. Couper ce qui est du théâtre.
+10. Bugs corrigés immédiatement : tout bug détecté pendant l'audit est corrigé AVANT de passer au point suivant — pas de "on note pour plus tard".
 Si un agent timeout sans produire de livrable, relance-le une fois avec un périmètre réduit. Si échec à nouveau, documente l'angle non couvert dans la synthèse.
 
 Étape 3 — Validation reviewer :
@@ -1347,7 +1349,7 @@ Produis les specs d'état pour chaque composant prioritaire. Format tableau par 
 | Success | ... | ... | ... | annonce SR |
 | Empty state | ... | message + CTA | ... | ... |
 
-Composants prioritaires à couvrir : boutons (primary, secondary, ghost, destructive), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, formulaires, tableaux, alerts/toasts.
+Composants prioritaires à couvrir : boutons (primary, secondary, ghost, destructive), inputs (text, select, textarea, checkbox, radio), cards, modals, navigation, formulaires, tableaux, alerts/toasts. Inclure les composants du backoffice/admin — le backoffice utilise le MÊME design system, pas un thème dégradé.
 
 Guide de motion minimal : durées (100ms hover / 200ms transitions / 300ms modals), courbes (ease-out entrées, ease-in sorties), règles (animer les changements d'état, pas les éléments statiques, respecter prefers-reduced-motion).
 
@@ -1389,6 +1391,7 @@ Composants/layouts à couvrir :
 11. Performance mobile : budget spécifique mobile (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset par device, images art direction (cadrage différent par device), srcset avec tailles exactes.
 
 Règle de densité : documenter ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique. Aucun contenu critique ne doit disparaître sur mobile.
+12. Anti-placeholder : aucune section avec image placeholder générique (gray box, "image à venir") ne doit passer en production. Chaque image prévue dans le design doit avoir un asset réel, ou la section est retirée jusqu'à disponibilité.
 
 Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via Edit, pas un fichier séparé).
 
@@ -1414,6 +1417,7 @@ Conçois le système d'onboarding complet :
 5. Gamification (si cohérent avec la marque) : barre de progression, célébrations au milestone, streaks, badges — uniquement si aligné avec le persona (éviter sur du B2B enterprise sérieux).
 6. Réengagement : emails automatiques si onboarding incomplet (J+1, J+3, J+7), notification in-app au retour, sauvegarde de la progression.
 7. Accessibilité : le parcours doit être navigable au clavier, les tooltips accessibles, les animations désactivables (prefers-reduced-motion).
+8. Conviction-first : les CTAs de conversion (upgrade, achat) apparaissent APRÈS la démonstration de valeur. Ne jamais demander un engagement avant que l'utilisateur ait expérimenté le "aha moment".
 
 Livrable : docs/ux/onboarding-flow.md (avec wireframes textuels de chaque écran et métriques de conversion cibles par étape).
 
@@ -1441,7 +1445,7 @@ Architecture du système de notifications :
 
 Livrable : docs/ux/notification-system.md (wireframes + flows + matrice).
 
-Puis @design : lis project-context.md, docs/ux/notification-system.md et docs/design/design-system.md. Conçois les composants visuels : toast notification (success, warning, error, info), badge de count, centre de notifications (panneau latéral ou dropdown), carte de notification (avatar, texte, timestamp, action), écran de préférences. Respecte les tokens existants. Animations : slide-in pour les toasts (durée 300ms), auto-dismiss après 5s sauf action requise. Livrable : docs/design/component-library.md section "Notifications".
+Puis @design : lis project-context.md, docs/ux/notification-system.md et docs/design/design-system.md. Conçois les composants visuels : toast notification (success, warning, error, info), badge de count, centre de notifications (panneau latéral ou dropdown), carte de notification (avatar, texte, timestamp, action), écran de préférences. Respecte les tokens existants. Le backoffice/admin utilise le MÊME design system pour les notifications — pas de thème dégradé. Animations : slide-in pour les toasts (durée 300ms), auto-dismiss après 5s sauf action requise. Livrable : docs/design/component-library.md section "Notifications".
 
 Puis @fullstack : lis project-context.md, docs/ux/notification-system.md et docs/design/component-library.md section "Notifications". Implémente l'architecture technique :
 1. Table notifications en PostgreSQL (id, user_id, type, channel, title, body, read_at, created_at, metadata JSONB).
@@ -1763,6 +1767,10 @@ Conformité : les logs d'erreur ne doivent contenir aucune PII (RGPD article 25 
 
 SEO : les pages 404 custom doivent avoir un meta noindex, un lien vers la homepage, et un sitemap à jour pour éviter les pages orphelines. Les pages d'erreur doivent être légères (LCP < 2s).
 
+Règles cross-projets :
+- Seuil de réécriture : si la correction d'un bug touche > 3 fichiers ou > 50 lignes de workaround, refactoriser la racine du problème au lieu d'empiler des patchs.
+- Bugs bloquants corrigés immédiatement : tout bug détecté pendant l'implémentation est corrigé AVANT de passer à la suite — pas de "on verra plus tard".
+
 Critères de validation : aucun écran blanc en cas d'erreur, chaque erreur API a un message user-friendly, les retry sont implémentés pour les opérations idempotentes, le logging est structuré et sans PII, les pages d'erreur renvoient les bons status HTTP.`
       },
       {
@@ -1824,7 +1832,7 @@ Architecture data pipeline :
 3. Stockage : PostgreSQL Replit comme destination principale. Schéma de tables (staging → clean → aggregated). Indexation par colonnes de requête fréquentes. Partitionnement si volume > 1M lignes/mois. Rétention : archivage des données raw après transformation.
 4. Orchestration : scheduling des pipelines (crons Replit ou task queue). Ordre d'exécution (DAG de dépendances entre pipelines). Gestion des échecs : retry avec backoff exponentiel (3 tentatives), dead letter queue, alerte si échec après retries.
 5. Monitoring : dashboard de santé pipeline (dernière exécution, durée, lignes traitées, erreurs). Alertes : pipeline en échec, volume anormal (±50% vs moyenne), latence excessive. Logs structurés (source, timestamp, lignes_in, lignes_out, erreurs).
-6. Idempotence : chaque pipeline doit être re-exécutable sans dupliquer les données (upsert, deduplication par clé naturelle).
+6. Idempotence : chaque pipeline doit être re-exécutable sans dupliquer les données (upsert, deduplication par clé naturelle). Les migrations de schéma associées utilisent ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS — jamais de CREATE TABLE brut qui casse en re-exécution.
 
 Livrable : docs/ia/data-pipeline-architecture.md.
 
@@ -1924,6 +1932,7 @@ Architecture d'authentification et d'autorisation :
 4. Autorisation : modèle de permissions (RBAC recommandé pour la plupart des cas). Matrice rôle × action × ressource. Middleware de vérification des permissions sur chaque route protégée.
 5. Sécurité : rate limiting sur login (5 tentatives puis lockout 15 min), CSRF protection, secure cookies (HttpOnly, SameSite, Secure), protection contre le brute force.
 6. Multi-tenant : si pertinent, isolation des données par tenant (schema-based ou row-based avec RLS).
+7. Zéro self-fetch : un Server Component ne doit JAMAIS appeler sa propre API via fetch("/api/..."). Appeler directement la fonction serveur (Prisma, service) pour éviter la boucle réseau inutile et les deadlocks en SSR.
 
 Livrable : docs/dev-decisions.md section "Auth" + code dans src/lib/auth/.
 
@@ -2653,6 +2662,7 @@ Checklist GO/NO-GO :
 □ Tests sur 3 viewports (mobile 375px, tablette 768px, desktop 1280px)
 □ Formulaire de contact / signup fonctionnel (envoyer un vrai test)
 □ Paiement Stripe en mode live (si applicable — faire une transaction test réelle et la rembourser)
+□ Parcours d'achat testé end-to-end : landing → pricing → checkout → confirmation → accès produit (un humain ou un test E2E DOIT parcourir le flow complet avant le lancement)
 □ Performance : Lighthouse mobile > 90 (Performance, Accessibility, Best Practices, SEO)
 □ Pas de console errors en production
 □ Liens morts : 0 (vérifier chaque lien de la navigation et du footer)
