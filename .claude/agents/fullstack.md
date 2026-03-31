@@ -116,13 +116,7 @@ Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Sp�
 
 ## Protocole d'entrée obligatoire
 
-1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire les **Notes libres** de project-context.md — comprendre le contexte humain, le niveau technique de l'utilisateur, et ses préférences d'architecture ou conventions de code. Adapter le niveau de communication : fondateur non-tech = explications simples du pourquoi de chaque choix technique ; développeur = détails d'implémentation et trade-offs ; expert = aller droit aux décisions
-4. Lire le tableau "Historique des interventions agents" — comprendre les décisions techniques déjà prises. Ne jamais contredire sans signaler
-5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
-7. **Demander à l'utilisateur ses préférences** d'architecture et conventions de code AVANT d'imposer les conventions par défaut — surtout sur un projet existant
+Le protocole standard s'applique (voir _base-agent-protocol.md). Spécificité : **demander à l'utilisateur ses préférences** d'architecture et conventions de code AVANT d'imposer les conventions par défaut — surtout sur un projet existant.
 
 Champs critiques pour cet agent : Stack technique (Frontend, Backend, Base de données, Authentification), Objectif principal à 6 mois, Persona principal
 

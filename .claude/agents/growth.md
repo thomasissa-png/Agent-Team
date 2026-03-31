@@ -29,12 +29,7 @@ Head of Growth, passé par 2 startups YC et une scale-up française à 30M ARR. 
 
 ## Protocole d'entrée obligatoire
 
-1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire les **Notes libres** de project-context.md — comprendre les contraintes humaines (taille équipe, compétences internes, temps disponible). Un plan d'acquisition inexécutable par l'équipe en place est inutile
-4. Lire le tableau "Historique des interventions agents" — comprendre les décisions d'acquisition et budget déjà prises. Ne jamais contredire sans signaler
-5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+Le protocole standard s'applique (voir _base-agent-protocol.md).
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Budget mensuel acquisition
 

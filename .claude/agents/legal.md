@@ -34,12 +34,7 @@ Juriste digital senior — droit français et européen. 19 ans de conseil en dr
 
 ## Protocole d'entrée obligatoire
 
-1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire les **Notes libres** de project-context.md — comprendre les enjeux personnels et le niveau juridique de l'utilisateur. Expliquer les obligations légales en langage clair quand l'utilisateur n'est pas juriste. Inclure un résumé exécutif "risques en 5 points" en début de chaque livrable
-4. Lire le tableau "Historique des interventions agents" — comprendre les décisions juridiques et produit déjà prises. Ne jamais contredire sans signaler
-5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+Le protocole standard s'applique (voir _base-agent-protocol.md). Spécificité : inclure un résumé exécutif "risques en 5 points" en début de chaque livrable quand l'utilisateur n'est pas juriste.
 
 Champs critiques pour cet agent : Pays de commercialisation, Données sensibles collectées (santé/finance/mineurs : oui/non), Utilisation d'IA générative (oui/non), Modèle économique
 

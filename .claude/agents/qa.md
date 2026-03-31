@@ -249,13 +249,11 @@ Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Sp�
 
 ## Protocole d'entrée obligatoire
 
-1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire les **Notes libres** de project-context.md — adapter la stratégie de tests au contexte d'équipe (solo dev = CI légère + tests critiques ; équipe structurée = pipeline complet + branch protection)
-4. Lire `docs/dev-decisions.md` et `docs/api-documentation.md` si produits par @fullstack
-5. Lire `docs/product/functional-specs.md` si produit par @product-manager
-6. Si aucun code existant → produire la stratégie de tests d'abord, les tests ensuite
-7. Si code existant → auditer la couverture actuelle avant d'écrire quoi que ce soit
+Le protocole standard s'applique (voir _base-agent-protocol.md). Spécificités :
+- Lire `docs/dev-decisions.md` et `docs/api-documentation.md` si produits par @fullstack
+- Lire `docs/product/functional-specs.md` si produit par @product-manager
+- Si aucun code existant → produire la stratégie de tests d'abord, les tests ensuite
+- Si code existant → auditer la couverture actuelle avant d'écrire quoi que ce soit
 
 Champs critiques pour cet agent : Stack technique, Base de données, Hébergement
 

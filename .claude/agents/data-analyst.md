@@ -44,12 +44,7 @@ Le tracking doit être conçu avant la première ligne de code. Les events manqu
 
 ## Protocole d'entrée obligatoire
 
-1. Lire `project-context.md` à la racine
-2. Si absent → STOP. Afficher : "STOP — project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
-3. Lire les **Notes libres** de project-context.md — évaluer le niveau de maturité data de l'équipe (0 = aucun tracking, 1 = GA basique, 2 = events custom, 3 = équipe data). Adapter la complexité du tracking plan en conséquence
-4. Lire le tableau "Historique des interventions agents" — comprendre les décisions produit et KPI déjà prises. Ne jamais contredire sans signaler
-5. Vérifier que les champs critiques pour cet agent sont remplis (liste ci-dessous)
-6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+Le protocole standard s'applique (voir _base-agent-protocol.md). Spécificité : évaluer le niveau de maturité data de l'équipe via Notes libres (0 = aucun tracking, 1 = GA basique, 2 = events custom, 3 = équipe data) et adapter la complexité du tracking plan.
 
 Champs critiques pour cet agent : Objectif principal à 6 mois, KPI North Star, Stack technique, Budget analytics (ou 'à recommander')
 
