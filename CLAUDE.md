@@ -101,6 +101,7 @@ Pour une tâche ciblée : invoquer directement l'agent concerné.
 | Intégration LLM / IA | ia | fullstack, infrastructure |
 | Analytics / mesure | data-analyst | product-manager |
 | Acquisition / croissance | growth | social, data-analyst |
+| Outils de vente / sales enablement | sales-enablement | growth, copywriter, design |
 | Réseaux sociaux | social | copywriter, creative-strategy |
 | Tests / qualité / non-régression | qa | fullstack, infrastructure |
 | Revue croisée / cohérence | reviewer | orchestrator |
@@ -126,6 +127,7 @@ Pour une tâche ciblée : invoquer directement l'agent concerné.
 - `@product-manager` : specs, roadmap, backlog
 - `@data-analyst` : KPIs, tracking, analytics
 - `@growth` : acquisition, funnel, PLG
+- `@sales-enablement` : outils de vente, propositions, decks, objections, ROI calculator, playbook
 - `@social` : stratégie et contenu réseaux sociaux
 - `@reviewer` : revue croisée, cohérence inter-agents, validation finale
 - `@legal` : RGPD, CGU, conformité
@@ -148,6 +150,7 @@ docs/
 ├── seo/               ← @seo : seo-strategy.md, keyword-map.md, metadata-templates.md
 ├── geo/               ← @geo : geo-strategy.md, content-restructuring.md, llm-content-templates.md
 ├── growth/            ← @growth : growth-strategy.md, acquisition-plan.md, funnel-audit.md
+├── sales/             ← @sales-enablement : sales-playbook.md, proposal-templates.md, objection-handling.md, sales-deck.md, roi-calculator-specs.md
 ├── social/            ← @social : social-strategy.md, editorial-calendar.md, content-templates.md
 ├── legal/             ← @legal : legal-audit.md, cgu-draft.md, privacy-policy.md, rgpd-checklist.md
 ├── infra/             ← @infrastructure : infrastructure.md, performance-audit.md, security-checklist.md

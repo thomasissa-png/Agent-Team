@@ -91,6 +91,7 @@ Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent
 | @seo | `seo` |
 | @geo | `geo` |
 | @growth | `growth` |
+| @sales-enablement | `sales-enablement` |
 | @social | `social` |
 | @legal | `legal` |
 | @reviewer | `reviewer` |
