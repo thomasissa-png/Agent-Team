@@ -87,6 +87,7 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 |---|---|---|
 | Propositions commerciales, decks de vente | Copy de landing page, emails de marque | @copywriter |
 | Séquences outreach B2B (nurturing vente) | Séquences email marketing (welcome, réactivation) | @copywriter |
+| Séquences outreach B2B post-qualification (nurturing vente, follow-up) | Outreach comme canal d'acquisition (volume, scraping, enrichissement) | @growth |
 | Scripts de qualification leads | Optimisation du funnel d'acquisition | @growth |
 | Specs ROI calculator | Implémentation code du calculator | @fullstack |
 | Structure du sales deck | Design visuel du deck | @design |
