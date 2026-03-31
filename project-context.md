@@ -74,9 +74,10 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 | Session | Projet | Decisions totales | Alignees (ACCORD) | Taux | Desaccords (categorie) | Mode actuel |
 |---|---|---|---|---|---|---|
-| — | — | — | — | — | — | Shadow Mode (Phase 1) |
+| 2026-03-31 (retroactif) | Cross-projets (ImmoCrew, Sarani, Versiroom, Framework) | 10 | 9 | 90% | 1 desaccord : hero Sarani (dots vs grille images — choix identitaire/emotionnel, pas rationnel) | Eligible Phase 2 (autopilot assiste) |
 
 *Seuils : <70% = non fiable, 70-85% = shadow mode, 85-90% = autopilot assisté, >90% (sur 5+ sessions) = autopilot complet*
+*Note : test retroactif sur 10 decisions reelles. @moi a correctement signale MOYENNE confiance sur le seul desaccord. Prochaine etape : validation en conditions reelles sur un projet.*
 
 ---
 
