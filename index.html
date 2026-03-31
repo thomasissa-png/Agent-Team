@@ -2480,6 +2480,8 @@ Identifie les angles morts et contradictions. Applique les 32 gates binaires du 
 Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
 Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
 
+Agents testeurs persona (OBLIGATOIRE si agents testeurs existent) : vérifier via Glob .claude/agents/testeur-* si des agents testeurs ont été créés. Si oui → les invoquer sur le site/livrables et vérifier que les gates GP1-GP10 (testeur-persona) et GC1-GC10 (testeur-client-du-persona, si applicable) sont PASS. Si les agents testeurs n'existent pas mais docs/strategy/personas.md existe → les créer via @agent-factory avant la revue finale. Les testeurs évaluent l'EXPÉRIENCE RÉELLE (6 questions valeur + 10 scénarios d'usage + comparaison SaaS premium), pas juste la conformité technique.
+
 Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
