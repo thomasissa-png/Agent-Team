@@ -15,8 +15,9 @@ Les règles ci-dessous sont AUSSI présentes dans `CLAUDE.md` (qui est toujours 
 2. Si absent → STOP. Afficher : "project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
 3. Lire le tableau "Historique des interventions agents" — comprendre les décisions déjà prises. Ne jamais contredire sans signaler
 4. Lire `docs/lessons-learned.md` si existant — intégrer les leçons des projets précédents (patterns qui marchent, erreurs à éviter). **Attention particulière** aux learnings avec statut propagation = `non-propagé` qui concernent cet agent : si un learning non-propagé impacte le domaine de l'agent, le signaler dans le handoff et l'intégrer dans le livrable
-5. Vérifier que les champs critiques pour cet agent sont remplis
-6. Si champs critiques vides → lister les champs manquants, refuser d'avancer
+5. Lire `docs/founder-preferences.md` si existant — intégrer les préférences du fondateur (style, standards qualité, anti-patterns). Ces préférences s'appliquent à TOUS les projets du fondateur
+6. Vérifier que les champs critiques pour cet agent sont remplis
+7. Si champs critiques vides → lister les champs manquants, refuser d'avancer
 ```
 
 **Partie variable** : la liste des champs critiques est spécifique à chaque agent.
@@ -105,29 +106,6 @@ Si un agent reçoit trop de livrables amont à lire et risque de dépasser sa fe
 1. **Prioriser** : lire d'abord les livrables directement liés à sa mission (listés dans sa Calibration), ignorer les livrables indirectement liés
 2. **Résumer** : si un livrable amont dépasse ~200 lignes, lire uniquement les sections pertinentes (table des matières, conclusions, décisions)
 3. **Signaler** : documenter dans le handoff quels livrables n'ont pas été lus intégralement : `[LECTURE PARTIELLE : {fichier} — seules les sections {X, Y} ont été consultées]`
-
----
-
-## Calibration IA par domaine (standard)
-
-Tout agent — y compris non-technique — DOIT identifier les capacités IA pertinentes à son domaine et les intégrer dans ses processus. Ce template aide @agent-factory à ne pas oublier cette dimension :
-
-### Pour agents créatifs/contenu (copywriter, social, podcast, etc.)
-- Génération assistée (drafts, variations, reformulations)
-- Analyse de ton/sentiment sur le contenu existant
-- Transcription et résumé de contenus audio/vidéo
-
-### Pour agents stratégie/analyse (creative-strategy, data-analyst, growth, etc.)
-- Extraction et structuration de données non-structurées
-- Détection de patterns dans les données utilisateur
-- Benchmarking automatisé via WebSearch
-
-### Pour agents conformité/qualité (legal, qa, reviewer, accessibility, etc.)
-- Audit automatisé par checklist (RGPD, WCAG, SEO technique)
-- Classification de risques/priorités
-- Vérification de cohérence croisée entre livrables
-
-**Règle** : si un agent n'exploite aucune capacité IA dans son domaine, @agent-factory doit justifier pourquoi (cas rare). Cette section est un guide pour @agent-factory, pas une obligation pour chaque agent de tout implémenter.
 
 ---
 
@@ -296,6 +274,12 @@ Avant de considérer un livrable comme terminé, effectuer un Grep sur le fichie
 - Si la donnée réelle n'est pas disponible → convertir en hypothèse marquée `[HYPOTHÈSE : ...]` conformément à la règle anti-invention
 - **Un livrable avec un placeholder oublié n'est PAS terminé.**
 - **Exception** : les marqueurs `[HYPOTHÈSE : ...]` et `[PROVISOIRE — ...]` ne sont PAS des placeholders — ce sont des annotations volontaires conformes au protocole d'escalade.
+
+### Versioning des livrables (obligatoire)
+
+Chaque livrable produit ou modifié DOIT inclure un commentaire HTML en première ligne avec la date, l'agent, et le motif :
+`<!-- Version: YYYY-MM-DDTHH:MM — @agent — Motif du changement -->`
+Cela permet de tracer quelle version un agent aval a implémentée quand un agent amont modifie un livrable après une relance corrective.
 
 ### Vérification par les vrais outputs (recommandée)
 

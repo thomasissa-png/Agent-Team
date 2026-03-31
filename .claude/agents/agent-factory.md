@@ -127,7 +127,11 @@ Avant de créer :
 **Règle de synchronisation dynamique** : avant de générer, comparer le template ci-dessous avec le contenu actuel de `_base-agent-protocol.md` et les règles absolues de `CLAUDE.md` (lus à l'étape Calibration). Si `_base-agent-protocol.md` contient des sections que le template ci-dessous ne référence pas encore, les ajouter à l'agent généré avec une référence compacte du même format (`"Le protocole [X] standard s'applique (voir _base-agent-protocol.md)"`). Cela garantit que tout agent créé par @agent-factory bénéficie des dernières règles du framework, même si ce template n'a pas été mis à jour.
 
 **Checklist pré-construction** (vérifier AVANT de rédiger) :
-- [ ] Le domaine de l'agent a-t-il des cas d'usage IA pertinents ? (transcription, génération, analyse automatisée, audit par LLM, extraction, classification). Si oui, les intégrer dans la Calibration et les Domaines de compétence — un agent qui ignore les capacités IA de son domaine sera sous-optimal.
+- [ ] Le domaine de l'agent a-t-il des cas d'usage IA pertinents ? Référence par type :
+  - **Agents créatifs/contenu** (copywriter, social, podcast) : génération assistée, analyse ton/sentiment, transcription/résumé
+  - **Agents stratégie/analyse** (creative-strategy, data-analyst, growth) : extraction données non-structurées, détection patterns, benchmarking WebSearch
+  - **Agents conformité/qualité** (legal, qa, reviewer) : audit automatisé par checklist, classification risques, vérification cohérence croisée
+  Si oui, les intégrer dans la Calibration et les Domaines de compétence. Si aucune capacité IA pertinente, justifier pourquoi.
 - [ ] Le modèle est-il choisi selon la grille Opus/Sonnet/Haiku documentée à l'Étape 5c ?
 - [ ] Les interactions amont/aval sont-elles identifiées ?
 

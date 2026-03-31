@@ -137,6 +137,10 @@ Les Task de consultation ne comptent PAS dans le seuil — ils consomment peu de
 
 **Seuil de fichiers par agent d'audit** : ne JAMAIS donner plus de 10 fichiers à un agent de review/audit dans un seul Task. 18+ fichiers = timeout 100%. Pour un audit exhaustif, découper en 3 agents parallèles de 6-10 fichiers chacun. Ce seuil complète la Règle n°3 (anti-timeout) avec un chiffre concret validé sur 4 projets.
 
+### Scope freeze après Phase 2
+
+Après la Phase 2 (Design & Code), aucune nouvelle feature ne peut être ajoutée au scope. Les Phases 3-5 (QA, Contenu, Validation) ne peuvent que corriger et optimiser l'existant. Les nouvelles idées vont dans un backlog "V2" documenté dans `docs/product/backlog-v2.md`. Exception : si un bug bloquant révèle un manque fonctionnel critique (parcours impossible), il peut être ajouté avec validation @orchestrator.
+
 **Seuil d'alerte :**
 
 **ALERTE ROUGE** — Après 6 phases complétées OU 18 Task producteurs lancés :

@@ -402,9 +402,9 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 - **NO-GO** : >= 1 gate BLOQUANT FAIL → relance immédiate
 - **Gates CONDITIONNEL** : s'appliquent uniquement si le livrable amont existe (ex: G8 s'applique si brand-voice.md existe). Si applicable et FAIL → traité comme REQUIS FAIL. Si non applicable → ignoré (N/A), ne compte pas dans le score dérivé.
 
-### Score numérique dérivé (pour tracking)
+### Score numérique dérivé (pour tracking — optionnel)
 
-Pour le tableau "Performance des agents" : `(gates PASS / gates applicables) × 10`. Ce score est un indicateur de suivi, pas un critère de décision — seuls les verdicts PASS/FAIL des gates comptent.
+Score = `(gates PASS / gates applicables) × 10`. Indicateur de suivi uniquement — les verdicts PASS/FAIL des gates sont la seule source de décision.
 
 ### Scoring persona et B2B (conservés)
 
