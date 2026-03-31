@@ -714,6 +714,14 @@ Pour chaque domaine qui a des livrables, lance l'agent spécialisé avec les ins
 Étape 2b — Vérification gates testeurs persona (conditionnelle) :
 Si des agents testeurs existent (Glob .claude/agents/testeur-*), vérifier que les gates GP1-GP10 et GC1-GC10 ont été exécutées et sont PASS. Si non exécutées → les lancer maintenant (testeur-persona sur le site, testeur-client-du-persona sur les outputs générés). Si agents testeurs non créés mais personas documentés dans docs/strategy/personas.md → les créer via @agent-factory puis les invoquer.
 
+Étape 2c — Vérifications cross-projets (en parallèle des audits) :
+- Zéro fausse promesse : Grep le copy visible pour les bénéfices non implémentés.
+- Anti-témoignage fictif : Grep les noms de personas utilisés comme témoignages.
+- Backoffice = même design system : vérifier que les pages admin utilisent les mêmes tokens.
+- Self-fetch : Grep les appels à l'URL publique dans Server Components / API routes.
+- Bugs non corrigés : vérifier qu'aucun bug documenté n'est resté "en attente".
+- Agents testeurs calibrés VALEUR : les testeurs évaluent la valeur perçue, pas juste la conformité.
+
 Étape 3 — Audit stratégique (@elon) :
 Lance @elon avec le prompt "Audit stratégique first principles". Il note vision, exécution, moat, scalabilité, vitesse sur 10. Identifie le risque n°1 et le levier n°1.
 Livrable : docs/reviews/elon-audit.md.
@@ -846,6 +854,7 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
 8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 21 dimensions, correction de TOUS les bugs, itération jusqu'à 100% gates PASS.
 9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b.
+10. Learnings cross-projets : zéro fausse promesse (copy = features implémentées), anti-témoignage fictif, conviction-first (CTAs en fin de parcours), parcours d'achat testé E2E, bugs corrigés immédiatement, agents testeurs calibrés VALEUR.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à ce que tous les livrables impactés aient 100% gates PASS.
@@ -2550,6 +2559,7 @@ Glob src/app/**/page.tsx (ou équivalent). Liste TOUTES les pages/routes dans un
 
 Phase 2 — Audit chirurgical par page (21 dimensions) :
 Pour CHAQUE page, vérifier systématiquement. Un bug sur N'IMPORTE quelle dimension = la page n'est PAS à 9/10.
+Renforcements cross-projets : anti-témoignage fictif (pas de noms de personas comme témoignages), backoffice = même design system, conviction-first (CTAs en fin de parcours sauf pages d'action), bugs corrigés immédiatement (corriger dans cette session, pas "en attente").
 
 COPIE & ORTHOGRAPHE :
 1. Contenu textuel : texte correspond au copy approuvé (docs/copy/), zéro lorem ipsum, zéro placeholder [À REMPLIR], zéro texte dans la mauvaise langue, cohérence du ton avec brand-voice.md.
@@ -2692,7 +2702,7 @@ Critères de validation : chaque point a été vérifié concrètement (pas just
 Configure le monitoring complet :
 1. Erreurs : Sentry (erreurs JS/API, source maps Next.js, alertes par sévérité, regroupement par issue).
 2. Disponibilité : UptimeRobot (endpoint /api/health, intervalle 5min, alerte SMS + Slack si down > 1min).
-3. Health check : route /api/health (status, version, uptime, dernière erreur, latence DB, usage mémoire).
+3. Health check : route /api/health (status, version, uptime, dernière erreur, latence DB, usage mémoire). Vérifier que le health check n'appelle pas l'URL publique du site (self-fetch) — utiliser 127.0.0.1:PORT ou appel direct.
 4. Performance : Core Web Vitals en continu (LCP, CLS, INP), alertes si dégradation > 20%.
 5. Business : taux d'erreur webhook (Stripe), taux d'échec signup, taux d'erreur API par endpoint.
 6. Alertes : Slack channel dédié, escalade (warning → critical → page), protocole de réponse (qui est prévenu, dans quel ordre).
@@ -2786,7 +2796,7 @@ Critères de validation : l'outil est choisi avec justification budget/RGPD, les
 
 Framework d'évaluation des outputs LLM :
 1. Métriques par use case : définir les dimensions de qualité pour chaque use case LLM. Exemples :
-   - Génération de texte : pertinence (1-5), factualité (binaire), ton conforme au brand voice (1-5), format respecté (binaire), longueur dans la fourchette (binaire).
+   - Génération de texte : pertinence (1-5), factualité (binaire), ton conforme au brand voice (1-5), format respecté (binaire), longueur dans la fourchette (binaire). Évaluer aussi la qualité des étapes intermédiaires si flux progressif (brief → storyboard → final).
    - RAG : faithfulness (la réponse est-elle fidèle aux sources ?), relevance (les sources récupérées sont-elles pertinentes ?), completeness (la réponse couvre-t-elle la question ?).
    - Classification : accuracy, precision, recall, F1 par classe.
    - Extraction : champs extraits vs attendus, taux d'erreur par champ.
@@ -2953,6 +2963,7 @@ Critères de validation : l'agent créé passe le test unitaire (lit project-con
 5. Risques de régression : par étape, avec probabilité et impact. Plan de rollback pour chaque étape critique.
 6. URLs et SEO : mapper les anciennes URLs vers les nouvelles, prévoir les redirections 301, vérifier que le sitemap est mis à jour.
 7. Tests pré/post migration : métriques à comparer avant et après (performance, conversion, erreurs).
+8. Si migration de modèle IA : protocole migration modèle — lire la doc API du nouveau modèle, identifier les params spécifiques, tester 3+ exemples réels du use case, propager à TOUS les builders/prompts.
 
 Livrable : docs/dev-decisions.md (avec plan de migration détaillé).
 
