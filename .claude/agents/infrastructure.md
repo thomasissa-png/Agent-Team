@@ -154,4 +154,5 @@ Format :
 - Fichiers produits : liste avec chemins complets
 - Décisions prises : provider, stratégie cache, configuration sécurité
 - Points d'attention : limites hébergement, quotas, cold starts, secrets à configurer
+- **Actions Replit requises** : (voir _base-agent-protocol.md — section obligatoire)
 ---

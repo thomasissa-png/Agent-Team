@@ -247,6 +247,44 @@ Si un agent a été interrompu par un timeout :
 12. **Mise à jour du nom de branche obligatoire.** À chaque changement de branche de développement, l'ancienne référence de branche DOIT être remplacée par la nouvelle dans TOUS les fichiers qui la mentionnent : `index.html` (prompts d'installation frontend), `INSTALL.md`, `install.sh`, `update.sh`, et `project-context.md` (mémo de reprise). Utiliser `Grep` sur l'ancien nom de branche pour s'assurer qu'aucune référence n'a été oubliée. Cette mise à jour est la responsabilité de l'agent qui effectue le changement de branche (typiquement @orchestrator ou l'agent principal de la session)
 13. **Caractères UTF-8 obligatoires dans le code.** Dans les fichiers TSX/JSX/JS, utiliser les vrais caractères UTF-8 (é, è, à, ç, ê, î, ô, û, ë, ï, ù) dans les constantes et strings. Ne JAMAIS utiliser `\u00E9` ni `&eacute;` dans les strings JavaScript. Les entités HTML sont acceptables uniquement dans le JSX rendu directement. Signalé comme P0 sur 2 projets distincts.
 14. **Zéro mention de concurrent par nom dans les livrables client-facing.** Ne JAMAIS mentionner de concurrent par nom dans le code frontend, le copy, le contenu marketing, le SEO ou tout contenu visible par l'utilisateur final. Utiliser des catégories génériques ("freelance marketing", "outil avec templates", "plateforme SaaS"). Exception : les livrables internes (benchmarks concurrentiels, audits stratégiques, analyses de marché) DOIVENT nommer les concurrents pour être actionnables.
+15. **Actions Replit — signalement obligatoire.** Tout agent qui modifie du code (`src/`), la configuration (`package.json`, `.replit`, `replit.nix`, `prisma/schema.prisma`), ou les variables d'environnement DOIT : (a) lister les actions Replit requises dans son handoff (voir _base-agent-protocol.md), (b) ajouter les actions en attente dans `REPLIT_ACTIONS.md` à la racine du projet. Format :
+   ```markdown
+   # Actions Replit en attente
+   ## [Date] — @[agent] — [description courte]
+   - [ ] Action 1
+   - [ ] Action 2
+   ---
+   ## Actions complétées (archivées)
+   ```
+   Thomas coche et archive après exécution. Si aucune action Replit → ne pas toucher le fichier.
+
+## Règle absolue — Pre-commit build check (n°6)
+
+**Tout agent qui commit du code dans `src/` DOIT exécuter ces commandes AVANT `git add` / `git commit` :**
+
+```bash
+# 1. TypeScript — zéro erreur
+npx tsc --noEmit
+
+# 2. Lint — zéro erreur (warnings tolérés)
+npx next lint
+
+# 3. Build — zéro erreur (reproduit exactement ce que Replit exécute au deploy)
+npm run build
+```
+
+**Si UNE de ces commandes échoue : NE PAS COMMITER.** Corriger d'abord, re-exécuter les checks, puis commiter.
+
+**Pourquoi `npm run build` et pas juste `tsc --noEmit`** : `tsc` vérifie les types mais PAS les erreurs Next.js (imports dynamiques, Server/Client Component boundary, metadata export, dead code ESLint, etc.). `npm run build` est le seul check qui reproduit ce que Replit exécute au deploy. C'est 30 secondes de build local vs 5 minutes de debug + crédits Replit gaspillés.
+
+**Séquence complète obligatoire :**
+```bash
+npx tsc --noEmit && npx next lint && npm run build && git add [fichiers] && git commit -m "message"
+```
+
+Si le build est trop lent (>2 min), le minimum absolu est `npx tsc --noEmit && npx next lint`. Mais `npm run build` reste le standard.
+
+**Cas d'échec connu** : si l'environnement CI n'a pas tous les packages (`@types/node`, Sentry, etc.), filtrer les erreurs pré-existantes et documenter la limitation. Ne JAMAIS dire "c'est commité" sans avoir au minimum exécuté `tsc --noEmit`.
 
 ## Protocole de test du framework
 

@@ -260,6 +260,11 @@ Pour chaque feature > 1 fichier :
 2. Définir l'ordre (dépendances)
 3. Implémenter fichier par fichier
 4. Tester après chaque fichier critique (tsc --noEmit + test)
+5. **AVANT chaque commit** : exécuter le protocole pre-commit obligatoire (voir CLAUDE.md Règle n°6) :
+   ```bash
+   npx tsc --noEmit && npx next lint && npm run build && git add [fichiers] && git commit -m "message"
+   ```
+   Si une commande échoue → corriger AVANT de commiter. Zéro exception.
 
 ### Protocole projet existant (code déjà en place)
 
@@ -317,4 +322,6 @@ Format :
 - Fichiers produits : liste avec chemins complets
 - Décisions prises : choix d'architecture, patterns utilisés, librairies sélectionnées
 - Points d'attention : chemins critiques à tester, edge cases identifiés pendant le dev
+- **Actions Replit requises** : (voir _base-agent-protocol.md — section obligatoire)
+- **Pre-commit check** : confirmer que `npx tsc --noEmit && npx next lint && npm run build` PASS avant commit
 ---
