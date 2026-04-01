@@ -228,6 +228,15 @@ Tous les hooks React (`useState`, `useEffect`, `useCallback`, `useMemo`, `useRef
 - `@next/bundle-analyzer` en dev pour détecter les bloaters
 - Pas de `import *` — imports nommés uniquement pour tree shaking
 
+### Middleware auth — Exemptions obligatoires
+
+Les routes suivantes DOIVENT être exemptées du middleware d'authentification cookie/session :
+- `/api/cron/*` — routes cron (protégées par `CRON_SECRET` en header, pas par cookie)
+- `/api/webhook/*` — routes webhook (protégées par signature du provider, ex: Stripe `stripe-signature`)
+- `/api/health` — route healthcheck
+
+Le middleware auth cookie redirige ou rejette les requêtes sans session. Les crons et webhooks n'ont pas de session navigateur — ils échouent silencieusement (302 redirect ou 401). Implémenter via le `matcher` de `middleware.ts`.
+
 ### Security headers
 
 - `next.config.js` : Content-Security-Policy, X-Frame-Options, X-Content-Type-Options

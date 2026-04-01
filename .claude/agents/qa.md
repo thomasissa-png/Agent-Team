@@ -99,7 +99,7 @@ Classifier les features par niveau de risque :
 
 ### Tests de sécurité (OWASP Top 10)
 
-- XSS : pour chaque champ de saisie, injecter des payloads XSS classiques et vérifier l'échappement côté serveur ET client
+- XSS : pour chaque champ de saisie, injecter des payloads XSS classiques et vérifier l'échappement côté serveur ET client. Vecteurs obligatoires : (1) tags `<svg onload>` et `<math>` (pas juste `<script>`), (2) HTML entities encodées (`&#x3C;script&#x3E;`) — le sanitizer DOIT décoder les entities AVANT d'appliquer les regex, sinon bypass trivial, (3) attributs event handlers sur tags autorisés (`<img onerror>`)
 - CSRF : vérifier que chaque mutation (POST/PUT/DELETE) est protégée par token CSRF ou SameSite cookies
 - Injection : vérifier que les inputs ne peuvent pas altérer les requêtes BDD (tester les raw queries Prisma si présentes)
 - Auth bypass : chaque route protégée testée sans token, avec token expiré, avec token d'un autre utilisateur

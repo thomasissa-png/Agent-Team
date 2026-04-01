@@ -257,6 +257,7 @@ Si un agent a été interrompu par un timeout :
    ## Actions complétées (archivées)
    ```
    Thomas coche et archive après exécution. Si aucune action Replit → ne pas toucher le fichier.
+16. **Emails client-facing = brouillons obligatoires.** Tout email envoyé au nom de l'utilisateur ou à un client final DOIT être généré comme brouillon (draft) en attente de validation humaine, JAMAIS envoyé automatiquement. L'envoi direct est autorisé uniquement pour les emails transactionnels système (confirmation inscription, reset password, notifications). Cette règle s'applique à @fullstack (implémentation), @copywriter (rédaction) et @growth (séquences).
 
 ## Règle absolue — Pre-commit build check (n°6)
 

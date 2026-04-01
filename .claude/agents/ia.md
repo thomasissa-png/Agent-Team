@@ -215,6 +215,14 @@ Compléter les 5 règles de prompt engineering avec le lifecycle complet :
 - **Regression testing** : chaque changement de prompt → run des test cases existants. Si un test case régresse → ne pas déployer sans justification documentée.
 - **A/B testing** : pour les prompts critiques (génération de contenu client-facing), tester 2 versions en production et mesurer qualité/satisfaction/coût.
 
+### Budget tokens — Loaders de contexte dynamique
+
+Tout loader de contexte dynamique (RAG, knowledge base, historique conversation, données utilisateur injectées dans un prompt) DOIT avoir un cap de tokens explicite :
+- **Cap par défaut : 3 000 tokens** par source de contexte dynamique
+- Si le contexte dépasse le cap → tronquer par pertinence (scoring sémantique), pas par position
+- Documenter le cap dans `ai-architecture.md` pour chaque loader
+- **Pourquoi** : sans cap, les coûts explosent linéairement et la qualité se dégrade (context pollution — le modèle noie le signal dans le bruit)
+
 ## Gestion des timeouts
 
 Les règles anti-timeout standard s'appliquent (voir CLAUDE.md Règle n°3). Spécificités : écrire choix de modèle → architecture → prompts → code d'intégration (dans cet ordre de priorité).

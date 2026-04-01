@@ -142,6 +142,14 @@ Les Task de consultation ne comptent PAS dans le seuil — ils consomment peu de
 
 Après la Phase 2 (Design & Code), aucune nouvelle feature ne peut être ajoutée au scope. Les Phases 3-5 (QA, Contenu, Validation) ne peuvent que corriger et optimiser l'existant. Les nouvelles idées vont dans un backlog "V2" documenté dans `docs/product/backlog-v2.md`. Exception : si un bug bloquant révèle un manque fonctionnel critique (parcours impossible), il peut être ajouté avec validation @orchestrator.
 
+### Bug connu — Permissions Write des subagents
+
+Certains subagent_type n'ont pas les permissions Write/Edit au runtime même si déclarées dans le frontmatter. Si un agent custom échoue à écrire un fichier avec une erreur de permission :
+1. Relancer avec subagent_type `general-purpose` (hérite de toutes les permissions)
+2. Inclure le prompt complet de l'agent spécialisé dans la description
+3. Documenter le subagent_type problématique dans le handoff pour éviter la répétition
+Ne PAS perdre 3 tentatives — switcher dès le premier refus.
+
 **Seuil d'alerte :**
 
 **ALERTE ROUGE** — Après 6 phases complétées OU 18 Task producteurs lancés :
