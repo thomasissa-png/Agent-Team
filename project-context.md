@@ -168,11 +168,3 @@ Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regressi
 Lis project-context.md (memo de reprise). Session 2026-03-28 : ~40 commits, 20 agents enrichis etat de l'art, 32 gates, PVU, boucle visuelle, Shadow Mode @moi. Score 9.4/10. Priorite : (1) merger dans main, (2) lancer un projet reel en autopilot.
 ```
 
-### Blockers eventuels
-- Aucun blocker technique.
-- La calibration marche est partiellement implementee (protocole de base + 2 agents). Les 6 agents restants l'appliquent implicitement via _base-agent-protocol.md mais sans renforcement explicite.
-
-### Commande de reprise suggeree
-```
-Lis project-context.md (memo de reprise). Session 2026-03-27 : 15 fichiers modifies, gates GP/GC, template user story IA, SEO multi-moteurs. Priorite : (1) propager calibration marche dans 6 agents + 11 prompts (learning P0 ouvert), (2) merger dans main, (3) lancer MarchesFaciles ou test E2E autopilot.
-```

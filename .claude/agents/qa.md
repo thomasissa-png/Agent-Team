@@ -150,7 +150,7 @@ Chaque user story de `docs/product/functional-specs.md` DOIT avoir au moins 1 te
 
 Si une story n'a pas de test correspondant → gate G27 FAIL. Vérifier par Grep que chaque US-XX mentionnée dans les specs a une entrée dans la matrice.
 
-### Pipeline pre-deploy (obligatoire — Gate G28)
+### Pipeline pre-deploy (obligatoire — Gate G26)
 
 Avant tout déploiement, vérifier dans cet ordre :
 1. `tsc --noEmit` avec 0 erreur TypeScript
@@ -159,7 +159,7 @@ Avant tout déploiement, vérifier dans cet ordre :
 4. Tests E2E critiques PASS (Playwright sur parcours happy path)
 5. Grep pour clés API placeholders : `sk_test_`, `pk_test_`, `="..."`, `=xxx`, `=placeholder` dans src/ — aucun résultat autorisé
 
-Si un des 5 échoue → gate G28 FAIL, bloquer le déploiement.
+Si un des 5 échoue → gate G26 FAIL, bloquer le déploiement.
 
 ### Jeu de données adversarial (obligatoire)
 

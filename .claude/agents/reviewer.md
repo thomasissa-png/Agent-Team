@@ -64,9 +64,9 @@ Avant d'évaluer un livrable, vérifier que les livrables amont référencés so
 ### Cohérence Design & UX (vérification enrichie)
 
 Quand des livrables @design et @ux existent, vérifier systématiquement :
-- [ ] L'architecture des tokens suit-elle les 3 tiers (primitive → sémantique → component) ? Aucun composant ne référence un token primitif directement (G31)
-- [ ] Les compositions de page spécifient-elles le layout par section (G29) et les images (G30) ?
-- [ ] Chaque composant interactif a-t-il ses 6 états documentés (G32) ?
+- [ ] L'architecture des tokens suit-elle les 3 tiers (primitive → sémantique → component) ? Aucun composant ne référence un token primitif directement (G29)
+- [ ] Les compositions de page spécifient-elles le layout par section (G27) et les images (G28) ?
+- [ ] Chaque composant interactif a-t-il ses 6 états documentés (G30) ?
 - [ ] L'audit heuristique Nielsen 10 a-t-il été produit par @ux pour chaque flow critique ?
 - [ ] Les métriques HEART sont-elles définies dans les livrables @ux ?
 - [ ] Le page-compositions.md est-il cohérent avec les wireframes.md ? (page-compositions.md prime pour le layout visuel)
@@ -137,7 +137,7 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 ### Articulation gates binaires + scoring persona/B2B
 
 Le reviewer utilise deux mécanismes complémentaires :
-1. **Gates binaires livrables** : 32 gates G1-G32 PASS/FAIL (voir CLAUDE.md section "Les 32 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
+1. **Gates binaires livrables** : 30 gates G1-G30 PASS/FAIL (voir CLAUDE.md section "Les 32 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
 2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client. Encadré par les gates pré-requis G5 (persona identique) et G6 (KPI identique)
 
 **Condition GO** : les DEUX mécanismes doivent passer. Un livrable peut avoir 100% gates PASS mais 5/10 en persona (techniquement conforme mais inutilisable par le client). Le GO/NO-GO final requiert : A) 100% gates BLOQUANT PASS + 100% gates REQUIS PASS **ET** B) score persona >= 9/10 **ET** C) score B2B >= 9/10 (si applicable).
@@ -210,7 +210,7 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 
 ### Processus d'itération
 
-1. **Évaluation initiale** : exécuter les 32 gates binaires (G1-G32) via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
+1. **Évaluation initiale** : exécuter les 30 gates binaires (G1-G30) via Grep/Read/comparaison. Chaque gate = PASS ou FAIL.
 2. **Si ≥ 1 gate en FAIL** : produire un rapport de corrections :
 
 ```markdown
@@ -245,7 +245,7 @@ Produire un rapport structuré exactement ainsi :
 
 ## Résultats des gates binaires (G1-G32)
 
-*Exécuter les 32 gates G1-G32 définies dans CLAUDE.md section "Les 32 gates binaires (PASS/FAIL)" pour chaque livrable audité. Si des agents testeurs existent, exécuter aussi GP1-GP10 et GC1-GC10 de la section "GATES TESTEUR-PERSONA".*
+*Exécuter les 30 gates G1-G30 définies dans CLAUDE.md section "Les 32 gates binaires (PASS/FAIL)" pour chaque livrable audité. Si des agents testeurs existent, exécuter aussi GP1-GP10 et GC1-GC10 de la section "GATES TESTEUR-PERSONA".*
 
 ### [Nom du livrable] — @[agent]
 | # | Gate | Classe | Verdict | Détail |
@@ -253,7 +253,7 @@ Produire un rapport structuré exactement ainsi :
 | G1 | [description depuis CLAUDE.md] | BLOQUANT | PASS/FAIL | [preuve Grep/Read] |
 | ... | ... | ... | ... | ... |
 
-*Remplir une ligne par gate applicable. Les gates conditionnelles (G8, G21-G32) sont marquées N/A si non applicables.*
+*Remplir une ligne par gate applicable. Les gates conditionnelles (G8, G19-G30) sont marquées N/A si non applicables.*
 
 **BLOQUANT : X/12 PASS | REQUIS : Y/19 PASS | CONDITIONNEL : Z (ou N/A)**
 **Score dérivé : (gates PASS / gates applicables) × 10 = XX/10**

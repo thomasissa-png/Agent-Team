@@ -418,13 +418,13 @@ Tous les autres cas → autopilot.
 Le framework supporte deux profils selon l'enjeu du projet. L'utilisateur choisit dans project-context.md (champ Stade ou Notes libres). Si non spécifié, déduire du contexte.
 
 **Profil V1-Production** (défaut pour tout projet en V1/Production/Croissance) :
-- Toutes les 32 gates G1-G32 (BLOQUANT + REQUIS)
+- Toutes les 30 gates G1-G30 (BLOQUANT + REQUIS)
 - Gates testeur-persona GP1-GP10 et testeur-client GC1-GC10
 - Checkpoint validation specs obligatoire entre Phase 1 et Phase 2
 - Matrice de traçabilité US→tests obligatoire
 - Screenshots CI vs baselines (gate G26)
 - Jeu de données adversarial dans les tests
-- Pipeline pre-deploy complet (gate G28)
+- Pipeline pre-deploy complet (gate G26)
 
 **Profil Exploration** (pour validation d'idée, prototype, side project rapide) :
 - Gates BLOQUANT uniquement (pas les REQUIS ni les CONDITIONNEL)

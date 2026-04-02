@@ -191,7 +191,7 @@ fi
 
 ## Auto-évaluation (standard)
 
-**Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 32 gates binaires G1-G32 (PASS/FAIL) — voir CLAUDE.md. Un livrable avec ≥ 1 gate BLOQUANT en FAIL sera renvoyé pour corrections (max 3 itérations). Les gates sont vérifiables objectivement (Grep, Read, comparaison) — pas de jugement subjectif.
+**Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 30 gates binaires G1-G30 (PASS/FAIL) — voir CLAUDE.md. Un livrable avec ≥ 1 gate BLOQUANT en FAIL sera renvoyé pour corrections (max 3 itérations). Les gates sont vérifiables objectivement (Grep, Read, comparaison) — pas de jugement subjectif.
 
 Avant de livrer, répondre mentalement à ces questions :
 
@@ -215,19 +215,19 @@ Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de re
 
 ### Étape 1 — Construction de la grille de gates
 
-**Couche 1 : Gates existantes applicables** — filtrer parmi G1-G32 les gates pertinentes pour le sujet audité :
+**Couche 1 : Gates existantes applicables** — filtrer parmi G1-G30 les gates pertinentes pour le sujet audité :
 
 | Type d'audit | Gates applicables (minimum) |
 |---|---|
-| Code / feature | G15 (placeholders), G21 (5 états UI), G23 (0 hardcodé), G26 (screenshots), G28 (pipeline) |
-| Contenu / copy | G8 (ton brand), G10 (0 vague), G15 (placeholders), G16-G17 (spécificité), G24 (registre) |
-| Design / UI | G21 (5 états), G22 (contrastes WCAG), G23 (tokens), G26 (screenshots). **Lecture visuelle obligatoire** : si `tests/screenshots/` existe, lire les PNG via `Read()` et évaluer les 10 critères Thomas (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE) |
-| SEO / GEO | G13 (0 donnée inventée), G16 (nom projet), G18 (refs livrables) |
-| Stratégie / specs | G5 (persona), G6 (KPI), G7 (0 contradiction), G12 (implémentable), G19 (pas copiable) |
-| Cohérence croisée | G5, G6, G7, G14 (livrables absents), G18 (refs par chemin) |
-| Performance / infra | G28 (pipeline), G23 (0 hardcodé), G15 (placeholders) |
-| Juridique / RGPD | G4 (sources), G13 (0 donnée inventée), G15 (placeholders), G19 (pas copiable) |
-| Analytics / tracking | G25 (KPI formule + seuil), G6 (KPI North Star), G4 (sources) |
+| Code / feature | G15 (placeholders), G19 (5 états UI), G21 (0 hardcodé), G24 (screenshots), G26 (pipeline) |
+| Contenu / copy | G8 (ton brand), G10 (0 vague), G15 (placeholders), G16 (spécificité), G22 (registre) |
+| Design / UI | G19 (5 états), G20 (contrastes WCAG), G21 (tokens), G24 (screenshots). **Lecture visuelle obligatoire** : si `tests/screenshots/` existe, lire les PNG via `Read()` et évaluer les 10 critères Thomas (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE) |
+| SEO / GEO | G13 (0 donnée inventée), G16 (spécificité), G18 (exemple concret) |
+| Stratégie / specs | G5 (persona), G6 (KPI), G7 (0 contradiction), G12 (implémentable), G17 (pas copiable) |
+| Cohérence croisée | G5, G6, G7, G14 (livrables absents), G16 (spécificité) |
+| Performance / infra | G26 (pipeline), G21 (0 hardcodé), G15 (placeholders) |
+| Juridique / RGPD | G4 (sources), G13 (0 donnée inventée), G15 (placeholders), G17 (pas copiable) |
+| Analytics / tracking | G23 (KPI formule + seuil), G6 (KPI North Star), G4 (sources) |
 | IA / coûts LLM | G4 (sources), G13 (0 donnée inventée), G12 (implémentable) |
 
 **Couche 2 : Gates ad-hoc** — l'agent génère 3-7 gates spécifiques au sujet, en format binaire PASS/FAIL :
@@ -262,7 +262,7 @@ Quand un agent reçoit une demande d'audit, d'analyse, de vérification ou de re
 
 ### Étape 3 — Learnings
 
-Chaque gate FAIL génère un `[LEARNING DÉTECTÉ]` dans le handoff (voir section "Contribution aux learnings"). Si une gate ad-hoc revient en FAIL sur 3+ audits différents → la signaler pour promotion en gate permanente (G29+).
+Chaque gate FAIL génère un `[LEARNING DÉTECTÉ]` dans le handoff (voir section "Contribution aux learnings"). Si une gate ad-hoc revient en FAIL sur 3+ audits différents → la signaler pour promotion en gate permanente (G31+).
 
 **Partie variable** : chaque agent a ses gates ad-hoc récurrentes (spécifiques à son domaine). Les documenter dans la section d'auto-évaluation de l'agent.
 
