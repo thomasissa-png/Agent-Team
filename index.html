@@ -2700,7 +2700,12 @@ Lance le serveur dev et screenshot la page sur 3 devices (Playwright : iPhone 13
 3. Les éléments sont-ils alignés, espacés régulièrement, sans chevauchement ?
 4. Les images chargent-elles ? Sont-elles pertinentes (pas des placeholders) ?
 5. Le responsive fonctionne-t-il ? Texte lisible, CTA visible, pas de scroll horizontal sur mobile.
+5b. Mobile natif : les zones tactiles font-elles >= 44x44px (thumb zone) ? Le clavier virtuel ne cache-t-il pas les champs de saisie ? Le scroll est-il fluide sans "saut" ? Les modales/drawers sont-ils utilisables en portrait ET paysage ?
 6. Dark mode (si applicable) : tout est lisible, pas de texte invisible sur fond sombre.
+7. Impression fondateur : cette page inspire-t-elle confiance et professionnalisme ? La montrerais-tu à un investisseur sans gêne ? Si non → FAIL avec explication.
+8. Ressenti global : les animations sont-elles fluides (pas de jank) ? Les loading states inspirent-ils confiance (skeleton, spinner) ou laissent-ils un écran blanc ? Le ton visuel fait-il "premium" ou "template gratuit" ? Les micro-interactions (hover, focus, transition) sont-elles cohérentes ?
+9. Performance perçue : la page charge-t-elle en < 3s sur 4G simulé ? Le LCP (plus grand élément visible) apparaît-il rapidement ? Y a-t-il du layout shift visible (éléments qui "sautent" au chargement) ? Images > 500KB non optimisées → P2.
+10. Partage social : copier l'URL et prévisualiser (og:image, og:title, og:description). Le rendu est-il professionnel ? Meta title (< 60 chars) et description (< 155 chars) remplis et pertinents ? Canonical correct ?
 Compare avec docs/design/page-compositions.md si disponible.
 
 Phase 2 — Expérience utilisateur réelle (parcours happy path) :
@@ -2710,6 +2715,7 @@ Simule le parcours attendu du persona (cf. project-context.md) sur cette page :
 3. Les messages sont-ils en français correct, sans jargon technique, utiles ?
 4. Le parcours est-il fluide ? Nombre de clics pour accomplir l'action principale.
 5. Après l'action, l'utilisateur sait-il ce qui s'est passé et quoi faire ensuite ?
+6. Si la feature produit un livrable destiné au CLIENT du persona (document, email, PDF, lien partagé) : ouvrir ce livrable comme le recevrait le client final. Est-il professionnel, complet, sans artefacts techniques ? Le client final aurait-il confiance ? Si non → P1.
 
 Phase 3 — Crash test (l'utilisateur fait n'importe quoi) :
 Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux :
@@ -2733,6 +2739,8 @@ Phase 4 — Garde-fous et cas limites :
 4. Erreurs serveur : que se passe-t-il si l'API renvoie 500 ? 404 ? Timeout ?
 5. Concurrence : deux onglets ouverts, modifier la même donnée → conflit géré ?
 6. Back button : retour arrière après chaque action critique → état cohérent ?
+7. Conformité légale de la page : bannière cookies/consentement présente si cookies non essentiels ? Liens vers mentions légales et politique de confidentialité accessibles ? Si formulaire collectant des données personnelles : case de consentement explicite ? Texte RGPD visible ?
+8. Accessibilité : navigation clavier complète (Tab à travers tous les éléments interactifs, Enter/Space pour valider, Escape pour fermer). Focus visible sur chaque élément. Contrastes texte/fond >= 4.5:1. Labels sur chaque champ de formulaire. Lancer axe-core si disponible — violations A et AA = bugs.
 
 Phase 5 — Sécurité front basique :
 1. XSS : chaque champ de saisie testé avec <script>, <img onerror=>, javascript:
