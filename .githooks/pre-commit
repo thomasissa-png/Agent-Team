@@ -1,0 +1,10 @@
+#!/bin/sh
+# Guard: CLAUDE.md must stay under 120 lines (Règle n°7)
+MAX=120
+if [ -f "CLAUDE.md" ]; then
+  LINES=$(wc -l < CLAUDE.md)
+  if [ "$LINES" -gt "$MAX" ]; then
+    echo "BLOCKED: CLAUDE.md has $LINES lines (max $MAX). Move content to _base-agent-protocol.md or _gates.md."
+    exit 1
+  fi
+fi

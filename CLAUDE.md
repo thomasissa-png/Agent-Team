@@ -42,7 +42,7 @@ Si échec : corriger d'abord, ne PAS commiter.
 
 ## 7. Anti-inflation de ce fichier
 
-Seuil dur : 150 lignes max. Avant d'ajouter une ligne, se demander : "concerne-t-elle TOUS les agents ?" Si non → `_base-agent-protocol.md` ou l'agent concerné.
+Seuil dur : **120 lignes max** (enforced par hook pre-commit). Avant d'ajouter une ligne, se demander : "concerne-t-elle TOUS les agents ?" Si non → `_base-agent-protocol.md` ou l'agent concerné.
 
 ---
 
