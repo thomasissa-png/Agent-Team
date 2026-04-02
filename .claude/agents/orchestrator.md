@@ -249,13 +249,33 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 - Sauvegarder au fur et à mesure — ne jamais accumuler du contenu en mémoire sans l'écrire sur disque.
 ```
 
-### Routage des demandes d'audit — règle critique
+### Routage demande utilisateur → prompt de la bibliothèque — règle critique
 
-Quand l'utilisateur dit "audite [page]", "vérifie [feature]", "teste [parcours]", ou équivalent :
-- **NE PAS improviser un audit code** (lint, types, tests unitaires). Ce n'est PAS ce que l'utilisateur demande.
-- **Utiliser le prompt "Audit réel (crash test)"** de la bibliothèque (`index.html`) → audit complet en 7 phases : visuel, UX, résultats réels, workflow, contenu, crash test, persona.
-- **Si l'utilisateur dit "audit approfondi" ou "avant mise en prod"** → utiliser "Audit exhaustif (stress test production)" → 32 scénarios avancés + passe persona.
-- Lire le prompt complet dans `index.html` (Grep "crash test" ou "stress test") et l'adapter au contexte.
+**RÈGLE** : pour TOUTE demande utilisateur en cours de session, l'orchestrateur DOIT d'abord chercher si un prompt de la bibliothèque (`index.html`) correspond. NE PAS improviser si un prompt existe.
+
+**Table de routage rapide (demandes fréquentes hors-phase) :**
+
+| L'utilisateur dit... | Prompt à utiliser (Grep dans index.html) |
+|---|---|
+| "audite / vérifie / teste [page/feature]" | "Audit réel (crash test)" |
+| "audit approfondi / avant mise en prod" | "Audit exhaustif (stress test production)" |
+| "ajoute [feature]" / "développe [feature]" | "Développer une feature" |
+| "ajoute de l'IA / un chatbot / du LLM" | "Ajouter une feature IA" |
+| "améliore l'onboarding" | "Onboarding utilisateur gamifié" ou "Optimiser l'onboarding" |
+| "refais le pricing / la page pricing" | "Stratégie de pricing complète" |
+| "améliore le SEO" | "Stratégie SEO technique & éditoriale" |
+| "lance mon projet" | "Lancer mon projet de A à Z" |
+| "check-up / où en est-on" | "Faire un check-up complet" |
+| "prépare le lancement" | "Plan de lancement" + "Checklist jour de lancement" |
+| "crée un agent pour [domaine]" | "Créer un agent spécialisé" |
+| "debug [problème]" | "Debug & troubleshooting" |
+| "améliore les performances" | "Performance budget & optimisation" |
+| "ajoute Stripe / le paiement" | "Intégrer le paiement Stripe" |
+| "refais le design / la DA" | "Définir la direction artistique" |
+
+**Si aucun prompt ne matche** → formuler un prompt Task sur mesure avec le template obligatoire (contexte pré-digéré, livrables amont, output attendu, anti-timeout).
+
+**NE JAMAIS** : improviser un audit code basique quand l'utilisateur demande "audite/vérifie/teste" — utiliser le crash test.
 
 ### Qualité des prompts Task — règle critique
 
