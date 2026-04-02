@@ -2686,6 +2686,72 @@ Critères de validation : 100% des pages vérifiées sur 21 dimensions + accessi
 Anti-timeout : vérifier 2-3 pages simples OU 1 page complexe (formulaires, états multiples) par message. Sauvegarder le rapport après chaque batch. Si coupure : reprendre à la page suivante non vérifiée.`
       },
       {
+        title:"Audit réel d'une page ou feature (crash test utilisateur)",
+        agents:["qa","fullstack","ux"],
+        quand:"Tu viens de développer une page ou une feature et tu veux un audit COMPLET — pas juste le code, mais l'expérience réelle. Remplace [page/feature] par ta cible. Ce prompt simule un utilisateur qui fait n'importe quoi. Si la description fait moins de 20 mots, @qa posera des questions de clarification.",
+        prompt:`@qa Lis project-context.md. Cible de l'audit : [page ou feature, ex : "page pricing" ou "formulaire de création de projet" ou "dashboard analytics"].
+
+Tu es un utilisateur réel, pas un linter. Tu vas UTILISER cette page/feature comme un vrai humain — y compris en faisant des bêtises. L'objectif n'est pas de vérifier que le code compile, c'est de vérifier que l'EXPÉRIENCE est à 9/10.
+
+Phase 1 — Rendu visuel et première impression (5 secondes) :
+Lance le serveur dev et screenshot la page sur 3 devices (Playwright : iPhone 13, iPad, Desktop Chrome).
+1. En 5 secondes, est-ce que je comprends ce que cette page fait ? Si non → FAIL.
+2. La hiérarchie visuelle est-elle claire ? (titre > sous-titre > contenu > CTA)
+3. Les éléments sont-ils alignés, espacés régulièrement, sans chevauchement ?
+4. Les images chargent-elles ? Sont-elles pertinentes (pas des placeholders) ?
+5. Le responsive fonctionne-t-il ? Texte lisible, CTA visible, pas de scroll horizontal sur mobile.
+6. Dark mode (si applicable) : tout est lisible, pas de texte invisible sur fond sombre.
+Compare avec docs/design/page-compositions.md si disponible.
+
+Phase 2 — Expérience utilisateur réelle (parcours happy path) :
+Simule le parcours attendu du persona (cf. project-context.md) sur cette page :
+1. L'utilisateur sait-il ce qu'il doit faire ? (affordance des éléments cliquables)
+2. Chaque action a-t-elle un feedback ? (click → loading → success/error)
+3. Les messages sont-ils en français correct, sans jargon technique, utiles ?
+4. Le parcours est-il fluide ? Nombre de clics pour accomplir l'action principale.
+5. Après l'action, l'utilisateur sait-il ce qui s'est passé et quoi faire ensuite ?
+
+Phase 3 — Crash test (l'utilisateur fait n'importe quoi) :
+Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux :
+- Champs vides → soumission (validation ?)
+- Email invalide ("pasunmail", "a@b", "@.com")
+- Texte trop long (500 chars dans un champ nom)
+- Caractères spéciaux (émojis 🎉, accents éèàç, balises <script>alert('xss')</script>, guillemets "doubles" et 'simples')
+- Nombres négatifs, zéro, très grands (999999999)
+- Copier-coller de texte formaté (depuis Word/Google Docs avec styles)
+- Double-clic rapide sur les boutons de soumission
+- Retour arrière navigateur après soumission
+- Rafraîchir la page en plein formulaire (données perdues ?)
+- Couper le réseau en pleine action (mode offline)
+- Session expirée → que se passe-t-il ?
+Pour chaque test : noter le résultat (OK / BUG avec description).
+
+Phase 4 — Garde-fous et cas limites :
+1. Permissions : un utilisateur non-connecté peut-il accéder ? Un utilisateur A peut-il voir les données de B ?
+2. États de données : page avec 0 donnée (empty state utile ?), 1 donnée, 100 données (pagination ?), données nulles/manquantes.
+3. Rate limiting : peut-on spammer un endpoint ? (10 requêtes/seconde)
+4. Erreurs serveur : que se passe-t-il si l'API renvoie 500 ? 404 ? Timeout ?
+5. Concurrence : deux onglets ouverts, modifier la même donnée → conflit géré ?
+6. Back button : retour arrière après chaque action critique → état cohérent ?
+
+Phase 5 — Sécurité front basique :
+1. XSS : chaque champ de saisie testé avec <script>, <img onerror=>, javascript:
+2. Données sensibles : rien dans le DOM, localStorage, paramètres d'URL
+3. CSRF : les formulaires sensibles (paiement, suppression) ont une protection
+4. Console : 0 erreur JS, 0 warning critique, 0 log de debug en production
+
+Rapport structuré :
+| # | Test | Résultat | Sévérité | Détail |
+|---|------|----------|----------|--------|
+
+Classification : P0 (bloquant — crash, perte de données, faille sécurité), P1 (dégradé — UX cassée, bug visible), P2 (mineur — cosmétique, amélioration).
+
+Puis @fullstack : corrige TOUS les bugs P0 et P1. Un commit par fix. Puis @qa re-vérifie chaque fix.
+Puis @ux : vérifie que les corrections n'ont pas cassé le parcours utilisateur.
+
+Critères de validation : 0 bug P0, 0 bug P1, l'expérience est fluide du point de vue du persona, les garde-fous arrêtent les comportements adversariaux.`
+      },
+      {
         title:"Checklist jour de lancement",
         agents:["orchestrator","qa","infrastructure","legal"],
         quand:"Tout est développé, testé, prêt — tu es à J-1 du lancement. Cette checklist est ton filet de sécurité final. Mieux vaut reporter d'un jour que lancer avec un blocker.",
