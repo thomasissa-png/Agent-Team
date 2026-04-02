@@ -43,7 +43,7 @@ Chaque learning suit ce format à 11 colonnes :
 | 2026-03-31 | 2026-03-31 | pattern | P1 | Stale-while-revalidate localStorage pour pages avec fetch >3s — UX morte sans cache local | Pattern documenté dans fullstack.md | Cache localStorage + refresh background pour fetch lents | agent-spécifique | fullstack.md | fait | propagé |
 | 2026-03-31 | 2026-03-31 | préférence fondateur | P1 | Backoffice bâclé = anti-pattern universel. Même design system que le front. | Règle ajoutée dans design.md + fullstack.md | Le backoffice utilise les mêmes tokens et composants | agent-spécifique + founder-prefs | design.md, fullstack.md, founder-preferences.md | fait | propagé |
 | 2026-03-31 | 2026-03-31 | préférence fondateur | P1 | 13 nouvelles préférences fondateur + 8 anti-patterns issus de 4 projets (Sarani, Versiroom, ImmoCrew) | Ajoutées dans founder-preferences.md | Learnings cross-projets propagés dans le framework central | founder-prefs | founder-preferences.md | fait | propagé |
-| 2026-03-31 | 2026-03-31 | recommandation | P1 | Prompts index.html à mettre à jour avec les nouveaux learnings | En cours — @fullstack met à jour | Les prompts frontend doivent refléter les nouvelles capacités | prompts | index.html | fait | en-cours |
+| 2026-03-31 | 2026-03-31 | recommandation | P1 | Prompts index.html à mettre à jour avec les nouveaux learnings | Appliqué — 15 commits ont propagé les learnings dans index.html (self-fetch, zéro fausse promesse, migration modèle, etc.) | Les prompts frontend doivent refléter les nouvelles capacités | prompts | index.html | fait | propagé |
 
 ## Session 2026-03-28 — Gradient Agents (session transformationnelle — 20 agents état de l'art)
 
