@@ -2717,6 +2717,25 @@ Simule le parcours attendu du persona (cf. project-context.md) sur cette page :
 5. Après l'action, l'utilisateur sait-il ce qui s'est passé et quoi faire ensuite ?
 6. Si la feature produit un livrable destiné au CLIENT du persona (document, email, PDF, lien partagé) : ouvrir ce livrable comme le recevrait le client final. Est-il professionnel, complet, sans artefacts techniques ? Le client final aurait-il confiance ? Si non → P1.
 
+Phase 2b — Vérification des résultats réels (pas juste le feedback visuel) :
+Après CHAQUE action principale, vérifier que le résultat est RÉEL :
+1. Données persistées : après création/modification, rafraîchir la page — les données sont-elles toujours là ? Vérifier en base si possible (Prisma Studio, API directe).
+2. Redirections : après soumission, le redirect mène-t-il à la bonne page avec le bon contenu (pas une page vide, pas un 404) ?
+3. Emails/notifications : si l'action déclenche un email (confirmation, notification), est-il réellement envoyé ? Contenu correct ? Liens fonctionnels (pas localhost) ?
+4. Effets de bord : l'action met-elle à jour les compteurs, les listes, les tableaux de bord qui dépendent de cette donnée ? Vérifier les pages liées.
+5. Annulation / modification : après avoir créé quelque chose, peut-on le modifier ? Le supprimer ? Les changements se propagent-ils partout ?
+6. État après logout/login : quitter la session, se reconnecter — les données créées sont-elles toujours là et cohérentes ?
+
+Phase 2c — Critique du workflow (le parcours est-il OPTIMAL ?) :
+Ne pas juste tester le workflow tel qu'il est — le CHALLENGER :
+1. Étapes inutiles : y a-t-il une étape qui n'apporte pas de valeur au persona ? (ex: page de confirmation "êtes-vous sûr ?" quand l'action est non-destructive)
+2. Étapes condensables : deux écrans pourraient-ils être un seul ? (ex: formulaire en 3 pages alors que tout tient sur 1)
+3. Champs inutiles : chaque champ est-il NÉCESSAIRE pour cette action ? Un champ "entreprise" obligatoire pour un persona freelance → friction inutile. Un champ optionnel rarement rempli → le supprimer ou le déplacer.
+4. Friction vs valeur : le nombre de clics pour accomplir l'action principale est-il justifié ? Benchmark : les meilleurs produits du marché font-ils plus court ?
+5. Chemins alternatifs manquants : l'utilisateur peut-il accomplir son objectif d'une autre façon plus rapide ? (ex: raccourci clavier, import CSV au lieu de saisie manuelle, copier un existant)
+6. Points de sortie : à quelle étape l'utilisateur abandonne-t-il le plus probablement ? Pourquoi ? Peut-on réduire cette friction ?
+Si une étape ou un champ est inutile → signaler comme P2 "workflow : [étape/champ] peut être supprimé/condensé — raison : [...]".
+
 Phase 3 — Crash test (l'utilisateur fait n'importe quoi) :
 Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux :
 - Champs vides → soumission (validation ?)
