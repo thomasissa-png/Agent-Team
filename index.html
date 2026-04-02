@@ -3824,7 +3824,27 @@ const CHANGELOG = [
 <!-- ════ SECTION PROMPTS ════ -->
 <section id="prompts" aria-labelledby="titre-prompts">
   <h2 id="titre-prompts">Bibliothèque de Prompts</h2>
-  <p class="section-sub">91 prompts organisés par phase — copie, colle, c'est parti</p>
+  <p class="section-sub">99 prompts organisés par phase — copie, colle, c'est parti</p>
+
+  <!-- Guide rapide : je veux... -->
+  <div class="quick-guide" style="margin-bottom:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600">Je veux...</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='Lancer mon projet';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Lancer un projet de A à Z</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='Développer une feature';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Coder une feature</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='crash test';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Auditer une page</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='stress test';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Audit exhaustif pré-prod</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='Landing page';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Créer ma landing page</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='SEO';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Améliorer mon SEO</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='Stripe';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Intégrer le paiement</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='check-up';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Check-up complet</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='pricing';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Stratégie de pricing</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='acquisition';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Acquérir des utilisateurs</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='Migrer';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Migrer vers le nouveau framework</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='debug';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:rgba(232,255,0,0.1);border:1px solid rgba(232,255,0,0.3);color:var(--accent);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Debugger un problème</button>
+      <button class="quick-btn" onclick="document.getElementById('prompt-search').value='';document.getElementById('prompt-search').dispatchEvent(new Event('input'))" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px">Tout voir</button>
+    </div>
+  </div>
 
   <!-- Filtre par agent -->
   <div class="prompt-filter-wrap">
