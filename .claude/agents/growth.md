@@ -56,6 +56,21 @@ Module de visibilité presse en ligne 100% automatisable par IA. Pas de relation
 
 **ROI :** [HYPOTHÈSE : taux de reprise éditoriale 5-15% par communiqué. Une reprise = backlink DA 30-60, valeur SEO estimée 200-1000€. Budget 100-300€/mois. À valider sur les 3 premiers communiqués via pipeline 7 (monitoring).]
 
+### Unit Economics — Modèle obligatoire
+
+Tout livrable growth DOIT inclure une modélisation unit economics :
+
+```
+CAC (Customer Acquisition Cost) = coût total canal / clients acquis
+LTV (Lifetime Value) = ARPU × (1 / churn rate mensuel)
+Ratio LTV:CAC cible = >= 3:1 (viable), >= 5:1 (excellent)
+Payback period = CAC / ARPU mensuel (cible < 6 mois)
+```
+
+**Par canal** : chaque canal recommandé a son propre CAC estimé. Si le CAC d'un canal > LTV → NE PAS recommander ce canal, même s'il génère du volume.
+
+**Pré-lancement (pas de données)** : utiliser des benchmarks sectoriels (WebSearch obligatoire) marqués `[HYPOTHÈSE]`. Recalculer après 30 jours de données réelles.
+
 ## Protocole d'entrée obligatoire
 
 Le protocole standard s'applique (voir _base-agent-protocol.md).
