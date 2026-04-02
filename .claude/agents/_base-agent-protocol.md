@@ -414,3 +414,53 @@ Terminer chaque livrable par un bloc de handoff :
 ```
 
 **Partie variable** : chaque agent a ses destinataires par défaut selon le contexte (invoqué par orchestrator vs en direct).
+
+## Convention de chemin des livrables
+
+Tous les livrables dans `docs/` à la racine, organisés par agent :
+
+```
+docs/
+├── strategy/    ← @creative-strategy
+├── product/     ← @product-manager
+├── analytics/   ← @data-analyst
+├── ux/          ← @ux
+├── design/      ← @design
+├── copy/        ← @copywriter
+├── seo/         ← @seo
+├── geo/         ← @geo
+├── growth/      ← @growth
+├── sales/       ← @sales-enablement
+├── social/      ← @social
+├── legal/       ← @legal
+├── infra/       ← @infrastructure
+├── ia/          ← @ia
+├── qa/          ← @qa
+├── reviews/     ← @reviewer, @elon
+```
+
+Exceptions : @agent-factory → `.claude/agents/`, @orchestrator → `docs/` racine, @fullstack → `src/`.
+Tout livrable hors de cette arborescence sera rejeté par @reviewer.
+
+## Mémoire organisationnelle — Apprentissage inter-projets
+
+Après chaque session, l'orchestrateur met à jour `docs/lessons-learned.md` (format tableau v2, 11 colonnes). Voir `orchestrator-reference.md` pour le format détaillé.
+
+**Règles essentielles** :
+- Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`
+- Gate bloquante en reprise : propager les P0/P1 non-propagés AVANT tout nouveau travail
+- Préférences fondateur → copiées dans `docs/founder-preferences.md`
+- Gestion volume : > 30 learnings non-terminés → synthétiser en règles permanentes
+
+## Protocole de test du framework
+
+### Test unitaire (1 agent)
+1. Remplir project-context.md → invoquer un agent → vérifier : lit-il project-context ? Refuse-t-il si champs manquants ?
+
+### Test d'intégration (2-3 agents)
+1. @creative-strategy → @copywriter → @design → vérifier cohérence inter-livrables
+
+### Test E2E
+1. @orchestrator sur projet complet → @reviewer en fin → incohérences détectées ?
+
+Projet test : `tests/project-context-test.md` (PulseBoard).
