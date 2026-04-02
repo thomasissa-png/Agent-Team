@@ -2736,6 +2736,14 @@ Ne pas juste tester le workflow tel qu'il est — le CHALLENGER :
 6. Points de sortie : à quelle étape l'utilisateur abandonne-t-il le plus probablement ? Pourquoi ? Peut-on réduire cette friction ?
 Si une étape ou un champ est inutile → signaler comme P2 "workflow : [étape/champ] peut être supprimé/condensé — raison : [...]".
 
+Phase 2d — Challenge du contenu et des choix (le fond, pas la forme) :
+1. Promesse vs réalité : le titre/CTA promet-il quelque chose que la page délivre réellement ? Si le bouton dit "Générer mon rapport en 30 secondes" et que ça prend 2 minutes → mensonge → P1.
+2. Copy convaincant : les textes donneraient-ils envie au persona de continuer ? Ou sont-ils génériques/ennuyeux ? Les bénéfices sont-ils mis en avant (pas juste les features) ? Les objections du persona (cf. personas.md) sont-elles adressées ?
+3. Preuve sociale / crédibilité : y a-t-il des éléments de confiance (témoignages réels, logos clients, chiffres) ? Sont-ils crédibles (pas de faux témoignages avec des noms de personas) ?
+4. Pertinence business : cette page/feature résout-elle le problème N°1 du persona ? Si on la supprimait, le persona s'en rendrait-il compte ? Si non → questionner son existence.
+5. Benchmark sectoriel : WebSearch 2-3 concurrents directs — leur équivalent de cette page est-il meilleur/pire ? En quoi ? Quelles bonnes pratiques leur emprunter ?
+6. Cohérence avec le positionnement : le ton, les visuels, le niveau de détail correspondent-ils à la plateforme de marque (docs/strategy/brand-platform.md) ? Si brand-platform absent, le ton est-il au moins cohérent avec le reste du site ?
+
 Phase 3 — Crash test (l'utilisateur fait n'importe quoi) :
 Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux :
 - Champs vides → soumission (validation ?)
@@ -2777,12 +2785,27 @@ Rapport structuré :
 | # | Test | Résultat | Sévérité | Détail |
 |---|------|----------|----------|--------|
 
-Classification : P0 (bloquant — crash, perte de données, faille sécurité), P1 (dégradé — UX cassée, bug visible), P2 (mineur — cosmétique, amélioration).
+Classification : P0 (bloquant — crash, perte de données, faille sécurité), P1 (dégradé — UX cassée, bug visible), P2 (mineur — cosmétique, amélioration), P2-workflow (suggestion d'optimisation du parcours).
 
-Puis @fullstack : corrige TOUS les bugs P0 et P1. Un commit par fix. Puis @qa re-vérifie chaque fix.
-Puis @ux : vérifie que les corrections n'ont pas cassé le parcours utilisateur.
+Score initial : compter le nombre de tests par phase. Score = tests OK / tests total × 10.
 
-Critères de validation : 0 bug P0, 0 bug P1, l'expérience est fluide du point de vue du persona, les garde-fous arrêtent les comportements adversariaux.`
+Boucle d'itération (objectif : 0 P0, 0 P1, score >= 9/10) :
+
+Itération 1 :
+- @fullstack : corrige TOUS les P0, puis les P1. Un commit par fix logique (pas par ligne). Pour chaque fix, vérifier que le fix n'a pas cassé autre chose (run tsc + test du flux).
+- @qa : re-teste UNIQUEMENT les points corrigés + les 3 points adjacents (un fix peut créer un nouveau bug). Si un fix crée un nouveau P0/P1 → le signaler immédiatement, c'est la priorité.
+- @ux : vérifie que les corrections n'ont pas dégradé le parcours. Le workflow critique reste fluide ?
+Score après itération 1.
+
+Itération 2 (si P0 ou P1 restants) :
+- @fullstack : corrige les bugs restants + les régressions de l'itération 1.
+- @qa : re-teste tout (pas seulement les fixes — régression complète sur la page).
+Score après itération 2.
+
+Itération 3 (max — si encore P0/P1) :
+- Escalade à Thomas : "Après 2 itérations, [N] bugs P0/P1 persistent. Diagnostic : [cause]. Options : A) fix spécifique [détail], B) réécrire le composant, C) accepter en l'état."
+
+Critère de fin : 0 bug P0, 0 bug P1, score >= 9/10. Les P2 et P2-workflow sont documentés pour la prochaine itération (pas bloquants). Thomas valide le résultat final.`
       },
       {
         title:"Checklist jour de lancement",
