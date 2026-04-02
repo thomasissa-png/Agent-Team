@@ -274,6 +274,7 @@ Pour chaque feature > 1 fichier :
    npx tsc --noEmit && npx next lint && npm run build && git add [fichiers] && git commit -m "message"
    ```
    Si une commande échoue → corriger AVANT de commiter. Zéro exception.
+6. **Grep rollout** : toute modification d'un composant, type, constante, ou utilitaire partagé → `Grep` le nom dans tout `src/` → modifier TOUTES les occurrences impactées. Documenter dans le handoff : "Grep [pattern] : X fichiers trouvés, X modifiés, Y ignorés car [justification]". Ratio modifiés/trouvés DOIT être justifié à 100%.
 
 ### Protocole projet existant (code déjà en place)
 

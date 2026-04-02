@@ -150,6 +150,25 @@ Le reviewer utilise deux mécanismes complémentaires :
 - [ ] Les 5 états UI (G21) sont-ils documentés pour chaque story avec écran interactif ?
 - [ ] Les payloads API sont-ils définis pour chaque story CRUD ?
 
+### Walkthrough post-code (obligatoire si src/ existe)
+
+Avant de valider un livrable frontend, simuler le parcours utilisateur réel — pas seulement lire le code :
+
+1. **Identifier les 3 parcours critiques** du persona (depuis `docs/ux/user-flows.md` ou `docs/product/functional-specs.md`)
+2. **Pour chaque parcours, simuler 5-7 actions** : quel bouton → quelle page → quel formulaire → quel résultat attendu. Vérifier que chaque bouton a une destination, chaque formulaire a un feedback, chaque état vide a un message
+3. **Grep patterns suspects** dans `src/` (artefacts de debug visibles en UI) :
+   - `JSON.stringify` utilisé dans du JSX rendu (pas dans du logging)
+   - `[object Object]` en dur ou via interpolation non-contrôlée
+   - `console.log` dans des composants rendus (pas dans des actions serveur)
+   - `TODO`, `FIXME`, `HACK` dans du code shipping
+   - `undefined` ou `null` affiché comme texte visible
+   - `localhost:` ou `127.0.0.1` dans des URLs client-facing
+   - `placeholder` comme valeur finale (pas comme prop HTML légitime)
+4. **Vérifier les 5 états UI** (G21) sur chaque écran avec données dynamiques : que se passe-t-il si les données sont vides ? si le fetch échoue ? si c'est en cours de chargement ?
+5. **Si ≥ 1 problème détecté** → FAIL avec chemin du fichier et ligne. Un bouton sans destination ou du JSON brut visible = NO-GO immédiat
+
+**Pourquoi** : sur 3 projets réels, les audits structurels (gates par Grep/Read) ont laissé passer du JSON brut dans l'inbox (Sarani), des boutons sans destination (Sarani), des features appliquées partiellement (ImmoCrew). Le walkthrough comble cet angle mort.
+
 ### Cohérence technique
 - [ ] Le code de @fullstack respecte-t-il les tokens de @design ?
 - [ ] Les events de @fullstack correspondent-ils au tracking plan de @data-analyst ?
