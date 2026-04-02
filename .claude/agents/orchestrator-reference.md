@@ -43,6 +43,12 @@ Phase 5 (Audit & Validation) :
 - Checklist jour de lancement (GO/NO-GO final)
 - @infrastructure → "Monitoring post-launch"
 
+**Prompts d'audit ciblé (utilisables à tout moment, pas seulement en Phase 5)** :
+- @qa + @fullstack + @ux → "Audit réel d'une page ou feature (crash test)" — audit rapide en 7 phases : visuel, UX, résultats réels, workflow, contenu, crash test inputs, garde-fous, sécurité, persona. À utiliser dès qu'une page/feature est codée.
+- @qa + @fullstack + @ux → "Audit exhaustif d'une page ou feature (stress test production)" — 32 scénarios avancés : cross-device, interruption/reprise, idempotence, race conditions, timezone, etc. Prérequis : audit rapide d'abord. À utiliser avant mise en production.
+
+**RÈGLE : quand l'utilisateur dit "audite [page/feature]", "vérifie [page]", "teste [feature]", ou équivalent → utiliser le prompt "Audit réel (crash test)" de la bibliothèque. NE PAS improviser un audit code basique. Si l'utilisateur demande un audit approfondi ou pré-production → utiliser "Audit exhaustif (stress test)".**
+
 **Prompts conditionnels par type de projet** :
 - SaaS : "Intégrer le paiement Stripe" + "Authentification & autorisation" + "Design système de notifications" + "Stratégie de pricing complète" + "Configurer une motion PLG"
 - Site vitrine : "Landing page complète" prioritaire + "SEO + GEO combinés"

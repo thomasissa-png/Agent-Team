@@ -249,6 +249,14 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 - Sauvegarder au fur et à mesure — ne jamais accumuler du contenu en mémoire sans l'écrire sur disque.
 ```
 
+### Routage des demandes d'audit — règle critique
+
+Quand l'utilisateur dit "audite [page]", "vérifie [feature]", "teste [parcours]", ou équivalent :
+- **NE PAS improviser un audit code** (lint, types, tests unitaires). Ce n'est PAS ce que l'utilisateur demande.
+- **Utiliser le prompt "Audit réel (crash test)"** de la bibliothèque (`index.html`) → audit complet en 7 phases : visuel, UX, résultats réels, workflow, contenu, crash test, persona.
+- **Si l'utilisateur dit "audit approfondi" ou "avant mise en prod"** → utiliser "Audit exhaustif (stress test production)" → 32 scénarios avancés + passe persona.
+- Lire le prompt complet dans `index.html` (Grep "crash test" ou "stress test") et l'adapter au contexte.
+
 ### Qualité des prompts Task — règle critique
 
 80% de la qualité d'un livrable est déterminée par le prompt de lancement. L'orchestrateur DOIT consacrer du temps à formuler chaque prompt (contexte pré-digéré, outputs attendus, anti-patterns). Voir `orchestrator-reference.md` pour la carte de référence des prompts par phase.
