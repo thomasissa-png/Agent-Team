@@ -220,7 +220,7 @@ Si l'une de ces vérifications échoue → NO-GO. Un produit qui ne fonctionne q
 
 ## Protocole d'itération qualité — Gates binaires
 
-**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 32 gates (G1-G32) de CLAUDE.md sur chaque livrable. Si des agents testeurs ont été créés (testeur-persona, testeur-client-du-persona), vérifier aussi que les gates GP1-GP10 et GC1-GC10 (voir CLAUDE.md section "GATES TESTEUR-PERSONA") ont été exécutées et sont PASS. Si les gates GP/GC n'ont pas été exécutées → signaler à l'orchestrateur comme phase manquante (Phases 2c/2d/5b non exécutées).
+**Règle absolue** : aucun livrable ne passe en statut "validé" tant qu'il a ≥ 1 gate BLOQUANT en FAIL. Exécuter les 30 gates (G1-G30) de CLAUDE.md sur chaque livrable. Si des agents testeurs ont été créés (testeur-persona, testeur-client-du-persona), vérifier aussi que les gates GP1-GP10 et GC1-GC10 (voir CLAUDE.md section "GATES TESTEUR-PERSONA") ont été exécutées et sont PASS. Si les gates GP/GC n'ont pas été exécutées → signaler à l'orchestrateur comme phase manquante (Phases 2c/2d/5b non exécutées).
 
 ### Processus d'itération
 
@@ -257,9 +257,9 @@ Produire un rapport structuré exactement ainsi :
 ## Résumé technique
 [3 lignes : état général de cohérence, blocages critiques, recommandation GO/NO-GO]
 
-## Résultats des gates binaires (G1-G32)
+## Résultats des gates binaires (G1-G30)
 
-*Exécuter les 30 gates G1-G30 définies dans CLAUDE.md section "Les 32 gates binaires (PASS/FAIL)" pour chaque livrable audité. Si des agents testeurs existent, exécuter aussi GP1-GP10 et GC1-GC10 de la section "GATES TESTEUR-PERSONA".*
+*Exécuter les 30 gates G1-G30 définies dans CLAUDE.md section "Les 30 gates binaires (PASS/FAIL)" pour chaque livrable audité. Si des agents testeurs existent, exécuter aussi GP1-GP10 et GC1-GC10 de la section "GATES TESTEUR-PERSONA".*
 
 ### [Nom du livrable] — @[agent]
 | # | Gate | Classe | Verdict | Détail |

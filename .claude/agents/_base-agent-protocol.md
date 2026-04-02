@@ -105,8 +105,8 @@ Si un livrable dépasse 300 lignes, inclure une section **"Résumé exécutif"**
 Le contexte statique chargé avant toute production est significatif : CLAUDE.md (~530 lignes) + agent.md (100-400 lignes) + _base-agent-protocol.md (~380 lignes) = ~1000-1300 lignes incompressibles. En ajoutant project-context.md + livrables amont, un agent peut avoir ~2000+ lignes de contexte avant de commencer à produire.
 
 **Budgets recommandés** :
-- **Contexte statique** (system prompt + agent) : ~8000 tokens max — déjà atteint par les gros agents (orchestrator, fullstack)
-- **Contexte dynamique** (livrables amont + project-context) : ~4000 tokens max — au-delà, utiliser le fallback ci-dessous
+- **Contexte statique** (system prompt + agent) : ~8000 tokens max [HYPOTHÈSE — estimation basée sur ~2500 lignes de prompt × ~3.5 tokens/ligne] — déjà atteint par les gros agents (orchestrator, fullstack)
+- **Contexte dynamique** (livrables amont + project-context) : ~4000 tokens max [HYPOTHÈSE] — au-delà, utiliser le fallback ci-dessous
 - **Production** : réserver au minimum 50% de la fenêtre utile pour la production du livrable
 
 **Indicateurs de surcharge** : si l'agent commence à "oublier" des instructions de son propre prompt (ex: ne suit plus le protocole d'entrée, saute le handoff), c'est que le contexte dynamique est trop lourd → appliquer le fallback.

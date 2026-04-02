@@ -40,7 +40,7 @@
 - **Contraintes specifiques** : Les 89 prompts doivent etre auto-suffisants (fonctionner sans editer de fichiers manuellement)
 
 ## Notes libres
-Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates binaires. Systeme de qualite PASS/FAIL (plus de scoring 1-5). Cycle : Idee → V1 → Production → Croissance. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
+Mission actuelle : framework consolide avec 89 prompts, 20 agents, 30 gates binaires. Systeme de qualite PASS/FAIL (plus de scoring 1-5). Cycle : Idee → V1 → Production → Croissance. Les 3 prompts Tout-en-un (autopilot, check-up, pivot) utilisent la carte de reference pour garantir la parite qualite avec les prompts individuels.
 
 ## Historique des interventions agents
 | Agent | Date | Fichiers | Decisions cles | Pourquoi |
@@ -95,7 +95,7 @@ Session la plus massive du framework. ~40 commits, ~25 fichiers modifies, ~1500+
 (3) Shadow Mode @moi Phase 1 (score fidelite, 3 niveaux confiance, territoire inconnu, cout revert).
 (4) Mode hotfix production (skip phases strat, binome fullstack+qa, G28 obligatoire).
 (5) 2 profils V1-Production / Exploration.
-(6) Gates G26-G32 (screenshots, tracabilite, pre-deploy, layout, images, tokens 3-tiers, 6 etats composants). Total : 32 gates.
+(6) Gates G26-G32 (screenshots, tracabilite, pre-deploy, layout, images, tokens 3-tiers, 6 etats composants). Total : 30 gates.
 (7) Boucle visuelle integree dans tout le pipeline (fullstack produit, orchestrator verifie, ux utilise, qa teste, reviewer valide).
 
 **20 agents enrichis etat de l'art :**
@@ -127,7 +127,7 @@ Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regressi
 ### Livrables de cette session
 | Fichier | Statut | Notes |
 |---|---|---|
-| CLAUDE.md | Complet | 32 gates G1-G32, learnings v2, promotion gates ad-hoc |
+| CLAUDE.md | Complet | 30 gates G1-G30, learnings v2, promotion gates ad-hoc |
 | orchestrator.md | Complet | Checkpoint specs, profils, hotfix, cout, circuit breaker, metriques live, boucle visuelle |
 | _base-agent-protocol.md | Complet | PVU (10 types audit), contribution learnings, gates BLOQUANT avant handoff |
 | moi.md | Complet | Shadow Mode Phase 1, calibration quantitative, territoire inconnu, cout revert |
@@ -140,11 +140,11 @@ Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regressi
 | social.md | Complet | Social listening, content pillars, flywheel, UGC, hooks, algorithmes |
 | qa.md | Complet | Testing trophy, Playwright Agents, self-healing, contract/mutation, API/DB, risk-based |
 | product-manager.md | Complet | Discovery OST, Assumption Mapping, Release Planning, Feedback Loop |
-| reviewer.md | Complet | 32 gates template, coherence design/ux, PVU, top 3 |
+| reviewer.md | Complet | 30 gates template, coherence design/ux, PVU, top 3 |
 | ia.md | Complet | Structured outputs, LLM evals, guardrails, observabilite, RAG, prompt livrable |
 | elon.md | Complet | 10 modeles mentaux, outils analyse, orientation check |
 | geo.md | Complet | Entity-first, passage-level, citation patterns, monitoring, off-site, freshness |
-| index.html | Complet | 12+ prompts mis a jour, 32 gates, boucle visuelle, PVU |
+| index.html | Complet | 12+ prompts mis a jour, 30 gates, boucle visuelle, PVU |
 | founder-preferences.md | Complet | 28 preferences, 22 anti-patterns, 4 projets cross |
 | lessons-learned.md | Complet | Format v2 (11 colonnes), migration v1→v2 |
 | update.sh + install.sh | Complet | URLs corrigees Agent-Team, auto-copie update.sh |
@@ -165,6 +165,6 @@ Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regressi
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise). Session 2026-03-28 : ~40 commits, 20 agents enrichis etat de l'art, 32 gates, PVU, boucle visuelle, Shadow Mode @moi. Score 9.4/10. Priorite : (1) merger dans main, (2) lancer un projet reel en autopilot.
+Lis project-context.md (memo de reprise). Session 2026-03-28 : ~40 commits, 20 agents enrichis etat de l'art, 30 gates, PVU, boucle visuelle, Shadow Mode @moi. Score 9.4/10. Priorite : (1) merger dans main, (2) lancer un projet reel en autopilot.
 ```
 
