@@ -2781,6 +2781,26 @@ Phase 5 — Sécurité front basique :
 3. CSRF : les formulaires sensibles (paiement, suppression) ont une protection
 4. Console : 0 erreur JS, 0 warning critique, 0 log de debug en production
 
+Phase 6 — Audit par les yeux du persona ET de son client (si agents testeurs existent) :
+Si des agents testeur-persona et/ou testeur-client-du-persona ont été créés via @agent-factory (vérifier : Glob .claude/agents/testeur-*.md), les invoquer sur cette page spécifique. Si aucun testeur n'existe → créer un mini-persona inline basé sur project-context.md et simuler.
+
+Testeur-persona (ex: "Sophie la mandataire") évalue cette page :
+1. **Compréhension** : "En arrivant sur cette page, je comprends immédiatement ce qu'elle fait pour MOI ?"
+2. **Copy/messaging** : "Les textes me parlent dans MON vocabulaire métier ? Ou c'est du jargon marketing générique ?" — vérifier que le copy utilise les mots du persona (cf. docs/strategy/personas.md), pas du langage corporate.
+3. **Confiance** : "Est-ce que je fais confiance à cette page ? Le design fait-il pro ? Les éléments de preuve (témoignages, chiffres, logos) sont-ils crédibles ?"
+4. **Conviction** : "Après avoir lu cette page, ai-je envie de cliquer sur le CTA ? Ou je ferme l'onglet ?" — noter le moment précis où la conviction bascule (ou ne bascule pas).
+5. **Objections** : "Quelles sont mes objections après lecture ? (prix, confiance, complexité, engagement)" — comparer avec les objections documentées dans personas.md. Sont-elles adressées sur cette page ?
+6. **Ton** : "Le ton me correspond ? Trop sérieux ? Trop décontracté ? Trop commercial ?" — cohérence avec brand-voice.md.
+
+Testeur-client-du-persona (si B2B — ex: "le client de Sophie") évalue les outputs :
+1. **Professionnalisme** : "Le document/email/page que je reçois fait professionnel ? Pas 'généré par IA' ?"
+2. **Pertinence** : "Le contenu répond à MES attentes, pas celles du prestataire ?"
+3. **Action** : "Après réception, ai-je envie de donner suite (signer, rappeler, recommander) ?"
+
+Chaque point noté PASS/FAIL. Si >= 2 FAIL persona ou >= 1 FAIL client → P1 (pas P2 — c'est de l'expérience, pas du cosmétique).
+
+RAPPEL : les testeurs-persona sont un pré-filtre, pas une validation finale. Ils détectent les erreurs évidentes de ciblage. La validation définitive reste Thomas.
+
 Rapport structuré :
 | # | Test | Résultat | Sévérité | Détail |
 |---|------|----------|----------|--------|
