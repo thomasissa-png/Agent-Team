@@ -2686,7 +2686,7 @@ Critères de validation : 100% des pages vérifiées sur 21 dimensions + accessi
 Anti-timeout : vérifier 2-3 pages simples OU 1 page complexe (formulaires, états multiples) par message. Sauvegarder le rapport après chaque batch. Si coupure : reprendre à la page suivante non vérifiée.`
       },
       {
-        title:"Audit réel d'une page ou feature (crash test utilisateur)",
+        title:"Audit réel d'une page ou feature (crash test)",
         agents:["qa","fullstack","ux"],
         quand:"Tu viens de développer une page ou une feature et tu veux un audit COMPLET — pas juste le code, mais l'expérience réelle. Remplace [page/feature] par ta cible. Ce prompt simule un utilisateur qui fait n'importe quoi. Si la description fait moins de 20 mots, @qa posera des questions de clarification.",
         prompt:`@qa Lis project-context.md. Cible de l'audit : [page ou feature, ex : "page pricing" ou "formulaire de création de projet" ou "dashboard analytics"].
@@ -2843,6 +2843,67 @@ Itération 3 (max — si encore P0/P1) :
 - Escalade à Thomas : "Après 2 itérations, [N] bugs P0/P1 persistent. Diagnostic : [cause]. Options : A) fix spécifique [détail], B) réécrire le composant, C) accepter en l'état."
 
 Critère de fin : 0 bug P0, 0 bug P1, score >= 9/10. Les P2 et P2-workflow sont documentés pour la prochaine itération (pas bloquants). Thomas valide le résultat final.`
+      },
+      {
+        title:"Audit exhaustif d'une page ou feature (stress test production)",
+        agents:["qa","fullstack","ux"],
+        quand:"Après un audit rapide (crash test ci-dessus), ou quand tu veux une couverture totale avant mise en production. Ce prompt ajoute 30+ scénarios avancés que les utilisateurs déclencheront en vrai mais qu'on ne teste jamais en dev. Remplace [page/feature] par ta cible.",
+        prompt:`@qa Lis project-context.md. Cible : [page ou feature].
+
+PRÉREQUIS : avoir d'abord exécuté l'audit rapide "crash test" sur cette page. Ce prompt COMPLÈTE l'audit rapide avec les scénarios avancés, il ne le remplace pas.
+
+Lis le rapport de l'audit rapide (docs/qa/ ou output précédent) pour ne pas retester ce qui est déjà couvert.
+
+=== PRIORITÉ 1 — FONCTIONNEL / RÉSULTATS RÉELS ===
+
+1. Cross-device journey : commencer le parcours sur mobile, reprendre sur desktop (ou inversement). L'état est-il persisté (formulaire partiel, progression, panier) ? Si non → P1.
+2. Interruption et reprise : quitter le parcours à mi-chemin (fermer l'onglet), revenir 30 min plus tard via historique. Où atterrit-on ? Données conservées (localStorage, session, brouillon auto) ?
+3. Idempotence : re-soumettre le même formulaire (refresh POST, re-clic après timeout réseau). Crée-t-il un doublon (double paiement, double inscription, double email) ? Les mutations serveur sont-elles idempotentes ?
+4. Race conditions front-end : navigation rapide aller-retour, debounce raté sur recherche live, deux appels API concurrents. L'état affiché correspond-il au dernier appel émis (pas à la dernière réponse reçue) ?
+5. Cache stale : après modification de données, un autre onglet ou un refresh montre-t-il l'ancienne version ? Hard-reload vs soft-reload = même résultat ?
+6. URL manipulation / deep linking : modifier les query params, mettre un ID inexistant, accéder directement à une URL profonde sans session. L'URL reflète-t-elle l'état (shareable) ? 404 correct pour les routes invalides ?
+7. Pagination edge cases : page 0, page -1, page 999 au-delà du max. 0 résultats vs 10 000 résultats. Compteurs cohérents après suppression. Scroll infini qui se termine proprement.
+8. État partiel mid-flow : fermer l'onglet au milieu d'un wizard/checkout. Données partiellement sauvegardées ? Brouillon récupérable ? Ressources temporaires (lock, réservation) nettoyées ?
+9. Actions irréversibles : identifier TOUTES les actions non-annulables (suppression, envoi email, publication). Chacune a-t-elle une confirmation AVANT avec mention explicite de l'irréversibilité ?
+10. Webhooks et events async : si la feature dépend de webhooks (Stripe, etc.), que se passe-t-il si le webhook arrive avant/après/jamais que l'utilisateur revienne ? L'état se met-il à jour en temps réel ?
+
+=== PRIORITÉ 2 — VISUEL / UX AVANCÉ ===
+
+11. Charge cognitive inter-écrans : les décisions des étapes précédentes sont-elles visibles aux étapes suivantes (récapitulatif, breadcrumb) ? L'utilisateur ne doit jamais "se souvenir" de ce qu'il a choisi 2 écrans plus tôt.
+12. Contexte d'utilisation dégradé : simuler une utilisation rapide et distraite — l'action principale est-elle faisable en < 60 secondes sans concentration ? Labels et CTA compréhensibles sans contexte ?
+13. First-time vs returning user : (a) nouvel utilisateur sans contexte — onboarding/guides présents ? (b) utilisateur revenant — aides disparues ? Empty state initial bienveillant et actionnable ?
+14. Aha moment : cette page fait-elle vivre au persona le moment où il comprend la valeur ? Si oui, ce moment est-il mis en scène ? Sinon, mène-t-elle vers ce moment ?
+15. Micro-frustrations cumulées : traverser le parcours complet en chronomètre. Noter CHAQUE moment de doute/pause/friction même mineur. Temps réel vs temps théorique. Ratio > 2x → frictions cachées.
+16. Empty state vécu : l'état vide est le premier écran de tout nouveau user. Contient-il : (a) explication de ce qu'on peut faire, (b) CTA vers la première action, (c) visuel rassurant ? "Aucun résultat" seul → P1.
+17. Persona atypique : simuler un utilisateur du persona qui n'a PAS le cas standard (secteur non listé, donnée manquante, quota atteint). Messages adaptés et fallback utile, ou erreur générique ?
+18. Scroll restoration : après navigation aller-retour, position de scroll restaurée ? Ancres #section fonctionnent avec header sticky (offset correct) ? Scroll-to-top sur changement de route ?
+19. Écrans extrêmes : ultra-wide (3440px), 4K avec scaling 150%, iPhone SE (320px), zoom navigateur 200%. Layout intact, texte lisible ?
+
+=== PRIORITÉ 3 — ENVIRONNEMENT / TECHNIQUE ===
+
+20. Timezone : un utilisateur en UTC+9 voit-il les bonnes dates/heures ? Dates relatives ("il y a 2h") correctes ? Deadlines/expirations dans le bon fuseau ?
+21. Locale et formats : séparateur décimal (1.500 vs 1,500), format date (DD/MM vs MM/DD), devise, tri alphabétique avec accents. Navigateur en locale en-US → affichage correct des € ?
+22. Browser extensions : ad blockers qui bloquent Stripe.js ou analytics, password managers qui injectent du DOM, extensions de traduction qui cassent React. Le site reste-t-il fonctionnel ?
+23. Memory leaks : page ouverte 8h sans interaction (dashboard, SPA), onglet en arrière-plan puis réactivé. JS ne fuit pas (listeners, WebSocket, intervalles) ? Page réactive ?
+24. Version mismatch post-deploy : utilisateur avec onglet V1 ouvert, serveur passe en V2. API rétro-compatible ? Signal de rechargement ? Pas de crash sur chunk manquant (Next.js dynamic import) ?
+25. Third-party degradation : Stripe lent (5s), CDN images down, OAuth timeout. La page reste-t-elle utilisable avec fallback, ou tout bloqué par un script tiers ?
+26. Multi-compte : deux comptes différents dans deux onglets. Le contexte (session, cookies) ne fuit-il pas ? Après switch de compte, données du bon utilisateur ?
+27. Print / export : Ctrl+P → rendu exploitable ? CSS @media print ? Si export CSV/PDF : accents, emojis, encodage UTF-8 BOM ?
+28. Clipboard / drag-and-drop : copier du contenu = texte propre (pas HTML parasite) ? Drop de fichier hors zone de drop = pas de navigation vers le fichier ?
+29. Notifications timing : si l'action déclenche une notification async (email, push), délai réel ? > 30s = perçu comme échec. Feedback immédiat même si envoi asynchrone ?
+
+=== PRIORITÉ 4 — SEO / LÉGAL / i18n (si applicable) ===
+
+30. SEO dynamique : les pages SSR/ISR rendent-elles le bon HTML pour un crawler (pas un spinner) ? view-source = contenu complet ? Routes dynamiques fallback = 404 correct pour slugs inexistants ?
+31. Internationalisation : si multilingue, changer la langue du navigateur → bascule ? Messages d'erreur traduits ? Formats date/devise adaptés à la locale ?
+32. Accessibilité cognitive : chaque message compréhensible par quelqu'un de non-expert, pressé, lisant en diagonale ? Zéro jargon technique visible. Instructions = 1 phrase courte max. Lire à voix haute — si ça sonne bizarre → bug.
+
+Rapport : tableau structuré avec sévérité (P0/P1/P2) et phase (Priorité 1/2/3/4).
+Score avancé = tests OK / tests total × 10. Combiner avec le score de l'audit rapide pour un score global.
+
+Boucle d'itération : même protocole que l'audit rapide (3 itérations max, @fullstack corrige, @qa re-teste, escalade Thomas si P0/P1 persistants).
+
+Critère de fin combiné : audit rapide >= 9/10 ET audit exhaustif >= 8/10. Les P2 Priorité 3-4 sont documentés mais non bloquants.`
       },
       {
         title:"Checklist jour de lancement",
