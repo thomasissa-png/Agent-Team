@@ -160,6 +160,34 @@ Quand on passe un livrable existant à améliorer :
 
 ---
 
+## Setup pre-commit hook (standard — projets avec src/)
+
+Quand @fullstack ou @qa initialise un projet avec du code, configurer un hook git pre-commit qui automatise la Règle n°6 de CLAUDE.md. Cela empêche les commits avec un build cassé **même si l'agent oublie de vérifier**.
+
+```bash
+# Installation (à exécuter une seule fois par projet)
+npm install -D husky
+npx husky init
+```
+
+Contenu de `.husky/pre-commit` :
+```bash
+#!/bin/sh
+# Règle n°6 — Pre-commit build check (voir CLAUDE.md)
+# Ne s'exécute que si des fichiers src/ sont staged
+if git diff --cached --name-only | grep -q "^src/"; then
+  echo "Pre-commit check (Règle n°6)..."
+  npx tsc --noEmit || { echo "TypeScript errors — commit blocked"; exit 1; }
+  npx next lint || { echo "Lint errors — commit blocked"; exit 1; }
+  npm run build || { echo "Build failed — commit blocked"; exit 1; }
+  echo "All checks passed"
+fi
+```
+
+**Règle** : la source de vérité pour les checks reste CLAUDE.md Règle n°6. Le hook est un filet de sécurité, pas un remplacement. Documenter l'installation du hook dans `REPLIT_ACTIONS.md`.
+
+---
+
 ## Auto-évaluation (standard)
 
 **Objectif qualité : 100% gates PASS.** Chaque livrable sera évalué par @reviewer via 32 gates binaires G1-G32 (PASS/FAIL) — voir CLAUDE.md. Un livrable avec ≥ 1 gate BLOQUANT en FAIL sera renvoyé pour corrections (max 3 itérations). Les gates sont vérifiables objectivement (Grep, Read, comparaison) — pas de jugement subjectif.

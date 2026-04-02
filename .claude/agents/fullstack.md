@@ -168,6 +168,45 @@ const data = JSON.parse(text); // fallback safe vs res.json() direct
 
 Les scripts de migration "de convergence" (qui rattrapent un état DB inconnu) DOIVENT avoir un `ALTER TABLE ADD COLUMN IF NOT EXISTS` pour CHAQUE colonne, même celles qui sont dans le `CREATE TABLE IF NOT EXISTS`. Raison : si la table existe déjà avec un schéma minimal, `CREATE TABLE IF NOT EXISTS` ne fait rien — les colonnes ajoutées progressivement manquent.
 
+**Template de migration de convergence** :
+
+```sql
+-- Migration de convergence : [nom_table]
+-- Idempotente : peut être rejouée sans effet secondaire
+
+CREATE TABLE IF NOT EXISTS "[nom_table]" (
+  "id" TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Colonnes ajoutées progressivement (CHAQUE colonne doit avoir son ADD IF NOT EXISTS)
+ALTER TABLE "[nom_table]" ADD COLUMN IF NOT EXISTS "nom_colonne" TEXT;
+ALTER TABLE "[nom_table]" ADD COLUMN IF NOT EXISTS "status" TEXT NOT NULL DEFAULT 'active';
+ALTER TABLE "[nom_table]" ADD COLUMN IF NOT EXISTS "user_id" TEXT REFERENCES "users"("id") ON DELETE CASCADE;
+
+-- Index (IF NOT EXISTS obligatoire)
+CREATE INDEX IF NOT EXISTS "idx_[nom_table]_user_id" ON "[nom_table]"("user_id");
+CREATE INDEX IF NOT EXISTS "idx_[nom_table]_status" ON "[nom_table]"("status");
+
+-- Trigger updated_at (idempotent via DROP + CREATE)
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN NEW.updated_at = now(); RETURN NEW; END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS "trg_[nom_table]_updated_at" ON "[nom_table]";
+CREATE TRIGGER "trg_[nom_table]_updated_at" BEFORE UPDATE ON "[nom_table]"
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+```
+
+**Règles critiques** :
+- Chaque `ALTER TABLE ADD COLUMN` doit avoir `IF NOT EXISTS` — sinon la migration crash si rejouée
+- Les index aussi : `CREATE INDEX IF NOT EXISTS`
+- Les triggers : `DROP IF EXISTS` puis `CREATE` (pas de `IF NOT EXISTS` sur les triggers en PostgreSQL)
+- Les enums : `DO $$ BEGIN CREATE TYPE ... EXCEPTION WHEN duplicate_object THEN null; END $$;`
+- Tester la migration 2x de suite : si la 2e exécution échoue, c'est pas idempotent
+
 ### React Hooks : ordre obligatoire
 
 Tous les hooks React (`useState`, `useEffect`, `useCallback`, `useMemo`, `useRef`) DOIVENT être déclarés AVANT tout `return` conditionnel dans un composant. C'est une règle React (Rules of Hooks) — un hook déclaré après un return conditionnel provoque un crash potentiel en production.
@@ -333,5 +372,5 @@ Format :
 - Décisions prises : choix d'architecture, patterns utilisés, librairies sélectionnées
 - Points d'attention : chemins critiques à tester, edge cases identifiés pendant le dev
 - **Actions Replit requises** : (voir _base-agent-protocol.md — section obligatoire)
-- **Pre-commit check** : confirmer que `npx tsc --noEmit && npx next lint && npm run build` PASS avant commit
+- **Pre-commit check** : confirmer que la Règle n°6 (CLAUDE.md) est PASS avant commit. Si hook Husky non installé → l'installer (voir _base-agent-protocol.md)
 ---
