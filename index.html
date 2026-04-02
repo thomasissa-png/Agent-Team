@@ -2794,7 +2794,7 @@ Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux
 - Champs vides → soumission (validation ?)
 - Email invalide ("pasunmail", "a@b", "@.com")
 - Texte trop long (500 chars dans un champ nom)
-- Caractères spéciaux (émojis 🎉, accents éèàç, balises <script>alert('xss')</script>, guillemets "doubles" et 'simples')
+- Caractères spéciaux (émojis, accents éèàç, balises script XSS, guillemets doubles et simples)
 - Nombres négatifs, zéro, très grands (999999999)
 - Copier-coller de texte formaté (depuis Word/Google Docs avec styles)
 - Double-clic rapide sur les boutons de soumission
@@ -2821,7 +2821,7 @@ Phase 4 — Garde-fous et cas limites :
 8. Accessibilité : navigation clavier complète (Tab à travers tous les éléments interactifs, Enter/Space pour valider, Escape pour fermer). Focus visible sur chaque élément. Contrastes texte/fond >= 4.5:1. Labels sur chaque champ de formulaire. Lancer axe-core si disponible — violations A et AA = bugs.
 
 Phase 5 — Sécurité front basique :
-1. XSS : chaque champ de saisie testé avec <script>, <img onerror=>, javascript:
+1. XSS : chaque champ de saisie testé avec des balises script, img onerror, javascript: URI
 2. Données sensibles : rien dans le DOM, localStorage, paramètres d'URL
 3. CSRF : les formulaires sensibles (paiement, suppression) ont une protection
 4. Console : 0 erreur JS, 0 warning critique, 0 log de debug en production
