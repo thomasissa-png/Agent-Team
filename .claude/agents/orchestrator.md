@@ -338,6 +338,7 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 - **Vérification vrais outputs** (quand applicable) : si le livrable contient des prompts de génération ou des templates, demander à l'agent de générer au moins 1 exemple réel avec le profil du persona. Auditer l'output avec la double perspective : (1) le client/utilisateur payant est-il satisfait ? (2) le prospect/utilisateur final est-il convaincu ? Un prompt qui semble bon mais produit un output médiocre doit être corrigé
 - Si problème détecté → relancer l'agent concerné avec des instructions correctives
 - **Vérification boucle visuelle** (après Phase 2 uniquement) : Glob `tests/screenshots/*.png`. Si vide ou absent ET que du code frontend existe dans `src/` → relancer @fullstack avec instruction d'exécuter la boucle visuelle. Les baselines sont requises pour la gate G26 et pour la revue UX post-implémentation.
+- **Vérification build Replit** (après Phase 2 et tout commit code) : exécuter `npx tsc --noEmit && npx next lint && npm run build` (Règle n°6 CLAUDE.md). Si FAIL → BLOQUER, corriger avant de continuer. Vérifier aussi que le hook Husky pre-commit est installé (`.husky/pre-commit` existe). Si absent et que `src/` existe → demander à @fullstack de l'installer (voir _base-agent-protocol.md section "Setup pre-commit hook"). C'est le filet de sécurité automatique — 40% des commits étaient des fix post-commit avant cette règle.
 
 ### 4. CHECKPOINT @moi — Compte rendu de phase (obligatoire)
 
@@ -588,7 +589,7 @@ Vérifier que `.claude/agents/testeur-persona-*.md` existe (Glob). S'il n'existe
 Invoquer `testeur-persona` sur le site/app développé. Naviguer le site complet page par page du point de vue du persona.
 
 **Gates testeur-persona (GP1-GP10 — PASS/FAIL) :**
-Exécuter les gates GP1-GP10 définies dans CLAUDE.md section "GATES TESTEUR-PERSONA". Chaque gate est formulée en "je" du point de vue du persona.
+Exécuter les gates GP1-GP10 définies dans _gates.md section "Gates testeur-persona". Chaque gate est formulée en "je" du point de vue du persona.
 
 Si 1+ gate FAIL → documenter les objections précises, relancer les agents concernés (@copywriter, @design, @fullstack, @ux selon le problème). Le testeur-persona est ré-invoqué après corrections pour valider le fix.
 
@@ -597,7 +598,7 @@ Vérifier que `.claude/agents/testeur-client-*.md` existe (Glob). S'il n'existe 
 Invoquer `testeur-client-du-persona` sur les outputs générés par la plateforme. Évaluer les livrables que notre persona ENVOIE à ses clients via notre outil. Exemples : MarchésFaciles → le mémoire technique généré ; ImmoCrew → les annonces/landing pages générées ; Versiroom → les rendus de visite virtuelle.
 
 **Gates testeur-client-du-persona (GC1-GC10 — PASS/FAIL) :**
-Exécuter les gates GC1-GC10 définies dans CLAUDE.md section "GATES TESTEUR-PERSONA". Chaque gate évalue si le livrable généré serait accepté par le client du persona.
+Exécuter les gates GC1-GC10 définies dans _gates.md section "Gates testeur-persona". Chaque gate évalue si le livrable généré serait accepté par le client du persona.
 
 Si 1+ gate FAIL → documenter les problèmes précis, relancer @copywriter/@design/@fullstack/@ia selon le problème. Le testeur-client-du-persona est ré-invoqué après corrections.
 
@@ -823,7 +824,7 @@ Si un agent retourne un livrable de qualité insuffisante pendant une orchestrat
 
 ## Mode révision
 
-Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Spécificité : vérifier que les modifications ne cassent pas les dépendances entre agents déjà exécutés. Après toute modification de ce fichier, valider le fonctionnement via le protocole de test du framework (voir CLAUDE.md section "Protocole de test du framework") avec le projet test PulseBoard (`tests/project-context-test.md`).
+Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Spécificité : vérifier que les modifications ne cassent pas les dépendances entre agents déjà exécutés. Après toute modification de ce fichier, valider le fonctionnement via le protocole de test du framework (voir _base-agent-protocol.md section "Protocole de test du framework") avec le projet test PulseBoard (`tests/project-context-test.md`).
 
 ## Standard de livraison — auto-évaluation obligatoire
 
