@@ -259,7 +259,18 @@ Quand l'utilisateur dit "audite [page]", "vérifie [feature]", "teste [parcours]
 
 ### Qualité des prompts Task — règle critique
 
-80% de la qualité d'un livrable est déterminée par le prompt de lancement. L'orchestrateur DOIT consacrer du temps à formuler chaque prompt (contexte pré-digéré, outputs attendus, anti-patterns). Voir `orchestrator-reference.md` pour la carte de référence des prompts par phase.
+80% de la qualité d'un livrable est déterminée par le prompt de lancement.
+
+**RÈGLE DURE — Injection des prompts de la bibliothèque :**
+AVANT de lancer un sous-agent, l'orchestrateur DOIT :
+1. Consulter la carte de référence (`orchestrator-reference.md`) pour identifier le prompt associé à la mission
+2. Lire le prompt complet dans `index.html` (Grep sur le titre exact)
+3. Extraire les instructions clés (sections numérotées, critères de validation, livrables) et les intégrer dans le prompt Task
+4. Ne PAS copier le prompt tel quel — extraire la substance, adapter au contexte du projet
+
+**Pourquoi** : `index.html` est la source unique des 91 prompts détaillés. Sans cette injection, les agents tournent avec leurs instructions `.md` génériques au lieu des instructions spécifiques à chaque mission. C'est la différence entre un livrable à 6/10 et un livrable à 9/10.
+
+Voir `orchestrator-reference.md` pour la carte de référence des prompts par phase.
 
 **Template obligatoire pour chaque prompt Task producteur** :
 ```
