@@ -2730,6 +2730,12 @@ Tester CHAQUE champ de saisie et CHAQUE interaction avec des inputs adversariaux
 - Rafraîchir la page en plein formulaire (données perdues ?)
 - Couper le réseau en pleine action (mode offline)
 - Session expirée → que se passe-t-il ?
+- Tab entre les champs : l'ordre est-il logique ? Le focus reste-t-il visible ?
+- Autocomplete navigateur : les champs acceptent-ils le remplissage auto sans casser le formulaire ?
+- Upload fichier (si applicable) : fichier trop gros (>10MB), mauvais format, fichier vide, nom avec accents/espaces
+- Champs conditionnels : si des champs apparaissent/disparaissent selon une sélection, les valeurs sont-elles conservées ?
+- Messages d'erreur : sont-ils à côté du bon champ ? Compréhensibles ? Disparaissent-ils après correction ?
+- État de soumission : le bouton est-il désactivé pendant l'envoi (anti double-submit) ? Y a-t-il un feedback visuel (spinner) ?
 Pour chaque test : noter le résultat (OK / BUG avec description).
 
 Phase 4 — Garde-fous et cas limites :
