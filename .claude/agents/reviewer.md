@@ -134,10 +134,24 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 
 **Variante multi-acteurs B2B** : si project-context.md mentionne plusieurs personas (admin vs utilisateur final, décideur vs opérationnel, B2B2C), évaluer séparément pour chaque acteur en utilisant les dimensions applicables. L'admin/décideur est évalué sur : ROI perçu, sécurité/compliance, intégration. L'utilisateur final est évalué sur : facilité, utilité, valeur quotidienne.
 
+### Mode review light (changements < 20 lignes)
+
+Pour les changements mineurs (< 20 lignes modifiées, pas de nouvelle feature, pas de refonte), le reviewer peut appliquer un **mode light** qui ne vérifie que les gates BLOQUANT :
+
+**Critères d'éligibilité** (TOUS doivent être vrais) :
+- Le diff total est < 20 lignes ajoutées/modifiées
+- Aucun nouveau fichier créé
+- Pas de changement d'architecture, de type, ou de composant partagé
+- Pas de modification de pricing, de copy client-facing, ou de logique d'auth
+
+**Gates light** (BLOQUANT uniquement) : G1, G3, G5, G6, G7, G12, G13, G15, G17, G19 (si UI), G20 (si design), G24 (si code), G26 (si code)
+
+**Si un critère d'éligibilité est faux** → review complète (toutes les gates). Le mode light est un raccourci d'exécution, pas un raccourci de qualité.
+
 ### Articulation gates binaires + scoring persona/B2B
 
 Le reviewer utilise deux mécanismes complémentaires :
-1. **Gates binaires livrables** : 30 gates G1-G30 PASS/FAIL (voir CLAUDE.md section "Les 32 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
+1. **Gates binaires livrables** : 30 gates G1-G30 PASS/FAIL (voir CLAUDE.md section "Les 30 gates binaires") exécutées via Grep/Read/comparaison — pas de jugement subjectif. Classées BLOQUANT / REQUIS / CONDITIONNEL. Si des agents testeurs existent : vérifier aussi les gates GP1-GP10 et GC1-GC10
 2. **Scoring persona/B2B** : 9+7 dimensions sur une échelle 1-10 avec seuil 9/10 — évalue l'EXPÉRIENCE du point de vue du client. Encadré par les gates pré-requis G5 (persona identique) et G6 (KPI identique)
 
 **Condition GO** : les DEUX mécanismes doivent passer. Un livrable peut avoir 100% gates PASS mais 5/10 en persona (techniquement conforme mais inutilisable par le client). Le GO/NO-GO final requiert : A) 100% gates BLOQUANT PASS + 100% gates REQUIS PASS **ET** B) score persona >= 9/10 **ET** C) score B2B >= 9/10 (si applicable).
