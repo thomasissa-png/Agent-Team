@@ -4029,8 +4029,8 @@ function stripAccents(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,""
           <button class="btn-copy" data-text="${p.prompt.replace(/"/g,'&quot;')}">Copier</button>
         </div>
         <div class="prompt-meta">${p.agents.map(a=>`<span class="prompt-agent-tag">@${a}</span>`).join("")}</div>
-        ${p.quand?`<div class="prompt-quand">${p.quand}</div>`:""}
-        <div class="prompt-body">${p.prompt}</div>`;
+        ${p.quand?`<div class="prompt-quand">${p.quand.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`:""}
+        <div class="prompt-body">${p.prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
       list.appendChild(card);
     });
     section.appendChild(list);
