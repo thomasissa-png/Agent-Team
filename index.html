@@ -2898,12 +2898,32 @@ Lis le rapport de l'audit rapide (docs/qa/ ou output précédent) pour ne pas re
 31. Internationalisation : si multilingue, changer la langue du navigateur → bascule ? Messages d'erreur traduits ? Formats date/devise adaptés à la locale ?
 32. Accessibilité cognitive : chaque message compréhensible par quelqu'un de non-expert, pressé, lisant en diagonale ? Zéro jargon technique visible. Instructions = 1 phrase courte max. Lire à voix haute — si ça sonne bizarre → bug.
 
-Rapport : tableau structuré avec sévérité (P0/P1/P2) et phase (Priorité 1/2/3/4).
+=== PASSE PERSONA SUR LES SCÉNARIOS CRITIQUES ===
+
+Après les 32 tests techniques, invoquer les testeurs-persona (s'ils existent, sinon simuler via project-context.md) pour évaluer les scénarios qui impactent directement l'expérience :
+
+Testeur-persona revit ces scénarios avec SES yeux :
+- Scénario 1 (cross-device) : "J'ai commencé sur mon téléphone dans le métro, je reprends sur mon ordi au bureau — je retrouve mon travail ? Si non, je perds confiance."
+- Scénario 2 (interruption) : "Un client m'a appelé en plein milieu, je reviens 2h plus tard — je dois tout recommencer ? Si oui, j'abandonne."
+- Scénario 11 (charge cognitive) : "Je ne me souviens plus de ce que j'ai choisi à l'étape 1, et l'étape 3 ne me le rappelle pas — je suis perdu."
+- Scénario 12 (contexte dégradé) : "Je suis entre deux rendez-vous, j'ai 60 secondes — est-ce que je peux accomplir mon action principale ? Ou c'est trop compliqué pour un usage pressé ?"
+- Scénario 13 (first-time) : "C'est ma première fois ici — est-ce que je comprends immédiatement quoi faire ? L'onboarding m'aide ou me ralentit ?"
+- Scénario 14 (aha moment) : "À quel moment exact j'ai compris la valeur de ce produit ? Si je n'ai pas eu ce moment sur cette page → problème."
+- Scénario 16 (empty state) : "Cet écran vide me donne envie de commencer ou me décourage ? Je me sens accueilli ou abandonné ?"
+- Scénario 17 (persona atypique) : "Je suis [persona] mais mon cas est un peu différent (secteur rare, donnée manquante) — la page gère-t-elle mon cas avec grâce ou me rejette-t-elle ?"
+
+Testeur-client-du-persona (si B2B) :
+- Scénario 1 (cross-device) : "Le document que mon prestataire m'envoie s'affiche-t-il bien sur mobile ET desktop ?"
+- Scénario 27 (print/export) : "Le PDF/export que je reçois est-il imprimable proprement ? Utilisable dans ma chaîne de travail ?"
+
+Chaque point PASS/FAIL. >= 2 FAIL persona sur ces scénarios → P1 (expérience dégradée en conditions réelles).
+
+Rapport : tableau structuré avec sévérité (P0/P1/P2), phase (Priorité 1/2/3/4), et perspective (technique / persona / client).
 Score avancé = tests OK / tests total × 10. Combiner avec le score de l'audit rapide pour un score global.
 
 Boucle d'itération : même protocole que l'audit rapide (3 itérations max, @fullstack corrige, @qa re-teste, escalade Thomas si P0/P1 persistants).
 
-Critère de fin combiné : audit rapide >= 9/10 ET audit exhaustif >= 8/10. Les P2 Priorité 3-4 sont documentés mais non bloquants.`
+Critère de fin combiné : audit rapide >= 9/10 ET audit exhaustif >= 8/10 ET 0 FAIL persona critique. Les P2 Priorité 3-4 sont documentés mais non bloquants.`
       },
       {
         title:"Checklist jour de lancement",
