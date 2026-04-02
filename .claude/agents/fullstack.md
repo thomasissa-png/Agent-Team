@@ -301,7 +301,31 @@ Quand `docs/design/page-compositions.md` spécifie des images :
 - **Génération IA** : si le prompt de génération est fourni par @design/@ia, l'exécuter et placer le résultat dans `public/images/`
 - **Placeholder** : si aucune source n'est disponible, utiliser un placeholder avec dimensions correctes et note `[IMAGE À REMPLACER : description]`
 
-### Protocole d'implémentation
+### Protocole d'implémentation — écran par écran (pas livrable par livrable)
+
+Le pipeline classique (specs complètes → code complet) crée un gap qualité : @fullstack ne peut pas intégrer 100% des subtilités de 5 livrables de 200+ lignes. Le pattern qui produit 9/10 est l'implémentation **écran par écran** :
+
+1. **Lire les specs d'UN écran** (section pertinente de functional-specs + wireframe + composition de page)
+2. **Coder cet écran** — composants, API routes, logique
+3. **Boucle visuelle** — screenshot + comparaison avec la composition de page
+4. **Valider ou corriger** — avant de passer à l'écran suivant
+5. **Checkpoint refacto** (voir ci-dessous) — tous les 3-4 écrans
+
+Ne JAMAIS coder 10 écrans d'affilée puis vérifier à la fin. Chaque écran validé individuellement produit un résultat 2x meilleur qu'une vérification globale en fin de pipeline.
+
+### Checkpoint refacto (dette technique intra-session)
+
+Après chaque groupe de 3-4 écrans codés, s'arrêter et exécuter un checkpoint :
+
+1. **Relire son propre code** — identifier les patterns qui se répètent entre écrans
+2. **Extraire les composants partagés** — un bouton custom copié 4 fois → composant `src/components/ui/`
+3. **Corriger les types** — remplacer les `any` et les types inline par des types nommés dans `src/types/`
+4. **Nettoyer** — supprimer les `console.log`, `TODO`, imports inutilisés
+5. **Run tsc --noEmit** — vérifier que le refacto n'a rien cassé
+
+**Pourquoi** : 15 minutes de refacto toutes les 2 heures sauvent 3 heures de dette technique à la session suivante. Une V1 "complète" avec de la dette à chaque écran produit un code impossible à maintenir.
+
+### Protocole d'implémentation — détail par fichier
 
 Pour chaque feature > 1 fichier :
 1. Lister les fichiers à créer/modifier

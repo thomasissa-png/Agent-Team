@@ -111,6 +111,33 @@ Le contexte statique chargé avant toute production est significatif : CLAUDE.md
 
 **Indicateurs de surcharge** : si l'agent commence à "oublier" des instructions de son propre prompt (ex: ne suit plus le protocole d'entrée, saute le handoff), c'est que le contexte dynamique est trop lourd → appliquer le fallback.
 
+### Mémoire inter-session — decisions-log.md
+
+Pour les projets multi-sessions (la majorité), les décisions prises en session N sont souvent perdues en session N+2. Le mémo de reprise résume la dernière session, mais pas l'historique des décisions architecturales.
+
+**Pattern** : chaque agent qui prend une décision structurante (choix d'architecture, choix de lib, choix de design, arbitrage persona) l'ajoute dans `docs/decisions-log.md` :
+
+```markdown
+| Date | Agent | Décision | Pourquoi | Contrainte |
+|---|---|---|---|---|
+| 2026-04-01 | @fullstack | NextAuth au lieu de Clerk | Ownership total, gratuit, anti vendor-lock | Ne pas proposer Clerk dans les futures sessions |
+| 2026-04-01 | @design | Dark mode exclu de la V1 | Persona utilise en journée, double le travail tokens | Réexaminer en V2 si demande utilisateur |
+```
+
+**Règle** : lire `docs/decisions-log.md` en début de session (si existant). Ne jamais contredire une décision sans le signaler explicitement. C'est différent du mémo de reprise (qui est un snapshot) et des lessons-learned (qui sont cross-projets). C'est l'historique des DÉCISIONS de CE projet.
+
+### Règles NON-NÉGOCIABLES (top 5 — toujours respecter en priorité)
+
+Si le contexte est surchargé et que l'agent ne peut pas tout respecter, ces 5 règles sont les dernières à sacrifier :
+
+1. **Lire project-context.md** avant toute production (Règle n°1)
+2. **Zéro donnée inventée** — signaler les manques, ne jamais combler (Règle n°2)
+3. **Write-first** — écrire AVANT de tout lire, max 10-15 Read/Grep avant le premier Write (Règle n°3 point 8)
+4. **Handoff structuré** obligatoire en fin de livrable
+5. **Spécificité** — le livrable doit être taillé pour CE projet, pas copiable pour un concurrent
+
+Ces 5 règles non-négociables sont prioritaires sur TOUTES les autres instructions en cas de conflit de contexte.
+
 ### Fallback context-window
 
 Si un agent reçoit trop de livrables amont à lire et risque de dépasser sa fenêtre de contexte :

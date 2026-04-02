@@ -455,6 +455,8 @@ Chaque livrable dans `docs/` est évalué par ces gates. Classification :
 
 **Conditions d'application** : les gates GP/GC s'appliquent uniquement si les agents testeur-persona et testeur-client-du-persona ont été créés (Phase 0b). Si non créés → N/A. **Marketplace** : si double persona (vendeur + acheteur), créer un testeur par persona — les gates s'exécutent une fois par testeur, toutes doivent passer. **B2C direct** : gates GC = N/A si le persona n'a pas de client professionnel.
 
+**Limitation importante des testeurs-persona** : un LLM qui simule un persona reste un LLM. Il n'a pas les frustrations réelles, les contraintes de temps, ni le scepticisme naturel d'un vrai utilisateur. Claude est structurellement trop indulgent même avec des instructions "sois critique". Les gates GP/GC sont un **pré-filtre** (éliminer les erreurs évidentes), pas une validation finale. La validation finale reste la review humaine (Thomas) sur les 3 parcours critiques avant deploy. Ne JAMAIS déployer en se basant uniquement sur les gates GP/GC sans validation humaine.
+
 ### Verdict
 
 - **GO** : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS
@@ -515,6 +517,22 @@ Après chaque session (pas seulement chaque projet), l'orchestrateur DOIT mettre
 **Promotion des gates ad-hoc** : quand une gate ad-hoc (définie lors d'un audit PVU — voir _base-agent-protocol.md) revient en FAIL sur 3+ audits différents, l'orchestrateur DOIT la proposer pour promotion en gate permanente (G31+). Le processus : (1) documenter la gate récurrente dans lessons-learned.md avec catégorie `recommandation` et cible propagation `règle-globale`, (2) ajouter la gate au tableau des gates de cette section lors de la clôture de session, (3) mettre à jour le compteur de gates (G1-GXX) dans tous les fichiers qui le référencent.
 
 **Pourquoi** : sans cette mémoire, chaque session repart de zéro. Les patterns qui marchent ne sont pas capitalisés. Les erreurs sont répétées. Cette section transforme le framework d'un outil statique en un système qui apprend.
+
+## Règle absolue — Anti-inflation de CLAUDE.md (n°7)
+
+CLAUDE.md est chargé en contexte pour CHAQUE agent. Chaque ligne ajoutée ici coûte des tokens sur CHAQUE invocation de CHAQUE agent sur CHAQUE projet. C'est le fichier le plus cher du framework.
+
+**Seuil dur : 600 lignes max.** Si CLAUDE.md dépasse 600 lignes :
+1. Identifier les sections qui ne concernent qu'un type d'agent (ex: gates design = seulement @design/@reviewer)
+2. Déplacer ces sections dans l'agent concerné ou dans `_base-agent-protocol.md`
+3. Ne garder dans CLAUDE.md QUE les règles qui s'appliquent à TOUS les agents
+
+**Principe DRY pour les règles** : toute règle qui doit être propagée dans 5+ fichiers devrait être dans UN seul fichier et référencée par les autres. Exemples :
+- Les gates → source de vérité dans CLAUDE.md, les agents pointent vers CLAUDE.md (pas de copie)
+- Les préférences fondateur → source de vérité dans `docs/founder-preferences.md` (pas copiées dans les agents)
+- Les protocoles standards → source de vérité dans `_base-agent-protocol.md`
+
+**Avant d'ajouter une ligne à CLAUDE.md, se demander** : "cette règle concerne-t-elle TOUS les agents ou seulement certains ?" Si certains → elle va dans l'agent ou dans _base-agent-protocol.md.
 
 ## Journal de setup
 
