@@ -604,12 +604,6 @@ Après mes réponses, recommande les 2-3 prompts les plus adaptés parmi la bibl
 - Ce que chaque prompt va produire comme livrable
 
 Ne lance rien — présente juste les recommandations et attends mon choix.`
-      },
-      {
-        title:"Reprendre où j'en étais",
-        agents:["orchestrator"],
-        quand:"Remplacé par le prompt 'Démarrer une nouvelle session (reprise)' dans la section Sessions — il est strictement supérieur (gate learnings, mémo de reprise, vérification cohérence, tableau visuel). Utilisez-le à la place.",
-        prompt:`Ce prompt a été fusionné avec "Démarrer une nouvelle session (reprise)" dans la section Sessions. Utilisez ce prompt à la place — il fait tout ce que celui-ci faisait, plus : gate bloquante learnings P0/P1, lecture du mémo de reprise, vérification de cohérence inter-livrables, et tableau d'avancement visuel.`
       }
     ]
   },
@@ -638,10 +632,10 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (11 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
 7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa (gate G26).
 8. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
-8. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
-9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
-10. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
-11. Learnings cross-projets (renforcements obligatoires) :
+9. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
+10. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
+11. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
+12. Learnings cross-projets (renforcements obligatoires) :
     - Zéro fausse promesse : le copy ne promet QUE des features implémentées.
     - Anti-témoignage fictif : jamais de noms de personas comme faux témoignages.
     - Conviction-first : CTAs en fin de parcours, pas au premier écran (sauf pages d'action).
@@ -979,7 +973,7 @@ Critères de validation : chaque event du tracking plan a un nom, un trigger et 
         title:"Audit juridique & conformité",
         agents:["legal","infrastructure"],
         quand:"En parallèle des autres phases, avant mise en production. Obligatoire si données sensibles, paiement, ou IA. Livrable volumineux : si timeout, relancer @legal pour compléter les documents manquants. Pour reprendre après coupure : claude --resume puis 'Lis docs/legal/, quels documents manquent ? Complète-les.'",
-        prompt:`@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Audit juridique complet :
+        prompt:`@legal Base-toi sur project-context.md (pays, données sensibles, modèle économique, utilisation IA). Adapter au pays de commercialisation — si hors UE (US, UK, etc.), ignorer les réglementations non applicables (CNIL, RGAA) et appliquer les réglementations locales (CCPA, LGPD, etc.). Audit juridique complet :
 
 1. RGPD : registre des traitements (finalité, base légale, durée de conservation par traitement), DPA avec les sous-traitants (Stripe, analytics, hébergeur, fournisseurs IA), droits des utilisateurs (accès, rectification, suppression, portabilité), mécanismes de consentement.
 2. CGU/CGV adaptées au modèle économique : conditions d'abonnement, politique de remboursement, clauses de responsabilité, propriété intellectuelle du contenu généré.
@@ -1457,7 +1451,7 @@ Critères de validation : la matrice type × canal × urgence est complète et j
         title:"Développer une feature",
         agents:["fullstack","qa","data-analyst"],
         quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer. Si coupure sur une feature complexe : 'Lis docs/dev-decisions.md et src/, où en est l'implémentation de [feature] ?'",
-        prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer.
+        prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer. Si la description fait moins de 20 mots, pose 3 questions de clarification avant de coder (quels écrans ? quels états ? quelles données ?).
 
 Avant de coder, recherche via WebSearch 2-3 exemples réels des meilleures implémentations UX de features similaires dans le secteur du projet. Analyse ce qui fait leur qualité (UX, interactions, performance, edge cases) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
@@ -1520,7 +1514,7 @@ Critères de validation : le webhook gère tous les events critiques de manière
         quand:"Cas d'usage IA défini dans les specs. Remplace [decrire la feature] par ton cas d'usage avant de lancer. 3 agents en chaîne. Si coupure : 'Lis docs/ia/ai-architecture.md et src/app/api/, quel agent reste ?'",
         prompt:`@ia Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions sur le cas d'usage IA (input/output attendu, volume estimé, latence acceptable, budget mensuel) et génère les specs avant de continuer. Si ce prompt contient encore des crochets [...], signale-le et demande les informations avant de continuer.
 
-Cas d'usage IA : [décrire la feature, ex : "résumé automatique de documents" ou "chatbot support client"].
+Cas d'usage IA : [décrire la feature, ex : "résumé automatique de documents" ou "chatbot support client"]. Si la description fait moins de 20 mots, pose 3 questions de clarification avant de concevoir (quel input ? quel output attendu ? quel volume ?).
 
 Architecture IA complète :
 1. Tableau comparatif obligatoire : modèle, qualité de sortie (note /10 sur le cas d'usage spécifique), latence P95, coût/1000 req, streaming supporté, context window, data residency.
@@ -2536,12 +2530,12 @@ Audit qualité complet :
 8. Sécurité OWASP : XSS, CSRF, injection, auth bypass, rate limiting, IDOR, audit dépendances.
 9. Accessibilité WCAG 2.2 AA : navigation clavier, screen reader, contrastes, focus-visible, touch targets ≥ 44px, prefers-reduced-motion, zoom 200%.
 10. Multi-device : tests fonctionnels complets via device descriptors Playwright (iPhone 13, iPad, Desktop Chrome) — pas juste des viewport sizes.
-8. Email : test des templates (rendu multi-client Gmail/Outlook, liens fonctionnels, delivrabilité SPF/DKIM).
-9. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
-10. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
-11. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
-12. Régression visuelle (Gate G26) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
-13. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
+11. Email : test des templates (rendu multi-client Gmail/Outlook, liens fonctionnels, delivrabilité SPF/DKIM).
+12. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
+13. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
+14. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
+15. Régression visuelle (Gate G26) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
+16. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) .
 
@@ -2988,10 +2982,6 @@ Protocole de création :
 4. Protocole de test obligatoire : après création, tester l'agent sur un cas concret lié au contexte donné. Vérifier qu'il lit project-context.md, refuse si champs critiques manquants, et produit un livrable spécifique (pas générique).
 5. Métriques de performance : définir 3-5 critères mesurables pour évaluer la qualité des livrables de cet agent (ex : "le livrable est directement implémentable sans interprétation").
 6. Documentation utilisateur : ajouter un "quand utiliser cet agent" et un exemple de prompt d'invocation dans le fichier agent.
-
-Livrables : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents, convention d'appel, tableau d'ordre de priorité) + mise à jour de .claude/agents/orchestrator.md (section pipeline, phase d'insertion).
-
-Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement.
 
 7. Dimensions transversales : le nouvel agent doit intégrer les dimensions transversales dans son protocole quand pertinent — conformité légale (RGPD, accessibilité), performance (impact sur les Core Web Vitals), GEO/SEO (contenu structuré pour les LLM). Ne pas créer d'agents "en silo" qui ignorent ces dimensions.
 
