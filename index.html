@@ -2784,18 +2784,35 @@ Phase 5 — Sécurité front basique :
 Phase 6 — Audit par les yeux du persona ET de son client (si agents testeurs existent) :
 Si des agents testeur-persona et/ou testeur-client-du-persona ont été créés via @agent-factory (vérifier : Glob .claude/agents/testeur-*.md), les invoquer sur cette page spécifique. Si aucun testeur n'existe → créer un mini-persona inline basé sur project-context.md et simuler.
 
-Testeur-persona (ex: "Sophie la mandataire") évalue cette page :
-1. **Compréhension** : "En arrivant sur cette page, je comprends immédiatement ce qu'elle fait pour MOI ?"
-2. **Copy/messaging** : "Les textes me parlent dans MON vocabulaire métier ? Ou c'est du jargon marketing générique ?" — vérifier que le copy utilise les mots du persona (cf. docs/strategy/personas.md), pas du langage corporate.
-3. **Confiance** : "Est-ce que je fais confiance à cette page ? Le design fait-il pro ? Les éléments de preuve (témoignages, chiffres, logos) sont-ils crédibles ?"
-4. **Conviction** : "Après avoir lu cette page, ai-je envie de cliquer sur le CTA ? Ou je ferme l'onglet ?" — noter le moment précis où la conviction bascule (ou ne bascule pas).
-5. **Objections** : "Quelles sont mes objections après lecture ? (prix, confiance, complexité, engagement)" — comparer avec les objections documentées dans personas.md. Sont-elles adressées sur cette page ?
+Testeur-persona (ex: "Sophie la mandataire") traverse TOUTE l'expérience de cette page :
+
+VISUEL (mes yeux) :
+1. **Première impression** : "En 3 secondes, cette page me donne-t-elle envie de rester ? Le design correspond-il à MON secteur — ni trop cheap, ni trop corporate ?"
+2. **Hiérarchie visuelle** : "Mon œil va-t-il naturellement vers l'info la plus importante pour MOI ? Ou je suis perdu dans un mur de texte ?"
+3. **Images/illustrations** : "Les visuels me parlent ? Je me reconnais dedans ? Ou ce sont des photos stock génériques qui pourraient être sur n'importe quel site ?"
+
+COPY (mes mots) :
+4. **Vocabulaire** : "Les textes utilisent MON vocabulaire métier ? Ou c'est du jargon marketing/tech que je ne comprends pas ?" — vérifier que le copy utilise les mots du persona (cf. docs/strategy/personas.md).
+5. **Promesse** : "Ce qui est promis ici correspond à ce dont j'ai VRAIMENT besoin ? Ça adresse MON problème principal ?"
 6. **Ton** : "Le ton me correspond ? Trop sérieux ? Trop décontracté ? Trop commercial ?" — cohérence avec brand-voice.md.
 
-Testeur-client-du-persona (si B2B — ex: "le client de Sophie") évalue les outputs :
-1. **Professionnalisme** : "Le document/email/page que je reçois fait professionnel ? Pas 'généré par IA' ?"
-2. **Pertinence** : "Le contenu répond à MES attentes, pas celles du prestataire ?"
-3. **Action** : "Après réception, ai-je envie de donner suite (signer, rappeler, recommander) ?"
+PARCOURS (mes clics) :
+7. **Orientation** : "Je sais où je suis, d'où je viens, et où aller ensuite ? Ou je suis perdu ?"
+8. **Fluidité** : "Est-ce que je bute quelque part ? Une étape me semble inutile ? Un formulaire me demande trop d'infos ?"
+9. **Effort vs valeur** : "Le nombre de clics/étapes est-il justifié par la valeur que j'obtiens ? Si c'est trop long, j'abandonne à quelle étape ?"
+
+RÉSULTAT (ce que j'obtiens) :
+10. **Livrable/output** : "Si cette page produit quelque chose (document, calcul, recommandation, confirmation), le résultat est-il utile, complet, professionnel ? Est-ce que je peux l'utiliser tel quel dans MON travail ?"
+11. **Confiance** : "Après avoir utilisé cette page, ai-je davantage confiance dans ce service ? Ou j'ai des doutes ?"
+12. **Conviction** : "Après cette expérience complète, ai-je envie de continuer (m'inscrire, payer, revenir) ? Ou je ferme l'onglet ?" — noter le moment précis où la conviction bascule (ou ne bascule pas).
+13. **Objections** : "Quelles objections me restent ? (prix, confiance, complexité, engagement)" — comparer avec les objections documentées dans personas.md. Sont-elles adressées ?
+
+Testeur-client-du-persona (si B2B — ex: "le client de Sophie") évalue ce qu'il REÇOIT :
+1. **Professionnalisme** : "Le document/email/page que je reçois fait professionnel ? Pas 'généré par IA' ? Pas de faute, pas de placeholder ?"
+2. **Pertinence** : "Le contenu répond à MES attentes/critères, pas celles du prestataire ?"
+3. **Complétude** : "Il ne manque rien de critique ? Toutes les infos que j'attends sont là ?"
+4. **Action** : "Après réception, ai-je envie de donner suite (signer, rappeler, recommander) ? Ou c'est moyen et je passe au suivant ?"
+5. **Comparaison** : "Par rapport à ce que je reçois habituellement d'autres prestataires, c'est mieux, pareil, ou pire ?"
 
 Chaque point noté PASS/FAIL. Si >= 2 FAIL persona ou >= 1 FAIL client → P1 (pas P2 — c'est de l'expérience, pas du cosmétique).
 
