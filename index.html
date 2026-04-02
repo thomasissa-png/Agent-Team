@@ -890,6 +890,51 @@ Après validation :
 3. Mets à jour docs/lessons-learned.md avec : source des learnings, date, modifications appliquées, agents impactés.
 
 Critères de validation : chaque learning est classé avec référence, les modifications sont prêtes à appliquer (pas de vague "il faudrait..."), aucune contradiction introduite, docs/lessons-learned.md est mis à jour.`
+      },
+      {
+        title:"Migrer un projet existant vers le nouveau framework",
+        agents:["orchestrator","fullstack"],
+        quand:"Ton projet (Sarani, ImmoCrew, Versiroom, etc.) utilise une ancienne version du framework avec un CLAUDE.md de 300+ lignes. Ce prompt nettoie et migre vers la nouvelle architecture (CLAUDE.md 104L + _gates.md + _base-agent-protocol.md).",
+        prompt:`@orchestrator Mode migration framework. Ne lance aucun agent avant mon feu vert.
+
+Étape 1 — Diagnostic de l'existant :
+1. Lire CLAUDE.md en entier. Compter les lignes totales.
+2. Identifier le contenu entre les marqueurs GRADIENT-AGENTS-START et GRADIENT-AGENTS-END (c'est le framework, il sera remplacé automatiquement par update.sh).
+3. Identifier le contenu HORS des marqueurs — c'est le contenu custom du projet. Le lister.
+4. Grep "32 gates" et "G1-G32" dans tout le projet — compter les occurrences à corriger.
+5. Vérifier si .husky/pre-commit existe (hook build check).
+
+Afficher le diagnostic :
+- CLAUDE.md : [X] lignes totales, [Y] lignes Gradient (seront remplacées), [Z] lignes custom
+- Références "32 gates" : [N] occurrences dans [fichiers]
+- Hook Husky : installé / absent
+
+Étape 2 — Plan de migration (attendre mon feu vert) :
+Pour chaque bloc de contenu custom identifié, proposer sa destination :
+| Contenu custom | Destination recommandée | Justification |
+|---|---|---|
+| Règles spécifiques au projet (ex: "toujours utiliser Prisma") | project-context.md section Notes libres | C'est du contexte projet, pas du framework |
+| Règles de code spécifiques (ex: "pas de barrel exports") | .claude/agents/fullstack.md section du projet | C'est une règle pour un agent spécifique |
+| Règles framework customisées | .claude/agents/_base-agent-protocol.md | C'est une règle commune modifiée |
+| Learnings du projet | docs/lessons-learned.md | C'est de la mémoire organisationnelle |
+
+Afficher le plan et attendre ma validation.
+
+Étape 3 — Exécution (après mon feu vert) :
+1. Déplacer chaque bloc custom vers sa destination (Edit sur chaque fichier cible).
+2. Exécuter bash update.sh --all pour remplacer la section Gradient par la dernière version.
+3. Corriger toutes les références "32 gates" → "30 gates" et "G1-G32" → "G1-G30".
+4. Si .husky/pre-commit absent → @fullstack l'installe (voir _base-agent-protocol.md section "Setup pre-commit hook").
+5. Vérifier : git config core.hooksPath .githooks (pour le guard CLAUDE.md).
+6. Run final : npx tsc --noEmit && npx next lint && npm run build (si src/ existe).
+
+Étape 4 — Validation :
+- CLAUDE.md section Gradient : <= 120 lignes ? Si non → du contenu custom n'a pas été migré.
+- Zéro référence "32 gates" restante (Grep).
+- Hook pre-commit fonctionnel (tester un commit).
+- Lancer le prompt "Faire un check-up complet" pour vérifier la cohérence post-migration.
+
+Critères de validation : CLAUDE.md section Gradient <= 120L, 0 référence "32 gates", hooks installés, build PASS.`
       }
     ]
   },
