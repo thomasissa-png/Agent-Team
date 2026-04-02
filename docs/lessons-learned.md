@@ -27,6 +27,18 @@ Chaque learning suit ce format à 11 colonnes :
 
 ---
 
+## Session 2026-04-02 — Gradient Agents (audits @ia + @elon + corrections R1-R5)
+
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-04-02 | 2026-04-02 | problème | P0 | Timeout agents : prompts de lancement trop ouverts déclenchent 50+ Grep/Read sans jamais écrire. @ia a fait 61 tool calls en 30 min sans produire de fichier. Cause : prompt "lis tout, analyse, puis écris" au lieu de "voici les findings, écris maintenant" | Règle Write-first ajoutée dans CLAUDE.md (Règle n°3), _base-agent-protocol.md (point 8), orchestrator.md (rappel anti-timeout obligatoire dans chaque prompt Task) | Tout prompt Task producteur DOIT inclure un rappel anti-timeout + findings pré-digérés. Max 10-15 Read/Grep avant le premier Write. | règle-globale + agent-spécifique | CLAUDE.md, orchestrator.md, _base-agent-protocol.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | problème | P1 | Résidu scoring 1-5 dans orchestrator.md (ligne 870 "Score moyen des livrables : X/5") — incohérent avec le système gates PASS/FAIL en place depuis session 2026-03-26 | Remplacé par "Verdict gates : X PASS / Y FAIL" | Grep "X/5" après chaque migration de système de scoring pour traquer les résidus | agent-spécifique | orchestrator.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | recommandation | P1 | G28 était REQUIS mais 40% des commits sur 3 projets étaient des fix post-commit — preuve que REQUIS ne suffisait pas | G28 promu BLOQUANT dans CLAUDE.md | Pipeline pre-deploy doit être BLOQUANT, pas REQUIS | règle-globale | CLAUDE.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | recommandation | P1 | Reviewer manquait de walkthrough post-code : audits structurels (Grep/Read) laissaient passer du JSON brut visible, boutons sans destination, features partielles | Section Walkthrough post-code ajoutée dans reviewer.md (simulation parcours + Grep patterns suspects) | Tout audit de code frontend doit inclure une simulation de parcours utilisateur, pas seulement des checks statiques | agent-spécifique | reviewer.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | pattern | P2 | Grep rollout : modifications partielles de composants partagés laissaient des occurrences non mises à jour dans d'autres fichiers | Étape 6 Grep rollout ajoutée dans fullstack.md | Toute modification d'un élément partagé doit être suivie d'un Grep exhaustif dans src/ | agent-spécifique | fullstack.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | pattern | P2 | Hook pre-commit Husky comme filet de sécurité pour la Règle n°6 — automatise les checks même si l'agent oublie | Section Setup pre-commit hook ajoutée dans _base-agent-protocol.md | Chaque projet avec src/ devrait avoir un hook Husky qui automatise tsc + lint + build | agent-spécifique | _base-agent-protocol.md | fait | propagé |
+| 2026-04-02 | 2026-04-02 | pattern | P2 | Template SQL idempotent : les migrations de convergence avaient besoin d'un template complet (CREATE + ALTER + INDEX + TRIGGER) | Template ajouté dans fullstack.md | Fournir des templates concrets plutôt que des règles abstraites réduit les erreurs | agent-spécifique | fullstack.md | fait | propagé |
+
 ## Session 2026-03-31 — Gradient Agents (propagation cross-projets Sarani S6-S9 + Versiroom S26c-S28 + ImmoCrew S5-S7)
 
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |

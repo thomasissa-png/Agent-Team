@@ -214,6 +214,24 @@ Claude Code a une limite de temps par réponse ET une fenêtre de contexte qui s
 - **Découper l'exécution par phase.** Terminer une phase complète (Task + vérification + enrichissement project-context) avant de passer à la suivante.
 - **Préférer 3 messages courts à 1 message géant.** Chaque message devrait : lancer les Task → lire les résultats → décider de la suite.
 
+### Pour le lancement de sous-agents (Task / Agent tool)
+
+Le timeout le plus fréquent ne vient PAS d'un agent qui écrit trop — il vient d'un agent qui **lit trop avant d'écrire**. Un prompt de lancement ouvert ("lis tous les fichiers, analyse, puis produis") déclenche un mode recherche exhaustive : l'agent fait 50+ Grep/Read sans jamais appeler Write, accumule en mémoire, et timeout.
+
+**Règles obligatoires pour tout lancement de sous-agent :**
+
+1. **Pré-digérer le contexte dans le prompt.** Ne pas dire "lis orchestrator.md et trouve les problèmes". Dire "orchestrator.md ligne 870 contient un résidu X/5 à corriger". L'agent qui lance DOIT avoir déjà fait la recherche.
+2. **Inclure un rappel anti-timeout explicite.** Chaque prompt Task DOIT contenir : `ANTI-TIMEOUT : écris le fichier IMMÉDIATEMENT après avoir lu project-context.md. Structure d'abord (Write), détails ensuite (Edit). Max ~150 lignes par Write.`
+3. **Limiter le scope de lecture.** Lister les fichiers EXACTS à lire (max 5-6). Ne jamais dire "échantillonne les agents" sans préciser lesquels.
+4. **Donner les findings si disponibles.** Si l'agent parent a déjà des résultats (Grep, analyses), les inclure dans le prompt au lieu de demander à l'agent de les retrouver.
+5. **Budget de tool calls.** Pour un rapport/audit : max 10-15 tool calls (Read/Grep) avant le premier Write. Si l'agent dépasse 20 tool calls sans avoir écrit → c'est un signe de dérive.
+
+**Pattern type d'un prompt anti-timeout :**
+```
+ANTI-TIMEOUT : tu as ~15 min. Lis project-context.md + [2-3 fichiers max]. Puis ÉCRIS immédiatement le rapport (Write). Enrichis ensuite par Edit si temps restant.
+Findings déjà disponibles : [liste des résultats pré-digérés]
+```
+
 ### Pour les agents producteurs de contenu (copywriter, creative-strategy, seo, geo, legal)
 
 - Écrire d'abord la structure/le plan du fichier (titres + résumés), puis remplir section par section via Edit.

@@ -81,6 +81,7 @@ Claude Code a une limite de temps par réponse. Un agent qui essaie de tout prod
 5. **Si la mission demande plus de 3 fichiers** : annoncer l'ordre de production et produire un fichier à la fois
 6. **Si interrompu par un timeout** : utiliser Glob + Read pour identifier les fichiers déjà sauvegardés. Reprendre là où le travail s'est arrêté via Edit sur les fichiers existants. Ne JAMAIS repartir de zéro.
 7. **Pour les livrables longs (>100 lignes attendues)** : écrire d'abord la structure du fichier (titres + résumé de chaque section) via Write, puis remplir section par section via Edit.
+8. **Write-first, research-after.** Après lecture de project-context.md + les fichiers listés dans le prompt, appeler Write IMMÉDIATEMENT pour créer le fichier de sortie (structure + premières sections). Ne JAMAIS faire plus de 10-15 Read/Grep avant le premier Write. Si à 15 tool calls aucun fichier n'est écrit → s'arrêter, écrire ce qu'on a, puis continuer la recherche si nécessaire. Le pattern "50 Grep puis timeout sans rien écrire" est la cause n°1 de perte de travail.
 
 **Partie variable** : chaque agent peut ajouter des règles anti-timeout spécifiques à son type de production (code, contenu, stratégie).
 

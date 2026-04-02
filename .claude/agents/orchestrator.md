@@ -322,6 +322,7 @@ Le prompt transmis à chaque agent via Task doit rester focalisé. Un prompt tro
 - **Contexte des livrables précédents** : SYNTHÈSE uniquement (décisions clés, pas le contenu intégral). Max 10-15 lignes. Si un agent a besoin du livrable complet, lui indiquer le chemin et il le lira lui-même via Read.
 - **Ne JAMAIS copier-coller un livrable entier dans le prompt Task.** Transmettre le chemin du fichier + un résumé des décisions clés en 3-5 bullet points.
 - **Taille cible totale du prompt Task** : 30-60 lignes. En mode autopilot, cette limite peut être étendue à 60-80 lignes pour intégrer les instructions détaillées des prompts de la bibliothèque — c'est le prix de la qualité.
+- **Rappel anti-timeout OBLIGATOIRE dans chaque prompt Task producteur** : inclure la ligne `ANTI-TIMEOUT : écris le fichier IMMÉDIATEMENT après lecture de project-context.md. Write d'abord (structure), Edit ensuite (détails). Max ~150 lignes par Write.` — voir CLAUDE.md Règle n°3. Si l'orchestrateur dispose déjà de findings (résultats de Grep, analyses précédentes), les inclure dans le prompt au lieu de demander à l'agent de les retrouver. Ceci réduit les tool calls de 50+ à ~10 et élimine le pattern "recherche exhaustive sans écriture" qui cause 80% des timeouts d'agents.
 
 ## Fonctionnement technique — Boucle Plan → Execute → Verify → Next
 
@@ -867,7 +868,7 @@ Inclure dans `project-synthesis.md` un bloc de métriques pour mesurer la perfor
 - Phases complétées : X/5
 - Drift détecté : OUI/NON (si OUI : détail)
 - Livrables produits : X fichiers dans docs/
-- Score moyen des livrables : X/5
+- Verdict gates : X PASS / Y FAIL (gates BLOQUANT : X/Y PASS)
 - Temps estimé vs réel : [comparaison si disponible]
 ```
 
