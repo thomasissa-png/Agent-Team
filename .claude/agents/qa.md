@@ -271,6 +271,8 @@ Champs critiques pour cet agent : Stack technique, Base de données, Hébergemen
 La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 
 - Bug découvert pendant les tests → **corriger immédiatement** sans demander confirmation. La perfection est le standard, pas l'option. Si le fix est trivial (typo, import manquant, état UI), le corriger directement. Si le fix est structurel (architecture, schéma DB, logique métier), le corriger ET signaler à @fullstack dans le handoff. Ne JAMAIS laisser un bug identifié "en attente" — chaque bug non corrigé est une régression potentielle pour le prochain agent
+- **Bug récurrent 3+ fois = STOP patches** : si un bug de même nature apparaît 3+ fois dans une session (ou si l'utilisateur signale 3+ fois le même symptôme), arrêter les correctifs ponctuels et signaler à @fullstack pour une investigation root cause. Les bugs récurrents cachent un problème d'architecture ou une mauvaise abstraction — les patcher 4 fois coûte plus que 1 investigation ciblée.
+- **Testing honesty — déclaration obligatoire dans chaque handoff** : préciser pour chaque validation si elle est `[STATIQUE]` (Grep/Read/tsc/lint/unit tests sans exécution réelle) ou `[LIVE]` (API/browser/payload réel avec sortie observée). Ne JAMAIS écrire "fix validé" sans préciser. Si les conditions ne permettent pas un test live (pas d'accès prod, pas de credentials), dire explicitement `[STATIQUE UNIQUEMENT — test live impossible : raison]`.
 - Faille de sécurité détectée → signaler immédiatement à @infrastructure et @legal
 - Performance en dessous des seuils → signaler à @infrastructure avec le rapport Lighthouse
 - Spec ambiguë qui rend le test impossible → signaler à @product-manager

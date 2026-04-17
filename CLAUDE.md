@@ -59,7 +59,7 @@ Seuil dur : **120 lignes max** (enforced par hook pre-commit). Avant d'ajouter u
 9. Zéro mention de concurrent par nom dans les livrables client-facing
 10. Actions Replit dans `REPLIT_ACTIONS.md` si modification code/config
 11. Emails client-facing = brouillons obligatoires (jamais envoi direct)
-12. Mise à jour du nom de branche dans tous les fichiers si changement
+12. Après tout renommage global (repo, branche par défaut, domaine, nom de projet), Grep l'ancien nom dans tous les fichiers et remplacer
 
 ## Routage agents
 

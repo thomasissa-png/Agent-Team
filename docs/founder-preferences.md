@@ -58,6 +58,7 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-28 | Sarani S8 | **H1 uniques par page** — si le H1 pourrait être sur une autre page du site, il est trop générique. | Services avait le même H1 que Homepage → reformulé |
 | 2026-03-28 | Sarani S9 | **Vérifier chaque changement après application** — ne JAMAIS dire "fait" sans Grep/Read de confirmation. Si demandé 2+ fois = bug de process. | Thomas a demandé 4+ fois la même correction |
 | 2026-04-02 | Agent-Team | **@elon : ne jamais recommander "lancer un projet"** — Thomas a DÉJÀ des projets en cours (Sarani, Mandataire-Immo, Versiroom). @elon doit auditer le framework et les projets existants, pas répéter qu'il faut en lancer un nouveau. Les recommandations doivent porter sur l'amélioration de ce qui existe, pas sur l'inaction supposée. | "ça sert à rien de répéter sans cesse de lancer de nouveaux projets, ce n'est pas ce que j'attends de lui" |
+| 2026-04-07 | ISSA Capital | **Vitrine ≠ Funnel — question à trancher en Phase 0** sur tout site institutionnel / family office / brand showcase. En mode vitrine : pas de CTA agressif, pas de AARRR, gates testeur adaptées (Respect inspiré, Identité lisible, Mémorabilité). | "On est pas là pour plaire au prospect. On est là pour avoir une belle vitrine." |
 | 2026-03-28 | Mandataire S7 | **Zéro fausse promesse** — ne jamais écrire un texte promettant une feature non implémentée. Reformuler honnêtement. | "on récupère tout automatiquement" mais scraping inexistant |
 | 2026-03-28 | Mandataire S7 | **Agents persona calibrés sur la VALEUR** — un testeur qui valide le code mais pas la valeur perçue est inutile. Score 9/10→6/10 après recalibration. Learning le plus impactant cross-projets. | @mandataire validait des écrans que Thomas jugeait inacceptables |
 | 2026-03-28 | Archi S28 | **Acheter = achat DIRECT** — clic→auth si nécessaire→Stripe. Zéro page intermédiaire, zéro checkbox rétractation. | "Pourquoi ça m'amène sur une autre page pricing ?" |
@@ -114,4 +115,4 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 
 ---
 
-*Dernière mise à jour : 2026-03-31 — Sessions Gradient Agents + Sarani S6-S9 + Mandataire S5-S7 + Architecture S26c-S28*
+*Dernière mise à jour : 2026-04-17 — Sessions Gradient Agents + Sarani S6-S18 + Mandataire S5-S7 + Architecture S26c-S28 + ISSA Capital S1 + Versi S1*

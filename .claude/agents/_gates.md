@@ -49,7 +49,7 @@ Consommateurs : @reviewer (exécute), @orchestrator (vérifie BLOQUANT après ch
 |---|---|---|---|
 | G13 | 0 donnée inventée | BLOQUANT | Grep chiffres sans source |
 | G14 | Livrables absents signalés | REQUIS | Grep chemins docs/ → Glob existence |
-| G15 | 0 placeholder résiduel | BLOQUANT | Grep `[À REMPLIR`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` |
+| G15 | 0 placeholder résiduel | BLOQUANT | Grep `[À REMPLIR`, `[À COMPLÉTER`, `[À compléter`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER` |
 
 ### SPÉCIFICITÉ
 

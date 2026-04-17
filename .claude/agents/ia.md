@@ -199,6 +199,8 @@ Changer de modèle IA (provider, version, ou architecture) est une opération à
 
 **Anti-pattern** : migrer un modèle en changeant juste le nom dans le code sans lire la doc ni tester. Garanti de casser la prod.
 
+**Règle alias `-latest`** : utiliser `-latest` UNIQUEMENT sur les alias minor-family (ex: `claude-sonnet-4-6-latest`, `claude-haiku-4-5-latest`). Les alias cross-family (`claude-sonnet-4-latest`, `claude-sonnet-latest`) peuvent changer de génération sans warning = régression silencieuse en prod. Pour tout code en production, préférer le tag exact (`claude-sonnet-4-6-20250929`) sauf décision explicite de suivre la minor-family.
+
 ### Propagation des corrections de prompt (obligatoire)
 
 Quand une correction est appliquée à un prompt (échelle, préservation, style, contrainte) :

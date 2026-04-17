@@ -72,6 +72,8 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 30 gates bina
 
 | session 2026-04-02 | 2026-04-02 | CLAUDE.md (Regle n°3 Write-first, G28 BLOQUANT), orchestrator.md (anti-timeout + X/5→gates), reviewer.md (walkthrough post-code), fullstack.md (Grep rollout + template SQL), _base-agent-protocol.md (Write-first + hook Husky), docs/lessons-learned.md, docs/reviews/ia-global-audit-2026-04-02.md, docs/reviews/elon-strategic-audit-2026-04-02.md | Audits @ia + @elon + corrections R1-R5 : (1) Regle n°3 Write-first anti-timeout (max 10-15 Read/Grep avant Write, Write squelette puis Edit), (2) G28 pipeline pre-deploy promu REQUIS→BLOQUANT (40% fix post-commit observes), (3) Residu scoring X/5 dans orchestrator.md remplace par Verdict gates X PASS/Y FAIL, (4) Walkthrough post-code dans reviewer.md (simulation parcours + Grep patterns suspects), (5) Etape 6 Grep rollout dans fullstack.md pour composants partages, (6) Hook pre-commit Husky dans _base-agent-protocol.md, (7) Template SQL idempotent (CREATE + ALTER + INDEX + TRIGGER) dans fullstack.md. | Audits deux angles : @ia technique + @elon strategique. Cause timeout @ia : prompt "lis tout puis ecris" genere 61 tool calls en 30 min sans fichier. Correction : findings pre-digeres + Write-first obligatoire. Learnings P0/P1 : tous propages. |
 
+| session 2026-04-17 | 2026-04-17 | CLAUDE.md (regle n°12 reformulée), orchestrator.md (Variable 1c Vitrine/Funnel + Règles d'exécution non négociables), qa.md (bug 3+ investigation + testing honesty STATIQUE/LIVE), ia.md (alias -latest minor-family), _base-agent-protocol.md (point 4 propagation décision fondateur), _gates.md (G15 placeholders FR), docs/founder-preferences.md (Vitrine/Funnel ISSA), docs/lessons-learned.md (session 2026-04-17), INSTALL.md/README.md/install.sh/update.sh/index.html (URLs master) | (1) Drift mémoire corrigé : branche PK8iz→gWn8U + historique 2026-03-31/04-02 ajouté. (2) Migration URLs vers master (install.sh, update.sh, prompts) + merge gWn8U dans master (40 commits fast-forward). (3) Collecte learnings 3 projets (Versi + ISSA Capital + Sarani 17 sessions). (4) Double filtrage @elon (first principles) × @ia (audit technique master). (5) 8 learnings propagés : Vitrine/Funnel Phase 0, orchestrator routeur pas producteur, bug 3+ investigation, testing honesty, alias -latest, propagation décision fondateur, placeholders FR, règle n°12 reformulée. (6) 3 learnings écartés après arbitrage fondateur (trop verticaux : Mission/Valeurs holdings, Double identité, Deterministic mapping). (7) 4 doublons confirmés (stale-while-revalidate, token budget, E2E review, relaunch blocked). Delta framework : +36 lignes réparties sur 10 fichiers, zéro inflation CLAUDE.md. | Session de capitalisation cross-projets. Méthode double filtrage @elon × @ia pour éviter le verticalisme tout en gardant les patterns universels. Thomas a arbitré les 3 divergences (toutes en faveur de @ia = framework généraliste). Prochaine étape : test en conditions réelles sur MarchesFaciles ou nouveau projet. |
+
 ---
 
 ## Score de fidelite @moi
@@ -87,88 +89,55 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 30 gates bina
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-03-28
-- **Branche** : `claude/extract-project-context-gWn8U`
+- **Date de cloture** : 2026-04-17
+- **Branche** : `claude/extract-project-context-gWn8U` (mergée dans `master`)
 
 ### Resume de la session
-Session la plus massive du framework. ~40 commits, ~25 fichiers modifies, ~1500+ lignes ajoutees. Axes principaux :
+Session de capitalisation cross-projets. Double filtrage @elon × @ia des learnings collectés depuis Versi, ISSA Capital et Sarani (17 sessions prod). Thomas a arbitré les 3 divergences @elon/@ia (toutes en faveur de @ia = framework généraliste).
 
-**Infrastructure framework :**
-(1) Protocole learnings v2 (11 colonnes, gate bloquante reprise, propagation check cloture).
-(2) PVU — Protocole Verification Universel pour audits ad-hoc structures PASS/FAIL (gates existantes + ad-hoc).
-(3) Shadow Mode @moi Phase 1 (score fidelite, 3 niveaux confiance, territoire inconnu, cout revert).
-(4) Mode hotfix production (skip phases strat, binome fullstack+qa, G28 obligatoire).
-(5) 2 profils V1-Production / Exploration.
-(6) Gates G26-G32 (screenshots, tracabilite, pre-deploy, layout, images, tokens 3-tiers, 6 etats composants). Total : 30 gates.
-(7) Boucle visuelle integree dans tout le pipeline (fullstack produit, orchestrator verifie, ux utilise, qa teste, reviewer valide).
+**Actions majeures :**
+(1) Drift mémoire corrigé : branche `PK8iz` → `gWn8U` propagée dans 5 fichiers + historique sessions 2026-03-31 et 2026-04-02 ajouté + orchestration-plan.md archivé.
+(2) Migration URLs install.sh/update.sh/INSTALL.md/README.md/index.html vers `master` (plus de propagation de branche éphémère à chaque session). `git clone -b master` explicite dans les scripts.
+(3) Merge gWn8U → master (fast-forward 40 commits, 0 conflit). Master contient maintenant les enrichissements sessions 2026-03-28 → 2026-04-17.
+(4) Collecte learnings 3 projets (Versi + ISSA Capital + Sarani) via WebFetch.
+(5) Double filtrage : @elon first principles (9 GARDER, 5 REVOIR, 1 ÉCARTER) + @ia audit technique master (7 GARDER/ADAPTATION, 4 DÉJÀ COUVERT, 3 trop vertical).
+(6) 8 learnings propagés dans le framework : Vitrine/Funnel Phase 0, orchestrator routeur pas producteur, bug 3+ investigation, testing honesty STATIQUE/LIVE, alias `-latest` minor-family, propagation décision fondateur, placeholders FR, règle n°12 généralisée.
+(7) 3 learnings écartés après arbitrage fondateur : Mission/Valeurs holdings, Double identité culturelle, Deterministic mapping (tous verticaux).
+(8) 4 doublons confirmés : stale-while-revalidate, token budget cap 3K, E2E review, relaunch blocked.
 
-**20 agents enrichis etat de l'art :**
-(8) design 7.5→9.5 (compositions page, images, animations, tokens 3-tiers, DA, 10 criteres visuels).
-(9) ux 7.2→9.5 (Nielsen 10, HEART, cognitive walkthrough, mobile/form/nav patterns).
-(10) copywriter 6.5→9 (AIDA/PAS/BAB, Schwartz 5 niveaux, objections, ads, social copy).
-(11) seo 7→9 (topical map, E-E-A-T, intent 5 types, clustering, content decay, AI crawlers, programmatic).
-(12) creative-strategy 7→9 (Kapferer/Sinek/Blue Ocean, hierarchie messages, benchmark grille, voice & tone).
-(13) social 7→9 (social listening, content pillars, flywheel, UGC, hooks, algorithmes plateforme).
-(14) qa 8.2→9.5 (testing trophy, Playwright Agents, self-healing, contract/mutation testing, API/DB tests).
-(15) product-manager 8.2→9.5 (Discovery OST, Assumption Mapping, Release Planning, Feedback Loop).
-(16) reviewer 7→9 (coherence design/ux, PVU, top 3 prioritaires, G29-G32 template).
-(17) ia 6.5→9 (structured outputs, LLM evals, guardrails, observabilite, RAG, agentic patterns, prompt engineering livrable).
-(18) elon 7.5→9 (10 modeles mentaux, outils analyse, orientation check).
-(19) moi 7.5→9 (calibration quantitative, criteres sortie Shadow Mode, territoire inconnu, cout revert).
-(20) fullstack 7.5→9 (SSR/SSG/ISR, error boundaries, WCAG, optimistic UI, rate limiting, caching, boucle visuelle).
-(21) geo 6.5→9 (entity-first, passage-level, citation patterns, monitoring concret, off-site, freshness, llms.txt).
-(22) orchestrator 8.5→9.5 (estimation cout, circuit breaker, metriques live, compression contexte, boucle visuelle).
-
-**Cross-projets :**
-(23) 20 preferences fondateur integrees (Sarani S6-S7, Mandataire S5-S6, Architecture S26c-S27b).
-(24) Calibration marche propagee dans 6 agents + 11 prompts (P0 session precedente ferme).
-(25) 4 prompts P0 + 5 P1 + 3 design/ux corriges dans index.html.
-(26) URLs install.sh/update.sh corrigees (gradient-agents → Agent-Team).
-
-**Audits :**
-Score framework global @ia : 9.9/10. Score agents moyen : 9+/10. QA non-regression : 23/23 PASS. Verdict @elon : 9.4/10 GO PRODUCTION.
+**Delta framework :** +45 lignes réparties sur 8 fichiers, zéro inflation CLAUDE.md (104/120 lignes).
 
 ### Livrables de cette session
-| Fichier | Statut | Notes |
+| Fichier | Delta | Notes |
 |---|---|---|
-| CLAUDE.md | Complet | 30 gates G1-G30, learnings v2, promotion gates ad-hoc |
-| orchestrator.md | Complet | Checkpoint specs, profils, hotfix, cout, circuit breaker, metriques live, boucle visuelle |
-| _base-agent-protocol.md | Complet | PVU (10 types audit), contribution learnings, gates BLOQUANT avant handoff |
-| moi.md | Complet | Shadow Mode Phase 1, calibration quantitative, territoire inconnu, cout revert |
-| fullstack.md | Complet | SSR/SSG/ISR, error boundaries, WCAG, boucle visuelle, images, caching, rate limiting |
-| design.md | Complet | Fondations structurelles, compositions, images, animations, DA, 10 criteres |
-| ux.md | Complet | Nielsen 10, HEART, cognitive walkthrough, mobile/form/nav, layout detaille |
-| copywriter.md | Complet | Frameworks persuasion, Schwartz, objections, ads, social copy |
-| seo.md | Complet | Topical map, E-E-A-T, intent 5 types, clustering, content decay, AI crawlers |
-| creative-strategy.md | Complet | Frameworks strategiques, hierarchie messages, benchmark grille, voice & tone |
-| social.md | Complet | Social listening, content pillars, flywheel, UGC, hooks, algorithmes |
-| qa.md | Complet | Testing trophy, Playwright Agents, self-healing, contract/mutation, API/DB, risk-based |
-| product-manager.md | Complet | Discovery OST, Assumption Mapping, Release Planning, Feedback Loop |
-| reviewer.md | Complet | 30 gates template, coherence design/ux, PVU, top 3 |
-| ia.md | Complet | Structured outputs, LLM evals, guardrails, observabilite, RAG, prompt livrable |
-| elon.md | Complet | 10 modeles mentaux, outils analyse, orientation check |
-| geo.md | Complet | Entity-first, passage-level, citation patterns, monitoring, off-site, freshness |
-| index.html | Complet | 12+ prompts mis a jour, 30 gates, boucle visuelle, PVU |
-| founder-preferences.md | Complet | 28 preferences, 22 anti-patterns, 4 projets cross |
-| lessons-learned.md | Complet | Format v2 (11 colonnes), migration v1→v2 |
-| update.sh + install.sh | Complet | URLs corrigees Agent-Team, auto-copie update.sh |
-| templates/project-context.md | Complet | Champ verbatims persona |
+| CLAUDE.md | reformulation règle n°12 | "Renommage global → Grep + remplace" (pattern universel) |
+| orchestrator.md | +18 lignes | Variable 1c Vitrine/Funnel + section Règles d'exécution non négociables (zéro production directe, zéro WebFetch direct) |
+| qa.md | +2 bullets | Bug 3+ fois = investigation root cause + Testing honesty `[STATIQUE]`/`[LIVE]` obligatoire |
+| ia.md | +2 lignes | Règle alias `-latest` minor-family uniquement |
+| _base-agent-protocol.md | +1 point | Propagation décision fondateur (Grep immédiat ancien terme) |
+| _gates.md | enrichissement G15 | `[À COMPLÉTER`, `[À compléter` ajoutés |
+| founder-preferences.md | +1 entrée ISSA | Vitrine ≠ Funnel (citation Thomas) |
+| lessons-learned.md | +22 lignes session 2026-04-17 | 15 learnings avec statuts propagé/écarté/déjà couvert |
+| install.sh, update.sh, INSTALL.md, README.md, index.html | URLs master | `claude/extract-project-context-gWn8U` → `master` + `-b master` explicite |
 
 ### Travaux en cours / non termines
-1. **Merger dans main** : la branche a ~40 commits depuis le dernier merge. Priorite haute pour que les URLs raw GitHub (learnings, founder-prefs) fonctionnent cross-projets.
-2. **Brief MarchesFaciles** : brief @elon disponible dans docs/briefs/marchesfaciles-brief.md. A convertir en project-context.md.
+1. **Test grandeur réelle** : MarchesFaciles ou nouveau projet → seul vrai validateur des corrections session 2026-04-17 (Vitrine/Funnel, testing honesty, bug 3+).
+2. **Brief MarchesFaciles** : `docs/briefs/marchesfaciles-brief.md` toujours en attente de conversion en project-context.md.
+3. **@pdf-extractor** (slides-to-site) : création agent via @agent-factory — toujours pertinent, non fait.
 
 ### Prochaines actions recommandees
-1. **Merger dans main** : pousser toutes les ameliorations. Les autres projets (Sarani, Mandataire, Architecture) pourront mettre a jour leurs agents.
-2. **Lancer un projet reel en autopilot** : ImmoCrew ou MarchesFaciles. C'est le seul test qui valide le framework en conditions reelles. Score autopilot estime : 8.5/10 (vs 6.8 avant cette session).
-3. **Rodage @moi** : les 3 premiers projets, Thomas review chaque decision @moi (Shadow Mode Phase 1). Annoter ACCORD/DESACCORD pour calibrer le score de fidelite.
-4. **Slides-to-site** : creer l'agent @pdf-extractor avec @agent-factory (2h). Tester sur un vrai deck client. Potentiel : 2500-3500€/site, marge 85-91%.
+1. **Test Vitrine/Funnel sur projet existant** : appliquer la question Phase 0 rétroactivement à ISSA Capital (vitrine) et Sarani (funnel) pour valider la calibration des gates testeur adaptées.
+2. **Convertir MarchesFaciles brief en project-context** et lancer en autopilot. C'est le premier projet qui bénéficiera des 8 nouveaux learnings.
+3. **Propager sur Sarani** : Sarani tourne sur une version ancienne d'agents (avant enrichissements 2026-03-27+). Si Thomas veut, lancer `update.sh` sur Sarani pour récupérer le framework master.
+4. **Rodage @moi continue** : session 2026-04-17 a testé les arbitrages fondateur (3/3 @ia l'emporte) — calibration score fidelite @moi à réviser sur prochain projet.
+5. **@pdf-extractor** : toujours une opportunité monétisation (2500-3500€/site).
 
 ### Blockers eventuels
-- Aucun blocker technique. Le framework est GO production (9.4/10 @elon).
+- Aucun blocker technique. Framework à jour, tous learnings P0/P1 propagés.
+- **Angle mort identifié par @elon (pendant)** : matrice erreur × phase de détection (principe Tesla "défaut détecté à la station la plus proche de son origine"). Thomas n'a pas tranché — à reprendre si récurrence.
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise). Session 2026-03-28 : ~40 commits, 20 agents enrichis etat de l'art, 30 gates, PVU, boucle visuelle, Shadow Mode @moi. Score 9.4/10. Priorite : (1) merger dans main, (2) lancer un projet reel en autopilot.
+Lis project-context.md (memo de reprise). Session 2026-04-17 : capitalisation learnings Versi/ISSA/Sarani via double filtrage @elon×@ia, 8 learnings propagés, 3 écartés (trop verticaux), merge master. Framework +45 lignes, CLAUDE.md 104/120. Priorité : (1) test Vitrine/Funnel sur projet réel, (2) MarchesFaciles autopilot.
 ```
 

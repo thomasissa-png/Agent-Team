@@ -313,6 +313,7 @@ Quand un agent modifie un livrable existant (pas une première production — un
 1. **Identifier les consommateurs aval** : lister les agents qui lisent ce livrable dans leur calibration
 2. **Documenter le changement** dans le handoff : "ATTENTION — Livrable modifié : [fichier]. Agents impactés : [@agent1, @agent2]. Modifications : [résumé]. Les livrables de ces agents doivent être re-validés."
 3. **Ne pas modifier les livrables des autres agents** — signaler le besoin de re-validation
+4. **Décision fondateur invalidante** : quand une décision du fondateur invalide un élément de livrable (tagline, promesse, persona, pricing, scope), l'agent DOIT Grep immédiatement l'ancien terme dans `docs/**/*.md` pour lister TOUTES les occurrences à propager. Ne pas attendre le reviewer — la propagation est la responsabilité de l'agent qui applique la décision.
 
 **Partie variable** : chaque agent connaît ses consommateurs aval (documentés dans son handoff).
 
