@@ -1,57 +1,21 @@
-# Plan d'orchestration — Audit 59 prompts par 18 agents
+# Plan d'orchestration — Gradient Agents Framework
 
-## Demande utilisateur
-Audit exhaustif des 59 prompts de la bibliotheque index.html par les 18 agents du framework. Chaque agent evalue chaque prompt sur 10 selon son expertise. Rapport consolide avec notes, top 5, bottom 5, recommandations.
+## Etat
+En attente de prochaine mission. Le dernier plan actif (audit 59 prompts, 2026-03-22) est archive dans `docs/reviews/orchestration-plan-audit-59-prompts-2026-03-22.md`.
 
-## Mode detecte
-Projet existant — mission speciale (audit interne, pas de phases 0-5 standard)
+## Historique des plans d'orchestration
+| Date | Mission | Statut | Archive |
+|---|---|---|---|
+| 2026-03-22 | Audit 59 prompts par 18 agents | TERMINE | docs/reviews/orchestration-plan-audit-59-prompts-2026-03-22.md |
 
-## Profil utilisateur
-- Niveau technique : Expert
-- Ton de communication : Technique
-- Mode d'interaction : Standard
+## Sessions de travail post-audit
+Les sessions 2026-03-25 → 2026-04-02 ont fonctionne en mode agent-par-agent (sans plan multi-phases formel). Voir l'historique des interventions dans `project-context.md` et les learnings dans `docs/lessons-learned.md`.
 
-## Complexite estimee
-Lourde — 18 agents, mission unique d'audit
-
-## Plan d'execution
-
-### Groupe 1 (strategique)
-- @creative-strategy : positionnement, personas, branding dans les prompts
-- @product-manager : specs, user stories, priorisation, completude fonctionnelle
-- @copywriter : qualite redactionnelle, clarte, persuasion
-- Statut : TERMINE
-
-### Groupe 2 (technique)
-- @fullstack : qualite technique, faisabilite, architecture code
-- @qa : testabilite, criteres de validation, edge cases
-- @infrastructure : deploiement, performance, securite
-- Statut : TERMINE
-
-### Groupe 3 (design & UX)
-- @ux : parcours utilisateur, conversion, accessibilite
-- @design : coherence visuelle, design system, composants
-- @ia : architecture IA, choix modeles, pipelines
-- Statut : TERMINE
-
-### Groupe 4 (visibilite)
-- @seo : pertinence SEO, metadonnees, structure
-- @geo : optimisation LLM, visibilite IA
-- @data-analyst : KPIs, tracking, mesurabilite
-- Statut : TERMINE
-
-### Groupe 5 (croissance & conformite)
-- @growth : acquisition, funnel, PLG
-- @social : reseaux sociaux, contenu, engagement
-- @legal : conformite RGPD, mentions legales
-- Statut : TERMINE
-
-### Groupe 6 (meta & validation)
-- @reviewer : coherence inter-prompts, contradictions, qualite globale
-- @elon : vision strategique, first principles, ambition
-- @agent-factory : qualite du pattern prompt, reutilisabilite, standard
-- Statut : TERMINE
-
-## Consolidation
-- Rapport final : docs/reviews/audit-59-prompts.md
-- Statut : TERMINE
+## Prochaine mission
+A definir a la reprise. Quand @orchestrator est invoque pour une nouvelle mission multi-phases, ce fichier sera reecrit avec :
+- Demande utilisateur
+- Mode detecte (V1-Production / Exploration / Hotfix)
+- Profil utilisateur
+- Complexite estimee
+- Plan d'execution par groupes
+- Compteur de session (phases, Task producteurs, alertes ROUGE)

@@ -68,6 +68,10 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 30 gates bina
 
 | session 2026-03-28 | 2026-03-28 | fullstack.md, design.md, seo.md, social.md, growth.md, geo.md, index.html (11 prompts), INSTALL.md, project-context.md, docs/lessons-learned.md | (1) Correction references branche BrqhN→PK8iz dans 3 fichiers (regle n°12), (2) Propagation calibration marche dans 6 agents producteurs (fullstack, design, seo, social, growth, geo), (3) Ajout calibration WebSearch dans 11 prompts client-facing de index.html, (4) Learning P0 calibration marche marque applique. | Learning P0 ouvert depuis session 2026-03-27. La calibration etait dans _base-agent-protocol.md + copywriter + ia mais pas renforcee dans les 6 autres agents producteurs ni dans les prompts. Propagation systematique pour fermer le trou de qualite. |
 
+| session 2026-03-31 | 2026-03-31 | ia.md, fullstack.md, infrastructure.md, copywriter.md, agent-factory.md, qa.md, design.md, _base-agent-protocol.md, founder-preferences.md, orchestrator.md, index.html, docs/lessons-learned.md | Propagation cross-projets (Sarani S6-S9, Versiroom S26c-S28, ImmoCrew S5-S7) : (1) Protocole migration modele IA 6 etapes dans ia.md, (2) Regle self-fetch localhost dans fullstack.md + infrastructure.md, (3) Regle zero fausse promesse dans copywriter.md, (4) Calibration VALEUR agents testeurs dans agent-factory.md, (5) QA corrige immediatement dans qa.md, (6) Ordre Hooks React + ALTER IF NOT EXISTS SQL + stale-while-revalidate dans fullstack.md, (7) Seuil 10 fichiers max audit + reecriture > patches dans orchestrator/protocol, (8) Backoffice memes tokens dans design.md + fullstack.md, (9) 13 preferences fondateur + 8 anti-patterns dans founder-preferences.md, (10) 15 commits prompts index.html. Tous learnings P0/P1 propages. | Session de propagation des learnings issus de 4 projets clients reels. Verdict : tous les P0/P1 passent a statut fait+propage. Score fidelite @moi : 90% (9/10 decisions alignees). |
+
+| session 2026-04-02 | 2026-04-02 | CLAUDE.md (Regle n°3 Write-first, G28 BLOQUANT), orchestrator.md (anti-timeout + X/5→gates), reviewer.md (walkthrough post-code), fullstack.md (Grep rollout + template SQL), _base-agent-protocol.md (Write-first + hook Husky), docs/lessons-learned.md, docs/reviews/ia-global-audit-2026-04-02.md, docs/reviews/elon-strategic-audit-2026-04-02.md | Audits @ia + @elon + corrections R1-R5 : (1) Regle n°3 Write-first anti-timeout (max 10-15 Read/Grep avant Write, Write squelette puis Edit), (2) G28 pipeline pre-deploy promu REQUIS→BLOQUANT (40% fix post-commit observes), (3) Residu scoring X/5 dans orchestrator.md remplace par Verdict gates X PASS/Y FAIL, (4) Walkthrough post-code dans reviewer.md (simulation parcours + Grep patterns suspects), (5) Etape 6 Grep rollout dans fullstack.md pour composants partages, (6) Hook pre-commit Husky dans _base-agent-protocol.md, (7) Template SQL idempotent (CREATE + ALTER + INDEX + TRIGGER) dans fullstack.md. | Audits deux angles : @ia technique + @elon strategique. Cause timeout @ia : prompt "lis tout puis ecris" genere 61 tool calls en 30 min sans fichier. Correction : findings pre-digeres + Write-first obligatoire. Learnings P0/P1 : tous propages. |
+
 ---
 
 ## Score de fidelite @moi
@@ -84,7 +88,7 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 30 gates bina
 ## Memo de reprise — derniere session
 
 - **Date de cloture** : 2026-03-28
-- **Branche** : `claude/extract-project-context-PK8iz`
+- **Branche** : `claude/extract-project-context-gWn8U`
 
 ### Resume de la session
 Session la plus massive du framework. ~40 commits, ~25 fichiers modifies, ~1500+ lignes ajoutees. Axes principaux :

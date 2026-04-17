@@ -13,7 +13,7 @@ faire de chaque projet le numéro 1 de son secteur.
 ### Scénario A — Nouveau projet (pas encore de code)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-PK8iz/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-gWn8U/install.sh | bash
 ```
 
 Ou dans Claude Code, sur le dossier de votre nouveau projet :

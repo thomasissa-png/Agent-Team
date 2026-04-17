@@ -65,7 +65,7 @@ bash update.sh --rollback  # annuler la dernière mise à jour
 
 Si `update.sh` n'est pas dans le projet, l'installer d'abord :
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-PK8iz/update.sh -o update.sh && chmod +x update.sh
+curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-gWn8U/update.sh -o update.sh && chmod +x update.sh
 ```
 
 ### Option 2 — Via Claude Code (prompt à copier tel quel)
@@ -74,7 +74,7 @@ Ouvrir une session Claude Code **sur le projet cible** et copier ce prompt :
 
 > Mets à jour l'équipe Gradient Agents. Voici les étapes exactes à suivre :
 >
-> 1. `git clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-PK8iz /tmp/Agent-Team 2>/dev/null || (cd /tmp/Agent-Team && git pull origin claude/extract-project-context-PK8iz)`
+> 1. `git clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-gWn8U /tmp/Agent-Team 2>/dev/null || (cd /tmp/Agent-Team && git pull origin claude/extract-project-context-gWn8U)`
 > 2. `cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/` — écraser tous les agents
 > 3. `cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json` — écraser les permissions
 > 4. Pour le CLAUDE.md, vérifie si le fichier contient le marqueur `<!-- GRADIENT-AGENTS-START -->` :
@@ -89,7 +89,7 @@ Ouvrir une session Claude Code **sur le projet cible** et copier ce prompt :
 cd $(git rev-parse --show-toplevel)
 
 # 1. Récupérer la dernière version
-git clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-PK8iz /tmp/Agent-Team 2>/dev/null || \
+git clone https://github.com/thomasissa-png/Agent-Team -b claude/extract-project-context-gWn8U /tmp/Agent-Team 2>/dev/null || \
   (cd /tmp/Agent-Team && git pull)
 
 # 2. Écraser les agents
