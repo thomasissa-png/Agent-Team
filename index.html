@@ -368,7 +368,7 @@
 <script>
 const AGENTS = [
   {
-    id:"orchestrator", name:"Orchestrator", at:"@orchestrator", version:"2.1", model:"claude-opus-4-6",
+    id:"orchestrator", name:"Orchestrator", at:"@orchestrator", version:"2.1", model:"claude-opus-4-7",
     role:"Chef d'orchestre — 20 ans d'expérience",
     phase:"Phase 0 — Coordination",
     desc:"Point d'entrée de tout projet. Décompose le travail entre agents, définit l'ordre d'exécution et vérifie que les livrables s'assemblent sans contradiction.",
@@ -424,28 +424,28 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Promesse unique"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"2.0", model:"claude-opus-4-6",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"2.0", model:"claude-opus-4-7",
     role:"Développeur senior full-stack — 16 ans",
     phase:"Phase 2 — Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, PostgreSQL Replit, Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"qa", name:"QA", at:"@qa", version:"2.0", model:"claude-opus-4-6",
+    id:"qa", name:"QA", at:"@qa", version:"2.0", model:"claude-opus-4-7",
     role:"QA Engineering Manager — 9 ans",
     phase:"Phase 2 — Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"2.0", model:"claude-opus-4-6",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"2.0", model:"claude-opus-4-7",
     role:"SRE / Platform Engineer — 13 ans",
     phase:"Phase 2 — Infra",
     desc:"Configure le déploiement Replit, optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
-    id:"ia", name:"IA", at:"@ia", version:"2.0", model:"claude-opus-4-6",
+    id:"ia", name:"IA", at:"@ia", version:"2.0", model:"claude-opus-4-7",
     role:"AI Engineer — 7 ans en production",
     phase:"Phase 2 — Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
@@ -487,28 +487,28 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"2.0", model:"claude-opus-4-6",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"2.0", model:"claude-opus-4-7",
     role:"Senior auditor qualité — 22 ans",
     phase:"Phase 5 — Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"2.0", model:"claude-opus-4-6",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"2.0", model:"claude-opus-4-7",
     role:"Architecte multi-agents — 10 ans",
     phase:"Hors-phase — Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon", version:"2.1", model:"claude-opus-4-6",
+    id:"elon", name:"Elon", at:"@elon", version:"2.1", model:"claude-opus-4-7",
     role:"Elon Musk — Vision stratégique",
     phase:"Hors-phase — Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"moi", name:"Moi", at:"@moi", version:"1.0", model:"claude-opus-4-6",
+    id:"moi", name:"Moi", at:"@moi", version:"1.0", model:"claude-opus-4-7",
     role:"Proxy décisionnel du fondateur Thomas",
     phase:"Hors-phase — Arbitrage",
     desc:"Simule les décisions de Thomas. Revoit les livrables, tranche les arbitrages et prend les décisions projet comme le fondateur le ferait. S'améliore à chaque session via docs/founder-preferences.md.",
@@ -3518,8 +3518,8 @@ Catégories à couvrir :
 IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité pour @moi.
 
 Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
-- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
-- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
 Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
 Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
@@ -3556,8 +3556,8 @@ Affiche un résumé structuré de la clôture :
 ✓ Push : branche + main poussés (learnings accessibles cross-projets)
 
 📎 Liens publics (à partager entre projets) :
-- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
-- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
 
 → Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
 → Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
