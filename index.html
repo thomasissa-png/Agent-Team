@@ -516,6 +516,19 @@ const AGENTS = [
   }
 ];
 
+// ============================================================
+// WARNING EDITEUR — AVANT TOUTE MODIF DE PROMPTS[].prompt
+// Chaque prompt est dans un template literal JS (delimite par backtick).
+// NE JAMAIS utiliser a l'interieur du prompt :
+//   - backtick (ferme le template literal -> casse toute la section)
+//   - $ suivi d'accolades (interpolation -> evaluee comme code)
+//   - balises script ou style (parsees par le navigateur)
+// Utiliser a la place : apostrophes ' ', guillemets doubles " ", ou mots
+// ("balise script", "commande git branch -m", etc.).
+// Learning P0 recurrent (sessions 2026-03-26 et 2026-04-17, 8e casse).
+// Test rapide apres edition : ouvrir index.html, verifier que la
+// bibliotheque de prompts s'affiche ET que le bouton Copier fonctionne.
+// ============================================================
 const PROMPTS = [
   {
     category:"Démarrage",
