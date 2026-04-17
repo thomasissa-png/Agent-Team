@@ -3,12 +3,12 @@ set -euo pipefail
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # gradient-agents — Script d'installation
-# Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-gWn8U/install.sh | bash
+# Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/install.sh | bash
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 VERSION="3.1.0"
 REPO_URL="https://github.com/thomasissa-png/Agent-Team"
-RAW_URL="https://raw.githubusercontent.com/thomasissa-png/Agent-Team/claude/extract-project-context-gWn8U"
+RAW_URL="https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master"
 AGENTS_DIR=".claude/agents"
 TEMPLATES_DIR="templates"
 TEMP_DIR=$(mktemp -d)
@@ -64,14 +64,14 @@ clone_repo() {
   echo -e "${BLUE}→ Téléchargement des agents...${NC}"
 
   # Tentative avec sparse checkout (repos publics et privés avec auth)
-  if git clone --filter=blob:none --sparse --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+  if git clone --filter=blob:none --sparse --quiet -b master "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
     git sparse-checkout set .claude/agents .claude/settings.json templates CLAUDE.md
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
     echo -e "${YELLOW}  Sparse checkout indisponible, clone complet...${NC}"
-    if git clone --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+    if git clone --quiet -b master "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
       echo -e "${GREEN}✓ Agents téléchargés (clone complet)${NC}"
     else
       echo -e "${RED}✗ Impossible de cloner le repo.${NC}"

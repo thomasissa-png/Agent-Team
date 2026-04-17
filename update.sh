@@ -66,11 +66,11 @@ echo ""
 echo -e "${BLUE}→ Récupération des dernières versions...${NC}"
 
 # Clone avec fallback pour repos privés
-if git clone --filter=blob:none --sparse --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+if git clone --filter=blob:none --sparse --quiet -b master "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
   cd "$TEMP_DIR/repo"
   git sparse-checkout set .claude/agents .claude/settings.json CLAUDE.md .githooks
 else
-  if git clone --quiet "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+  if git clone --quiet -b master "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
   else
     echo -e "${RED}✗ Impossible de cloner le repo.${NC}"
