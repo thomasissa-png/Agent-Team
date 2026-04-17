@@ -1,7 +1,7 @@
 ---
 name: fullstack
 description: "Code React, Next.js, Expo, API routes, hooks, PostgreSQL Replit, Stripe, formulaires, animations, développement frontend backend"
-model: claude-opus-4-6
+model: claude-opus-4-7
 version: "2.0"
 tools:
   - Read

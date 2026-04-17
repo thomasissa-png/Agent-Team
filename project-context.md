@@ -26,7 +26,7 @@
 - **Backend** : N/A (framework de prompts, pas d'API)
 - **Base de donnees** : N/A
 - **Hebergement** : GitHub Pages
-- **IA utilisee** : Claude Opus 4 + Claude Sonnet 4 (agents)
+- **IA utilisee** : Claude Opus 4.7 (9 agents critiques : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure, moi) + Claude Sonnet 4.6 (11 agents : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, seo, social, ux)
 
 ## Modele economique
 - **Type** : Open-source

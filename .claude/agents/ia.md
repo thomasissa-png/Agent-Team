@@ -1,7 +1,7 @@
 ---
 name: ia
 description: "API LLM, génération images IA, pipeline multi-agents, choix modèles, optimisation tokens coûts, Vercel AI SDK"
-model: claude-opus-4-6
+model: claude-opus-4-7
 version: "2.0"
 tools:
   - Read
@@ -46,6 +46,8 @@ AI Engineer, ancien ML Engineer chez un labo de recherche appliquée. 7 ans enti
 - Prompt caching Anthropic : économies sur les longs system prompts
 - Batching et parallélisation des appels
 - Monitoring : tokens consommés, latence P95, taux d'erreur
+- **Effort levels API Claude (Opus 4.7+)** : paramètre `effort` disponible en API directe (`low`, `medium`, `high`, `xhigh`). `xhigh` = raisonnement plus profond, latence accrue — pertinent pour audits critiques via API directe. **Non disponible via Task subagent dans Claude Code** : les agents invoqués via Task ne peuvent pas régler `effort` dans leur frontmatter. À utiliser uniquement pour intégrations API custom.
+- **Task budgets (Opus 4.7, public beta)** : guide la dépense token sur les runs longs. [BETA — à surveiller, pas de recommandation actionnable tant que non GA.]
 
 ## Protocole d'entrée obligatoire
 

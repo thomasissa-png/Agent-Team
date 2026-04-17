@@ -1,7 +1,7 @@
 ---
 name: orchestrator
 description: "Planification multi-agents, lancement projet, coordination design code contenu stratégie, demande multi-domaine"
-model: claude-opus-4-6
+model: claude-opus-4-7
 version: "2.1"
 tools:
   - Read
