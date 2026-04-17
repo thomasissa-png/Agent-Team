@@ -3501,7 +3501,7 @@ Ajoute ou mets à jour la section "## Mémo de reprise — dernière session" da
 - Travaux en cours : liste précise avec état d'avancement
 - Prochaines actions recommandées : les 2-3 tâches prioritaires pour la prochaine session, avec l'agent concerné et la raison de la priorité
 - Blockers éventuels : questions en attente de réponse, décisions à prendre, informations manquantes
-- **Nom de branche recommandé pour la prochaine session** : format obligatoire `claude/[slug-projet]-s[N+1]-[slug-2-3-mots-description]-[suffix-alphanum]`. Exemple : si projet = "Versi", prochaine session = 23, priorité = "copywriter hero" → `claude/versi-s23-hero-copy-[suffix]`. Le suffix aléatoire est généré par Claude Code au démarrage — indique juste le préfixe attendu jusqu'au dernier `-`.
+- **Nom de branche recommandé pour la prochaine session** : format obligatoire 'claude/[slug-projet]-s[N+1]-[slug-2-3-mots-description]-[suffix-alphanum]'. Exemple : si projet = "Versi", prochaine session = 23, priorité = "copywriter hero" → 'claude/versi-s23-hero-copy-[suffix]'. Le suffix aléatoire est généré par Claude Code au démarrage — indique juste le préfixe attendu jusqu'au dernier tiret.
 - Commande de reprise suggérée : le prompt exact à copier-coller pour la prochaine session
 
 Étape 5b — Learnings de la session (amélioration continue de l'équipe) :
@@ -3579,7 +3579,7 @@ Lis project-context.md à la racine. Extrais et affiche :
 - Persona principal et KPI North Star
 - Le mémo de reprise de la dernière session (section "Mémo de reprise — dernière session") — s'il existe, c'est ta source principale pour comprendre où on en est
 - **Numéro de session en cours** : lire le champ "Numéro de session" du mémo précédent, incrémenter de 1. Si absent, compter les entrées dans "Historique des interventions agents" groupées par date. Affiche : "Session [N] du projet [nom]".
-- **Vérification du nom de branche** : exécute `git branch --show-current`. Le nom doit suivre le format `claude/[slug-projet]-s[N]-[description]-[suffix]` (ex : `claude/versi-s22-hero-copy-OsqlY`). Si la branche actuelle ne contient pas `-s[N]-` avec le bon numéro, propose le renommage : `git branch -m [ancien] claude/[slug-projet]-s[N]-[description]-[suffix-existant]`. Applique après confirmation utilisateur.
+- **Vérification du nom de branche** : exécute la commande "git branch --show-current". Le nom doit suivre le format 'claude/[slug-projet]-s[N]-[description]-[suffix]' (ex : 'claude/versi-s22-hero-copy-OsqlY'). Si la branche actuelle ne contient pas '-s[N]-' avec le bon numéro, propose le renommage via la commande "git branch -m [ancien] claude/[slug-projet]-s[N]-[description]-[suffix-existant]". Applique après confirmation utilisateur.
 - Le tableau "Historique des interventions agents" — les 5 dernières entrées suffisent pour le résumé
 - GATE BLOQUANTE — Propagation des learnings : lis docs/lessons-learned.md. Vérifie deux axes :
   (a) Learnings avec statut propagation = "non-propagé" et sévérité P0/P1 : ce sont des corrections DÉJÀ faites dans le fichier source mais PAS ENCORE propagées dans tous les fichiers impactés. Pour chaque :
