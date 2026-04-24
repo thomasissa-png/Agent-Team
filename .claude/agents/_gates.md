@@ -86,7 +86,7 @@ Consommateurs : @reviewer (exécute), @orchestrator (vérifie BLOQUANT après ch
 | G29 | Architecture tokens 3 tiers (primitive → semantic → component) | REQUIS | Grep références directes tokens primitifs |
 | G30 | 6 états par composant interactif (default, hover, active, focus-visible, disabled, loading) | REQUIS | Grep 6 états |
 | G31 | Favicon Coverage (12 items 2026, voir `docs/checklists/favicon-checklist.md`) | REQUIS | Bash script §3 du checklist : 12/12 fichiers présents + 7 balises HTML head |
-| G32 | Typographie FR (m², …, œ, espaces insécables avant : ; ! ?) | CONDITIONNEL | Grep `m2 `, `\.\.\.`, ` oe`, ` :`, ` !`, ` ?` (sans nbsp) — applicable si livrables FR |
+| G32 | Typographie FR (m², …, œ, guillemets « » + apostrophes typo ’ + espaces insécables avant : ; ! ? %) | CONDITIONNEL | Bash : `grep -E "m2 \|\.\.\.\| oe\| :\| !\| ?\| %\|\"[^\"]+\"\|'[A-Za-zé]"` ne doit rien retourner sur livrables FR. Cap : 0 occurrence ASCII résiduelle dans docs/ et src/ pour livrables client-facing |
 
 ## Gates testeur-persona (si agents testeurs créés)
 
