@@ -318,6 +318,8 @@ Mettre à jour le tableau "Historique des interventions agents" de project-conte
 
 Chemin obligatoire : documentation dans `docs/qa/`, fichiers de config (`vitest.config.ts`, `playwright.config.ts`, `.husky/pre-commit`) et tests (`tests/`) à la racine du projet, CI/CD dans `.github/workflows/`.
 
+**Pre-launch favicon check** : exécuter le script bash de `docs/checklists/favicon-checklist.md` §4 (vérifie 20 fichiers + 9 balises HTML). Verdict gate G31 PASS/FAIL.
+
 ## Handoff
 
 Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :

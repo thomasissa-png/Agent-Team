@@ -641,7 +641,7 @@ Ne lance rien — présente juste les recommandations et attends mon choix.`
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions. Pour reprendre : claude --resume \'nom\' puis \'Lis project-context.md et docs/orchestration-plan.md, continue.\'",
-        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète — 100% gates PASS (30 gates binaires G1-G30) partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
+        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète — 100% gates PASS (32 gates binaires G1-G32) partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
 
 Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
@@ -695,7 +695,7 @@ Commence."`
         title:"Faire un check-up complet de mon projet",
         agents:["orchestrator","reviewer","elon","qa","seo","geo","infrastructure","ux","design","legal","data-analyst"],
         quand:"Tu as plusieurs livrables et tu veux vérifier que tout a 100% gates PASS avant un lancement ou après une phase intense. Lance tous les audits pertinents automatiquement — même rigueur que chaque prompt d'audit un par un. Si coupure : 'Lis docs/reviews/, qu'est-ce qui a déjà été audité ?'",
-        prompt:`@orchestrator Mode check-up complet. Objectif : vérifier que TOUS les livrables existants ont 100% gates PASS (G1-G30) et sont cohérents entre eux — le même niveau de rigueur que si on relançait chaque prompt d'audit de la bibliothèque un par un.
+        prompt:`@orchestrator Mode check-up complet. Objectif : vérifier que TOUS les livrables existants ont 100% gates PASS (G1-G32) et sont cohérents entre eux — le même niveau de rigueur que si on relançait chaque prompt d'audit de la bibliothèque un par un.
 
 Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*). Crée docs/orchestration-plan.md en mode "CHECK-UP" avec la liste des audits à lancer. Marque chaque audit PENDING/EN COURS/COMPLETE pour permettre la reprise.
 
@@ -703,7 +703,7 @@ Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**
 Lis docs/lessons-learned.md. Si des learnings P0/P1 ont statut propagation = "non-propagé", applique les modifications dans les "Fichiers impactés" AVANT de lancer les audits. Un check-up sur des fichiers non-propagés détecterait des faux problèmes déjà corrigés en source mais pas encore propagés. Marque chaque learning propagé après Grep de vérification.
 
 Étape 1 — Audit de cohérence croisée :
-Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 30 gates binaires (G1-G30, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 32 gates binaires (G1-G32, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
@@ -794,7 +794,7 @@ Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant
 Étape 2 — Lancement des audits :
 Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). Chaque agent reçoit un prompt ciblé sur le sujet et doit :
 1. Lire les livrables existants dans son domaine (docs/ + src/)
-2. Appliquer le Protocole de Vérification Universel (PVU — voir _base-agent-protocol.md) : d'abord sélectionner les gates existantes applicables parmi G1-G30 (selon le mapping sujet→gates du PVU), puis générer 3-7 gates ad-hoc spécifiques au sujet (binaires PASS/FAIL, définies AVANT l'audit)
+2. Appliquer le Protocole de Vérification Universel (PVU — voir _base-agent-protocol.md) : d'abord sélectionner les gates existantes applicables parmi G1-G32 (selon le mapping sujet→gates du PVU), puis générer 3-7 gates ad-hoc spécifiques au sujet (binaires PASS/FAIL, définies AVANT l'audit)
 3. Exécuter toutes les gates (existantes + ad-hoc) et produire un rapport structuré PASS/FAIL avec évidence (Grep/Read/test)
 4. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
 5. Proposer les corrections précises pour chaque problème
@@ -811,7 +811,7 @@ Lance @reviewer sur le sujet audité. Le reviewer applique sa checklist persona 
 Étape 4 — Synthèse croisée :
 Consolide les rapports des agents et du reviewer en un seul audit :
 - Gates binaires par dimension auditée (PASS/FAIL, seuil 100% gates BLOQUANT)
-- Gates PASS/FAIL par dimension auditée (gates applicables parmi G1-G30)
+- Gates PASS/FAIL par dimension auditée (gates applicables parmi G1-G32)
 - Tous les problèmes critiques (P0) avec agent responsable et action corrective
 - Améliorations majeures (P1) classées par impact décroissant
 - Améliorations mineures (P2)
@@ -949,7 +949,7 @@ Afficher le plan et attendre ma validation.
 Étape 3 — Exécution (après mon feu vert) :
 1. Déplacer chaque bloc custom vers sa destination (Edit sur chaque fichier cible).
 2. Exécuter bash update.sh --all pour remplacer la section Gradient par la dernière version.
-3. Corriger toutes les références "32 gates" → "30 gates" et "G1-G32" → "G1-G30".
+3. Aligner toutes les références au compteur de gates avec _gates.md actuel (actuellement 32 gates G1-G32). Grep les compteurs résiduels et corriger.
 4. Si .husky/pre-commit absent → @fullstack l'installe (voir _base-agent-protocol.md section "Setup pre-commit hook").
 5. Vérifier : git config core.hooksPath .githooks (pour le guard CLAUDE.md).
 6. Run final : npx tsc --noEmit && npx next lint && npm run build (si src/ existe).
@@ -2540,7 +2540,7 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
 10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
-Identifie les angles morts et contradictions. Applique les 30 gates binaires du framework (G1-G30, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
+Identifie les angles morts et contradictions. Applique les 32 gates binaires du framework (G1-G32, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
 
 Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
 Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
@@ -2551,7 +2551,7 @@ Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
 
-Critères de validation : chaque livrable a ses 30 gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
+Critères de validation : chaque livrable a ses 32 gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
       },
       {
         title:"Revue intermédiaire (mid-projet)",

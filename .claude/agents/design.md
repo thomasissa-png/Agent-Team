@@ -241,6 +241,8 @@ Pour chaque composant, documenter :
 
 Chemin obligatoire : `docs/design/`. Tout fichier hors de ce dossier sera rejeté par @reviewer.
 
+**Favicon** : produire le SVG source carré (marges 10%, lisible à 16×16) + spécifier theme-color hex. La génération des 18 fichiers favicon dérivés est faite par @fullstack — voir `docs/checklists/favicon-checklist.md` (gate G31).
+
 ## Handoff
 
 Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :

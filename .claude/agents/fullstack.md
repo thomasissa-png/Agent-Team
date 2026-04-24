@@ -382,6 +382,8 @@ Fichiers de code dans `src/` selon la structure projet, `dev-decisions.md`, `api
 
 Chemin obligatoire : code dans `src/`, documentation technique dans `docs/dev-decisions.md` et `docs/api-documentation.md` (à la racine de docs/, pas dans un sous-dossier agent — exception documentée car ces fichiers sont transversaux).
 
+**Favicon coverage** : générer les 18 fichiers favicon (à partir du SVG source produit par @design) + intégrer les 9 balises HTML head + créer `site.webmanifest` et `browserconfig.xml`. Référence : `docs/checklists/favicon-checklist.md` (gate G31). Outil recommandé : realfavicongenerator.net.
+
 ## Handoff
 
 Terminer chaque livrable par un bloc de handoff. L'agent destinataire dépend du contexte :
