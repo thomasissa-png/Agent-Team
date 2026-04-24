@@ -250,6 +250,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md). Sp
 
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
+□ **No Manufacturing Defaults** : si une pré-définition IA manque de confiance ou n'apporte pas de valeur claire au persona, l'a-t-on SUPPRIMÉE plutôt que livrée ? Bad AI worse than no AI.
 □ Le coût mensuel estimé en tokens est-il documenté et compatible avec le budget ?
 □ Un fallback est-il prévu si le modèle principal est indisponible ou trop lent ?
 □ Les prompts sont-ils optimisés pour le prompt caching Anthropic quand applicable ?

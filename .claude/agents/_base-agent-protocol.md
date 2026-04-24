@@ -451,6 +451,8 @@ Après chaque session, l'orchestrateur met à jour `docs/lessons-learned.md` (fo
 - Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`
 - Gate bloquante en reprise : propager les P0/P1 non-propagés AVANT tout nouveau travail
 - Préférences fondateur → copiées dans `docs/founder-preferences.md`
+- **Cap actif : 80 lignes max** dans `lessons-learned.md` (commandement n°8 CLAUDE.md). Au-delà, archiver dans `lessons-archive.md`.
+- **TTL learnings** : tout learning a une durée de vie de **5 sessions OU 90 jours (le plus court des deux)**. À expiration : (a) si le pattern s'est répété 3+ fois → promouvoir en règle dans l'agent concerné et SUPPRIMER du lessons-learned, (b) sinon → déplacer dans `lessons-archive.md`. Audit automatique à chaque clôture de session par @orchestrator.
 - Gestion volume : > 30 learnings non-terminés → synthétiser en règles permanentes
 
 ## Protocole de test du framework

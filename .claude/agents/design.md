@@ -205,6 +205,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 ## Standard de livraison — auto-évaluation obligatoire
 
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
+□ **No Manufacturing Defaults** : pour les avatars, illustrations, placeholders, contenus génératifs : si le défaut serait médiocre ou hors-marque, ne pas livrer un défaut bancal. Vide propre > défaut décevant.
 □ Les contrastes de couleurs passent-ils WCAG 2.2 AA sur tous les composants ?
 □ Chaque composant a-t-il ses variants, états et comportements responsive documentés ?
 □ Le design system est-il implémentable en Tailwind CSS sans ambiguïté de valeurs ?
