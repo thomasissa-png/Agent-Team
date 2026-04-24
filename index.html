@@ -955,12 +955,18 @@ Afficher le plan et attendre ma validation.
 6. Run final : npx tsc --noEmit && npx next lint && npm run build (si src/ existe).
 
 Étape 4 — Validation :
-- CLAUDE.md section Gradient : <= 120 lignes ? Si non → du contenu custom n'a pas été migré.
-- Zéro référence "32 gates" restante (Grep).
+- CLAUDE.md section Gradient : <= 125 lignes ? Si non → du contenu custom n'a pas été migré.
+- Aligner les compteurs de gates avec _gates.md actuel (32 gates G1-G32 incluant G31 Favicon Coverage et G32 Typographie FR).
 - Hook pre-commit fonctionnel (tester un commit).
 - Lancer le prompt "Faire un check-up complet" pour vérifier la cohérence post-migration.
 
-Critères de validation : CLAUDE.md section Gradient <= 120L, 0 référence "32 gates", hooks installés, build PASS.`
+Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions) :
+1. Mesurer docs/lessons-learned.md du projet (wc -l). Si > 80 lignes : audit TTL obligatoire.
+2. Mesurer project-context.md (wc -l). Si > 250 lignes hors mémo : archivage historique requis.
+3. Pour Versi spécifiquement (21+ sessions) : MODE DRY-RUN OBLIGATOIRE. @orchestrator produit un diff "voici ce que j archiverais" SANS exécuter. Validation utilisateur sur le diff. Exemption explicite des entrées critiques projet (auth, paiements, data model, learnings P0). Archive dans docs/lessons-learned-archive.md, JAMAIS delete.
+4. Vérifier que la favicon-checklist.md (gate G31) est satisfaite si livrable web : 12 fichiers favicon présents + 7 balises HTML head.
+
+Critères de validation : CLAUDE.md section Gradient <= 125L, compteurs gates alignés (32 G1-G32), hooks installés, build PASS, audit TTL exécuté, favicons G31 PASS si applicable.`
       }
     ]
   },
@@ -3561,6 +3567,16 @@ Grep "non-propagé" dans docs/lessons-learned.md. Pour chaque P0/P1 avec statut 
 Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATTENTE : [learning] → [fichiers restants avec modifications exactes]". Ce sera le PREMIER acte de la session suivante (gate bloquante).
 - Si plus de 30 learnings ouverts : synthétiser les récurrents en règles permanentes (CLAUDE.md ou agents), archiver les appliqués/obsolètes dans "## Archive" en bas du fichier.
 
+Étape 5d — Commandement n°8 (Conservation of rules — net-zero) OBLIGATOIRE :
+1. Mesurer les caps actuels : CLAUDE.md (max 125 lignes), docs/lessons-learned.md (max 80 lignes), project-context.md (max 250 lignes hors mémo de reprise et historique). Compter via wc -l.
+2. Audit TTL learnings : pour chaque entrée de docs/lessons-learned.md, calculer (a) âge en sessions depuis date d ajout, (b) âge en jours. Si > 5 sessions OU > 90 jours ET priorité != P0 :
+   - Si pattern réoccurrent (>= 2 mentions sessions différentes) : promouvoir dans agent.md concerné ET supprimer de lessons-learned
+   - Sinon : déplacer la ligne dans docs/lessons-learned-archive.md (créer si absent)
+   - Les P0 sont JAMAIS archivés automatiquement (garde-fous silencieux). Exemption stricte.
+3. Audit project-context.md : si > 250 lignes, archiver les entrées historique des interventions plus anciennes que 5 sessions vers docs/project-context-archive.md. Garder les 5 dernières sessions actives + le mémo de reprise courant.
+4. Vérification net-zero : compter les lignes ajoutées dans CLAUDE.md, agents et gates cette session. Vérifier qu un nombre équivalent a été supprimé/archivé. Si ajout net positif : justifier dans le mémo de reprise OU corriger avant clôture.
+5. Si un cap est dépassé après archivage : BLOQUER la clôture. Demander à l utilisateur de trancher : (a) raise le cap (justification écrite), (b) supprimer manuellement, (c) audit profond delégué.
+
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
 ✓ Historique des interventions : à jour / X entrées ajoutées
@@ -3585,6 +3601,13 @@ Critères de validation : project-context.md est à jour (historique + mémo de 
         agents:["orchestrator"],
         quand:"Première action en ouvrant une nouvelle session Claude Code pour continuer un projet existant. Tip : lancez d'abord claude --resume 'nom' ou claude --continue pour récupérer le contexte conversationnel, puis collez ce prompt. Fonctionne que la session précédente ait été clôturée proprement ou non.",
         prompt:`@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
+
+Étape 0 — Pré-check caps anti-dérive (BLOQUANT) :
+Avant tout, mesurer la santé du framework via wc -l :
+- CLAUDE.md (cap 125) — si > 125 : violation règle n°7
+- docs/lessons-learned.md (cap 80) — si > 80 : violation commandement n°8
+- project-context.md (cap 250 hors historique) — si > 400 lignes au total : risque de bloat historique
+Si un seuil est dépassé : afficher WARNING visible et proposer de déclencher un audit TTL avant tout autre travail. L utilisateur peut décider de continuer (justification) OU de purger d abord. Ne pas bloquer si projet en mode hotfix.
 
 Étape 1 — Récupération du contexte :
 Lis project-context.md à la racine. Extrais et affiche :
@@ -3798,15 +3821,16 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents depuis https://github.com/thomasissa-png/Agent-Team -b master. Clone dans /tmp, écrase les agents dans .claude/agents/ mais FUSIONNE le CLAUDE.md (remplace uniquement le bloc entre les marqueurs GRADIENT-AGENTS-START et GRADIENT-AGENTS-END, conserve le reste intact). Ne touche pas à project-context.md, docs/, src/ ni au code existant.">Copier</button>
-            <em>"Mets à jour l'équipe Gradient Agents depuis <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b master</code>). Écrase les agents, <strong>fusionne</strong> CLAUDE.md, ne touche pas au reste."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents : exécute bash update.sh --all si update.sh existe, sinon télécharge-le d'abord (curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all). Le script clone master, fait un backup dans .claude/agents/.backup/, écrase les 21 agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. Inclut les changements 2026-04-17 : commandement n°8 net-zero, gates G31 favicon + G32 typo, règle 5 étendue Persona-Driven Verdicts, escalade timeout 4 niveaux, convergence protocol reviewer, patterns techniques Tailwind v4/Canvas/Express 5/Playwright. WARNING : si docs/lessons-learned.md local > 80 lignes, audit TTL sera proposé au prochain prompt de reprise.">Copier</button>
+            <em>"Mets à jour l'équipe Gradient Agents via <code>bash update.sh --all</code>. Backup auto + fusion CLAUDE.md + nouveaux changements 2026-04-17 (cmd n°8 net-zero, G31 favicon, G32 typo). Audit TTL local proposé si lessons > 80L."</em>
           </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir</span></div>
+        <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Pour les projets avec ≥ 5 sessions (Versi, ISSA, Sarani) : <strong>lancez le prompt "Démarrer une nouvelle session"</strong> qui déclenchera l'audit TTL pré-bloquant en mode DRY-RUN d'abord</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Préservé :</div>
-        <code>project-context.md</code> + <code>docs/</code> (livrables) + <code>src/</code> (code) + agents custom
+        <code>project-context.md</code> + <code>docs/</code> (livrables) + <code>src/</code> (code) + agents custom + <code>lessons-learned.md</code> local
       </div>
     </div>
 

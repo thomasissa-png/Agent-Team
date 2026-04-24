@@ -46,7 +46,7 @@ Seuil dur : **125 lignes max** (enforced par hook pre-commit). Avant d'ajouter u
 
 ## 8. Conservation of rules (net-zero par session)
 
-Pour toute règle/learning ajouté en fin de session, une obsolète doit être supprimée ou fusionnée. Le framework grossit en valeur, pas en lignes. Cap actif `lessons-learned.md` : 80 lignes max. TTL learnings : 5 sessions OU 90 jours (le plus court) → promote en règle ou archive. L'historique git garde tout, on ne perd rien.
+Pour toute règle/learning ajouté en fin de session, une obsolète doit être supprimée ou fusionnée. Le framework grossit en valeur, pas en lignes. **Caps actifs** : `lessons-learned.md` 80L, `project-context.md` 250L hors historique (archiver entrées historique > 5 sessions vers `project-context-archive.md`), `CLAUDE.md` 125L. **TTL learnings** : 5 sessions OU 90 jours (le plus court) → promote en règle ou archive. **P0 jamais archivés automatiquement** (garde-fous silencieux). L'historique git garde tout, on ne perd rien.
 
 ---
 
