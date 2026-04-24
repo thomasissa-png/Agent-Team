@@ -3494,11 +3494,12 @@ Critères de validation : au moins 3 concurrents directs cartographiés avec don
         quand:"Quand project-context.md dépasse 250 lignes hors memo+historique, ou quand la session de reprise signale un cap atteint. Utilisable sur tout projet existant avec historique accumulé (Versi 21+ sessions, ISSA, Sarani, etc.). Lancable ponctuellement ou récurrent (tous les 5 sessions).",
         prompt:`@orchestrator Mode audit TTL project-context.md. Ne lance aucun agent.
 
-Étape 1 — Mesure et diagnostic :
-1. wc -l project-context.md → afficher taille totale
-2. Identifier les sections via Grep (^## ) : lister chaque section avec sa taille approximative
+Étape 1 — Mesure et diagnostic (READ-ONLY, aucune modification) :
+0. Bail-out early : si wc -l project-context.md <= 250 → afficher "Audit non nécessaire (cap 250 respecté). Skip." et terminer. Ne rien toucher.
+1. wc -l project-context.md (fallback : Read + count lignes si Bash indisponible) → afficher taille totale
+2. Identifier les sections via Grep pattern "^## " : lister chaque section avec sa taille approximative (différence entre numéros de ligne de sections successives)
 3. Sections candidates à archivage :
-   - Tableau "Historique des interventions agents" : compter les entrées, noter date la plus ancienne
+   - Tableau "Historique des interventions agents" : compter les entrées, noter date la plus ancienne et la plus récente
    - Mémos de reprise passés (si plusieurs ## Mémo de reprise empilés)
    - Notes libres / Décisions anciennes si > 5 sessions
 4. Afficher le diagnostic :
@@ -3512,7 +3513,8 @@ Produire un diff structuré :
 - KEEP : liste des entrées historique à conserver (5 dernières sessions) avec date
 - ARCHIVE : liste des entrées historique à déplacer vers docs/project-context-archive.md (plus anciennes que 5 sessions OU > 90 jours), avec extrait de chaque ligne pour validation visuelle
 - COMPRESS : mémos de reprise antérieurs à fusionner en 1 seule section "Historique des mémos" compacte (1 ligne par session : date + résumé 1 phrase)
-- Exemptions proposées : learnings P0, décisions structurelles fondatrices, préférences fondateur inscrites dans project-context.md (à ne JAMAIS archiver, même si anciennes)
+- Exemptions proposées (liste exhaustive, non-archivables même si > 5 sessions / > 90 jours) : (a) learnings P0 référencés dans project-context.md, (b) décisions structurelles fondatrices (pivot, nom projet, modèle économique), (c) préférences fondateur inscrites, (d) mémo courant. Cohérent avec CLAUDE.md cmd n°8 (P0 jamais archivés automatiquement)
+- Re-qualification d exemptions anciennes : si une décision fondatrice de session N est devenue obsolète en session N+K (contredite par un mémo ou une décision postérieure), le DRY-RUN la propose comme ARCHIVE avec tag "[OBSOLÈTE depuis session M]" — validation utilisateur requise (pas d exemption permanente par défaut)
 
 Afficher le diff et attendre validation utilisateur AVANT exécution. Format validation :
 - "Continue" → applique tel quel
@@ -3520,6 +3522,7 @@ Afficher le diff et attendre validation utilisateur AVANT exécution. Format val
 - "Skip" → annuler, ne rien toucher
 
 Étape 3 — Exécution (après feu vert uniquement) :
+0. Backup safety : exécuter git status project-context.md. Si modifications non commitées existent, STOP et demander commit/stash avant exécution (prévient perte en cas d erreur Write).
 1. Créer docs/project-context-archive.md si absent, avec en-tête "Archive project-context.md — [nom du projet]" et explication
 2. Déplacer les entrées ARCHIVE vers project-context-archive.md (append section "## Archive [date audit]")
 3. Compresser les mémos de reprise anciens (COMPRESS) en 1 section "Historique des mémos" dans project-context.md
@@ -3650,14 +3653,14 @@ Critères de validation : project-context.md est à jour (historique + mémo de 
         prompt:`@orchestrator Mode reprise de session. Ne lance aucun agent avant mon feu vert.
 
 Étape 0 — Pré-check sanity anti-dérive (BLOQUANT) :
-Systématique à chaque ouverture de session. Mesurer via wc -l :
+Systématique à chaque ouverture de session. Mesurer via wc -l (fallback : Read + count lignes si Bash indisponible) :
 - CLAUDE.md (cap 125, règle n°7) — viol = blocage jusqu à réduction
 - docs/lessons-learned.md (cap 80, commandement n°8) — viol = déclencher audit TTL (promote-or-archive, P0 exempté) avant de continuer
-- project-context.md — si > 250 lignes hors memo courant + historique 5 dernières sessions : déclencher le prompt "Auditer project-context.md volumineux" (DRY-RUN puis validation utilisateur)
+- project-context.md — si > 250 lignes hors memo courant + historique 5 dernières sessions : déclencher le prompt "Auditer project-context.md volumineux" (DRY-RUN puis validation utilisateur). Exception : si projet nouveau (< 5 entrées historique) : skip ce check et signaler "Projet en phase initiale, audit TTL non applicable".
 - docs/founder-preferences.md (soft cap 150, alerte à partir de 180) — si > 180 : signaler pour dédoublonnage, non bloquant
 - _gates.md — vérifier cohérence nombre de gates (actuellement 32 G1-G32). Si compteur incohérent dans CLAUDE.md ou les agents : signaler.
 
-Règle : un seuil dépassé = sanity check OBLIGATOIRE avant Étape 1. L utilisateur peut dire "Skip audit" si mode hotfix (à tracer dans la clôture) mais le WARNING reste dans le mémo.
+Règle : un seuil dépassé = sanity check OBLIGATOIRE avant Étape 1. Mode hotfix défini = bug bloquant en production qui exige correction immédiate (< 1h), chaque skip doit justifier nature du bug + durée estimée + plan de reprise du check TTL dans la clôture. Hors ce cas, WARNING reste visible dans le mémo de reprise.
 
 Supplément favicon/typo : si livrable web/UI est présent dans le projet (src/app, src/pages, public/ détecté via Glob), vérifier via Bash que G31 (12 fichiers favicon + 7 balises HTML head) et G32 (typographie FR) sont au niveau. Si FAIL : signaler, non bloquant pour reprise mais à corriger avant clôture.
 
