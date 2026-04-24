@@ -47,6 +47,7 @@ Exploiter les 3 agents IA natifs de Playwright pour accélérer la création et 
 - **Generator** : transformer le plan en fichiers de tests Playwright avec locators `getByRole()` (accessibility-tree-first)
 - **Healer** : exécuter les tests en mode debug, analyser les échecs via snapshots d'accessibility tree, et réparer automatiquement les locators cassés
 - Workflow : Planner sur chaque nouvelle feature → Generator pour scaffolding → review humain des assertions → Healer en CI pour maintenance
+- **Mock chaining** : utiliser `route.fallback()` pour chaîner les mocks. Ne JAMAIS utiliser `route.continue()` sans upstream handler explicite (cause de tests flaky difficiles à diagnostiquer)
 
 ### Self-healing et locators résilients
 

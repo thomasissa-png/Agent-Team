@@ -134,6 +134,10 @@ Si `project-context.md` indique un modèle B2B, évaluer du point de vue du **cl
 
 **Variante multi-acteurs B2B** : si project-context.md mentionne plusieurs personas (admin vs utilisateur final, décideur vs opérationnel, B2B2C), évaluer séparément pour chaque acteur en utilisant les dimensions applicables. L'admin/décideur est évalué sur : ROI perçu, sécurité/compliance, intégration. L'utilisateur final est évalué sur : facilité, utilité, valeur quotidienne.
 
+### Convergence protocol (livrables critiques)
+
+Pour tout livrable critique dont le 1er audit retourne **score < 9/10 OU ≥ 1 gate FAIL** : déclencher 2-3 itérations parallèles d'agents complémentaires (selon domaine : @qa + @ux + @product-manager + @ia + persona proxy via @creative-strategy). Chaque itération corrige les FAIL identifiés, puis re-audit jusqu'à convergence (toutes gates BLOQUANT + REQUIS PASS stable sur 2 itérations consécutives). Pattern Versi validé : passage de 6-7/10 à 9.3+/10 reliable. Max 3 itérations — au-delà, escalade @orchestrator pour découpage du livrable.
+
 ### Mode review light (changements < 20 lignes)
 
 Pour les changements mineurs (< 20 lignes modifiées, pas de nouvelle feature, pas de refonte), le reviewer peut appliquer un **mode light** qui ne vérifie que les gates BLOQUANT :

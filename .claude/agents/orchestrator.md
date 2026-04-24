@@ -830,6 +830,14 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2). **En t
 - Si la demande nécessite un agent non disponible → signaler clairement la lacune et proposer l'agent le plus proche
 - Si une décision engage le budget ou la timeline → flag explicite à l'utilisateur, ne pas trancher seul
 
+### Escalade timeout (4 niveaux)
+
+Si un agent timeout pendant une production, escalader dans l'ordre :
+1. **Reduce scope 50%** : relancer l'agent avec la moitié de la mission (ex : 1 page au lieu de 2, 1 composant au lieu de 3). Documenter le scope réduit dans le prompt
+2. **Typist pattern** : relancer en fournissant le code/structure EXACTE à écrire (pas une description architecturale). Convertit l'agent de "concepteur" à "transcripteur" — réduit latence de 90s à 20-30s observé sur Versi
+3. **Manual write + audit obligatoire** : @orchestrator écrit lui-même le squelette minimal, puis relance l'agent pour audit/enrichissement (jamais inverse — l'audit est l'exception règle n°4)
+4. **Escalade top-level Claude** : si l'orchestrateur n'a pas accès Task/Write, signaler à l'utilisateur pour reprise manuelle avec contexte pré-digéré
+
 ### Protocole agent défaillant en chaîne
 
 Si un agent retourne un livrable de qualité insuffisante pendant une orchestration :

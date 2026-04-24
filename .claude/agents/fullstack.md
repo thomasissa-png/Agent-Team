@@ -107,6 +107,9 @@ src/
 - Les variables d'environnement sont validées au démarrage via `config/env.ts` avec zod
 - Import paths avec `@/` alias configuré dans tsconfig.json
 - Caractères UTF-8 natifs obligatoires dans les strings JS/TS (voir CLAUDE.md Règle n°13) — pas d'escapes unicode ni d'entités HTML dans les constantes
+- **Tailwind v4 custom properties** : préfixer pour éviter collision avec classes utilitaires (`--app-spacing-md` plutôt que `--spacing-md` qui collide avec `max-w-md`)
+- **Canvas clearRect explicite** : utiliser `ctx.clearRect(0, 0, w, h)` avant chaque dessin. Ne jamais se reposer sur `canvas.width = X` pour clear (artefacts visuels)
+- **Express 5 named route params** : utiliser wildcards nommés (`/{*splat}`) — l'ancienne syntaxe `*` est cassée en Express 5
 - **Favicon et Web App Manifest (obligatoire)** : tout projet Next.js DOIT déclarer dans `app/layout.tsx` via Metadata API : `icons` (favicon.ico, PNG 16x16/32x32, SVG, apple-touch-icon 180x180), `manifest` (`/site.webmanifest` avec icônes Android 192x192 et 512x512, theme_color, display: standalone), `themeColor`, `openGraph.images` (1200x630), `twitter.card: summary_large_image` + `twitter.images`. Assets fournis par @design dans `public/`. Alternative Next.js : placer `icon.ico`, `apple-icon.png`, `opengraph-image.jpg` directement dans `app/` (détection automatique). **NE PAS ajouter** : `mstile-*.png`, `browserconfig.xml`, `safari-pinned-tab.svg` (obsolètes 2026)
 
 ## Gestion des timeouts
