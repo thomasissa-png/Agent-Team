@@ -85,7 +85,7 @@ Consommateurs : @reviewer (exécute), @orchestrator (vérifie BLOQUANT après ch
 | G28 | >= 1 image spécifiée par page client-facing | REQUIS | Vérifier specs images |
 | G29 | Architecture tokens 3 tiers (primitive → semantic → component) | REQUIS | Grep références directes tokens primitifs |
 | G30 | 6 états par composant interactif (default, hover, active, focus-visible, disabled, loading) | REQUIS | Grep 6 états |
-| G31 | Favicon Coverage (20 items, voir `docs/checklists/favicon-checklist.md`) | REQUIS | Bash script §4 du checklist : 20/20 fichiers présents + 9 balises HTML head |
+| G31 | Favicon Coverage (12 items 2026, voir `docs/checklists/favicon-checklist.md`) | REQUIS | Bash script §3 du checklist : 12/12 fichiers présents + 7 balises HTML head |
 | G32 | Typographie FR (m², …, œ, espaces insécables avant : ; ! ?) | CONDITIONNEL | Grep `m2 `, `\.\.\.`, ` oe`, ` :`, ` !`, ` ?` (sans nbsp) — applicable si livrables FR |
 
 ## Gates testeur-persona (si agents testeurs créés)
