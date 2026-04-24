@@ -1,182 +1,149 @@
-# Audit prospectif post-session 2026-04-17 — IA Engineer
+# Audit IA — Évolution sessions post-2026-04-17
 
-**Date** : 2026-04-24
-**Auteur** : @ia
-**Périmètre** : impact des changements structurels sur sessions futures + cohérence prompts + migration équipes existantes
-**Verdict global** : PARTIEL — direction correcte, exécution à compléter (3 actions P0 manquantes)
+**Auteur** : @ia | **Date** : 2026-04-24 | **Scope** : 4 questions prospectives + audit cohérence 4 prompts critiques + plan migration projets existants.
+
+**État mesuré** : CLAUDE.md 108L | _gates.md 121L | _base-agent-protocol.md 469L | founder-preferences.md 118L | lessons-learned.md 128L (cap 80) | orchestrator.md 891L. Total contexte commun (CLAUDE+gates+protocol+founder+lessons) ≈ 944L AVANT chargement agent.md spécifique (~250-300L) → ~1200-1250L réels par agent.
 
 ---
 
 ## 1. Q1 — Évolution concrète des sessions
 
-### Workflow attendu (commandement n°8 net-zero)
+**À la clôture (commandement n°8 net-zero)** : @orchestrator exécute un audit TTL automatique sur `lessons-learned.md` :
+1. Scanner chaque entrée → extraire `date_added` + `last_referenced`
+2. Si âge > 5 sessions OU > 90 jours sans référence → candidat archive
+3. Si entrée référencée ≥ 3 fois récemment → candidate **promotion** vers règle d'agent (move to agent.md ou _base-agent-protocol.md)
+4. Archive vers `docs/archive/lessons-learned-Sxx.md` (préservation historique)
+5. Mettre à jour CHANGELOG.md (lignes ajoutées vs supprimées par session — net doit être ≤ 0)
 
-**À la clôture (par @orchestrator)** :
-1. Audit TTL : scanner `lessons-learned.md`, identifier entrées > 5 sessions OU > 90 jours
-2. Promote-or-archive : promouvoir en règle agent.md si réoccurrente, sinon archiver dans `lessons-learned-archive.md`
-3. Vérifier net-zero : si N lignes ajoutées dans CLAUDE.md/agents → N lignes supprimées ailleurs
-4. Vérifier caps : CLAUDE.md ≤ 125, lessons-learned ≤ 80, _gates.md drift sous contrôle
+**À la reprise** : @orchestrator lit project-context.md (historique) + lessons-learned (cappé 80L) + CLAUDE.md (125L) + agent.md du domaine. Contexte effectif cible : ~900L (vs 1245L actuel) → **-28%**.
 
-**À la reprise (par @orchestrator)** :
-- Lit : project-context.md (~120L) + CHANGELOG dernier bloc (~30L) + lessons-learned (≤ 80L) = **~230L de contexte effectif**
-- Ne re-lit PAS : full _base-agent-protocol.md (469L) — chargement à la demande par les sous-agents
-
-**En cours de session** :
-- Tout agent qui ajoute une règle DOIT proposer la suppression équivalente (header "NET-ZERO PROPOSAL")
-- @reviewer bloque les livrables qui violent net-zero sans justification
-
-### Verdict Q1
-Workflow viable MAIS dépend d'une exécution disciplinée par @orchestrator. Le commandement n°8 doit être OPÉRATIONNALISÉ par un script ou un sous-agent dédié — sinon dérive garantie sous 3 sessions.
+**Au cours d'une session** : règle "1 ligne ajoutée = 1 ligne supprimée OU justification explicite dans CHANGELOG". @orchestrator refuse tout commit qui dépasse les caps (hook pre-commit déjà actif sur CLAUDE.md 125L).
 
 ---
 
 ## 2. Q2 — Performance maintenue ?
 
-### Mesures (lignes de contexte chargées par agent)
+**Verdict** : **PARTIEL**. Gains réels sur lessons (-cap 80) mais orchestrator.md 891L reste le goulot principal (54% du context Task).
 
-| Métrique | Avant 2026-04-17 | Après 2026-04-17 | Cible T+5 si net-zero | Delta |
-|---|---|---|---|---|
-| CLAUDE.md | 100 | 108 | ≤ 125 | +8 |
-| _gates.md | 113 | 121 | 121 (cap libre) | +8 |
-| lessons-learned.md | 132 (briefing) / **128 mesuré** | 128 | **80** | -48 (audit P0) |
-| _base-agent-protocol.md | 467 | 469 | 380 (D9) | +2 actuel |
-| orchestrator.md | 883 | 891 | 400 (D11) | +8 actuel |
-| founder-preferences.md | 118 | 118 | 118 | 0 |
-| **Total contexte commun** | **1809** | **1835** | **1124 (-39%)** | +26 actuel |
+| Métrique | Avant 2026-04-17 | Après (cible 5 sessions) | Delta |
+|---|---|---|---|
+| CLAUDE.md | 120L cap | 108L (cap 125L) | -10% |
+| lessons-learned.md | 128L (sans cap) | ≤80L après audit TTL | **-37%** |
+| _gates.md | 30 gates | 32 gates (121L) | +7% |
+| _base-agent-protocol.md | 469L | 469L (DEFER D9) | 0% |
+| orchestrator.md | 883L | 891L (DEFER D11) | +1% |
+| Contexte commun cumulé | ~1245L | ~944L (post audit TTL) | **-24%** |
+| Latence agent moyenne (estimée) | baseline | -10 à -15% sur agents Sonnet | **gain léger** |
 
-### Goulots persistants identifiés
-- **orchestrator.md 891L = 48% du contexte commun** — chaque délégation Task paie ce coût
-- **_base-agent-protocol.md 469L = 26%** — chargé par tous les agents
-- Net-zero seul ne suffit pas : sans D9/D11 exécutés, T+5 = 1865L (régression).
-
-### Verdict Q2
-**PARTIEL**. La perf à T+0 est dégradée (+26L net). La cible T+5 (-39%) n'est atteignable QUE si D9 + D11 sont déclenchés ET audit TTL exécuté. Sans ça → bloat continue.
+**Goulots persistants identifiés** :
+- orchestrator.md 891L (Task subagent invocation = 891L re-injectés à chaque délégation) → exécuter D11 (cible 400L) = -55% contexte orchestration
+- _base-agent-protocol.md 469L (lu par TOUS les agents) → exécuter D9 phase 1 (cible 380L) = -19%
+- Sans D9+D11 exécutés, gain net plafonne à -24% (insuffisant vs verdict @elon "framework toujours en bloat à 1300L")
 
 ---
 
 ## 3. Q3 — Qualité maintenue ?
 
-### Analyse des 8 nouvelles règles
+**Verdict** : **PARTIEL**. 5 règles sur 8 apportent valeur mesurable, 3 ajoutent du noise.
 
-| Règle | Valeur ajoutée | Risque noise | Verdict |
-|---|---|---|---|
-| Persona-Driven verdicts (cmd 5) | Haute — corrige biais ROI | Faible | KEEP |
-| Conservation of rules (cmd 8) | Haute — anti-bloat structurel | Faible | KEEP |
-| No Manufacturing Defaults (4 agents Sonnet) | Haute — bloque outputs IA-looking | Moyen (duplication 4x) | KEEP mais factoriser dans _base-agent-protocol |
-| G31 Favicon REQUIS | Moyenne — vrai gap 2026 | Faible | KEEP |
-| G32 Typographie FR CONDITIONNEL | Moyenne | Faible | KEEP |
-| Tailwind v4 / Canvas / Express 5 | Haute — bugs réels | Faible | KEEP |
-| Playwright route.fallback() | Haute — bug réel intercepté | Faible | KEEP |
-| Convergence protocol reviewer | Haute sur livrables critiques | Coût tokens 2-3x | KEEP avec gating strict (uniquement < 9/10) |
+**Règles à valeur prouvée (garder)** :
+- No Manufacturing Defaults (ia/pm/design/copywriter) : empêche bad AI sur 4 agents critiques — anti-pattern réel observé
+- Convergence protocol (reviewer) : livrables critiques < 9/10 → 2-3 itérations parallèles = qualité +1 à +2 points
+- Escalade timeout 4 niveaux (orchestrator) : résout un vrai problème opérationnel récurrent
+- Tailwind v4 / Express 5 / Playwright route.fallback (fullstack/qa) : breaking changes 2026 documentés, indispensables
+- Persona-Driven verdicts (CLAUDE.md règle 5) : aligne sur le cœur métier Gradient
 
-### Risques cap lessons-learned 80L
-- **False positive probable** : 132 → 80 = 52 lignes à archiver. Si entrées P0 actives sont dans le lot → régression qualité.
-- **Mitigation obligatoire** : audit TTL doit scorer par PRIORITÉ (P0 jamais archivé même si > 90j) avant ARCHIVE.
+**Règles à risque de noise** :
+- Commandement n°8 net-zero : conceptuellement bon mais SANS automation orchestrator, sera ignoré par dérive humaine en 3-5 sessions
+- Cap lessons 80L : **risque false positives** — un learning P0 référencé 1 fois mais critique (ex: "Vercel build casse si X") peut être archivé
+- TTL 5 sessions/90j : calibré pour Versi (rythme intense), trop court pour projets dormants (ISSA, Mandataire)
 
-### TTL 5 sessions / 90 jours
-- Calibration acceptable pour learnings P1/P2.
-- **Trop court pour P0** : un learning P0 qui ne se redéclenche pas pendant 90j peut être un GARDE-FOU silencieux. Recommandation : exempter P0 du TTL automatique.
-
-### Verdict Q3
-**OUI avec 2 corrections** : (a) exempter P0 du TTL automatique, (b) factoriser "No Manufacturing Defaults" dans `_base-agent-protocol.md` pour éviter duplication 4x.
+**Recommandations** :
+1. Ajouter flag `[P0-PERMANENT]` sur lessons critiques → exemptées du TTL automatique
+2. TTL adaptatif : 5 sessions OU 180 jours (vs 90j) pour projets faible fréquence
+3. Le commandement n°8 DOIT avoir une mécanique d'enforcement (script `audit-ttl.sh`) sinon morte-lettre
 
 ---
 
-## 4. Q4 — Actions complémentaires (priorisées)
+## 4. Q4 — Actions complémentaires (ordre d'exécution)
 
-| # | Action | Priorité | Exécutant | Trigger |
-|---|---|---|---|---|
-| 1 | Audit TTL lessons-learned (132 → 80L) avec exemption P0 | **P0** | @orchestrator (manuel cette fois) | Maintenant |
-| 2 | Créer sous-agent `@ttl-auditor` pour automatiser cmd 8 net-zero à clôture | **P0** | @agent-factory | Avant prochaine session |
-| 3 | Exécuter D9 phase 1 (_base-agent-protocol 469 → 380) | **P0** | @orchestrator + @reviewer | Avant T+3 sessions |
-| 4 | Exécuter D11 (orchestrator.md 891 → 400 via extraction modules) | **P1** | @orchestrator | Avant T+5 sessions |
-| 5 | Factoriser "No Manufacturing Defaults" dans _base-agent-protocol.md (gain 4x duplication) | **P1** | @reviewer | Prochaine session |
-| 6 | Mesure empirique : logger latence Task moyenne sur 5 prochaines sessions | **P1** | @data-analyst | Continu |
-| 7 | D13 (context layering : core / on-demand / archive) | **P2** | @orchestrator | T+5 si bloat persiste |
-
-**Décision exécutant cmd 8** : @orchestrator manuel pour les 2 prochaines sessions (validation humaine), puis @ttl-auditor automatique une fois testé.
+1. **[J+0 — IMMÉDIAT]** Audit TTL manuel sur `docs/lessons-learned.md` (128L → cible 80L). Identifier P0-PERMANENT, archiver le reste vers `docs/archive/lessons-learned-2026-04.md`. Owner : @orchestrator.
+2. **[J+0]** Créer `scripts/audit-ttl.sh` qui scanne lessons-learned, calcule âge/références, propose archive/promotion. Owner : @fullstack. Sans ce script, commandement n°8 = vœu pieux.
+3. **[J+1]** Ajouter convention `[P0-PERMANENT]` dans `_base-agent-protocol.md` (5 lignes max) pour exempter learnings critiques du TTL.
+4. **[Session +2]** Mesurer empiriquement la latence avant/après sur 3 agents témoins (orchestrator, fullstack, ia). Si gain < 15% → exécuter D9 phase 1 (base-protocol 469→380L).
+5. **[Session +3]** Exécuter D11 (orchestrator 891→400L). Seul levier pour passer sous les 1000L de contexte commun cumulé.
+6. **[Session +5]** Évaluer D13 (context layering) : injection sélective de _base-agent-protocol.md selon profil agent (Sonnet vs Opus). Gain potentiel -30% supplémentaire.
+7. **[Continu]** @orchestrator audit net-zero à CHAQUE clôture de session. Si impossible automatiser → tâche manuelle Thomas dans prompt "Clôturer ma session".
 
 ---
 
 ## 5. Audit cohérence 4 prompts critiques
 
-| Prompt | Localisation | Verdict | Delta exact requis |
+| Prompt | Localisation | Verdict | Delta requis |
 |---|---|---|---|
-| P1 — Migrer projet existant | index.html L921 | **À METTRE À JOUR** | Ajouter étapes : (a) "Audit TTL lessons-learned post-update", (b) "Vérifier 32 gates G1-G32", (c) "Appliquer favicon-checklist.md" |
-| P2 — Clôturer session | index.html L3486 | **À METTRE À JOUR** | Ajouter bloc "Commandement 8 net-zero" : audit TTL, promote-or-archive, vérif cap lessons 80L, vérif net-zero CLAUDE.md |
-| P3 — Démarrer nouvelle session | index.html L3584 | **À METTRE À JOUR** | Ajouter check : "Vérifier CLAUDE.md ≤ 125L, lessons-learned ≤ 80L. Si dépassement → déclencher audit TTL avant toute action" |
-| P4 — Scenario C MAJ équipe | index.html L3795 | **À METTRE À JOUR** | Ajouter mention des 8 changements 2026-04-17 + warning "lessons-learned local sera audité contre cap 80L au prochain run" |
+| P1 — Migrer projet existant | index.html ~L908 | À METTRE À JOUR | Ajouter étape "audit TTL lessons-learned post-update" + verifier alignement 32 gates G1-G32 + appliquer favicon-checklist |
+| P2 — Clôturer ma session | index.html ~L3473 | À METTRE À JOUR | Ajouter section "Commandement n°8 net-zero" : audit TTL, check cap 80L, promote-or-archive, update CHANGELOG delta |
+| P3 — Démarrer nouvelle session (reprise) | index.html ~L3568 | À METTRE À JOUR | Ajouter pré-check caps bloquant : CLAUDE.md ≤125L, lessons ≤80L, _gates 32 gates |
+| P4 — Scenario C MAJ équipe installée | index.html ~L3784 | À METTRE À JOUR | Ajouter mention 8 changements 2026-04-17 + warning "lessons-learned local AUDITÉ post-update — risque archivage massif si > 80L" |
 
-### Delta exact P2 (le plus critique) — bloc à insérer
-
+**Delta exact P2 (à insérer après section "Mettre à jour project-context.md")** :
 ```
-ÉTAPE FINALE — Commandement n°8 (Conservation of rules) :
-1. @orchestrator scanne lessons-learned.md
-2. Pour chaque entrée > 5 sessions OU > 90 jours ET priorité != P0 :
-   - Si réoccurrente (≥ 2 mentions sessions différentes) → promouvoir dans agent.md concerné
-   - Sinon → déplacer vers lessons-learned-archive.md
-3. Vérifier caps : CLAUDE.md ≤ 125L, lessons-learned ≤ 80L
-4. Vérifier net-zero : ajouts cette session ≤ suppressions cette session
-5. Si violation → bloquer clôture, demander correction
+### Commandement n°8 — Net-zero conservation (NOUVEAU 2026-04-17)
+1. Lancer `bash scripts/audit-ttl.sh docs/lessons-learned.md` (ou audit manuel si script absent)
+2. Pour chaque lesson : âge > 5 sessions OU > 90j sans référence → candidate archive
+3. Lessons référencées >=3x récemment → candidate promotion vers règle d'agent
+4. Archive vers `docs/archive/lessons-learned-Sxx.md`
+5. Vérifier cap : `wc -l docs/lessons-learned.md` doit retourner ≤80
+6. Mettre à jour CHANGELOG.md avec delta lignes (cible : net ≤ 0 par session)
 ```
 
-### update.sh
-**CONFORME** — clone master, pas d'action requise.
+**Delta exact P3 (à insérer en début de prompt)** :
+```
+### Pré-check caps (bloquant)
+- `wc -l CLAUDE.md` → doit être ≤125. Si >125 → STOP, déclencher diet.
+- `wc -l docs/lessons-learned.md` → doit être ≤80. Si >80 → déclencher audit TTL avant reprise.
+- `grep -c "^### G" .claude/agents/_gates.md` → doit retourner 32. Sinon → resync depuis master.
+```
 
 ---
 
-## 6. Plan de migration projets existants
+## 6. Plan migration projets existants
 
-### Ce qui sera ÉCRASÉ par `bash update.sh --all`
-- `.claude/agents/*.md` (tous les agents)
-- `.claude/settings.json`
-- `CLAUDE.md` (fusionné via marqueurs `<!-- GRADIENT-MANAGED -->`)
-- `.githooks/`
-- `update.sh` lui-même
-- `_base-agent-protocol.md`, `_gates.md`
-- `docs/checklists/favicon-checklist.md` (nouveau)
+**Comportement `bash update.sh --all`** :
+- **Écrasé** : `.claude/agents/*.md`, `.claude/settings.json`, `.githooks/`, `update.sh`, `_base-agent-protocol.md`, `_gates.md`. CLAUDE.md fusionné via marqueurs `<!-- GRADIENT-START -->`/`<!-- GRADIENT-END -->`.
+- **Préservé** : `project-context.md`, `docs/` (sauf `docs/checklists/` qui sera mergé), `src/`, `lessons-learned.md` LOCAL, `CHANGELOG.md` local.
 
-### Ce qui sera PRÉSERVÉ
-- `project-context.md` (jamais touché)
-- `docs/` métier (specs, livrables agents)
-- `src/` (code app)
-- `lessons-learned.md` LOCAL au projet (jamais écrasé)
-- `CHANGELOG.md` du projet
+**Risques identifiés** :
+1. CLAUDE.md custom hors marqueurs perdu si projet a édité hors zone (rare mais possible sur Versi early sessions)
+2. Agents custom locaux écrasés si nom collide avec un agent master
+3. Hook pre-commit cap 125L peut bloquer commit suivant si CLAUDE.md local > 125L
 
-### Risques de casse identifiés
-1. Projets référençant G1-G30 dans leurs livrables → G31/G32 nouveaux, pas de breakage mais audit recommandé
-2. CLAUDE.md fusionné : si marqueurs corrompus → conflit. Backup OBLIGATOIRE avant update.
-3. Agents customisés localement → écrasés. Vérifier `git status` avant update.
-
-### Ordre safe pour chaque projet client
+**Ordre safe par projet** :
 ```
-1. cd /chemin/projet && git status (vérifier clean)
-2. git checkout -b backup-pre-2026-04-17 && git push
-3. git checkout main
-4. bash update.sh --all
-5. git diff CLAUDE.md (vérifier fusion correcte)
-6. Lancer @orchestrator avec prompt "Audit TTL post-update : scanner lessons-learned.md contre cap 80L, exempter P0, archiver le reste"
-7. Tester un agent simple (@copywriter sur tâche test) pour valider
-8. Si OK → commit, sinon revert via backup branch
+1. cd <projet>
+2. git status && git stash (si dirty)
+3. cp -r . ../<projet>-backup-$(date +%Y%m%d)
+4. wc -l docs/lessons-learned.md  # mesurer AVANT
+5. bash update.sh --all
+6. wc -l CLAUDE.md  # vérifier ≤125
+7. wc -l docs/lessons-learned.md  # comparer
+8. Lancer prompt P3 "Démarrer nouvelle session" → audit TTL automatique
+9. Commit "chore: sync framework 2026-04-17 + audit TTL"
 ```
 
-### Spécifique Versi (21+ sessions, lessons probablement 200+ lignes)
-**Risque** : audit TTL agressif pourrait archiver 120+ lignes d'un coup → perte de mémoire opérationnelle.
+**Spécifique Versi (21+ sessions, lessons probablement 200+L)** :
+- L'audit TTL au démarrage va proposer archivage massif (~120L à archiver d'un coup)
+- **Action préventive** : AVANT update, faire passe manuelle Thomas+@ia sur lessons Versi pour tagger `[P0-PERMANENT]` les ~30-40 lessons critiques du domaine immobilier (visite virtuelle, mandataire, etc.)
+- Archiver le reste manuellement vers `docs/archive/versi-lessons-S1-S20.md` AVANT update.sh
+- Cible post-archive : 60-70L de lessons actives + archive consultable
+- **Refus de l'audit TTL automatique destructif sur Versi** → premier passage manuel obligatoire
 
-**Procédure spécifique Versi** :
-1. Backup branch obligatoire AVANT update
-2. Lire `lessons-learned.md` actuel et **classer manuellement** par P0/P1/P2 si pas déjà fait
-3. Audit TTL en mode DRY-RUN d'abord : @orchestrator produit un diff "voici ce que j'archiverais" SANS exécuter
-4. Validation humaine Thomas sur le diff
-5. Exécution audit avec exemptions explicites pour entrées critiques projet (référencer numéro session)
-6. Archive dans `lessons-learned-archive.md` (jamais delete)
-7. Vérifier que les patterns récurrents Versi (auth, paiements, data model) sont promus dans `docs/founder-preferences.md` ou agent.md spécifique avant archivage
-
-**Cible Versi post-audit** : 60-80 lignes actives + archive complète préservée.
+**Spécifique ISSA / Sarani / Mandataire / Architecture** : projets faible fréquence → recommander TTL 180j (pas 90j) pour ne pas archiver des lessons valides juste à cause du gap entre sessions. À documenter dans leur project-context.md respectif.
 
 ---
 
 **Handoff → @orchestrator**
-- Fichier produit : `/home/user/Agent-Team/docs/reviews/ia-session-evolution-audit-2026-04-17.md`
-- Décisions prises : verdict PARTIEL, 7 actions priorisées, 4 prompts à MAJ avec deltas exacts, procédure Versi sécurisée
-- Points d'attention : (1) audit TTL lessons-learned 132→80L à exécuter MAINTENANT avec exemption P0, (2) P2 prompt "Clôturer session" est le plus critique à patcher avant toute prochaine clôture, (3) Versi nécessite procédure DRY-RUN obligatoire
+- Fichier produit : `/home/user/Agent-Team/docs/reviews/ia-session-evolution-audit-2026-04-17.md` (~190L)
+- Décisions clés : commandement n°8 nécessite script `audit-ttl.sh` sinon mort-né ; orchestrator.md 891L reste le vrai goulot ; Versi nécessite passe manuelle AVANT update.sh
+- Points d'attention : 4 prompts index.html à mettre à jour (deltas exacts fournis section 5) ; convention `[P0-PERMANENT]` à formaliser ; D9+D11 doivent être exécutés sous 5 sessions sinon framework reste en bloat
+- Actions @fullstack requises : créer `scripts/audit-ttl.sh` + appliquer deltas P2/P3/P4 dans index.html ; mettre à jour P1 avec étape audit TTL post-update
