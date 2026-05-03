@@ -66,7 +66,7 @@ clone_repo() {
   # Tentative avec sparse checkout (repos publics et privés avec auth)
   if git clone --filter=blob:none --sparse --quiet -b master "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
-    git sparse-checkout set .claude/agents .claude/settings.json templates CLAUDE.md
+    git sparse-checkout set --no-cone .claude/agents .claude/settings.json templates CLAUDE.md
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
