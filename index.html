@@ -3627,6 +3627,14 @@ Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATT
 4. Verification net-zero : compter les lignes ajoutees dans CLAUDE.md, agents, gates ET index.html (prompts) cette session. Verifier qu un nombre equivalent a ete supprime/archive. Si ajout net positif : justifier dans le memo de reprise OU corriger avant cloture.
 5. Si un cap est dépassé après archivage : BLOQUER la clôture. Demander à l utilisateur de trancher : (a) raise le cap (justification écrite), (b) supprimer manuellement, (c) audit profond delégué.
 
+Étape 5e — Mesure perf-trend (OBLIGATOIRE, garantie de perf cross-sessions) :
+1. Exécute scripts/perf-trend.sh depuis la racine du repo. Le script mesure 6 métriques (M1 contexte commun, M2 /memories/*, M3 gates, M4 learnings actifs, M5 orchestrator.md, M6 fichiers docs/) et append une ligne dans docs/perf-trends.md.
+2. Lecture du résultat affiché en console : verdict session (PASS / WARNING / CRITICAL) + détail des 6 métriques avec seuils.
+3. Si exit code non-zero (WARNING TREND DEGRADANT — 3 sessions consécutives en WARNING ou CRITICAL) : STOP clôture immédiatement. Déclencher un audit profond (délégué à @reviewer ou @elon selon ampleur de la dérive) AVANT de continuer. Aucune clôture autorisée tant que le trend n est pas stabilisé.
+4. Si verdict session = WARNING isolé (1ère ou 2ème session consécutive) : signaler dans le mémo de reprise la métrique en cause + plan d action correctif pour la prochaine session, mais ne pas bloquer la clôture.
+5. Si verdict PASS : continuer la clôture normale.
+6. Référence : consulter docs/perf-trends.md pour visualiser l historique complet des trends et identifier les tendances de fond.
+
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
 ✓ Historique des interventions : à jour / X entrées ajoutées
