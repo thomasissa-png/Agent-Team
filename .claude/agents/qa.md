@@ -95,7 +95,7 @@ Classifier les features par niveau de risque :
 ### Pipeline pre-commit et CI/CD
 
 - Husky + lint-staged : lint + tests unitaires avant chaque commit
-- GitHub Actions : pipeline complet (lint → unit → integration → E2E → build). Le deploy est géré par Replit, pas par le CI/CD.
+- GitHub Actions : pipeline complet (lint → unit → integration → E2E → build). **Futurs projets GitHub+CF** : ajouter step `deploy` via `cloudflare/wrangler-action@v3` (preview sur PR, prod sur master). **Projets legacy Replit** : pas de step deploy (Replit gère), pipeline s'arrête à `build`.
 - Branch protection : merge bloqué si pipeline rouge
 
 ### Tests de sécurité (OWASP Top 10)

@@ -34,7 +34,7 @@ Un champ "rempli" ne signifie pas "exploitable". L'orchestrateur doit évaluer l
 | **Objectif 6 mois** | "Croître" / "Avoir des utilisateurs" | "500 utilisateurs actifs payants, MRR 5K€" |
 | **KPI North Star** | "Le chiffre d'affaires" — trop large | "Nombre de dashboards créés par semaine" |
 | **Ton de marque** | "Professionnel" — dit tout et rien | "Expert et bienveillant : on guide sans jargon, on rassure sans simplifier" |
-| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, PostgreSQL Replit, Stripe, Auth NextAuth.js, Deploy Replit" |
+| **Stack technique** | "Next.js" — une seule info | "Frontend Next.js App Router, Neon Postgres (Cloudflare Pages — futurs projets) ou PostgreSQL Replit (legacy), Stripe, Auth NextAuth.js v5" |
 | **Secteur** | "Tech" / "SaaS" — trop large | "Analytics marketing pour PME françaises 10-50 employés" |
 
 ### Protocole quand un champ est insuffisant
@@ -284,7 +284,7 @@ L'orchestrateur fonctionne en boucle itérative, pas en planification unique. Ch
 - **Vérification vrais outputs** (quand applicable) : si le livrable contient des prompts de génération ou des templates, demander à l'agent de générer au moins 1 exemple réel avec le profil du persona. Auditer l'output avec la double perspective : (1) le client/utilisateur payant est-il satisfait ? (2) le prospect/utilisateur final est-il convaincu ? Un prompt qui semble bon mais produit un output médiocre doit être corrigé
 - Si problème détecté → relancer l'agent concerné avec des instructions correctives
 - **Vérification boucle visuelle** (après Phase 2 uniquement) : Glob `tests/screenshots/*.png`. Si vide ou absent ET que du code frontend existe dans `src/` → relancer @fullstack avec instruction d'exécuter la boucle visuelle. Les baselines sont requises pour la gate G26 et pour la revue UX post-implémentation.
-- **Vérification build Replit** (après Phase 2 et tout commit code) : exécuter `npx tsc --noEmit && npx next lint && npm run build` (Règle n°6 CLAUDE.md). Si FAIL → BLOQUER, corriger avant de continuer. Vérifier aussi que le hook Husky pre-commit est installé (`.husky/pre-commit` existe). Si absent et que `src/` existe → demander à @fullstack de l'installer (voir _base-agent-protocol.md section "Setup pre-commit hook"). C'est le filet de sécurité automatique — 40% des commits étaient des fix post-commit avant cette règle.
+- **Vérification build** (après Phase 2 et tout commit code) : exécuter `npx tsc --noEmit && npx next lint && npm run build` (Règle n°6 CLAUDE.md). Si FAIL → BLOQUER, corriger avant de continuer. Vérifier aussi que le hook Husky pre-commit est installé (`.husky/pre-commit` existe). Si absent et que `src/` existe → demander à @fullstack de l'installer (voir _base-agent-protocol.md section "Setup pre-commit hook"). C'est le filet de sécurité automatique — 40% des commits étaient des fix post-commit avant cette règle. **Futurs projets CF** : ajouter `npx @cloudflare/next-on-pages@1` au build check pour valider compatibilité edge.
 
 ### 4. CHECKPOINT @moi — Compte rendu de phase (obligatoire)
 
@@ -525,7 +525,7 @@ Avant de lancer la Phase 2, vérifier que les specs sont implémentables sans am
 4. Si le projet utilise de l'IA générative : `docs/ia/prompt-library.md` DOIT exister avec des test cases (input → output attendu) AVANT que @fullstack code. Séquence obligatoire : @ia produit prompt-library.md → validation → PUIS @fullstack implémente. Pas en parallèle.
 
 **Phase 2 — Développement :**
-`infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, config Replit) → `fullstack` + `ia` (en parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E, produire matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — le déploiement est géré par Replit, pas par @infrastructure)
+`infrastructure` (setup initial : skeleton, env vars, CI/CD lint→test→build, **futurs projets : repo GitHub + wrangler.toml + GH Actions deploy CF Pages/Workers + Neon ; legacy : config Replit**) → `fullstack` + `ia` (en parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : comparer wireframes vs code réel, produire `docs/ux/ux-review.md`) → `qa` (inclure les écarts UX détectés dans les tests E2E, produire matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring post-launch, performance, sécurité — **futurs projets : @infrastructure pilote deploy CF via tokens scopés ; legacy Replit : Thomas exécute deploy manuel**)
 
 **Boucle visuelle obligatoire** : quand @fullstack est invoqué en Phase 2, l'instruction DOIT inclure : "Pour chaque page implémentée, exécuter la boucle visuelle (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ n'est pas vide avant de passer à @ux/@qa."
 
@@ -670,7 +670,7 @@ Le `project-context.md` n'est pas un document statique. Après chaque phase term
 
 1. **Après Phase 0** : mettre à jour les champs Persona (avec les insights de @creative-strategy), KPI North Star (avec les recommandations de @data-analyst), Contraintes légales (avec les alertes de @legal)
 2. **Après Phase 1** : ajouter dans Notes libres les insights UX (frictions identifiées par @ux, conventions visuelles choisies par @design)
-3. **Après Phase 2** : mettre à jour Stack technique avec les choix réels de @fullstack (librairies ajoutées, patterns adoptés), ajouter les limites Replit identifiées par @infrastructure
+3. **Après Phase 2** : mettre à jour Stack technique avec les choix réels de @fullstack (librairies ajoutées, patterns adoptés), ajouter les limites infra identifiées par @infrastructure (futurs projets : limites CF Workers CPU/durée/bindings ; legacy : limites Replit cold start/storage)
 4. **Après Phase 3** : ajouter les mots-clés principaux validés par @seo, le positionnement GEO de @geo
 
 **Pourquoi c'est critique** : les agents suivants lisent `project-context.md` en premier. Si le contexte reste à sa version initiale, ils travaillent avec une vision appauvrie du projet. L'enrichissement garantit que chaque agent bénéficie de l'intelligence collective des agents précédents, pas juste des livrables bruts.

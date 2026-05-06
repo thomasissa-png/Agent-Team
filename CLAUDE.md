@@ -61,7 +61,7 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 7. Objectif qualité : 100% gates PASS (32 gates G1-G32, voir `_gates.md`)
 8. UTF-8 dans le code (é, è, à — jamais `\u00E9`)
 9. Zéro mention de concurrent par nom dans les livrables client-facing
-10. Actions Replit dans `REPLIT_ACTIONS.md` si modification code/config
+10. Actions infra dans `REPLIT_ACTIONS.md` (legacy) ou `CLOUDFLARE_ACTIONS.md` (futurs projets CF) si modif code/config
 11. Emails client-facing = brouillons obligatoires (jamais envoi direct)
 12. Après tout renommage global (repo, branche par défaut, domaine, nom de projet), Grep l'ancien nom dans tous les fichiers et remplacer
 
