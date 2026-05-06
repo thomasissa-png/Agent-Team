@@ -3635,6 +3635,26 @@ Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATT
 5. Si verdict PASS : continuer la clôture normale.
 6. Référence : consulter docs/perf-trends.md pour visualiser l historique complet des trends et identifier les tendances de fond.
 
+Étape 5f — Verdict V1 atteinte (BLOQUANT pour mesurabilité du KPI) :
+Question OBLIGATOIRE en fin de session : "Le projet est-il EN LIGNE et FONCTIONNEL maintenant (V1 atteinte) ?"
+
+Critères binaires (TOUS doivent être OUI pour déclarer V1) :
+- URL production accessible publiquement (ou URL preview stable si projet B2B avec accès gated)
+- 100% gates BLOQUANT G1-G32 PASS
+- Variable 1c respectée (Vitrine = pas de funnel agressif / Funnel = parcours d achat complet et testé)
+- Au moins 1 utilisateur cible a pu accomplir le parcours principal en conditions réelles
+
+Réponse OUI : marquer dans project-context.md section "V1 atteinte le [DATE]" + ajouter URL prod + ajouter note "Stade : V1 → Production" en haut du fichier.
+Réponse NON : marquer "V1 EN COURS" + lister précisément ce qui reste (max 3 items) dans le mémo de reprise. Ne pas clôturer sans cette ligne.
+Première fois OUI atteinte : célébrer et noter la durée exacte (date début projet → date V1) — c est le KPI North Star à propager.
+
+Étape 5g — Sync branche par défaut (anti-fragmentation, mesurabilité cross-sessions) :
+1. Identifier la branche courante : git branch --show-current
+2. Identifier la branche par défaut du repo : git symbolic-ref refs/remotes/origin/HEAD ou config locale
+3. Si branche courante != branche par défaut : RAPPELER explicitement "Cette session a tourné sur [branche-courante]. Pour préserver la mesurabilité cross-sessions, mergez vers [branche-defaut] dès que stable. Sinon, l audit time-to-V1 et le perf-trend ne capturent pas l avancement réel."
+4. Pousser systématiquement la branche courante : git push origin [branche-courante]
+5. Si project-context.md a été modifié cette session : forcer une mise à jour sur la branche par défaut aussi (cherry-pick ou push direct du fichier) pour que les futurs audits voient le bon historique.
+
 Étape 6 — Confirmation :
 Affiche un résumé structuré de la clôture :
 ✓ Historique des interventions : à jour / X entrées ajoutées
@@ -3642,6 +3662,8 @@ Affiche un résumé structuré de la clôture :
 ✓ Livrables cette session : X complets, Y en cours
 ✓ Mémo de reprise : sauvegardé dans project-context.md
 ✓ Learnings : X learnings ajoutés dans docs/lessons-learned.md
+✓ V1 : ATTEINTE le [date] / EN COURS (X items restants)
+✓ Branche par défaut : SYNC OK / RAPPEL MERGE
 ✓ Push : branche + main poussés (learnings accessibles cross-projets)
 
 📎 Liens publics (à partager entre projets) :
