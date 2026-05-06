@@ -86,7 +86,7 @@ safe_grep_c() {
 
 # --- M3 : Nombre de gates actives ---
 GATES_FILE=".claude/agents/_gates.md"
-M3=$(safe_grep_c "^| G" "$GATES_FILE")
+M3=$(safe_grep_c "^| G[0-9]" "$GATES_FILE")
 
 # --- M4 : Nombre de learnings actifs (non archives) ---
 LL_FILE="docs/lessons-learned.md"

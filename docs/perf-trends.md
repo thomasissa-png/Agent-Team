@@ -29,3 +29,6 @@ WARNING TREND DEGRADANT (exit 1 du script) = 3 sessions consecutives avec au moi
 | 2026-05-05 | 1 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 42 | 20 | 891 | 72 | N/A | PASS |
 | 2026-05-06 | 2 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 42 | 20 | 891 | 73 | 2 reviewer | PASS |
 | 2026-05-06 | 3 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 42 | 20 | 891 | 73 | 2 reviewer | PASS |
+| 2026-05-06 | 4 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 42 | 20 | 891 | 73 | 2 reviewer | PASS |
+| 2026-05-06 | 5 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 42 | 20 | 891 | 73 | 2 reviewer | PASS |
+| 2026-05-06 | 6 | 1007 | 0 [N/A: Phase B pas encore appliquee] | 32 | 20 | 891 | 75 | 2 reviewer | PASS |
