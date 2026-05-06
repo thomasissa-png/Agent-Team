@@ -1,9 +1,28 @@
 # Baseline time-to-V1 — 3 projets clients Gradient Agents
-**Date audit** : 2026-04-24 | **Auteur** : @data-analyst | **Méthode** : analyse project-context.md framework + docs/reviews + lessons-learned
+**Date audit** : 2026-04-24 | **Auteur** : @data-analyst (timeout >24h, complété par @orchestrator) | **Méthode** : analyse project-context.md framework + WebFetch direct repos GitHub publics
 
-> **Note accès repos** : les repos GitHub thomasissa-png/* ne sont pas indexés publiquement et le WebSearch ne peut pas fetcher raw.githubusercontent.com. Les données ci-dessous sont extraites des sources locales du framework : project-context.md (historique sessions), lessons-learned.md, versi-learnings-audit-2026-04-17.md, ia-session-evolution-audit-2026-04-17.md. Données manquantes marquées `[NON DISPONIBLE]` ou `[ESTIMÉ]`.
+> **Note méthodologique** : @data-analyst n'avait pas accès WebFetch — il a estimé à partir des sources framework locales (`[ESTIMÉ]` partout). @orchestrator a complété par WebFetch direct des branches par défaut publiques. Les chiffres réels confirment et précisent les estimations.
 
 ---
+
+## ADDENDUM @orchestrator — Données réelles WebFetch (2026-04-24)
+
+| Projet | Date début (réelle) | Date fin (réelle) | Jours calendaires | Entrées historique | Top 3 agents (compte exact) |
+|---|---|---|---|---|---|
+| **Versi** | 2026-04-10 | 2026-04-23 | **13 jours** | **68** | @fullstack 16 / @ia 15 / @qa 12 |
+| **ISSA Capital** | 2026-04-07 | 2026-04-07 | **0 jour (1 session)** | **13** | @copywriter 6 / @orchestrator 4 / @design 3 |
+| **Sarani** (branche défaut) | 2026-03-24 | 2026-03-25 | **1 jour (Phase 0 init)** | **34** | @product-manager 6 / @copywriter 6 / @design 5 |
+
+**Conversion en heures session** (médiane 30 min/intervention) :
+- Versi : ~34h cumulées sur 13 jours
+- ISSA : ~6,5h en 1 session (Phase 0 cadrage)
+- Sarani branche défaut : ~17h en 1-2 sessions Phase 0 (sessions s6-s18 sur branches éphémères, non comptées ici)
+
+**Constat critique : V1 production atteinte sur 0/3 projets** dans la branche par défaut. La fragmentation des branches éphémères (Versi s24/s25, Sarani s6-s18) masque l'avancement réel. **Le KPI time-to-V1 est non-mesurable cross-projets aujourd'hui.**
+
+---
+
+## Tableau original @data-analyst (sources locales, estimations)
 
 ## 1. Tableau comparatif 3 projets
 
