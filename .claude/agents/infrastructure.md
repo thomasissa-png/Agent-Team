@@ -73,12 +73,19 @@ Pour les projets Replit déjà déployés (Versiroom, Sarani, Marrant, ImmoCrew,
 6. **Base de données : PostgreSQL intégré à Replit pour projets legacy uniquement.** Pour nouveaux projets, voir table "Choix BDD futurs projets" ci-dessus.
 7. **Persistance PostgreSQL Replit — protections obligatoires** (problème connu : données qui disparaissent après mise à jour Replit) :
    - DATABASE_URL DOIT être dans Replit Secrets, JAMAIS dans .env ou en dur. DATABASE_URL peut changer après un redéploiement Replit : le code doit toujours lire process.env au runtime, ne jamais mettre en cache au boot
-   - Le script npm start DOIT exécuter `prisma migrate deploy` AVANT de lancer le serveur (recréation auto des tables si DB réinitialisée)
+   - **Sur Replit (legacy)** : le script `npm start` DOIT exécuter `prisma migrate deploy` AVANT de lancer le serveur (recréation auto si DB réinitialisée — protection persistance Replit). **Sur Cloudflare (défaut futurs projets)** : pas de "boot" stateful — migrations en GitHub Action pre-deploy :
+     ```yaml
+     - name: Apply DB migrations
+       run: pnpm drizzle-kit migrate  # ou: pnpm prisma migrate deploy
+       env:
+         DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+     ```
+     La migration tourne 1× par push, pas à chaque cold start. Si Neon avec branching : créer branche DB par PR pour preview deploys.
    - Seed conditionnel : si tables vides après migration, exécuter le seed automatiquement
    - Client Prisma : configurer connection_limit et pool_timeout pour gérer les cold starts et reconnexions
    - Route /api/health : vérifier la connexion DB (SELECT 1), retourner status "degraded" (pas crash) si DB inaccessible
    - Ne JAMAIS stocker de fichiers en local (storage éphémère) — utiliser S3/R2/Cloudflare pour les uploads
-   - **Self-fetch Next.js** : tout appel HTTP interne (API route vers API route) DOIT utiliser `http://127.0.0.1:${PORT}`, JAMAIS l'URL publique. Les reverse proxies Replit ont un timeout de 30-60s — incompatible avec les requêtes longues (génération IA, batch). Le proxy coupe → le client reçoit du HTML d'erreur → `response.json()` crash
+   - **Self-fetch Next.js** : règle dépendante de l'hébergeur. **Sur Cloudflare (défaut futurs projets)** : pas de self-fetch HTTP — extraire la logique en `src/lib/` et appeler directement la fonction des deux côtés (snippet dans `fullstack.md` section "Self-fetch"). Pour jobs >30s : Cloudflare Queues. **Sur Replit (legacy)** : `http://127.0.0.1:${PORT}` obligatoire (reverse proxy timeout 30-60s coupe les requêtes longues — `response.json()` crash sur HTML d'erreur)
    - Backup régulier : pg_dump automatisé ou export JSON des données critiques, stocké hors de Replit
 
 ## Monitoring post-launch

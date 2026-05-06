@@ -148,7 +148,7 @@ Cf. section 4 pour checklist detaillee. **C'est la phase la plus longue pour Mar
 - [ ] Supprimer `replit.nix`
 - [ ] Supprimer toute reference `process.env.REPL_*`
 - [ ] Supprimer logique migration auto Prisma au boot
-- [ ] **Critique** : supprimer self-fetch `127.0.0.1:${PORT}` — refactorer en appel direct fonction OU appel HTTP via URL publique avec auth
+- [ ] **Critique** : supprimer self-fetch `127.0.0.1:${PORT}` — refactorer en appel direct fonction OU pour jobs >30s : Cloudflare Queues / Durable Objects
 - [ ] Supprimer `console.log` Replit-specific debug
 
 ### 4.3 Adaptation Next.js

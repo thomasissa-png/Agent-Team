@@ -153,16 +153,34 @@ Avant de coder une page, lire dans cet ordre de priorité :
 - **Stale-while-revalidate pour fetch lents** — pour toute page qui fetch des données lentes (>3s), implémenter un cache localStorage : affichage instantané des données cachées + refresh en background. Pattern : `const cached = localStorage.getItem(key); if (cached) render(JSON.parse(cached)); fetch(url).then(data => { localStorage.setItem(key, JSON.stringify(data)); render(data); })`. L'UX est morte sans cache local sur un fetch de 3+ secondes.
 - **Backoffice = même design system** — le backoffice/admin utilise les mêmes design tokens et composants que le front (shadcn/ui, Tailwind). Pas de styles inline, pas de composants HTML natifs sans styling. Un backoffice bâclé est un anti-pattern universel.
 
-### Self-fetch Next.js (obligatoire)
+### Self-fetch Next.js (règle dépendante de l'hébergeur)
 
-Tout appel HTTP interne (API route appelée depuis un Server Component ou un autre endpoint du même projet) DOIT utiliser `http://127.0.0.1:${PORT}`, JAMAIS l'URL publique du projet. Les reverse proxies (Replit, Vercel, Cloudflare) ont des timeouts (30-60s) incompatibles avec les requêtes longues (génération IA, batch processing). Le proxy coupe la connexion → `response.json()` crash sur du HTML d'erreur.
+**Règle commune** : ne JAMAIS appeler l'URL publique du projet depuis un Server Component ou une autre API route. Les reverse proxies (Replit, Vercel, Cloudflare) coupent les requêtes longues (>30-60s).
 
-Pattern :
+**Sur Cloudflare Pages/Workers (défaut futurs projets — décision S3 2026-05-06)** : pas de self-fetch HTTP. Pas de port local cross-route. Extraire la logique métier dans `src/lib/[feature].ts` et l'appeler directement depuis Server Component ET API route handler.
+
+```typescript
+// src/lib/generate-content.ts
+export async function generateContent(input: Input): Promise<Output> { /* logique */ }
+
+// src/app/api/generate/route.ts
+import { generateContent } from "@/lib/generate-content";
+export async function POST(req: Request) {
+  return Response.json(await generateContent(await req.json()));
+}
+
+// src/app/page.tsx — appel direct, pas HTTP
+import { generateContent } from "@/lib/generate-content";
+export default async function Page() { const data = await generateContent({...}); return <View data={data} />; }
+```
+
+Pour jobs >30s côté CF : Cloudflare Queues ou Durable Objects (message-passing, pas self-fetch).
+
+**Sur Replit (legacy)** : `http://127.0.0.1:${PORT}` obligatoire.
+
 ```typescript
 const PORT = process.env.PORT || 3000;
-const res = await fetch(`http://127.0.0.1:${PORT}/api/my-endpoint`, {
-  signal: AbortSignal.timeout(600_000), // 10 min pour les requêtes longues
-});
+const res = await fetch(`http://127.0.0.1:${PORT}/api/my-endpoint`, { signal: AbortSignal.timeout(600_000) });
 const text = await res.text();
 const data = JSON.parse(text); // fallback safe vs res.json() direct
 ```
