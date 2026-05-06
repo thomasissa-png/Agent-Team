@@ -75,6 +75,8 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 | data-analyst | 2026-05-05 | docs/reviews/time-to-v1-baseline-2026-04-24.md | Baseline time-to-V1 : [ESTIMÉ] 20-25h de session vs cible 8h @elon (gap +150-215%). Versi ~28 sessions, Sarani ~18 sessions. Goulots : @fullstack multi-passes, QA sans test LIVE, Phase 0 Vitrine/Funnel absente, timeouts agents. Top 3 correctifs : découpage sessions max 2 phases, gate Vitrine/Funnel bloquant Phase 0, QA LIVE obligatoire. Repos GitHub non indexés — données issues du framework local uniquement. | Baseline empirique time-to-V1 demandée pour valider/invalider hypothèse @elon (>8h = goulot à killer pour KPI projets/semaine). |
 | session 2026-04-17 | 2026-04-17 | CLAUDE.md (regle n°12 reformulée), orchestrator.md (Variable 1c Vitrine/Funnel + Règles d'exécution non négociables), qa.md (bug 3+ investigation + testing honesty STATIQUE/LIVE), ia.md (alias -latest minor-family), _base-agent-protocol.md (point 4 propagation décision fondateur), _gates.md (G15 placeholders FR), docs/founder-preferences.md (Vitrine/Funnel ISSA), docs/lessons-learned.md (session 2026-04-17), INSTALL.md/README.md/install.sh/update.sh/index.html (URLs master) | (1) Drift mémoire corrigé : branche PK8iz→gWn8U + historique 2026-03-31/04-02 ajouté. (2) Migration URLs vers master (install.sh, update.sh, prompts) + merge gWn8U dans master (40 commits fast-forward). (3) Collecte learnings 3 projets (Versi + ISSA Capital + Sarani 17 sessions). (4) Double filtrage @elon (first principles) × @ia (audit technique master). (5) 8 learnings propagés : Vitrine/Funnel Phase 0, orchestrator routeur pas producteur, bug 3+ investigation, testing honesty, alias -latest, propagation décision fondateur, placeholders FR, règle n°12 reformulée. (6) 3 learnings écartés après arbitrage fondateur (trop verticaux : Mission/Valeurs holdings, Double identité, Deterministic mapping). (7) 4 doublons confirmés (stale-while-revalidate, token budget, E2E review, relaunch blocked). Delta framework : +36 lignes réparties sur 10 fichiers, zéro inflation CLAUDE.md. | Session de capitalisation cross-projets. Méthode double filtrage @elon × @ia pour éviter le verticalisme tout en gardant les patterns universels. Thomas a arbitré les 3 divergences (toutes en faveur de @ia = framework généraliste). Prochaine étape : test en conditions réelles sur MarchesFaciles ou nouveau projet. |
 
+| session 2026-04-24 (S2) | 2026-04-24 | CLAUDE.md (commandement n°8 net-zero + cap 125), _gates.md (G31 favicon + G32 typo, total 32 gates), 9 agents Opus 4.6→4.7, design.md/copywriter.md/ia.md/product-manager.md (No Manufacturing Defaults), fullstack.md (Tailwind v4/Canvas/Express 5 + favicon), qa.md (Playwright route.fallback + favicon), orchestrator.md (escalade timeout 4 niveaux + Variable 1c renforcée), reviewer.md (Convergence protocol + walkthrough enrichi), moi.md (URLs master), founder-preferences.md, install.sh + update.sh (fix bugs sparse-checkout --no-cone + ((var++))), index.html (Étape 5e+5f+5g prompt P2 + nouveau prompt audit project-context volumineux + Card MAJ refondée + WARNING inline anti-backtick), scripts/perf-trend.sh (NOUVEAU 7 métriques + détection trend), docs/perf-trends.md (NOUVEAU dashboard), docs/lessons-learned-archive.md (NOUVEAU archive), docs/checklists/favicon-checklist.md (NOUVEAU 12 items 2026), docs/briefs/devrefs-brief.md (NOUVEAU), docs/reviews/* (16 audits) | Session marathon focalisée gardes-fous anti-dérive cross-sessions. (1) Migration Opus 4.7 sur 9 agents (3x SWE-bench, pricing inchangé). (2) Audit Versi s21-s25 + commentaires Thomas (favicons + perfs dégradées) → bundle "DevRefs" brief produit pour micro-commerce agent IA. (3) Commandement n°8 net-zero appliqué : caps 80/125/250 + TTL 5 sessions/90j + audit TTL pilote sur Agent-Team (lessons 132→47 lignes archivage 51L). (4) Gate G31 Favicon Coverage 12 items 2026 + G32 Typographie FR (formules Bash vérifiables). (5) 4 prompts critiques (P1 Migrer + P2 Clôture + P3 Reprise + P4 Card MAJ) validés 10/10 par @reviewer après 10 patches itérés. (6) 8e récurrence backticks dans index.html détectée + WARNING inline ajouté (learning P0). (7) Phase A baseline time-to-V1 sur 7 projets : V1 atteinte sur 0/6 (KPI North Star non-mesurable). (8) Phase B spec Memory tool architecturée (DEFER pilote Sarani). (9) Phase C scripts/perf-trend.sh + Étape 5e+5f+5g intégrées (Verdict V1 + sync branche défaut + métrique M7 sur-invocation agent >3 = WARNING scope). (10) Triple audit clôture @moi/@ia/@qa : 8.7/8.5/9.5 post-fix. 3 régressions QA bloquantes corrigées (compteur gates project-context, hook pre-commit non actif, grep gates capturant GP/GC). | Session de consolidation post-Versi/ISSA/Sarani avec focus garantie de perf cross-sessions. Méthode triple audit @moi/@ia/@qa avant clôture. 25+ commits master. Delta framework : ~+250 lignes brutes mais +15 lignes net après archivage (commandement n°8 respecté). Nouveau pattern audit triple validé. À reprendre : Phase D pilote Memory Sarani 3 sessions + audit DEFER D9/D11 (orchestrator 891L à 1 ligne du WARN) + investigation root cause @fullstack 16x sur Versi+Marrant. |
+
 ---
 
 ## Score de fidelite @moi
@@ -90,55 +92,59 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-04-17
-- **Branche** : `claude/extract-project-context-gWn8U` (mergée dans `master`)
+- **Date de cloture** : 2026-04-24
+- **Numéro de session** : 2 (S1 = clôture 2026-04-17 implicite)
+- **Branche** : `claude/extract-project-context-gWn8U` (mergée dans `master` 25+ fois cette session)
 
 ### Resume de la session
-Session de capitalisation cross-projets. Double filtrage @elon × @ia des learnings collectés depuis Versi, ISSA Capital et Sarani (17 sessions prod). Thomas a arbitré les 3 divergences @elon/@ia (toutes en faveur de @ia = framework généraliste).
+Session marathon "garantie de perf cross-sessions" suite au signal Thomas que les agents semblaient se dégrader avec l'accumulation des sessions. Méthode : 4 phases A→D (baseline / spec Memory / perf-trend / pilote Sarani différé) + triple audit clôture @moi/@ia/@qa (8.7/8.5/9.5 post-fix).
 
 **Actions majeures :**
-(1) Drift mémoire corrigé : branche `PK8iz` → `gWn8U` propagée dans 5 fichiers + historique sessions 2026-03-31 et 2026-04-02 ajouté + orchestration-plan.md archivé.
-(2) Migration URLs install.sh/update.sh/INSTALL.md/README.md/index.html vers `master` (plus de propagation de branche éphémère à chaque session). `git clone -b master` explicite dans les scripts.
-(3) Merge gWn8U → master (fast-forward 40 commits, 0 conflit). Master contient maintenant les enrichissements sessions 2026-03-28 → 2026-04-17.
-(4) Collecte learnings 3 projets (Versi + ISSA Capital + Sarani) via WebFetch.
-(5) Double filtrage : @elon first principles (9 GARDER, 5 REVOIR, 1 ÉCARTER) + @ia audit technique master (7 GARDER/ADAPTATION, 4 DÉJÀ COUVERT, 3 trop vertical).
-(6) 8 learnings propagés dans le framework : Vitrine/Funnel Phase 0, orchestrator routeur pas producteur, bug 3+ investigation, testing honesty STATIQUE/LIVE, alias `-latest` minor-family, propagation décision fondateur, placeholders FR, règle n°12 généralisée.
-(7) 3 learnings écartés après arbitrage fondateur : Mission/Valeurs holdings, Double identité culturelle, Deterministic mapping (tous verticaux).
-(8) 4 doublons confirmés : stale-while-revalidate, token budget cap 3K, E2E review, relaunch blocked.
+(1) Migration **Opus 4.6 → 4.7** sur 9 agents critiques (revue critique @ia : 4 actions retenues sur 7 initiales, 3 cargo-culting écartés).
+(2) Commandement n°8 "Conservation of rules" net-zero appliqué : caps 80/125/250 + TTL 5 sessions/90j. Audit TTL pilote sur Agent-Team : lessons-learned 132→47 lignes (archive 51L créée).
+(3) Gates **G31 Favicon Coverage** (12 items 2026) + **G32 Typographie FR** (formules Bash vérifiables). Total framework : 32 gates G1-G32.
+(4) 4 prompts critiques (P1 Migrer + P2 Clôture + P3 Reprise + P4 Card MAJ) **validés 10/10** par @reviewer après 10 patches itérés.
+(5) **Audit Versi s21-s25** : 16 patterns identifiés, double filtrage @elon × @ia, 8 actions appliquées, 3 écartées (verticales).
+(6) **Brief DevRefs** produit (working name) : V1 complète paywall x402 + Stripe Link, cible 20€/jour. NanoCorp/Polsia analysés mais NO-GO horizontal (verdict @elon + @ia convergent).
+(7) **Phase A baseline time-to-V1** sur 7 projets : V1 atteinte sur 0/6 → KPI North Star non-mesurable. @fullstack 16x sur Versi ET Marrant indépendamment = pattern signal scope Phase 0 cassé.
+(8) **Phase C `scripts/perf-trend.sh`** + Étapes 5e/5f/5g intégrées dans P2 Clôture : 7 métriques + détection trend dégradant + Verdict V1 binaire + sync branche par défaut + M7 sur-invocation agent.
+(9) **8e récurrence backticks** dans index.html détectée + WARNING inline ajouté avant `const PROMPTS = [`.
+(10) **Triple audit clôture** : @moi 8.7 / @ia 8.5 / @qa 7.5 → 9.5 post-fix. 3 régressions QA bloquantes corrigées (compteur gates project-context, hook pre-commit inactif, grep gates capturant GP/GC).
 
-**Delta framework :** +45 lignes réparties sur 8 fichiers, zéro inflation CLAUDE.md (104/120 lignes).
+**Delta framework :** ~+250 lignes brutes mais +15 lignes net après archivage. CLAUDE.md 108/125. Lessons 47/80. Project-context 144/250. Tous caps PASS.
 
-### Livrables de cette session
-| Fichier | Delta | Notes |
-|---|---|---|
-| CLAUDE.md | reformulation règle n°12 | "Renommage global → Grep + remplace" (pattern universel) |
-| orchestrator.md | +18 lignes | Variable 1c Vitrine/Funnel + section Règles d'exécution non négociables (zéro production directe, zéro WebFetch direct) |
-| qa.md | +2 bullets | Bug 3+ fois = investigation root cause + Testing honesty `[STATIQUE]`/`[LIVE]` obligatoire |
-| ia.md | +2 lignes | Règle alias `-latest` minor-family uniquement |
-| _base-agent-protocol.md | +1 point | Propagation décision fondateur (Grep immédiat ancien terme) |
-| _gates.md | enrichissement G15 | `[À COMPLÉTER`, `[À compléter` ajoutés |
-| founder-preferences.md | +1 entrée ISSA | Vitrine ≠ Funnel (citation Thomas) |
-| lessons-learned.md | +22 lignes session 2026-04-17 | 15 learnings avec statuts propagé/écarté/déjà couvert |
-| install.sh, update.sh, INSTALL.md, README.md, index.html | URLs master | `claude/extract-project-context-gWn8U` → `master` + `-b master` explicite |
+**Notes triple audit clôture (commit 759107b)** : @moi 8.7/10 ACCORD avec corrections / @ia 8.5/10 GO RÉSERVES / @qa 7.5→9.5/10 post-fix. Moyenne attendue post-fix : ~9/10.
 
-### Travaux en cours / non termines
-1. **Test grandeur réelle** : MarchesFaciles ou nouveau projet → seul vrai validateur des corrections session 2026-04-17 (Vitrine/Funnel, testing honesty, bug 3+).
-2. **Brief MarchesFaciles** : `docs/briefs/marchesfaciles-brief.md` toujours en attente de conversion en project-context.md.
-3. **@pdf-extractor** (slides-to-site) : création agent via @agent-factory — toujours pertinent, non fait.
+### Travaux en cours / non termines (Phase D + DEFER)
+1. **Phase D pilote Memory tool sur Sarani** (3 sessions consécutives) : non commencé. Spec @ia validée mais implémentation différée.
+2. **DEFER D9 diet `_base-agent-protocol.md`** (467→380 phase 1 puis 280 phase 2) : à reprendre avec audit empirique des sections jamais référencées.
+3. **DEFER D11 diet `orchestrator.md`** (891→400) : critique car M5 = 891 lignes (à 1 ligne du seuil WARNING 900). Toute prochaine édition déclenche WARNING immédiat.
+4. **DEFER D13 context layering par agent** : à évaluer après D9/D11 effectifs.
+5. **Investigation root cause @fullstack 16x sur Versi ET Marrant** : signalé par @moi, règle "bug 3+ fois" devrait s'être déclenchée mais ne l'a pas fait.
+6. **Marrant V1 atteinte ?** : 51 jours / 51 entrées historique, status V1 non documenté. À vérifier.
+7. **Calibrer M7 seuil arbitraire >3** sur p75/p90 historique réel (signalé par @moi).
+8. **Spec Memory tool challenge** : protocole concurrence multi-projets à formaliser, lecture-seule à valider en pilote.
 
 ### Prochaines actions recommandees
-1. **Test Vitrine/Funnel sur projet existant** : appliquer la question Phase 0 rétroactivement à ISSA Capital (vitrine) et Sarani (funnel) pour valider la calibration des gates testeur adaptées.
-2. **Convertir MarchesFaciles brief en project-context** et lancer en autopilot. C'est le premier projet qui bénéficiera des 8 nouveaux learnings.
-3. **Propager sur Sarani** : Sarani tourne sur une version ancienne d'agents (avant enrichissements 2026-03-27+). Si Thomas veut, lancer `update.sh` sur Sarani pour récupérer le framework master.
-4. **Rodage @moi continue** : session 2026-04-17 a testé les arbitrages fondateur (3/3 @ia l'emporte) — calibration score fidelite @moi à réviser sur prochain projet.
-5. **@pdf-extractor** : toujours une opportunité monétisation (2500-3500€/site).
+1. **Lancer DevRefs en V1 complète** (brief `docs/briefs/devrefs-brief.md` prêt). Premier test grandeur réelle des 3 gardes-fous (A1+A2+A3) en conditions réelles. Cible Thomas : 20€/jour.
+2. **Audit empirique D11** sur orchestrator.md avant qu'il dépasse 900 lignes : grep des sections jamais référencées dans les logs des 10 dernières sessions. Cible 400L.
+3. **Pilote Phase D Memory** sur Sarani 3 sessions consécutives (Sarani = projet long-courrier, signal le plus fiable pour valider Memory tool).
+4. **Investigation root cause @fullstack 16x** : pattern visible sur 2 projets gros indépendants. Soit trigger reality check Phase 0, soit revoir le protocole d'estimation scope.
 
 ### Blockers eventuels
-- Aucun blocker technique. Framework à jour, tous learnings P0/P1 propagés.
-- **Angle mort identifié par @elon (pendant)** : matrice erreur × phase de détection (principe Tesla "défaut détecté à la station la plus proche de son origine"). Thomas n'a pas tranché — à reprendre si récurrence.
+- Aucun blocker bloquant. Framework à jour, tous learnings P0/P1 propagés (0 entrée non-propagé), tous caps PASS, perf-trend baseline mesurée.
+- Point d'attention : M5 orchestrator.md à 891L (cap 900 = WARNING imminent). Ne pas modifier orchestrator.md sans diet préalable.
+
+### Nom de branche recommandé pour la prochaine session
+`claude/agent-team-s3-devrefs-launch-[suffix]` (priorité 1 : lancer DevRefs en V1)
+**OU** `claude/agent-team-s3-orchestrator-diet-[suffix]` (priorité 2 : audit D11 avant débordement M5)
+
+Le suffix aléatoire est généré par Claude Code au démarrage.
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise). Session 2026-04-17 : capitalisation learnings Versi/ISSA/Sarani via double filtrage @elon×@ia, 8 learnings propagés, 3 écartés (trop verticaux), merge master. Framework +45 lignes, CLAUDE.md 104/120. Priorité : (1) test Vitrine/Funnel sur projet réel, (2) MarchesFaciles autopilot.
+Lis project-context.md (memo de reprise S2). Session marathon garantie perf cross-sessions : Opus 4.7 + cmd n°8 net-zero + gates G31/G32 + 4 prompts 10/10 + perf-trend.sh + audit Versi/ISSA/Sarani + brief DevRefs. Triple audit @moi/@ia/@qa : 9/10 moyenne post-fix. Priorité S3 : (1) lancer DevRefs V1, OU (2) audit D11 orchestrator (891L à 1 du WARN), OU (3) pilote Memory Sarani.
 ```
+
+> Le mémo Session 1 (clôture 2026-04-17) a été synthétisé dans le tableau "Historique des interventions agents" ligne `session 2026-04-17`. Pour rappel : capitalisation cross-projets Versi/ISSA/Sarani, 8 learnings propagés, 3 écartés.
 
