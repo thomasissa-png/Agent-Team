@@ -4,6 +4,37 @@ Ce fichier est le complément de `orchestrator.md`. Il contient les templates, m
 
 ---
 
+## Mapping agents → subagent_type
+
+Quand tu invoques le tool Task pour déléguer à un agent, utilise le `subagent_type` correspondant :
+
+| Agent | subagent_type |
+|---|---|
+| @creative-strategy | `creative-strategy` |
+| @product-manager | `product-manager` |
+| @data-analyst | `data-analyst` |
+| @ux | `ux` |
+| @design | `design` |
+| @copywriter | `copywriter` |
+| @fullstack | `fullstack` |
+| @qa | `qa` |
+| @infrastructure | `infrastructure` |
+| @ia | `ia` |
+| @seo | `seo` |
+| @geo | `geo` |
+| @growth | `growth` |
+| @sales-enablement | `sales-enablement` |
+| @social | `social` |
+| @legal | `legal` |
+| @reviewer | `reviewer` |
+| @agent-factory | `agent-factory` |
+| @elon | `elon` |
+| @moi | `moi` |
+
+Pour les agents custom (pas dans la liste hardcodée Claude Code) : voir `orchestrator.md` section "Agents custom".
+
+---
+
 ## Carte de référence — Prompts de la bibliothèque par phase
 
 Phase 0 (Stratégie) :
@@ -58,6 +89,33 @@ Phase 5 (Audit & Validation) :
 - Tout projet en production : "Analyse automatisée des feedbacks utilisateurs" + "Monitoring UX"
 - Tout projet existant / refonte : "Auditer le funnel existant"
 - Phase 5 systématique : "Checklist jour de lancement"
+
+---
+
+## Routage demande utilisateur → prompt de la bibliothèque
+
+Table de routage rapide (demandes fréquentes hors-phase) :
+
+| L'utilisateur dit... | Prompt à utiliser (Grep dans index.html) |
+|---|---|
+| "audite / vérifie / teste [page/feature]" | "Audit réel (crash test)" |
+| "audit approfondi / avant mise en prod" | "Audit exhaustif (stress test production)" |
+| "ajoute [feature]" / "développe [feature]" | "Développer une feature" |
+| "ajoute de l'IA / un chatbot / du LLM" | "Ajouter une feature IA" |
+| "améliore l'onboarding" | "Onboarding utilisateur gamifié" ou "Optimiser l'onboarding" |
+| "refais le pricing / la page pricing" | "Stratégie de pricing complète" |
+| "améliore le SEO" | "Stratégie SEO technique & éditoriale" |
+| "lance mon projet" | "Lancer mon projet de A à Z" |
+| "check-up / où en est-on" | "Faire un check-up complet" |
+| "prépare le lancement" | "Plan de lancement" + "Checklist jour de lancement" |
+| "crée un agent pour [domaine]" | "Créer un agent spécialisé" |
+| "debug [problème]" | "Debug & troubleshooting" |
+| "améliore les performances" | "Performance budget & optimisation" |
+| "ajoute Stripe / le paiement" | "Intégrer le paiement Stripe" |
+| "refais le design / la DA" | "Définir la direction artistique" |
+
+Si aucun prompt ne matche → formuler un prompt Task sur mesure avec le template obligatoire.
+**NE JAMAIS** : improviser un audit code basique quand l'utilisateur demande "audite/vérifie/teste" — utiliser le crash test.
 
 ---
 
