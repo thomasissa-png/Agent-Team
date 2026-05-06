@@ -1,24 +1,39 @@
-# Baseline time-to-V1 — 3 projets clients Gradient Agents
+# Baseline time-to-V1 — 7 projets clients Gradient Agents
 **Date audit** : 2026-04-24 | **Auteur** : @data-analyst (timeout >24h, complété par @orchestrator) | **Méthode** : analyse project-context.md framework + WebFetch direct repos GitHub publics
 
 > **Note méthodologique** : @data-analyst n'avait pas accès WebFetch — il a estimé à partir des sources framework locales (`[ESTIMÉ]` partout). @orchestrator a complété par WebFetch direct des branches par défaut publiques. Les chiffres réels confirment et précisent les estimations.
 
 ---
 
-## ADDENDUM @orchestrator — Données réelles WebFetch (2026-04-24)
+## ADDENDUM @orchestrator — 7 projets WebFetch (2026-04-24)
 
-| Projet | Date début (réelle) | Date fin (réelle) | Jours calendaires | Entrées historique | Top 3 agents (compte exact) |
-|---|---|---|---|---|---|
-| **Versi** | 2026-04-10 | 2026-04-23 | **13 jours** | **68** | @fullstack 16 / @ia 15 / @qa 12 |
-| **ISSA Capital** | 2026-04-07 | 2026-04-07 | **0 jour (1 session)** | **13** | @copywriter 6 / @orchestrator 4 / @design 3 |
-| **Sarani** (branche défaut) | 2026-03-24 | 2026-03-25 | **1 jour (Phase 0 init)** | **34** | @product-manager 6 / @copywriter 6 / @design 5 |
+| Projet | Branche par défaut | Date début | Date fin | Jours cal. | Entrées | Top 3 agents | V1 atteinte ? |
+|---|---|---|---|---|---|---|---|
+| **Versi** | `claude/setup-gradient-agents-uMuy0` | 2026-04-10 | 2026-04-23 | 13 | **68** | @fullstack 16 / @ia 15 / @qa 12 | ❌ NON |
+| **ISSA Capital** | `claude/setup-gradient-agents-UH4b6` | 2026-04-07 | 2026-04-07 | 0 | 13 | @copywriter 6 / @orchestrator 4 / @design 3 | ❌ NON (Phase 0) |
+| **Sarani** | `claude/setup-gradient-agents-02W5i` | 2026-03-24 | 2026-03-25 | 1 | 34 | @product-manager 6 / @copywriter 6 / @design 5 | ❌ NON (s6-s18 sur branches éphémères) |
+| **Marrant** | `main` | 2026-03-15 | 2026-05-05 | **51** | **51** | @fullstack 16 / @orchestrator 10 / @seo 8 | ❓ À vérifier (51 jours) |
+| **AI-agents-platform (DevRefs)** | `claude/setup-gradient-agents-NCyFn` | 2026-05-05 | 2026-05-05 | 0 | 8 | @ia 3 / @creative-strategy 2 / @legal 1 | ❌ NON (Phase 0 lancée) |
+| **Tempo** | `claude/edf-tempo-predictor-gSmra` | — | — | — | **N/A** | Pas de framework Gradient déployé | N/A |
+| **Mandataire-Immo** | `claude/setup-gradient-agents-Nzl6z` | 2026-03-25 | 2026-03-25 | 0 | 11 | @product-manager 3 / @creative-strategy 3 | ❌ NON (Phase 0) |
 
-**Conversion en heures session** (médiane 30 min/intervention) :
-- Versi : ~34h cumulées sur 13 jours
-- ISSA : ~6,5h en 1 session (Phase 0 cadrage)
-- Sarani branche défaut : ~17h en 1-2 sessions Phase 0 (sessions s6-s18 sur branches éphémères, non comptées ici)
+**Convertion en heures session** (médiane 30 min/intervention) :
+- Versi : ~34h en 13j
+- Marrant : ~25h en 51j (étalé)
+- Sarani branche défaut : ~17h en 1j Phase 0 (sessions s6-s18 hors branche défaut)
+- ISSA / DevRefs / Mandataire-Immo : ~3-7h Phase 0
 
-**Constat critique : V1 production atteinte sur 0/3 projets** dans la branche par défaut. La fragmentation des branches éphémères (Versi s24/s25, Sarani s6-s18) masque l'avancement réel. **Le KPI time-to-V1 est non-mesurable cross-projets aujourd'hui.**
+**Constat critique** : V1 production atteinte sur **0/6 projets framework** (Tempo exclu). La fragmentation des branches éphémères (Versi s24/s25, Sarani s6-s18) masque l'avancement réel. **Le KPI time-to-V1 est non-mesurable cross-projets aujourd'hui.**
+
+### 🚨 Patterns prioritaires confirmés sur 6 projets
+
+1. **@fullstack 16 invocations sur Versi ET Marrant** — pattern récurrent identique de sur-correction Phase 1/2. Signal scope Phase 0 mal cadré sur 2 projets gros indépendamment. Confirme l'urgence d'une métrique M7 (déléguée à @infrastructure).
+
+2. **Phase 0 lourde sur 4/6 projets** (ISSA, DevRefs, Mandataire-Immo, Sarani) — @copywriter + @creative-strategy + @design dominent. Pas un problème en soi (cadrage solide nécessaire), mais aucun de ces 4 projets n'a franchi Phase 0 dans la branche par défaut → **Phase 0 → Phase 1 = passage non documenté**.
+
+3. **Marrant projet long-courrier (51 jours)** — étalement temporel anormal par rapport aux autres. Soit projet en mode "exploration continue", soit blocage non identifié. À investiguer.
+
+4. **Tempo n'utilise pas le framework** — projet hors scope, à exclure des futures mesures (ou installer Gradient si pertinent).
 
 ---
 
