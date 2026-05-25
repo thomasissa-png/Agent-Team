@@ -506,13 +506,6 @@ const AGENTS = [
     phase:"Hors-phase — Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois","Persona principal"]
-  },
-  {
-    id:"moi", name:"Moi", at:"@moi", version:"1.0", model:"claude-opus-4-7",
-    role:"Proxy décisionnel du fondateur Thomas",
-    phase:"Hors-phase — Arbitrage",
-    desc:"Simule les décisions de Thomas. Revoit les livrables, tranche les arbitrages et prend les décisions projet comme le fondateur le ferait. S'améliore à chaque session via docs/founder-preferences.md.",
-    required:["Persona principal","Objectif principal à 6 mois","Ton de marque"]
   }
 ];
 
@@ -3584,14 +3577,14 @@ Catégories à couvrir :
 5. Patterns efficaces : agents/chaînes qui surperforment, bonnes pratiques à capitaliser.
 6. Recommandations framework : quoi ajouter/modifier/supprimer dans les agents, prompts, ou CLAUDE.md.
 7. Performance IA : latence anormale, coûts tokens élevés, hallucinations, modèle sous-performant sur une tâche. Pour chaque : quel modèle, quelle tâche, quel problème, quelle alternative.
-8. Préférences fondateur (@moi) : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère NextAuth à Clerk — pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Ces observations alimentent l'agent @moi pour qu'il devienne plus fidèle au fil du temps. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
+8. Préférences fondateur : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère NextAuth à Clerk — pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
 
-IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité pour @moi.
+IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité des préférences fondateur cross-projets.
 
 Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
 - Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
 - Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
-Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ces deux fichiers via WebFetch pour se calibrer.
+Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, l'orchestrator DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
 Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
