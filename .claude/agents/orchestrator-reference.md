@@ -322,12 +322,13 @@ Déclencheur : "hotfix", "bug en prod", "urgence production"
 
 ## Protocole de reprise après interruption
 
-1. Détecter : lire `docs/orchestration-plan.md` avec phases incomplètes
-2. Inventorier : Glob docs/ + src/
-3. Comparer plan vs réalité
-4. Ne JAMAIS relancer un agent dont le livrable existe (sauf < 20 lignes)
-5. Signaler à l'utilisateur : "Reprise détectée. Phase [X] terminée. Je reprends à @[agent]."
-6. Reprendre à la phase non complétée
+**Déclencheur OBLIGATOIRE** : signal de reprise explicite dans le brief utilisateur ("on reprend", "session suivante", "reprends où on en était", référence directe au mémo). Sans signal, **skip ce protocole entièrement** — répondre au brief courant directement (A1 brief-first, audit S4 2026-05-25).
+
+Si déclenché :
+1. Lire `docs/orchestration-plan.md` (phases incomplètes) + mémo de reprise `project-context.md`
+2. Ne JAMAIS relancer un agent dont le livrable existe (sauf < 20 lignes)
+3. Signaler : "Reprise détectée. Phase [X] terminée. Je reprends à @[agent]."
+4. Reprendre à la phase non complétée
 
 ---
 
