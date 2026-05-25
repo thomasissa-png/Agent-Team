@@ -72,7 +72,11 @@ Signaux d'un project-context insuffisant même si tous les champs sont "remplis"
 
 ## Mapping agents → subagent_type
 
-Voir `orchestrator-reference.md` section "Mapping subagent_type" (tableau complet 19 agents). Règle générale : `subagent_type` = nom de l'agent sans `@`. Pour les agents custom, voir bloc ci-dessous.
+**Règle générale** : `subagent_type` = nom de l'agent sans `@`.
+
+**Mapping** (19 agents) : `creative-strategy`, `product-manager`, `data-analyst`, `ux`, `design`, `copywriter`, `fullstack`, `qa`, `infrastructure`, `ia`, `seo`, `geo`, `growth`, `sales-enablement`, `social`, `legal`, `reviewer`, `agent-factory`, `elon`.
+
+Pour les agents custom, voir bloc ci-dessous.
 
 **Agents custom (créés par @agent-factory) :**
 Les agents custom dans `.claude/agents/` ne sont PAS dans la liste hardcodée des `subagent_type` de Claude Code. Pour les invoquer :
@@ -160,7 +164,7 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 
 ### Routage demande utilisateur → prompt de la bibliothèque
 
-**RÈGLE** : pour TOUTE demande utilisateur, l'orchestrateur DOIT d'abord chercher si un prompt d'`index.html` correspond. NE PAS improviser si un prompt existe. **Tableau complet de routage** : voir `orchestrator-reference.md` section "Routage demande → bibliothèque". Si aucun match → prompt Task sur mesure (template obligatoire).
+**RÈGLE** : pour TOUTE demande utilisateur, l'orchestrateur DOIT d'abord chercher si un prompt d'`index.html` correspond. NE PAS improviser si un prompt existe. Si aucun match → prompt Task sur mesure (template obligatoire).
 
 ### Qualité des prompts Task — règle critique
 
@@ -168,14 +172,11 @@ ATTENTION — Règles anti-timeout (obligatoire) :
 
 **RÈGLE DURE — Injection des prompts de la bibliothèque :**
 AVANT de lancer un sous-agent, l'orchestrateur DOIT :
-1. Consulter la carte de référence (`orchestrator-reference.md`) pour identifier le prompt associé à la mission
-2. Lire le prompt complet dans `index.html` (Grep sur le titre exact)
+1. Identifier le prompt associé à la mission dans `index.html` (Grep sur le titre exact)
 3. Extraire les instructions clés (sections numérotées, critères de validation, livrables) et les intégrer dans le prompt Task
 4. Ne PAS copier le prompt tel quel — extraire la substance, adapter au contexte du projet
 
 **Pourquoi** : `index.html` est la source unique des 91 prompts détaillés. Sans cette injection, les agents tournent avec leurs instructions `.md` génériques au lieu des instructions spécifiques à chaque mission. C'est la différence entre un livrable à 6/10 et un livrable à 9/10.
-
-Voir `orchestrator-reference.md` pour la carte de référence des prompts par phase.
 
 **Template obligatoire pour chaque prompt Task producteur** :
 ```
@@ -264,7 +265,7 @@ Déclencheur : mode hotfix, itérations post-V1, ou demande explicite de Thomas.
 **Mode autopilot (défaut)** : exécution continue, bloquer uniquement sur anomalie. Checkpoint obligatoire après Phase 0.
 **Mode standard** : validation utilisateur entre chaque phase (si demandé explicitement).
 
-Détail des règles autopilot, profils de rigueur (V1-Production vs Exploration), et templates dans `orchestrator-reference.md`.
+Mode autopilot par défaut. Mode standard uniquement si premier projet utilisateur OU demande explicite.
 
 ## Étape 1 — Initialisation et détection du mode
 
@@ -690,7 +691,7 @@ Si la branche de développement a changé depuis la dernière session (nouvelle 
 
 ### Métriques, templates, modes spéciaux
 
-Voir `orchestrator-reference.md` pour : métriques d'orchestration, seuils de succès, templates orchestration-plan.md et project-synthesis.md, cycle reviewer, estimation de coût, circuit breaker agents fragiles, métriques live, compression contexte, mode hotfix, gestion budget/complexité, protocole de reprise.
+Templates, modes spéciaux (hotfix, exploration), métriques détaillées : à formuler au cas par cas. Le mapping subagent_type est en tête de ce fichier. Le protocole de reprise reste conditionnel (déclenché uniquement sur signal "on reprend" dans le brief).
 
 
 ## Protocole d'escalade

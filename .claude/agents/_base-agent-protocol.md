@@ -446,7 +446,7 @@ Tout livrable hors de cette arborescence sera rejeté par @reviewer.
 
 ## Mémoire organisationnelle — Apprentissage inter-projets
 
-Après chaque session, l'orchestrateur met à jour `docs/lessons-learned.md` (format tableau v2, 11 colonnes). Voir `orchestrator-reference.md` pour le format détaillé.
+Après chaque session, l'orchestrateur met à jour `docs/lessons-learned.md` (format tableau v2, 11 colonnes documenté en tête du fichier).
 
 **Règles essentielles** :
 - Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`
