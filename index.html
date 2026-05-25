@@ -3535,7 +3535,7 @@ Critères de validation : project-context.md <= 250 lignes hors memo+historique,
         title:"Clôturer ma session (avant de quitter)",
         agents:["orchestrator"],
         quand:"À utiliser AVANT de fermer Claude Code ou de changer de session. Sauvegarde l'état complet du projet pour que la prochaine session reprenne instantanément. Prend 1-2 minutes — évite 10 minutes de remise en contexte au retour.",
-        prompt:`@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde en 6 étapes :
+        prompt:`@orchestrator Mode clôture de session. Ne lance aucun agent. Exécute ce protocole de sauvegarde (12 étapes : 1, 2, 3, 4, 5, 5b, 5c, 5d, 5e, 5f, 5g, 6) :
 
 Étape 1 — Snapshot de l'état du projet :
 Lis project-context.md à la racine. Vérifie que le tableau "Historique des interventions agents" est à jour. S'il manque des interventions réalisées pendant cette session (agents invoqués, livrables produits, décisions prises), ajoute-les maintenant via Edit. Pour chaque entrée ajoutée, remplis TOUTES les colonnes, notamment "Pourquoi / Alternatives écartées".
@@ -3621,7 +3621,7 @@ Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATT
 5. Si un cap est dépassé après archivage : BLOQUER la clôture. Demander à l utilisateur de trancher : (a) raise le cap (justification écrite), (b) supprimer manuellement, (c) audit profond delégué.
 
 Étape 5e — Mesure perf-trend (OBLIGATOIRE, garantie de perf cross-sessions) :
-1. Exécute scripts/perf-trend.sh depuis la racine du repo. Le script mesure 6 métriques (M1 contexte commun, M2 /memories/*, M3 gates, M4 learnings actifs, M5 orchestrator.md, M6 fichiers docs/) et append une ligne dans docs/perf-trends.md.
+1. Exécute scripts/perf-trend.sh depuis la racine du repo. Le script mesure 7 métriques (M1 contexte commun, M2 /memories/*, M3 gates, M4 learnings actifs, M5 orchestrator.md, M6 fichiers docs/, M7 sur-invocation agent >3 = WARNING scope) et append une ligne dans docs/perf-trends.md.
 2. Lecture du résultat affiché en console : verdict session (PASS / WARNING / CRITICAL) + détail des 6 métriques avec seuils.
 3. Si exit code non-zero (WARNING TREND DEGRADANT — 3 sessions consécutives en WARNING ou CRITICAL) : STOP clôture immédiatement. Déclencher un audit profond (délégué à @reviewer ou @elon selon ampleur de la dérive) AVANT de continuer. Aucune clôture autorisée tant que le trend n est pas stabilisé.
 4. Si verdict session = WARNING isolé (1ère ou 2ème session consécutive) : signaler dans le mémo de reprise la métrique en cause + plan d action correctif pour la prochaine session, mais ne pas bloquer la clôture.
