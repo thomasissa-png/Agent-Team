@@ -6,7 +6,14 @@
 
 ## Ce qui ne marche plus aujourd'hui (en 5 phrases max)
 
-Tu envoies un brief, l'orchestrateur lit 2 100 lignes de protocole avant de te répondre. Quand un livrable revient, il fait 800 lignes, des H1/H2 numérotés, des A/B/C, et tu scrolles sans lire. Quand tu signales un bug, on te demande de confirmer au lieu de corriger. Quand on a corrigé, on dit "fait" sans Grep et tu trouves le mot inchangé. À force d'ajouter des gates pour ne plus se tromper, le framework s'est mis à se protéger lui-même au lieu de te servir.
+Tu envoies un brief, l'orchestrateur lit 2 100 lignes de protocole avant de te répondre. Quand un livrable revient, il fait 800 lignes, des H1/H2 numérotés, des A/B/C, et tu scrolles sans lire. Quand tu signales un bug, on te demande de confirmer au lieu de corriger. Quand on a corrigé, on dit "fait" sans Grep et tu trouves le mot inchangé. Tu voulais une équipe, on t'a livré un guichet. Tu voulais du plaisir, on t'a livré du process.
+
+## Ce qui ne change pas
+
+- Les 7 commandements de `CLAUDE.md` (le coeur, déjà testé).
+- Les agents que tu utilises vraiment : orchestrator, fullstack, reviewer, elon, ia, qa, agent-factory, creative-strategy, copywriter, design, data-analyst.
+- La règle brief-first (existe déjà L15-25 orchestrator.md, on l'applique vraiment au lieu de l'ignorer).
+- Tes préférences `founder-preferences.md` — source de vérité intouchée.
 
 ## Le plan (3 décisions, pas 30 actions)
 
@@ -38,9 +45,9 @@ Tu envoies un brief, l'orchestrateur lit 2 100 lignes de protocole avant de te r
 
 **Ce qu'on fait** : chaque agent termine son livrable par un bloc `Vérifié :` qui cite la commande exécutée et son output. Pas de "fait" abstrait. @reviewer rejette automatiquement tout livrable sans bloc Vérifié. C'est le seul gate qui compte (cf. @qa C3 + founder-preferences L60 "vérifier chaque changement après application" + L70 "bugs identifiés = corrigés immédiatement").
 **Concrètement** :
-- Ajouter dans `_base-agent-protocol.md` (section handoff) : "Bloc `Vérifié :` obligatoire. Format : `Read <chemin>` ou `Grep <pattern>` ou `Bash <cmd>` + 3 lignes d'output max."
-- `_gates.md` : remplacer les 24 gates supprimés par UN seul gate bloquant G_PROOF : "Bloc Vérifié présent et reproductible. Sinon NO-GO."
-- Supprimer Phase 2c/2d/5b (testeur multiples) — un seul reviewer, un seul standard.
+- @agent-factory ajoute dans `_base-agent-protocol.md` (section handoff, après ligne "Handoff structuré obligatoire") : "Bloc `Vérifié :` obligatoire. Format : `Read <chemin>` ou `Grep <pattern>` ou `Bash <cmd>` + 3 lignes d'output max."
+- @agent-factory réécrit `_gates.md` : 8 gates conservés (G1, G3, G5, G7, G12, G13, G15, G17) + G_PROOF bloquant. Tout le reste supprimé.
+- Supprimer Phase 2c/2d/5b (testeur multiples) — un seul reviewer, un seul standard. @qa lui-même ne réclame pas ces testeurs, il réclame le bloc Vérifié (C3). Un reviewer + preuve Grep > 4 testeurs indulgents.
 
 **Effort** : S (1 règle ajoutée, 24 supprimées)
 **Tu le verras à** : tu Grep derrière le prochain livrable agent — le mot annoncé "corrigé" est bien corrigé. Tu n'as plus besoin de re-vérifier après 2 sessions.
@@ -49,12 +56,12 @@ Tu envoies un brief, l'orchestrateur lit 2 100 lignes de protocole avant de te r
 
 Dans 2 semaines, tu envoies "améliore la landing Sarani" et tu reçois le premier livrable utile en moins de 5 minutes sans avoir répondu à une question de cadrage.
 
-## Ce que je m'engage à faire AVANT ton prochain message
+## Ce que je lance dès que tu valides ce plan à 10/10
 
 1. Supprimer dans `orchestrator.md` les lignes L97-168 (préambule session counter + ALERTE ROUGE + self-diagnostic) — résultat : -71L visibles à `wc -l`.
 2. Supprimer dans `_gates.md` les gates G16, G18, G22, G23, G27-G32 + tout le bloc GP1-GP10 / GC1-GC10 — résultat : 32 gates devient 8, fichier passe de 121L à ~30L.
 3. Supprimer `orchestrator-reference.md` après avoir copié le seul mapping `subagent_type` dans `orchestrator.md` — résultat : -325L, un fichier de moins à maintenir.
 4. Supprimer l'agent `@moi` (`.claude/agents/moi.md`) et retirer sa ligne du tableau de routage `CLAUDE.md` — résultat : 22 agents → 21, plus de miroir qui se regarde.
-5. Ajouter le commandement 0 "Brief-first absolu" en tête de `CLAUDE.md` (< 5 lignes) et supprimer une règle obsolète pour rester sous 125L (net-zero appliqué).
+5. Ajouter le commandement 0 "Brief-first absolu" en tête de `CLAUDE.md` (< 5 lignes) et supprimer la règle commune n°10 (`Actions infra dans REPLIT_ACTIONS.md / CLOUDFLARE_ACTIONS.md`) — fusionnée dans les agents @infrastructure et @fullstack, plus besoin de la dupliquer dans CLAUDE.md.
 
-Je lance ces 5 actions maintenant. Tu liras le résultat avant de me redonner un brief.
+Validation 10/10 = je lance ces 5 actions en parallèle, tu reçois le `wc -l` avant/après en clôture. Pas de validation = on itère sur le plan.
