@@ -427,7 +427,7 @@ const AGENTS = [
     id:"fullstack", name:"Fullstack", at:"@fullstack", version:"2.0", model:"claude-opus-4-7",
     role:"Développeur senior full-stack — 16 ans",
     phase:"Phase 2 — Développement",
-    desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, PostgreSQL Replit, Stripe. TypeScript strict uniquement.",
+    desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Neon Postgres (futurs projets) ou PostgreSQL Replit (legacy), Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
@@ -441,7 +441,7 @@ const AGENTS = [
     id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"2.0", model:"claude-opus-4-7",
     role:"SRE / Platform Engineer — 13 ans",
     phase:"Phase 2 — Infra",
-    desc:"Configure le déploiement Replit, optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
+    desc:"Configure le déploiement Cloudflare Pages/Workers + Neon (futurs projets) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
@@ -506,13 +506,6 @@ const AGENTS = [
     phase:"Hors-phase — Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois","Persona principal"]
-  },
-  {
-    id:"moi", name:"Moi", at:"@moi", version:"1.0", model:"claude-opus-4-7",
-    role:"Proxy décisionnel du fondateur Thomas",
-    phase:"Hors-phase — Arbitrage",
-    desc:"Simule les décisions de Thomas. Revoit les livrables, tranche les arbitrages et prend les décisions projet comme le fondateur le ferait. S'améliore à chaque session via docs/founder-preferences.md.",
-    required:["Persona principal","Objectif principal à 6 mois","Ton de marque"]
   }
 ];
 
@@ -641,7 +634,7 @@ Ne lance rien — présente juste les recommandations et attends mon choix.`
         title:"Lancer mon projet de A à Z",
         agents:["orchestrator"],
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions. Pour reprendre : claude --resume \'nom\' puis \'Lis project-context.md et docs/orchestration-plan.md, continue.\'",
-        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète — 100% gates PASS (32 gates binaires G1-G32) partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
+        prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète — 100% gates PASS (9 gates binaires (voir _gates.md)) partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
 
 Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
@@ -659,7 +652,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa (gate G26).
 8. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 9. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
-10. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b. Si les agents testeurs n'existent pas en Phase 2c → les créer via @agent-factory avant de continuer.
+10. Testeurs persona/client : créer via @agent-factory uniquement si le projet le justifie (B2B complexe, micro-commerce, marketplace). Plus de Phases dédiées obligatoires — @reviewer + bloc Vérifié G_PROOF couvrent les besoins de validation.
 11. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
 12. Learnings cross-projets (renforcements obligatoires) :
     - Zéro fausse promesse : le copy ne promet QUE des features implémentées.
@@ -680,7 +673,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
     - @sales-enablement obligatoire en Phase 4 : playbook commercial, propositions, objection handling, ROI calculator. L'armurier qui équipe le fondateur pour closer.
     - Earned media en Phase 4 : activer les pipelines @growth earned media (communiqués, newsjacking, data stories, directories, Dev.to). ROI en [HYPOTHÈSE].
     - Pre-commit build check (Règle n°6) : AVANT chaque commit sur src/, exécuter tsc --noEmit && next lint && npm run build. Si échec → NE PAS COMMITER.
-    - Actions Replit (Règle 15) : chaque agent qui modifie src/ ou config DOIT lister les actions Replit dans son handoff + REPLIT_ACTIONS.md.
+    - Actions infra (Replit legacy / Cloudflare) : chaque agent qui modifie src/ ou config DOIT lister les actions infra dans son handoff (variables env, packages, migrations).
     - Favicons/icônes : @design produit les assets (favicon.ico, PNG, SVG, apple-touch-icon, android-chrome, og-image), @fullstack implémente les balises Metadata API, @seo vérifie (Organization.logo inclus).
 
 Gestion multi-sessions :
@@ -695,7 +688,7 @@ Commence."`
         title:"Faire un check-up complet de mon projet",
         agents:["orchestrator","reviewer","elon","qa","seo","geo","infrastructure","ux","design","legal","data-analyst"],
         quand:"Tu as plusieurs livrables et tu veux vérifier que tout a 100% gates PASS avant un lancement ou après une phase intense. Lance tous les audits pertinents automatiquement — même rigueur que chaque prompt d'audit un par un. Si coupure : 'Lis docs/reviews/, qu'est-ce qui a déjà été audité ?'",
-        prompt:`@orchestrator Mode check-up complet. Objectif : vérifier que TOUS les livrables existants ont 100% gates PASS (G1-G32) et sont cohérents entre eux — le même niveau de rigueur que si on relançait chaque prompt d'audit de la bibliothèque un par un.
+        prompt:`@orchestrator Mode check-up complet. Objectif : vérifier que TOUS les livrables existants ont 100% gates PASS (voir _gates.md) et sont cohérents entre eux — le même niveau de rigueur que si on relançait chaque prompt d'audit de la bibliothèque un par un.
 
 Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**/*). Crée docs/orchestration-plan.md en mode "CHECK-UP" avec la liste des audits à lancer. Marque chaque audit PENDING/EN COURS/COMPLETE pour permettre la reprise.
 
@@ -703,7 +696,7 @@ Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**
 Lis docs/lessons-learned.md. Si des learnings P0/P1 ont statut propagation = "non-propagé", applique les modifications dans les "Fichiers impactés" AVANT de lancer les audits. Un check-up sur des fichiers non-propagés détecterait des faux problèmes déjà corrigés en source mais pas encore propagés. Marque chaque learning propagé après Grep de vérification.
 
 Étape 1 — Audit de cohérence croisée :
-Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 32 gates binaires (G1-G32, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 9 gates binaires (voir _gates.md, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
@@ -722,7 +715,7 @@ Pour chaque domaine qui a des livrables, lance l'agent spécialisé avec les ins
 - Si code existe dans src/ → @qa + @fullstack + @ux + @design avec "Revue finale page par page (dernier kilomètre)" — audit chirurgical de CHAQUE page, CHAQUE élément. C'est l'étape qui détecte les bugs que les audits macro manquent.
 
 Étape 2b — Vérification gates testeurs persona (conditionnelle) :
-Si des agents testeurs existent (Glob .claude/agents/testeur-*), vérifier que les gates GP1-GP10 et GC1-GC10 ont été exécutées et sont PASS. Si non exécutées → les lancer maintenant (testeur-persona sur le site, testeur-client-du-persona sur les outputs générés). Si agents testeurs non créés mais personas documentés dans docs/strategy/personas.md → les créer via @agent-factory puis les invoquer.
+Si des agents testeurs existent (Glob .claude/agents/testeur-*), les invoquer pour validation expérience utilisateur. Pas obligatoire si absents — @reviewer + bloc Vérifié couvrent la validation par défaut.
 
 Étape 2c — Vérifications cross-projets (en parallèle des audits) :
 - Zéro fausse promesse : Grep le copy visible pour les bénéfices non implémentés.
@@ -782,7 +775,7 @@ Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pou
 - Monétisation / Pricing → @product-manager + @growth + @copywriter + @data-analyst
 - Vente / Propositions / Objections → @sales-enablement + @copywriter + @design + @growth
 - Email / CRM → @copywriter + @growth + @data-analyst
-- Qualité outputs IA (PDF, annonces, documents générés) → @ia + @design + @copywriter + testeur-client-du-persona (si existe)
+- Qualité outputs IA (PDF, annonces, documents générés) → @ia + @design + @copywriter
 - Paiement / Stripe → @fullstack + @qa + @legal
 - Intégrité DB / Migrations → @fullstack + @qa + @infrastructure
 - Documents client-facing (PDF, exports, rapports) → @design + @fullstack + @copywriter
@@ -794,7 +787,7 @@ Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant
 Étape 2 — Lancement des audits :
 Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). Chaque agent reçoit un prompt ciblé sur le sujet et doit :
 1. Lire les livrables existants dans son domaine (docs/ + src/)
-2. Appliquer le Protocole de Vérification Universel (PVU — voir _base-agent-protocol.md) : d'abord sélectionner les gates existantes applicables parmi G1-G32 (selon le mapping sujet→gates du PVU), puis générer 3-7 gates ad-hoc spécifiques au sujet (binaires PASS/FAIL, définies AVANT l'audit)
+2. Appliquer le Protocole de Vérification Universel (PVU — voir _base-agent-protocol.md) : d'abord sélectionner les gates existantes applicables (voir _gates.md) (selon le mapping sujet→gates du PVU), puis générer 3-7 gates ad-hoc spécifiques au sujet (binaires PASS/FAIL, définies AVANT l'audit)
 3. Exécuter toutes les gates (existantes + ad-hoc) et produire un rapport structuré PASS/FAIL avec évidence (Grep/Read/test)
 4. Lister les problèmes trouvés classés P0 (bloquant) / P1 (majeur) / P2 (mineur)
 5. Proposer les corrections précises pour chaque problème
@@ -811,7 +804,7 @@ Lance @reviewer sur le sujet audité. Le reviewer applique sa checklist persona 
 Étape 4 — Synthèse croisée :
 Consolide les rapports des agents et du reviewer en un seul audit :
 - Gates binaires par dimension auditée (PASS/FAIL, seuil 100% gates BLOQUANT)
-- Gates PASS/FAIL par dimension auditée (gates applicables parmi G1-G32)
+- Gates PASS/FAIL par dimension auditée (gates applicables (voir _gates.md))
 - Tous les problèmes critiques (P0) avec agent responsable et action corrective
 - Améliorations majeures (P1) classées par impact décroissant
 - Améliorations mineures (P2)
@@ -866,7 +859,7 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
 8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 21 dimensions, correction de TOUS les bugs, itération jusqu'à 100% gates PASS.
-9. Gates testeur-persona (GP1-GP10) et testeur-client-du-persona (GC1-GC10) obligatoires — ne pas sauter les Phases 1b, 2c, 2d, 5b.
+9. Testeurs persona/client : optionnels via @agent-factory si projet le justifie. @reviewer + bloc Vérifié G_PROOF couvrent la validation par défaut.
 10. Learnings cross-projets : zéro fausse promesse (copy = features implémentées), anti-témoignage fictif, conviction-first (CTAs en fin de parcours), parcours d'achat testé E2E, bugs corrigés immédiatement, agents testeurs calibrés VALEUR.
 
 Gestion multi-sessions :
@@ -927,12 +920,12 @@ Critères de validation : chaque learning est classé avec référence, les modi
 1. Lire CLAUDE.md en entier. Compter les lignes totales.
 2. Identifier le contenu entre les marqueurs GRADIENT-AGENTS-START et GRADIENT-AGENTS-END (c'est le framework, il sera remplacé automatiquement par update.sh).
 3. Identifier le contenu HORS des marqueurs — c'est le contenu custom du projet. Le lister.
-4. Grep "32 gates" et "G1-G32" dans tout le projet — compter les occurrences à corriger.
+4. Grep "32 gates", "G1-G32" et autres compteurs obsolètes dans tout le projet — compter les occurrences à corriger.
 5. Vérifier si .husky/pre-commit existe (hook build check).
 
 Afficher le diagnostic :
 - CLAUDE.md : [X] lignes totales, [Y] lignes Gradient (seront remplacées), [Z] lignes custom
-- Références "32 gates" : [N] occurrences dans [fichiers]
+- Références obsolètes ("32 gates", "G1-G32", "GP/GC") : [N] occurrences dans [fichiers]
 - Hook Husky : installé / absent
 
 Étape 2 — Plan de migration (attendre mon feu vert) :
@@ -949,14 +942,14 @@ Afficher le plan et attendre ma validation.
 Étape 3 — Exécution (après mon feu vert) :
 1. Déplacer chaque bloc custom vers sa destination (Edit sur chaque fichier cible).
 2. Exécuter bash update.sh --all pour remplacer la section Gradient par la dernière version.
-3. Aligner toutes les références au compteur de gates avec _gates.md actuel (actuellement 32 gates G1-G32). Grep les compteurs résiduels et corriger.
+3. Aligner toutes les références au compteur de gates avec _gates.md actuel (actuellement 9 gates (voir _gates.md)). Grep les compteurs résiduels et corriger.
 4. Si .husky/pre-commit absent → @fullstack l'installe (voir _base-agent-protocol.md section "Setup pre-commit hook").
 5. Vérifier : git config core.hooksPath .githooks (pour le guard CLAUDE.md).
 6. Run final : npx tsc --noEmit && npx next lint && npm run build (si src/ existe).
 
 Étape 4 — Validation :
 - CLAUDE.md section Gradient : <= 125 lignes ? Si non → du contenu custom n'a pas été migré.
-- Aligner les compteurs de gates avec _gates.md actuel (32 gates G1-G32 incluant G31 Favicon Coverage 12 fichiers + 7 balises et G32 Typographie FR : guillemets francais + apostrophes typographiques + insecables).
+- Aligner les compteurs de gates avec _gates.md actuel (9 gates (voir _gates.md). Note : checks favicon (12 fichiers + 7 balises) et typo FR (guillemets, apostrophes, insécables) restent recommandés pour livrables web mais ne sont plus des gates formelles).
 - Hook pre-commit fonctionnel (tester un commit).
 - Lancer le prompt "Faire un check-up complet" pour vérifier la cohérence post-migration.
 
@@ -964,9 +957,9 @@ Afficher le plan et attendre ma validation.
 1. Mesurer docs/lessons-learned.md du projet (wc -l). Si > 80 lignes : audit TTL obligatoire.
 2. Mesurer project-context.md (wc -l). Si > 250 lignes hors mémo : archivage historique requis.
 3. Pour tout projet >= 10 sessions (ex : Versi 21+ sessions) : MODE DRY-RUN OBLIGATOIRE. @orchestrator produit un diff "voici ce que j archiverais" SANS exécuter. Validation utilisateur sur le diff. Exemption explicite des entrées critiques projet (auth, paiements, data model, learnings P0). Archive dans docs/lessons-learned-archive.md, JAMAIS delete.
-4. Vérifier que la favicon-checklist.md (gate G31) est satisfaite si livrable web : 12 fichiers favicon présents + 7 balises HTML head.
+4. Vérifier que la favicon-checklist.md est satisfaite si livrable web : 12 fichiers favicon présents + 7 balises HTML head. (Check recommandé, plus une gate formelle.)
 
-Critères de validation : CLAUDE.md section Gradient <= 125L, compteurs gates alignés (32 G1-G32), hooks installés, build PASS, audit TTL exécuté, favicons G31 PASS si applicable.`
+Critères de validation : CLAUDE.md section Gradient <= 125L, compteurs gates alignés (9 gates, voir _gates.md), hooks installés, build PASS, audit TTL exécuté, favicons checklist PASS si livrable web.`
       }
     ]
   },
@@ -996,7 +989,7 @@ Produis la plateforme de marque complète :
 
 Structurer le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
 
-Dans le brand-platform, inclure une section "Agents spécialisés recommandés" : analyser le persona, le parcours client et les risques projet pour identifier les agents custom à créer par @agent-factory (expert métier, testeur-persona, testeur-client-du-persona, validateur sectoriel). Obligatoire : un agent testeur-persona (incarne l'utilisateur direct) et un agent testeur-client-du-persona (incarne le client/interlocuteur de notre persona — sauf B2C direct). Documenter aussi les personas des clients de nos personas dans personas.md (nom, rôle, frustrations, vocabulaire, critères d'évaluation).
+Dans le brand-platform, inclure une section "Agents spécialisés recommandés" si pertinent : expert métier, validateur sectoriel, testeur persona (optionnel selon projet). Documenter les personas des clients de nos personas dans personas.md si modèle B2B (nom, rôle, frustrations, vocabulaire, critères d'évaluation).
 
 Livrables (un fichier à la fois) : docs/strategy/brand-platform.md + docs/strategy/personas.md + docs/strategy/competitive-benchmark.md + docs/strategy/creative-brief.md.
 
@@ -1257,7 +1250,7 @@ Form UX : inline validation au blur, progressive disclosure, smart defaults (pr�
 
 Pour chaque flow, inclure un bloc "Critères de validation UX" : test parcours persona (objectif atteignable sans aide), test charge cognitive (≤ 3 actions par écran), test time-to-value (≤ 3 étapes), edge cases UX (états vides, erreurs, retour après inactivité), accessibilité WCAG 2.2 AA.
 
-Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (testeur-persona, testeur-client-du-persona, experts parcours métier) à créer par @agent-factory. Les 2 agents testeurs sont obligatoires par projet (sauf B2C direct pour le testeur-client-du-persona).
+Si les parcours révèlent des besoins métier spécifiques, recommander des agents spécialisés (experts parcours métier, testeurs persona optionnels) à créer par @agent-factory.
 
 Accessibilité : vérifier que chaque parcours est navigable au clavier et que la hiérarchie des headings est logique.
 
@@ -1558,7 +1551,7 @@ Puis @data-analyst : vérifie que les events de tracking de cette feature sont c
 
 Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npx next lint && npm run build. Si une commande échoue → corriger d'abord, ne JAMAIS commiter un build cassé.
 
-Actions Replit : lister dans le handoff toutes les actions Replit nécessaires (nouvelles variables d'environnement, packages ajoutés, migrations DB). Si aucune action → écrire "Aucune action Replit requise." Mettre à jour REPLIT_ACTIONS.md si applicable.
+Actions infra : lister dans le handoff toutes les actions infra nécessaires (variables d'environnement, packages ajoutés, migrations DB). Si aucune action → écrire "Aucune action infra requise."
 
 Critères de validation : la feature implémente tous les critères d'acceptation des specs, les design tokens sont respectés, les tests passent, les events de tracking sont en place, le build passe (tsc + lint + build).`
       },
@@ -1717,7 +1710,7 @@ Mets à jour docs/infra/infrastructure.md.
 Puis @legal : lis docs/dev-decisions.md et vérifie les implications RGPD du schéma de données (quelles données personnelles, bases légales, durées de conservation). Mets à jour docs/legal/rgpd-checklist.md.
 
 Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npx next lint && npm run build. Si échec → corriger d'abord.
-Actions Replit : lister TOUTES les variables d'environnement à ajouter dans Replit Secrets, les packages à installer, et les commandes de migration DB dans le handoff + REPLIT_ACTIONS.md.
+Actions infra : lister TOUTES les variables d'environnement à ajouter (Replit Secrets ou équivalent Cloudflare), les packages à installer, et les commandes de migration DB dans le handoff.
 
 Critères de validation : le projet démarre avec npm run dev sans erreur, TypeScript strict passe, .env.example est complet, les routes sont protégées, le build (npm run build) passe.`
       },
@@ -2546,18 +2539,18 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
 10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
-Identifie les angles morts et contradictions. Applique les 32 gates binaires du framework (G1-G32, voir CLAUDE.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
+Identifie les angles morts et contradictions. Applique les 9 gates binaires du framework (voir _gates.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
 
 Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
 Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
 
-Agents testeurs persona (OBLIGATOIRE si agents testeurs existent) : vérifier via Glob .claude/agents/testeur-* si des agents testeurs ont été créés. Si oui → les invoquer sur le site/livrables et vérifier que les gates GP1-GP10 (testeur-persona) et GC1-GC10 (testeur-client-du-persona, si applicable) sont PASS. Si les agents testeurs n'existent pas mais docs/strategy/personas.md existe → les créer via @agent-factory avant la revue finale. Les testeurs évaluent l'EXPÉRIENCE RÉELLE (6 questions valeur + 10 scénarios d'usage + comparaison SaaS premium), pas juste la conformité technique.
+Agents testeurs persona (optionnels) : vérifier via Glob .claude/agents/testeur-* si des agents testeurs ont été créés. Si oui → les invoquer sur le site/livrables pour évaluer l'EXPÉRIENCE RÉELLE (6 questions valeur + 10 scénarios d'usage + comparaison SaaS premium), pas juste la conformité technique.
 
 Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
 
-Critères de validation : chaque livrable a ses 32 gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
+Critères de validation : chaque livrable a ses gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
       },
       {
         title:"Revue intermédiaire (mid-projet)",
@@ -2859,7 +2852,7 @@ Phase 5 — Sécurité front basique :
 4. Console : 0 erreur JS, 0 warning critique, 0 log de debug en production
 
 Phase 6 — Audit par les yeux du persona ET de son client (si agents testeurs existent) :
-Si des agents testeur-persona et/ou testeur-client-du-persona ont été créés via @agent-factory (vérifier : Glob .claude/agents/testeur-*.md), les invoquer sur cette page spécifique. Si aucun testeur n'existe → créer un mini-persona inline basé sur project-context.md et simuler.
+Si des agents testeur-* ont été créés via @agent-factory (vérifier : Glob .claude/agents/testeur-*.md), les invoquer sur cette page spécifique. Sinon → créer un mini-persona inline basé sur project-context.md et simuler.
 
 Testeur-persona (ex: "Sophie la mandataire") traverse TOUTE l'expérience de cette page :
 
@@ -3584,14 +3577,14 @@ Catégories à couvrir :
 5. Patterns efficaces : agents/chaînes qui surperforment, bonnes pratiques à capitaliser.
 6. Recommandations framework : quoi ajouter/modifier/supprimer dans les agents, prompts, ou CLAUDE.md.
 7. Performance IA : latence anormale, coûts tokens élevés, hallucinations, modèle sous-performant sur une tâche. Pour chaque : quel modèle, quelle tâche, quel problème, quelle alternative.
-8. Préférences fondateur (@moi) : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère NextAuth à Clerk — pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Ces observations alimentent l'agent @moi pour qu'il devienne plus fidèle au fil du temps. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
+8. Préférences fondateur : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère NextAuth à Clerk — pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
 
-IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité pour @moi.
+IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité des préférences fondateur cross-projets.
 
 Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
 - Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
 - Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
-Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, @moi DOIT lire ces deux fichiers via WebFetch pour se calibrer.
+Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, l'orchestrator DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
 Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
@@ -3640,7 +3633,7 @@ Question OBLIGATOIRE en fin de session : "Le projet est-il EN LIGNE et FONCTIONN
 
 Critères binaires (TOUS doivent être OUI pour déclarer V1) :
 - URL production accessible publiquement (ou URL preview stable si projet B2B avec accès gated)
-- 100% gates BLOQUANT G1-G32 PASS
+- 100% gates BLOQUANT (voir _gates.md) PASS
 - Variable 1c respectée (Vitrine = pas de funnel agressif / Funnel = parcours d achat complet et testé)
 - Au moins 1 utilisateur cible a pu accomplir le parcours principal en conditions réelles
 
@@ -3688,11 +3681,11 @@ Systématique à chaque ouverture de session. Mesurer via wc -l (fallback : Read
 - docs/lessons-learned.md (cap 80, commandement n°8) — viol = déclencher audit TTL (promote-or-archive, P0 exempté) avant de continuer
 - project-context.md — si > 250 lignes hors memo courant + historique 5 dernières sessions : déclencher le prompt "Auditer project-context.md volumineux" (DRY-RUN puis validation utilisateur). Exception : si projet nouveau (< 5 entrées historique) : skip ce check et signaler "Projet en phase initiale, audit TTL non applicable".
 - docs/founder-preferences.md (soft cap 150, alerte à partir de 180) — si > 180 : signaler pour dédoublonnage, non bloquant
-- _gates.md — vérifier cohérence nombre de gates (actuellement 32 G1-G32). Si compteur incohérent dans CLAUDE.md ou les agents : signaler.
+- _gates.md — vérifier cohérence nombre de gates (actuellement 9 G1/G3/G5/G7/G12/G13/G15/G17/G_PROOF). Si compteur incohérent dans CLAUDE.md ou les agents : signaler.
 
 Règle : un seuil dépassé = sanity check OBLIGATOIRE avant Étape 1. Mode hotfix défini = bug bloquant en production qui exige correction immédiate (< 1h), chaque skip doit justifier nature du bug + durée estimée + plan de reprise du check TTL dans la clôture. Hors ce cas, WARNING reste visible dans le mémo de reprise.
 
-Supplément favicon/typo : si livrable web/UI est présent dans le projet (src/app, src/pages, public/ détecté via Glob), vérifier via Bash que G31 (12 fichiers favicon + 7 balises HTML head) et G32 (typographie FR) sont au niveau. Si FAIL : signaler, non bloquant pour reprise mais à corriger avant clôture.
+Supplément favicon/typo : si livrable web/UI est présent dans le projet (src/app, src/pages, public/ détecté via Glob), vérifier via Bash que la favicon-checklist (12 fichiers favicon + 7 balises HTML head) et la typographie FR sont au niveau. Si FAIL : signaler, non bloquant pour reprise mais à corriger avant clôture. (Checks recommandés, plus des gates formelles.)
 
 Étape 1 — Récupération du contexte :
 Lis project-context.md à la racine. Extrais et affiche :
@@ -3731,7 +3724,7 @@ Vérifie rapidement que les livrables existants sont cohérents avec project-con
 - Le persona cité dans les livrables correspond au persona de project-context.md ?
 - Le KPI North Star est le même partout ?
 - Le ton de marque est cohérent ?
-Si un drift est detecte, signale-le avec les fichiers concernes. Si livrable web/UI present (src/app, src/pages, public/) : verifier G31 (12 favicons + 7 balises HTML) et G32 (guillemets francais, apostrophes typo, espaces insecables FR).
+Si un drift est detecte, signale-le avec les fichiers concernes. Si livrable web/UI present (src/app, src/pages, public/) : verifier la favicon-checklist (12 favicons + 7 balises HTML) et la typographie FR (guillemets francais, apostrophes typo, espaces insecables FR). Checks recommandes, plus des gates formelles.
 
 Étape 5 — Diagnostic et plan d'action :
 Affiche un tableau d'avancement clair :
@@ -3906,8 +3899,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents : exécute bash update.sh --all si update.sh existe, sinon télécharge-le d'abord (curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all). Le script clone master, fait un backup dans .claude/agents/.backup/, écrase les 21 agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. Inclut les changements 2026-04-17 : commandement n°8 net-zero, gates G31 favicon + G32 typo, règle 5 étendue Persona-Driven Verdicts, escalade timeout 4 niveaux, convergence protocol reviewer, patterns techniques Tailwind v4/Canvas/Express 5/Playwright. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
-            <em>"Mets à jour l'équipe Gradient Agents via <code>bash update.sh --all</code>. Backup auto + fusion CLAUDE.md + nouveaux changements 2026-04-17 (cmd n°8 net-zero, G31 favicon, G32 typo). Audit TTL local propose si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents : exécute bash update.sh --all si update.sh existe, sinon télécharge-le d'abord (curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all). Le script clone master, fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S4 2026-05-25 (-843L framework) : commandement 0 brief-first absolu, 9 gates dont G_PROOF (bloc Vérifié obligatoire), suppression @moi + orchestrator-reference, retrait Phases testeurs obligatoires, retrait règle Replit n°10. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md</code>. Backup auto + fusion CLAUDE.md + cure S4 (-843L : brief-first cmd 0, 9 gates dont G_PROOF, suppression @moi + orchestrator-reference). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>

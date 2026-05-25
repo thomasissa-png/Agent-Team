@@ -21,6 +21,7 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-26 | Agent-Team | Audit de tous les clics/interactions d'un site — pas juste visuellement, vérifier que chaque élément fait ce qu'il doit faire. | "un audit de tous les clics du site, que tout se passe bien" |
 | 2026-03-26 | Agent-Team | PostgreSQL Replit perd ses données — protections de persistance obligatoires (migrate deploy, seed conditionnel, Replit Secrets). | "y a souvent des soucis avec PostgreSQL où il faut faire pas mal d'aller retour" |
 | 2026-03-26 | Agent-Team | Veut que la clôture de session capture les learnings pour améliorer l'équipe — problèmes, insistances, requêtes, biais, préférences fondateur. | "résumer les learnings pour les donner à l'orchestrateur pour voir si on peut encore améliorer l'équipe" |
+| 2026-05-06 | Agent-Team | **Stack par défaut futurs projets : GitHub + Cloudflare** (Pages/Workers) plutôt que Replit. Raisons : déploiement automatisable par Claude (push direct, logs, rollback, DNS), coûts CDN edge quasi nuls, vélocité KPI North Star. **BDD à arbitrer post-investigation @infrastructure S3** (D1/Neon/Supabase). Replit reste fallback pour POC instantanés ou si besoin Postgres natif intégré. Migration progressive (DevRefs pilote, puis projet par projet). | "est-ce que ce serait pas plus simple de te donner la main sur github et cloudflare pour faciliter les déploiements" — peur explicite sur la BDD |
 | 2026-03-25 | Agent-Team | Mindset IA obligatoire — pas de sprint-plan, pas de vélocité en jours/homme, parallélisation par défaut, MVP "complet et rapide". | A fait ajouter la règle n°5 dans CLAUDE.md |
 | 2026-03-25 | Agent-Team | PostgreSQL Replit obligatoire — pas de Supabase, pas de service externe pour la DB. | Décision de session, Supabase retiré comme option |
 | 2026-03-26 | ImmoCrew | Prix ronds obligatoires — pas de charm pricing "en 7" (497/197/97). Cohérence de marque "zero bullshit" prime sur l'optimisation tarifaire. | A refusé le charm pricing, préfère 400/150/100 même si ça augmente le seuil de rentabilité |
@@ -115,4 +116,4 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 
 ---
 
-*Dernière mise à jour : 2026-04-17 — Sessions Gradient Agents + Sarani S6-S18 + Mandataire S5-S7 + Architecture S26c-S28 + ISSA Capital S1 + Versi S1*
+*Dernière mise à jour : 2026-05-06 — Sessions Gradient Agents S1-S3 + Sarani S6-S18 + Mandataire S5-S7 + Architecture S26c-S28 + ISSA Capital S1 + Versi S1 + ajout préférence stack GitHub+Cloudflare S3*

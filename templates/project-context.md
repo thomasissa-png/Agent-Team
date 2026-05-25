@@ -45,10 +45,10 @@
 
 ## Stack technique
 - **Frontend** : [ ] Next.js  [ ] React  [ ] Expo/React Native  [ ] Autre :
-- **Backend** :
-- **Base de données** :
-- **Authentification** :
-- **Hébergement** :
+- **Backend** : [ ] Next.js API routes  [ ] Cloudflare Workers  [ ] Autre :
+- **Base de données** : [ ] Cloudflare D1 (SQLite edge)  [ ] Neon Postgres serverless  [ ] Supabase  [ ] PostgreSQL Replit (legacy)  [ ] Autre :
+- **Authentification** : [ ] NextAuth.js (recommandé)  [ ] Clerk  [ ] Supabase Auth  [ ] Autre :
+- **Hébergement** : [ ] Cloudflare Pages + Workers (recommandé futurs projets)  [ ] Replit (legacy / POC)  [ ] Vercel  [ ] Autre :
 - **Outils IA utilisés** : [Modèles en production, APIs, fine-tunes existants]
 - **Budget IA mensuel (tokens)** : [Montant dédié ou 'inclus dans infra' ou 'à définir']
 - **Volume d'usage IA prévu** : [Requêtes IA / jour ou / mois — estimation]

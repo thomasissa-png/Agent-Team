@@ -77,6 +77,8 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 | session 2026-04-24 (S2) | 2026-04-24 | CLAUDE.md (commandement n°8 net-zero + cap 125), _gates.md (G31 favicon + G32 typo, total 32 gates), 9 agents Opus 4.6→4.7, design.md/copywriter.md/ia.md/product-manager.md (No Manufacturing Defaults), fullstack.md (Tailwind v4/Canvas/Express 5 + favicon), qa.md (Playwright route.fallback + favicon), orchestrator.md (escalade timeout 4 niveaux + Variable 1c renforcée), reviewer.md (Convergence protocol + walkthrough enrichi), moi.md (URLs master), founder-preferences.md, install.sh + update.sh (fix bugs sparse-checkout --no-cone + ((var++))), index.html (Étape 5e+5f+5g prompt P2 + nouveau prompt audit project-context volumineux + Card MAJ refondée + WARNING inline anti-backtick), scripts/perf-trend.sh (NOUVEAU 7 métriques + détection trend), docs/perf-trends.md (NOUVEAU dashboard), docs/lessons-learned-archive.md (NOUVEAU archive), docs/checklists/favicon-checklist.md (NOUVEAU 12 items 2026), docs/briefs/devrefs-brief.md (NOUVEAU), docs/reviews/* (16 audits) | Session marathon focalisée gardes-fous anti-dérive cross-sessions. (1) Migration Opus 4.7 sur 9 agents (3x SWE-bench, pricing inchangé). (2) Audit Versi s21-s25 + commentaires Thomas (favicons + perfs dégradées) → bundle "DevRefs" brief produit pour micro-commerce agent IA. (3) Commandement n°8 net-zero appliqué : caps 80/125/250 + TTL 5 sessions/90j + audit TTL pilote sur Agent-Team (lessons 132→47 lignes archivage 51L). (4) Gate G31 Favicon Coverage 12 items 2026 + G32 Typographie FR (formules Bash vérifiables). (5) 4 prompts critiques (P1 Migrer + P2 Clôture + P3 Reprise + P4 Card MAJ) validés 10/10 par @reviewer après 10 patches itérés. (6) 8e récurrence backticks dans index.html détectée + WARNING inline ajouté (learning P0). (7) Phase A baseline time-to-V1 sur 7 projets : V1 atteinte sur 0/6 (KPI North Star non-mesurable). (8) Phase B spec Memory tool architecturée (DEFER pilote Sarani). (9) Phase C scripts/perf-trend.sh + Étape 5e+5f+5g intégrées (Verdict V1 + sync branche défaut + métrique M7 sur-invocation agent >3 = WARNING scope). (10) Triple audit clôture @moi/@ia/@qa : 8.7/8.5/9.5 post-fix. 3 régressions QA bloquantes corrigées (compteur gates project-context, hook pre-commit non actif, grep gates capturant GP/GC). | Session de consolidation post-Versi/ISSA/Sarani avec focus garantie de perf cross-sessions. Méthode triple audit @moi/@ia/@qa avant clôture. 25+ commits master. Delta framework : ~+250 lignes brutes mais +15 lignes net après archivage (commandement n°8 respecté). Nouveau pattern audit triple validé. À reprendre : Phase D pilote Memory Sarani 3 sessions + audit DEFER D9/D11 (orchestrator 891L à 1 ligne du WARN) + investigation root cause @fullstack 16x sur Versi+Marrant. |
 
+| session 2026-05-06 (S3) | 2026-05-06 | qa.md (Pattern A/B), orchestrator.md (-72L : S2/S3/S7/S20/S30/S39/S42/S44), orchestrator-reference.md (+57L : Mapping subagent_type + Routage demande), agent-factory.md (3 edits cohérence), docs/lessons-learned.md (+2 learnings + update DEFER D11), docs/reviews/ia-orchestrator-d11-audit-2026-05-06.md, docs/reviews/elon-fullstack-overinvocation-rootcause-2026-05-06.md, docs/reviews/qa-fullstack-overinvocation-investigation-2026-05-06.md, docs/reviews/qa-pattern-ab-diff-2026-05-06.md, docs/reviews/ia-orchestrator-d11-phase1-diff-2026-05-06.md, docs/reviews/reviewer-d11-phase1-qa-validation-2026-05-06.md | Session structurée triple audit pré-application. (1) Investigation pattern @fullstack 16x : @elon (NO-GO patch, "thermomètre pas fièvre", mindset humain résiduel 70%) + @qa (3 causes R1/R2/R3, fusible bloquant) → arbitrage @moi compromis (qa.md sémantique now + ratio @elon différé DevRefs). (2) Phase 1 D11 orchestrator.md : audit théorique @ia 9 sections "doublon" → audit empirique révèle S16 spécifique (NO-GO) → 7 GO appliqués Option A. M5 orchestrator 891L → 819L (WARN 900 levé, marge +81L). (3) qa.md ligne 275 : Pattern A (bug récurrent, 100% sémantique préservée) + Pattern B (agent récurrent, WARNING non-bloquant additif). (4) Triple audit pré-application @ia + @qa + @reviewer = 0 régression confirmée par 9/9 tests Bash post-application. (5) 2 learnings P0/P1 capitalisés : pattern "audit théorique ≠ audit empirique" (P0) + pattern "triple audit pré-application" (P1). (6) DEFER D11 status "à-faire" → "fait partiellement (Phase 1 S3)". | Session focalisée DEFER D11 + investigation pattern 16x. Méthode triple audit pré-application validée empiriquement (1 faux positif détecté = S16). Compromis @elon × @qa arbitré par @moi (~92% confiance estimée). Delta framework : -72L orchestrator + 57L reference + 9 lignes net learnings = framework réduit net pour la 1ère fois en 8 sessions. À reprendre : Phases 2-3 D11 (S16 anti-timeout condensé + autres vers cible 400L) + ratio invocations/features sur DevRefs. |
+
 ---
 
 ## Score de fidelite @moi
@@ -92,59 +94,63 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-04-24
-- **Numéro de session** : 2 (S1 = clôture 2026-04-17 implicite)
-- **Branche** : `claude/extract-project-context-gWn8U` (mergée dans `master` 25+ fois cette session)
+- **Date de cloture** : 2026-05-06
+- **Numéro de session** : 3
+- **Branche** : `claude/agent-team-s3-sanity-then-d11-Oq5ou`
 
 ### Resume de la session
-Session marathon "garantie de perf cross-sessions" suite au signal Thomas que les agents semblaient se dégrader avec l'accumulation des sessions. Méthode : 4 phases A→D (baseline / spec Memory / perf-trend / pilote Sarani différé) + triple audit clôture @moi/@ia/@qa (8.7/8.5/9.5 post-fix).
+Session structurée triple audit pré-application. Focus : DEFER D11 (orchestrator.md à 891L, 1 ligne du WARN) + investigation pattern @fullstack 16x signalé en clôture S2. Méthode : audits parallèles indépendants (@ia + @qa + @elon + @reviewer) → arbitrage @moi → application atomique → 9 tests Bash post-application.
 
 **Actions majeures :**
-(1) Migration **Opus 4.6 → 4.7** sur 9 agents critiques (revue critique @ia : 4 actions retenues sur 7 initiales, 3 cargo-culting écartés).
-(2) Commandement n°8 "Conservation of rules" net-zero appliqué : caps 80/125/250 + TTL 5 sessions/90j. Audit TTL pilote sur Agent-Team : lessons-learned 132→47 lignes (archive 51L créée).
-(3) Gates **G31 Favicon Coverage** (12 items 2026) + **G32 Typographie FR** (formules Bash vérifiables). Total framework : 32 gates G1-G32.
-(4) 4 prompts critiques (P1 Migrer + P2 Clôture + P3 Reprise + P4 Card MAJ) **validés 10/10** par @reviewer après 10 patches itérés.
-(5) **Audit Versi s21-s25** : 16 patterns identifiés, double filtrage @elon × @ia, 8 actions appliquées, 3 écartées (verticales).
-(6) **Brief DevRefs** produit (working name) : V1 complète paywall x402 + Stripe Link, cible 20€/jour. NanoCorp/Polsia analysés mais NO-GO horizontal (verdict @elon + @ia convergent).
-(7) **Phase A baseline time-to-V1** sur 7 projets : V1 atteinte sur 0/6 → KPI North Star non-mesurable. @fullstack 16x sur Versi ET Marrant indépendamment = pattern signal scope Phase 0 cassé.
-(8) **Phase C `scripts/perf-trend.sh`** + Étapes 5e/5f/5g intégrées dans P2 Clôture : 7 métriques + détection trend dégradant + Verdict V1 binaire + sync branche par défaut + M7 sur-invocation agent.
-(9) **8e récurrence backticks** dans index.html détectée + WARNING inline ajouté avant `const PROMPTS = [`.
-(10) **Triple audit clôture** : @moi 8.7 / @ia 8.5 / @qa 7.5 → 9.5 post-fix. 3 régressions QA bloquantes corrigées (compteur gates project-context, hook pre-commit inactif, grep gates capturant GP/GC).
+(1) **Investigation pattern @fullstack 16x** : @elon NO-GO patch ("thermomètre pas fièvre", mindset humain résiduel 70%) vs @qa GO 3 patches (R1 gap sémantique, R2 M7 passif, R3 Variable 1c). **Arbitrage @moi compromis** : qa.md sémantique now (faible risque) + ratio @elon différé sur DevRefs + fusible orchestrator différé.
+(2) **Phase 1 D11 orchestrator.md** : audit @ia théorique 9 sections "doublon" → audit empirique pré-application révèle **S16 spécifique non couverte** (NO-GO) → Option A appliquée (7 sections + 3 edits agent-factory.md). M5 **891L → 819L** (WARN 900 levé, marge +81L).
+(3) **qa.md ligne 275 patch sémantique** : Pattern A (bug récurrent — 100% sémantique préservée) + Pattern B (agent récurrent — WARNING non-bloquant additif).
+(4) **Triple audit pré-application @ia + @qa + @reviewer** : 0 régression confirmée par 9/9 tests Bash post-application (renvois orphelins, base intact, qa.md préservé, agent-factory cohérent, index.html clean).
+(5) **2 learnings capitalisés** : P0 "audit théorique ≠ audit empirique" (Grep cross-fichiers cible obligatoire avant suppression) + P1 "triple audit pré-application" (workflow validé).
+(6) **DEFER D11 status** : "à-faire" → "fait partiellement (Phase 1 S3)". Phases 2-3 (S16 anti-timeout + condensations vers cible 400L) différées S4.
 
-**Delta framework :** ~+250 lignes brutes mais +15 lignes net après archivage. CLAUDE.md 108/125. Lessons 47/80. Project-context 144/250. Tous caps PASS.
+**Delta framework :** -72L orchestrator + 57L reference + 9L net learnings + 1L qa.md = **framework réduit net pour la 1ère fois en 8 sessions**. CLAUDE.md 108/125. Lessons 68/80. Project-context ~155/250. Orchestrator 819/900 (WARN levé). Tous caps PASS.
 
-**Notes triple audit clôture (commit 759107b)** : @moi 8.7/10 ACCORD avec corrections / @ia 8.5/10 GO RÉSERVES / @qa 7.5→9.5/10 post-fix. Moyenne attendue post-fix : ~9/10.
+**Perf-trend session #8 (verdict PASS)** : M1=1034 / M3=32 / M4=27 / M5=819 / M6=81 / M7=2 reviewer.
 
-### Travaux en cours / non termines (Phase D + DEFER)
-1. **Phase D pilote Memory tool sur Sarani** (3 sessions consécutives) : non commencé. Spec @ia validée mais implémentation différée.
-2. **DEFER D9 diet `_base-agent-protocol.md`** (467→380 phase 1 puis 280 phase 2) : à reprendre avec audit empirique des sections jamais référencées.
-3. **DEFER D11 diet `orchestrator.md`** (891→400) : critique car M5 = 891 lignes (à 1 ligne du seuil WARNING 900). Toute prochaine édition déclenche WARNING immédiat.
-4. **DEFER D13 context layering par agent** : à évaluer après D9/D11 effectifs.
-5. **Investigation root cause @fullstack 16x sur Versi ET Marrant** : signalé par @moi, règle "bug 3+ fois" devrait s'être déclenchée mais ne l'a pas fait.
-6. **Marrant V1 atteinte ?** : 51 jours / 51 entrées historique, status V1 non documenté. À vérifier.
-7. **Calibrer M7 seuil arbitraire >3** sur p75/p90 historique réel (signalé par @moi).
-8. **Spec Memory tool challenge** : protocole concurrence multi-projets à formaliser, lecture-seule à valider en pilote.
+### Travaux en cours / non termines (DEFER)
+1. **DEFER D11 Phases 2-3** : S16 anti-timeout (substance unique orchestrateur, condensation 18L → 8L) + autres condensations vers cible 400L. À reprendre S4 avec audit empirique.
+2. **Ratio @elon `invocations / features livrées`** : à mesurer sur DevRefs (1-2 projets) avant tout fusible orchestrator. Décide si pattern 16x = vraie fièvre ou thermomètre.
+3. **Fusible orchestrator @qa** (différé S3) : à appliquer SI ratio @elon confirme pathologie. Patch prêt dans `docs/reviews/qa-fullstack-overinvocation-investigation-2026-05-06.md`.
+4. **Phase D pilote Memory tool sur Sarani** (3 sessions consécutives) : toujours non commencé.
+5. **DEFER D9 diet `_base-agent-protocol.md`** (467L → 380 puis 280) : à reprendre.
+6. **DEFER D13 context layering** : à évaluer après D9/D11 complets.
+7. **Marrant V1 atteinte ?** : statut toujours non documenté.
+8. **Calibrer M7 seuil arbitraire >3** sur p75/p90 historique réel.
+9. **Pattern B qa.md → @orchestrator** : protocole de réception WARNING non documenté côté orchestrateur. Non-bloquant Phase 1, à formaliser après validation empirique DevRefs (signalé par @reviewer).
+10. **Cap WARN/HARD orchestrator.md** dans hook pre-commit (recommandation @reviewer S3, hors scope D11) : aujourd'hui seul CLAUDE.md a un cap dur.
 
 ### Prochaines actions recommandees
-1. **Lancer DevRefs en V1 complète** (brief `docs/briefs/devrefs-brief.md` prêt). Premier test grandeur réelle des 3 gardes-fous (A1+A2+A3) en conditions réelles. Cible Thomas : 20€/jour.
-2. **Audit empirique D11** sur orchestrator.md avant qu'il dépasse 900 lignes : grep des sections jamais référencées dans les logs des 10 dernières sessions. Cible 400L.
-3. **Pilote Phase D Memory** sur Sarani 3 sessions consécutives (Sarani = projet long-courrier, signal le plus fiable pour valider Memory tool).
-4. **Investigation root cause @fullstack 16x** : pattern visible sur 2 projets gros indépendants. Soit trigger reality check Phase 0, soit revoir le protocole d'estimation scope.
+1. **DevRefs V1 (priorité 1 inchangée S2)** : lancement effectif + mesure du ratio @elon `invocations/features` pour valider/invalider pattern 16x. Premier test grandeur réelle des gardes-fous A1+A2+A3 (Verdict V1 + sync branche + M7).
+2. **DEFER D11 Phases 2-3** : audit empirique @ia sur S16 anti-timeout + autres sections candidates condensation. Cible 400L (vs 819L actuel). Méthode validée S3.
+3. **Phase D pilote Memory** sur Sarani 3 sessions consécutives.
+4. **Marrant V1 statut** : vérification rapide (1 prompt) — déclenche le KPI North Star si V1 atteinte.
 
 ### Blockers eventuels
-- Aucun blocker bloquant. Framework à jour, tous learnings P0/P1 propagés (0 entrée non-propagé), tous caps PASS, perf-trend baseline mesurée.
-- Point d'attention : M5 orchestrator.md à 891L (cap 900 = WARNING imminent). Ne pas modifier orchestrator.md sans diet préalable.
+- **Aucun blocker bloquant.** Framework à jour, tous learnings P0/P1 propagés, tous caps PASS, M5 WARN levé, perf-trend session #8 verdict PASS.
+- **Point d'attention** : DEFER D11 reste 419L à réduire (819 → 400 cible). Modifications orchestrator.md futures = OK (marge +81L) mais ne pas accumuler avant Phases 2-3.
 
 ### Nom de branche recommandé pour la prochaine session
-`claude/agent-team-s3-devrefs-launch-[suffix]` (priorité 1 : lancer DevRefs en V1)
-**OU** `claude/agent-team-s3-orchestrator-diet-[suffix]` (priorité 2 : audit D11 avant débordement M5)
+`claude/agent-team-s4-devrefs-or-d11p2-[suffix]`
+- Priorité 1 : DevRefs V1 (mesure ratio + premier test gardes-fous)
+- Priorité 2 : DEFER D11 Phases 2-3 (orchestrator.md vers cible 400L)
 
 Le suffix aléatoire est généré par Claude Code au démarrage.
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise S2). Session marathon garantie perf cross-sessions : Opus 4.7 + cmd n°8 net-zero + gates G31/G32 + 4 prompts 10/10 + perf-trend.sh + audit Versi/ISSA/Sarani + brief DevRefs. Triple audit @moi/@ia/@qa : 9/10 moyenne post-fix. Priorité S3 : (1) lancer DevRefs V1, OU (2) audit D11 orchestrator (891L à 1 du WARN), OU (3) pilote Memory Sarani.
+Lis project-context.md (memo de reprise S3). Session DEFER D11 Phase 1 + qa.md Pattern A/B + investigation pattern 16x. Triple audit pré-application @ia/@qa/@reviewer (0 régression, 9/9 tests Bash PASS). Compromis @elon×@qa arbitré @moi (~92%). Framework réduit net pour 1ère fois en 8 sessions (M5 891→819, WARN levé). Priorité S4 : (1) DevRefs V1 + ratio invocations/features, OU (2) D11 Phases 2-3 vers 400L, OU (3) pilote Memory Sarani.
 ```
 
-> Le mémo Session 1 (clôture 2026-04-17) a été synthétisé dans le tableau "Historique des interventions agents" ligne `session 2026-04-17`. Pour rappel : capitalisation cross-projets Versi/ISSA/Sarani, 8 learnings propagés, 3 écartés.
+> Mémo S2 (clôture 2026-04-24) synthétisé ligne `session 2026-04-24` du tableau d'historique. Mémo S1 (clôture 2026-04-17) ligne `session 2026-04-17`.
+
+### Score @moi S3
+- Décisions arbitrées : 2 (D11 Option A vs B, Pattern 16x compromis)
+- Confiance auto-estimée : ~92%
+- Validation Thomas attendue à la prochaine session si désaccord (sinon présumée acquise — précédents directs trouvés pour les deux décisions).
 
