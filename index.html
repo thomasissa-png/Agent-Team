@@ -3582,8 +3582,8 @@ Catégories à couvrir :
 IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité des préférences fondateur cross-projets.
 
 Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
-- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
-- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
 Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, l'orchestrator DOIT lire ces deux fichiers via WebFetch pour se calibrer.
 
 Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
@@ -3660,8 +3660,8 @@ Affiche un résumé structuré de la clôture :
 ✓ Push : branche + main poussés (learnings accessibles cross-projets)
 
 📎 Liens publics (à partager entre projets) :
-- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/lessons-learned.md
-- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md
+- Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
+- Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
 
 → Prochaine session : [résumé en 1 ligne de ce qu'il faut faire]
 → Pour reprendre : claude --resume "nom" puis coller le prompt de reprise indiqué dans le mémo.
@@ -3857,8 +3857,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Créez un repo git et ouvrez Claude Code dessus</span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b master dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b master</code>) dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
+            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b main dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
+            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b main</code>) dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
@@ -3878,8 +3878,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>à la racine de votre repo git</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b master dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b master</code>) dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
+            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b main dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
+            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b main</code>) dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez — Claude crée <code>project-context.md</code> automatiquement</span></div>
@@ -3899,7 +3899,7 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents : exécute bash update.sh --all si update.sh existe, sinon télécharge-le d'abord (curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all). Le script clone master, fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S4 2026-05-25 (-843L framework) : commandement 0 brief-first absolu, 9 gates dont G_PROOF (bloc Vérifié obligatoire), suppression @moi + orchestrator-reference, retrait Phases testeurs obligatoires, retrait règle Replit n°10. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents : exécute bash update.sh --all si update.sh existe, sinon télécharge-le d'abord (curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all). Le script clone main, fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S4 2026-05-25 (-843L framework) : commandement 0 brief-first absolu, 9 gates dont G_PROOF (bloc Vérifié obligatoire), suppression @moi + orchestrator-reference, retrait Phases testeurs obligatoires, retrait règle Replit n°10. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
             <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md</code>. Backup auto + fusion CLAUDE.md + cure S4 (-843L : brief-first cmd 0, 9 gates dont G_PROOF, suppression @moi + orchestrator-reference). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
