@@ -2,7 +2,7 @@
 
 Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible cross-projets via l'URL GitHub raw.
 
-**URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/master/docs/founder-preferences.md`
+**URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 
 ---
 
@@ -68,6 +68,9 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 | 2026-03-28 | Sarani S7 | **7 critères visuels** — PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ. Chaque critère 10/10. | Grille de validation visuelle Thomas |
 | 2026-03-28 | Archi S28 | **Parcours d'achat testé end-to-end** — CTA→auth→checkout Stripe→retour pour CHAQUE persona AVANT déploiement. Backend/frontend pricing synchronisés. | Parcours d'achat jamais testé, prix désynchronisés |
 | 2026-03-28 | Mandataire S6 | **Bugs identifiés = corrigés immédiatement** — quand un agent identifie un bug, le corriger sans demander confirmation. La perfection est le standard. | Thomas : "je ne suis pas là pour tester" — frustration 5+ fois |
+| 2026-05-28 | Agent-Team S4 | **Reformuler 2+ fois sa demande = signal d'échec d'écoute (P0)**. Quand Thomas dit "encore une fois", "je veux juste", "tu n'écoutes pas" : STOP toute cérémonie/tableau/A-B-C, relire son brief littéralement, exécuter au défaut évident, et auto-diagnostiquer franchement le pattern manqué. JAMAIS reformuler avec un nouveau livrable cosmétique. | "Donc encore une fois, que @ia... me fasse le plan d'amélioration pour qu'on arrête ça" — 3 reformulations cette session |
+| 2026-05-28 | Agent-Team S4 | **"Fais travailler l'équipe" = orchestration parallèle multi-agents avec perspectives indépendantes**, pas séquentiel mono-agent. Lancer 3-4 agents (@elon first principles + @ia technique + @qa critères + autre) en parallèle → 1 agent synthèse → @reviewer notation /10 → itération diff exact (max 3 boucles). Pas @ia tout seul qui refait un audit académique. | "fais travailler l'équipe pour que j'aie un vrai plan d'un système fonctionnel qui marche pour moi, et itère-le jusqu'à 10/10" |
+| 2026-05-28 | Agent-Team S4 | **Cure proportionnelle au diagnostic (P0)**. Si diagnostic = "framework bloat / rituel sature pensée" et le framework fait 2000+ lignes, la cure DOIT être à l'échelle (>-200L net), pas cosmétique (-17L). Sinon le plan EST le pattern qu'il dénonce. Test ratio : (lignes retirées / lignes diagnostiquées comme bloat) ≥ 30%. | "Si tu veux vraiment 'comme avant', il faut un plan de réduction, pas un plan d'amélioration" — Cure S4 = -843L (-38%) |
 
 ---
 
@@ -103,6 +106,8 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 28. Correction de prompt sur un builder sans propager aux autres
 29. Dire "fait" sans vérification (Grep/Read) après un changement
 30. Laisser un bug identifié "en attente" au lieu de le corriger immédiatement
+31. Reformulation cérémoniale après plainte "tu réfléchis mal / vérifies rien" (refaire un tableau au lieu de réécouter et auto-diagnostiquer)
+32. Cure cosmétique (-X0L) sur diagnostic structurel (framework bloat -X00L attendu)
 
 ---
 
@@ -116,4 +121,4 @@ Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOU
 
 ---
 
-*Dernière mise à jour : 2026-05-06 — Sessions Gradient Agents S1-S3 + Sarani S6-S18 + Mandataire S5-S7 + Architecture S26c-S28 + ISSA Capital S1 + Versi S1 + ajout préférence stack GitHub+Cloudflare S3*
+*Dernière mise à jour : 2026-05-28 — S4 : reformulation 2+ fois = échec d'écoute, orchestration parallèle multi-agents pour "fais travailler l'équipe", cure proportionnelle au diagnostic, +2 anti-patterns. URL accès master→main.*
