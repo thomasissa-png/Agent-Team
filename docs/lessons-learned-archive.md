@@ -2,7 +2,21 @@
 
 Ce fichier contient les learnings archivés au-delà du TTL (5 sessions OU 90 jours). **Tous les P0 archivés ici sont déjà couverts par des règles permanentes** dans `CLAUDE.md`, `_base-agent-protocol.md`, `_gates.md` ou les agents concernés. L'archive sert de mémoire historique uniquement, pas de source active pour les agents.
 
-**Premier audit TTL** : 2026-04-24 par @orchestrator. Sessions archivées : 2026-03-26, 2026-03-27, 2026-03-28.
+**Audits TTL** : 2026-04-24 (sessions 2026-03-26/27/28 archivées) + 2026-05-28 S4 (session 2026-03-31 archivée).
+
+---
+
+## Session 2026-03-31 — Gradient Agents (propagation cross-projets Sarani + Versiroom + ImmoCrew) [archivée S4]
+
+| Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-03-31 | 2026-03-31 | problème | P0 | Protocole migration modèle IA inexistant — changement sans doc/test causait régressions (gpt-image-1→1.5 sans param action:edit) | Protocole 6 étapes ia.md + propagation corrections prompt obligatoire | Tout changement modèle IA = doc API, mapping params, 3+ tests, propagation tous builders, bump version | agent-spécifique | ia.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | problème | P0 | Self-fetch Next.js URL publique = timeouts 30-60s reverse proxy | Règle localhost fullstack.md + infrastructure.md | Tout self-fetch Next.js = http://127.0.0.1:PORT, JAMAIS URL publique | agent-spécifique | fullstack.md, infrastructure.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | problème | P0 | Copy promettait features non implémentées (scraping, automatisation) = perte confiance | Règle zéro fausse promesse copywriter.md + vérif Grep src/ | Copy ne promet QUE features implémentées, vérif via code existant | agent-spécifique + founder-prefs | copywriter.md, founder-preferences.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | problème | P0 | Agents persona validaient 9/10 écrans inacceptables = évaluation code, pas valeur | Calibration VALEUR agent-factory.md (6 questions + 10 scénarios + comparaison SaaS premium) | Tout agent testeur évalue valeur perçue, pas conformité technique | agent-spécifique + founder-prefs | agent-factory.md, founder-preferences.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | préférence fondateur | P0 | Bugs identifiés QA restaient "en attente" = fondateur devait signaler | QA corrige immédiatement qa.md, sans demander confirmation | Perfection = standard. Bugs identifiés = corrigés immédiatement | agent-spécifique + founder-prefs | qa.md, founder-preferences.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | recommandation | P1 | Max 10 fichiers par agent d'audit — 18+ fichiers = timeout 100% | Seuil orchestrator.md | Découper 3 agents parallèles 6-10 fichiers | agent-spécifique | orchestrator.md | fait | propagé |
+| 2026-03-31 | 2026-03-31 | préférence fondateur | P1 | Backoffice bâclé = anti-pattern universel. Même design system que front. | Règle design.md + fullstack.md | Backoffice = mêmes tokens et composants | agent-spécifique + founder-prefs | design.md, fullstack.md, founder-preferences.md | fait | propagé |
 
 ---
 
