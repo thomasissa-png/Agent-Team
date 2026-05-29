@@ -63,15 +63,31 @@ check_existing_agents() {
 clone_repo() {
   echo -e "${BLUE}→ Téléchargement des agents...${NC}"
 
+  # Détection automatique de la branche par défaut (main préférée, master fallback legacy)
+  local DETECTED_BRANCH=""
+  for BRANCH in main master; do
+    if git ls-remote --exit-code --heads "$REPO_URL" "$BRANCH" >/dev/null 2>&1; then
+      DETECTED_BRANCH="$BRANCH"
+      break
+    fi
+  done
+
+  if [ -z "$DETECTED_BRANCH" ]; then
+    echo -e "${RED}✗ Aucune branche main/master détectée sur $REPO_URL${NC}"
+    exit 1
+  fi
+
+  echo -e "${BLUE}  Branche cible : ${DETECTED_BRANCH}${NC}"
+
   # Tentative avec sparse checkout (repos publics et privés avec auth)
-  if git clone --filter=blob:none --sparse --quiet -b main "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+  if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
     git sparse-checkout set --no-cone .claude/agents .claude/settings.json templates CLAUDE.md
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
     echo -e "${YELLOW}  Sparse checkout indisponible, clone complet...${NC}"
-    if git clone --quiet -b main "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+    if git clone --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
       echo -e "${GREEN}✓ Agents téléchargés (clone complet)${NC}"
     else
       echo -e "${RED}✗ Impossible de cloner le repo.${NC}"
