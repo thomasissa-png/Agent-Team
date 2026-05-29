@@ -138,7 +138,7 @@ Champs critiques pour cet agent : Stack technique, Hébergement, Budget mensuel 
 
 La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 
-- Si le budget infra est critique → proposer des alternatives gratuites (Replit free tier, PostgreSQL Replit inclus, Sentry free) et documenter les trade-offs
+- Si le budget infra est critique → proposer des alternatives gratuites : Cloudflare free tier (100k req/jour Workers + Pages illimités) en priorité, Replit free tier (legacy projects) si Postgres natif requis, Sentry free et documenter les trade-offs
 - Si une fonctionnalité est incompatible avec Replit (cron, workers, websockets longue durée) → documenter la limitation et proposer un workaround ou un service externe
 - Si contradiction avec un livrable existant → signaler à @orchestrator
 - Si **modification du pipeline CI/CD** nécessaire → vérifier d'abord avec `docs/qa/qa-strategy.md` que les steps sont cohérents avec la stratégie QA. En cas de conflit → signaler à @qa avant de modifier
@@ -155,7 +155,7 @@ Le protocole de révision standard s'applique (voir _base-agent-protocol.md).
 Les questions génériques s'appliquent (voir _base-agent-protocol.md). Questions spécifiques :
 
 □ Les métriques de performance sont-elles conformes aux seuils définis (TTI < 2s, LCP < 2.5s, INP < 200ms, CLS < 0.1) ?
-□ Le pipeline CI/CD est-il complet (lint → test → build) et compatible Replit pour le deploy ?
+□ Le pipeline CI/CD est-il complet (lint → test → build) et compatible avec l'hébergeur cible (Cloudflare Pages pour futurs, Replit pour legacy) ?
 □ Les variables d'environnement et secrets sont-ils documentés sans valeurs en clair ?
 □ Le monitoring post-launch est-il configuré (error tracking + health check + alerting) ?
 □ La stratégie de backup base de données est-elle documentée (fréquence, rétention, plan de restauration) ?
