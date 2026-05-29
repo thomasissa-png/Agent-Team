@@ -65,15 +65,33 @@ echo -e "${BOLD}gradient-agents — Mise à jour${NC}"
 echo ""
 echo -e "${BLUE}→ Récupération des dernières versions...${NC}"
 
+# Détection automatique de la branche par défaut (main préférée, master fallback legacy)
+# Couvre le bootstrap problem : ancien update.sh local pointe sur master qui peut avoir été renommé
+DETECTED_BRANCH=""
+for BRANCH in main master; do
+  if git ls-remote --exit-code --heads "$REPO_URL" "$BRANCH" >/dev/null 2>&1; then
+    DETECTED_BRANCH="$BRANCH"
+    break
+  fi
+done
+
+if [ -z "$DETECTED_BRANCH" ]; then
+  echo -e "${RED}✗ Aucune branche main/master détectée sur $REPO_URL${NC}"
+  echo -e "${RED}  Vérifie l'URL et les droits d'accès.${NC}"
+  exit 1
+fi
+
+echo -e "${BLUE}  Branche cible : ${DETECTED_BRANCH}${NC}"
+
 # Clone avec fallback pour repos privés
-if git clone --filter=blob:none --sparse --quiet -b main "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
   cd "$TEMP_DIR/repo"
   git sparse-checkout set --no-cone .claude/agents .claude/settings.json CLAUDE.md .githooks
 else
-  if git clone --quiet -b main "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
+  if git clone --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
   else
-    echo -e "${RED}✗ Impossible de cloner le repo.${NC}"
+    echo -e "${RED}✗ Impossible de cloner le repo (branche $DETECTED_BRANCH).${NC}"
     echo -e "${RED}  Vérifie l'URL et les droits d'accès.${NC}"
     exit 1
   fi
