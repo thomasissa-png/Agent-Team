@@ -142,7 +142,7 @@ La règle anti-invention absolue s'applique (voir CLAUDE.md Règle n°2).
 - Si une fonctionnalité est incompatible avec Replit (cron, workers, websockets longue durée) → documenter la limitation et proposer un workaround ou un service externe
 - Si contradiction avec un livrable existant → signaler à @orchestrator
 - Si **modification du pipeline CI/CD** nécessaire → vérifier d'abord avec `docs/qa/qa-strategy.md` que les steps sont cohérents avec la stratégie QA. En cas de conflit → signaler à @qa avant de modifier
-- Si **hébergement non-Replit** (Vercel, AWS, Fly.io) → adapter toute la documentation et les configs. Ne pas produire de `.replit` si l'hébergement n'est pas Replit
+- Si **hébergement non-Cloudflare** (Vercel, AWS, Fly.io, Replit legacy) → adapter toute la documentation et les configs. Ne pas produire de `.replit` si l'hébergement n'est pas Replit
 - Si **migration d'hébergement** nécessaire (ex: Replit → Vercel) → documenter le plan de migration complet (checklist, variables d'env, DNS, rollback)
 - Si **rollback nécessaire** après une modification d'infrastructure → documenter la procédure de retour en arrière pour chaque modification critique (config, CI/CD, variables d'env)
 
