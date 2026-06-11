@@ -3666,6 +3666,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 const CHANGELOG = [
   {
     date:"2026-06-11",
+    agent:"orchestrator",
+    type:"mise à jour",
+    description:"Routage automatique — plus besoin de taper @agent : Claude identifie le domaine et délègue seul (CLAUDE.md section Routage automatique). @agent reste un override explicite. orchestrator.md reformulé honnêtement : ce n'est pas un 20e agent, c'est le protocole de coordination que la session principale applique (les sous-agents ne peuvent pas orchestrer). Production directe assouplie en règle de routage (délégation par défaut, travail direct pour éditions transverses/synthèses/demande explicite)."
+  },
+  {
+    date:"2026-06-11",
     agent:"tous",
     type:"mise à jour",
     description:"Cure prompts S5 (94→91) — fusions : Onboarding gamifié + Optimiser l'onboarding → 'Concevoir ou optimiser l'onboarding', Emails onboarding + Emailing automation → 'Emailing : séquences & automation', suppression de 'SEO + GEO combinés' (doublon — lancer les 2 prompts SEO et GEO à la suite). Dégraissage du savoir générique (reporting investisseurs, veille concurrentielle, responsive, API, auth), boilerplate benchmark retiré (hérité du protocole), prompt moat passé en verdicts FORT/FAIBLE/ABSENT. Agents v3.0 (-67%) : voir card MAJ."

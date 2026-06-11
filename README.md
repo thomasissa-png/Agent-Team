@@ -83,16 +83,18 @@ Sur un projet existant, documenter la stack actuelle, l'architecture, les conven
 
 **Étape 2 — Choisir le bon point d'entrée**
 
-| Situation | Commencer par |
+**Le routage est automatique** : décris ton besoin en langage naturel, Claude identifie le domaine et délègue au bon agent (CLAUDE.md, section "Routage automatique"). Taper `@agent` reste possible pour forcer un routage précis.
+
+| Situation | Ce qui se passe |
 |---|---|
-| Nouveau projet à construire de A à Z | `@orchestrator` — il planifie tout |
-| Projet existant, besoin ciblé | L'agent spécifique : `@fullstack`, `@seo`, `@qa`… |
-| Projet existant, refonte majeure | `@orchestrator` — mais après avoir documenté l'existant |
+| Nouveau projet à construire de A à Z | Claude applique le protocole de coordination (orchestrator.md) — phases, dépendances, agents en parallèle |
+| Projet existant, besoin ciblé | Claude délègue à l'agent spécifique : fullstack, seo, qa… |
+| Projet existant, refonte majeure | Protocole de coordination — après avoir documenté l'existant |
 
 **Exemples — Nouveau projet :**
 
 ```
-@orchestrator je veux lancer [nom du projet], lis project-context.md et planifie
+Je veux lancer [nom du projet], lis project-context.md et planifie
 ```
 
 **Exemples — Projet existant :**

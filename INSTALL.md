@@ -16,7 +16,7 @@ Claude Code va :
 5. Copier le template et créer `project-context.md` à la racine du repo git
 6. Créer la structure `docs/` et `src/` si absentes
 
-**Ensuite :** remplir `project-context.md` → invoquer `@orchestrator` pour lancer le projet complet.
+**Ensuite :** remplir `project-context.md` → demander "lance le projet" (routage automatique : Claude applique le protocole de coordination ; `@orchestrator` reste un déclencheur explicite valide).
 
 ## Scénario B — Projet existant (code déjà en place)
 
@@ -47,7 +47,7 @@ Claude Code va :
 
 **Ensuite :** remplir `project-context.md` en documentant ce qui existe déjà (stack actuelle, architecture, conventions de code, décisions passées) → invoquer l'agent adapté à la tâche ciblée.
 
-**Important :** sur un projet existant, le premier réflexe n'est généralement pas `@orchestrator` (qui planifie un projet complet), mais l'agent spécifique au besoin : `@fullstack` pour du code, `@qa` pour des tests, `@seo` pour du référencement, etc.
+**Important :** sur un projet existant, décris simplement le besoin — Claude route automatiquement vers l'agent spécifique (fullstack pour du code, qa pour des tests, seo pour du référencement) plutôt que de relancer une planification complète.
 
 ## Scénario C — Mise à jour (l'équipe est déjà installée)
 
@@ -178,9 +178,9 @@ ton-projet/
 
 Dans une session Claude Code sur ton projet :
 
+- **Par défaut** : demander une tâche en langage naturel — Claude route automatiquement vers le bon agent (CLAUDE.md présent requis)
+- **Override explicite** : mentionner `@fullstack`, `@design`, etc. pour forcer un agent précis
 - **Via le menu** : taper `/` puis sélectionner l'agent dans la liste
-- **Dans le prompt** : mentionner `@orchestrator`, `@fullstack`, `@design`, etc.
-- **Directement** : demander une tâche et Claude routera vers le bon agent si le CLAUDE.md est présent
 
 ## Mise à jour des agents
 

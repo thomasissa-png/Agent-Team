@@ -68,11 +68,13 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 10. Emails client-facing = brouillons obligatoires (jamais envoi direct)
 11. Après tout renommage global (repo, branche par défaut, domaine, nom de projet), Grep l'ancien nom dans tous les fichiers et remplacer
 
-## Routage agents
+## Routage automatique
 
-| Demande | Agent principal |
+**L'utilisateur n'a PAS besoin de taper `@agent`.** La session principale identifie le(s) domaine(s) de la demande et délègue elle-même via Task (table ci-dessous). `@agent` explicite = override qui force le routage. Demande multi-domaine ou projet complet → la session principale lit `.claude/agents/orchestrator.md` (son protocole de coordination) et l'applique.
+
+| Demande | Agent délégué |
 |---|---|
-| Projet complet | @orchestrator |
+| Projet complet / multi-domaine | protocole @orchestrator (appliqué par la session principale) |
 | Code / dev | @fullstack |
 | Stratégie | @creative-strategy |
 | Specs / roadmap | @product-manager |
@@ -93,7 +95,7 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 | Audit stratégique | @elon |
 | Créer un agent | @agent-factory |
 
-Agents dans `.claude/agents/`. Multi-domaine → @orchestrator. Tâche ciblée → agent directement.
+Agents dans `.claude/agents/`. Ambiguïté de domaine → trancher soi-même (founder-preferences), ne pas demander.
 
 ## Modèles
 
