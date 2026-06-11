@@ -649,7 +649,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 4. GO finale : 9/9 gates PASS (toutes BLOQUANT, G_PROOF inclus — voir _gates.md) sur chaque livrable. NO-GO si 1 FAIL.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (11 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
-7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa (gate G26).
+7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa.
 8. Phase 5 — revue finale chirurgicale OBLIGATOIRE : lancer le prompt "Revue finale page par page" — audit de CHAQUE page sur 21 dimensions, correction de TOUS les bugs (P0+P1+P2), puis checklist jour de lancement (GO/NO-GO) + monitoring post-launch.
 9. Checkpoint obligatoire après Phase 0 : présente les fondations stratégiques (persona, positionnement, KPI North Star, scope V1) pour ma validation avant de lancer la conception.
 10. Testeurs persona/client : créer via @agent-factory uniquement si le projet le justifie (B2B complexe, micro-commerce, marketplace). Plus de Phases dédiées obligatoires — @reviewer + bloc Vérifié G_PROOF couvrent les besoins de validation.
@@ -814,7 +814,7 @@ Consolide les rapports des agents et du reviewer en un seul audit :
 
 Étape 5 — Corrections (P0, P1, P2 — toutes) :
 Corriger TOUS les problèmes identifiés, dans l'ordre P0 → P1 → P2 (max 2-3 agents par batch). Avec une équipe IA, le coût de corriger un P2 est quasi nul — ne pas demander à l'utilisateur "veux-tu corriger les P2 ?", les corriger directement. La classification sert à ordonner, pas à filtrer.
-Après correction, vérifier que chaque problème est résolu (Read du fichier corrigé). Mets à jour le score dans le livrable. Objectif : 100% gates BLOQUANT PASS sur le sujet audité.
+Après correction, vérifier que chaque problème est résolu (Read du fichier corrigé). Mets à jour le verdict dans le livrable. Objectif : 9/9 gates PASS sur le sujet audité.
 
 Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 1. Résumé exécutif (3-5 lignes, non-technique, destiné au fondateur)
@@ -913,7 +913,7 @@ Critères de validation : chaque learning est classé avec référence, les modi
       {
         title:"Migrer un projet existant vers le nouveau framework",
         agents:["orchestrator","fullstack"],
-        quand:"Ton projet (Sarani, ImmoCrew, Versiroom, etc.) utilise une ancienne version du framework avec un CLAUDE.md de 300+ lignes. Ce prompt nettoie et migre vers la nouvelle architecture (CLAUDE.md 104L + _gates.md + _base-agent-protocol.md).",
+        quand:"Ton projet (Sarani, ImmoCrew, Versiroom, etc.) utilise une ancienne version du framework avec un CLAUDE.md de 300+ lignes. Ce prompt nettoie et migre vers la nouvelle architecture (CLAUDE.md ≤ 125L + _gates.md + _base-agent-protocol.md).",
         prompt:`@orchestrator Mode migration framework. Ne lance aucun agent avant mon feu vert.
 
 Étape 1 — Diagnostic de l'existant :
@@ -1072,7 +1072,7 @@ Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles dé
 1. User stories avec critères d'acceptation vérifiables (Given/When/Then) — minimum 9 critères par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes.
 2. Contexte de navigation par story : page d'origine, déclencheur, page destination succès, page destination échec.
 3. Tableau de données et champs : nom, type, obligatoire, validation, limites, exemple.
-4. 5 états UI par écran interactif (Gate G21) : défaut, loading, vide, erreur, succès — avec message/affichage exact.
+4. 5 états UI par écran interactif (exigence des specs) : défaut, loading, vide, erreur, succès — avec message/affichage exact.
 5. Payload API pour chaque story CRUD : endpoint, authentification, rate limit, request body, response succès, response erreur.
 6. Events analytics par story : event, trigger, propriétés, funnel (acquisition/activation/rétention/revenue).
 7. Règles métier : logique de calcul, conditions, limites, permissions par rôle.
@@ -1086,7 +1086,7 @@ Livrable : docs/product/functional-specs.md.
 
 Puis @qa : lis docs/product/functional-specs.md et docs/ux/user-flows.md. Dérive les tests directement depuis les critères Given/When/Then de chaque user story — chaque critère = au moins un test. Vérifie les 5 états UI (défaut, loading, vide, erreur, succès) par écran interactif. Utilise les payloads API pour écrire les tests d'intégration API (endpoint, auth, rate limit, schemas request/response). Vérifie que les events analytics sont testables (interception dynamique en E2E). Chaque parcours critique @ux doit avoir un test E2E correspondant. Vérifie les edge cases UX (responsive 3 viewports : 375px, 768px, 1280px). Signale les critères trop vagues ou subjectifs ("intuitif", "rapide"). Ajoute dans docs/qa/qa-strategy.md.
 
-Critères de validation : chaque user story a minimum 9 critères d'acceptation Given/When/Then (3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), chaque écran interactif a les 5 états UI documentés (Gate G21), chaque story CRUD a un payload API complet, chaque story a des events analytics, la checklist de couverture user journey (25+ parcours : acquisition, core loop, paiement, gestion compte, RGPD, erreurs, multi-users, réactivation) est 100% couverte, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
+Critères de validation : chaque user story a minimum 9 critères d'acceptation Given/When/Then (3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), chaque écran interactif a les 5 états UI documentés, chaque story CRUD a un payload API complet, chaque story a des events analytics, la checklist de couverture user journey (25+ parcours : acquisition, core loop, paiement, gestion compte, RGPD, erreurs, multi-users, réactivation) est 100% couverte, zéro ambiguïté sur les règles métier, les agents spécialisés sont recommandés si pertinent.
 
 Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structure (titres + résumé par feature) via Write, puis remplir feature par feature via Edit. Prioriser les features V1 critiques en premier.`
       },
@@ -1503,7 +1503,7 @@ Livrable : docs/ux/notification-system.md (wireframes + flows + matrice).
 Puis @design : lis project-context.md, docs/ux/notification-system.md et docs/design/design-system.md. Conçois les composants visuels : toast notification (success, warning, error, info), badge de count, centre de notifications (panneau latéral ou dropdown), carte de notification (avatar, texte, timestamp, action), écran de préférences. Respecte les tokens existants. Le backoffice/admin utilise le MÊME design system pour les notifications — pas de thème dégradé. Animations : slide-in pour les toasts (durée 300ms), auto-dismiss après 5s sauf action requise. Livrable : docs/design/component-library.md section "Notifications".
 
 Puis @fullstack : lis project-context.md, docs/ux/notification-system.md et docs/design/component-library.md section "Notifications". Implémente l'architecture technique :
-1. Table notifications en PostgreSQL (id, user_id, type, channel, title, body, read_at, created_at, metadata JSONB).
+1. Table notifications en BDD selon la stack du projet (Neon Postgres : metadata JSONB / Cloudflare D1 : metadata TEXT JSON / PostgreSQL Replit legacy) — colonnes : id, user_id, type, channel, title, body, read_at, created_at, metadata.
 2. Service de notification (src/lib/notifications.ts) : fonction send() qui route vers le bon canal selon la matrice.
 3. API routes : GET /api/notifications (liste paginée), PATCH /api/notifications/:id/read, PATCH /api/notifications/read-all, GET /api/notifications/preferences, PUT /api/notifications/preferences.
 4. Composants React : NotificationToast, NotificationCenter, NotificationBadge, NotificationPreferences.
@@ -1541,7 +1541,7 @@ Implémentation :
 - Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours utiliser 127.0.0.1:PORT ou appeler la fonction directement.
 - Seuil de réécriture : si un fichier cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier plutôt que de patcher indéfiniment.
 
-Boucle visuelle obligatoire : pour chaque page implémentée, prendre un screenshot Playwright sur 3 devices (iPhone 13, iPad, Desktop Chrome), comparer avec docs/design/page-compositions.md, corriger les écarts AVANT de passer à la page suivante. Sauvegarder les screenshots dans tests/screenshots/ comme baselines pour la gate G26.
+Boucle visuelle obligatoire : pour chaque page implémentée, prendre un screenshot Playwright sur 3 devices (iPhone 13, iPad, Desktop Chrome), comparer avec docs/design/page-compositions.md, corriger les écarts AVANT de passer à la page suivante. Sauvegarder les screenshots dans tests/screenshots/ comme baselines de non-régression visuelle.
 
 Livrable : code dans src/ + tests/screenshots/ (baselines visuelles).
 
@@ -1677,13 +1677,11 @@ Critères de validation : le tableau contient au moins 5 modèles avec des donn�
 
 Scaffolde le projet complet (un fichier par appel Write — commencer par les fichiers fondation) :
 1. Structure de fichiers : arborescence Next.js App Router (app/, components/, lib/, types/, hooks/, __tests__/).
-2. Schéma de base de données (PostgreSQL Replit) : tables principales avec types, relations, index. Format Prisma ou Drizzle. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
-   Persistance Replit — CRITIQUE : le PostgreSQL Replit peut perdre ses données lors de redéploiements ou mises à jour. Protections obligatoires :
-   a. DATABASE_URL dans Replit Secrets (JAMAIS dans .env ou en dur dans le code)
-   b. Script de migration auto au démarrage : le script npm start doit exécuter les migrations Prisma (prisma migrate deploy) AVANT de lancer le serveur. Si la DB est vide/réinitialisée, les tables sont recréées automatiquement.
-   c. Seed conditionnel : si les tables sont vides après migration (ex: 0 rows dans la table de référence), exécuter le seed automatiquement.
-   d. Client Prisma avec reconnexion : configurer le connection pool avec retry (connection_limit, pool_timeout) pour gérer les cold starts Replit.
-   e. Health check DB : la route /api/health doit vérifier la connexion PostgreSQL (SELECT 1) et retourner un statut dégradé si la DB est inaccessible.
+2. Schéma de base de données selon l'hébergement de project-context.md — futurs projets : Cloudflare D1 (CRUD simple) ou Neon Postgres (si JSONB/extensions) + Drizzle ou Prisma ; legacy Replit : PostgreSQL Replit + Prisma. Tables principales avec types, relations, index. Inclus les tables auth (users, sessions) et business (selon les specs). Migration initiale.
+   Migrations selon l'hébergeur :
+   - Cloudflare (défaut) : migration en GitHub Action pre-deploy (drizzle-kit migrate / prisma migrate deploy avec DATABASE_URL en secret), 1× par push — pas de boot stateful.
+   - Replit (legacy) — persistance CRITIQUE : DATABASE_URL dans Replit Secrets (jamais .env), npm start exécute prisma migrate deploy AVANT le serveur (DB recréée si réinitialisée), seed conditionnel si tables vides, connection pool avec retry (cold starts).
+   - Dans tous les cas : route /api/health avec SELECT 1, statut "degraded" si DB inaccessible (pas de crash).
 3. Configuration auth : setup complet de l'auth provider (Clerk ou NextAuth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
 4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
 5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
@@ -1699,12 +1697,10 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 
 Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
-Puis @infrastructure : lis docs/dev-decisions.md. Configure :
-- Compatibilité Replit (.replit + replit.nix si pertinent)
-- Variables d'environnement : vérifier que DATABASE_URL est dans Replit Secrets, pas dans .env. Lister toutes les vars nécessaires dans .env.example SANS valeurs réelles.
-- Route /api/health avec vérification DB (SELECT 1 sur PostgreSQL — retourner status: "degraded" si DB inaccessible au lieu de crasher)
-- Script start : prisma migrate deploy → seed conditionnel → next start (dans cet ordre, pour que la DB soit prête avant le serveur)
-- Documenter les limites Replit connues : cold starts (première requête lente), storage éphémère (ne PAS stocker de fichiers en local — utiliser S3/R2 si upload), DATABASE_URL peut changer (toujours lire depuis process.env, jamais cacher en mémoire au boot)
+Puis @infrastructure : lis docs/dev-decisions.md. Configure selon l'hébergement du projet :
+- Futurs projets (défaut) : repo GitHub + wrangler.toml + GitHub Actions auto-deploy Cloudflare Pages/Workers (preview par PR), secrets via wrangler secret put + GH Actions secrets, migration DB en step pre-deploy.
+- Legacy Replit : .replit + replit.nix, DATABASE_URL dans Replit Secrets (jamais .env), script start = prisma migrate deploy → seed conditionnel → next start, documenter les limites (cold starts, storage éphémère — uploads vers R2/S3, DATABASE_URL lue au runtime jamais cachée au boot).
+- Dans tous les cas : .env.example complet SANS valeurs réelles, route /api/health avec vérification DB.
 Mets à jour docs/infra/infrastructure.md.
 
 Puis @legal : lis docs/dev-decisions.md et vérifie les implications RGPD du schéma de données (quelles données personnelles, bases légales, durées de conservation). Mets à jour docs/legal/rgpd-checklist.md.
@@ -1726,7 +1722,7 @@ Audite le code produit par @fullstack contre les specs du design system (pages p
 3. États des composants : vérifie que hover/focus/disabled/error/loading sont implémentés pour chaque composant interactif. Focus visible (outline) obligatoire.
 4. Cohérence typographique : tailles, poids, line-height alignés avec l'échelle définie.
 5. Accessibilité : aria-labels, roles, tabindex, screen reader compatibility.
-6. Comparaison visuelle (gate G26) : prendre des screenshots Playwright des composants/pages implémentés sur 3 devices (375px, 768px, 1280px) et comparer avec docs/design/page-compositions.md. Les écarts de layout, espacement, proportions non détectables par lecture de code seule. Sauvegarder dans tests/screenshots/.
+6. Comparaison visuelle (obligatoire) : prendre des screenshots Playwright des composants/pages implémentés sur 3 devices (375px, 768px, 1280px) et comparer avec docs/design/page-compositions.md. Les écarts de layout, espacement, proportions non détectables par lecture de code seule. Sauvegarder dans tests/screenshots/.
 
 Format du rapport : tableau par composant avec criticité (bloquant / majeur / mineur) et code correctif suggéré.
 
@@ -1769,7 +1765,7 @@ Critères de validation : aucun cookie non essentiel n'est déposé avant consen
 Architecture RAG complète :
 1. Ingestion : pipeline d'ingestion des documents (PDF, Markdown, HTML, CSV). Chunking strategy : taille optimale des chunks (512-1024 tokens recommandé), overlap (10-20%), métadonnées à conserver (source, date, section). Gestion des mises à jour (re-indexation incrémentale vs complète).
 2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options : OpenAI text-embedding-3-small, Voyage AI, Cohere embed-v3, ou modèle open source (BGE, E5). Benchmark sur un échantillon du corpus réel.
-3. Vector store : choix de la base vectorielle avec justification (Pinecone, Qdrant, Weaviate, pgvector). Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement (cloud vs self-hosted selon budget).
+3. Vector store : choix de la base vectorielle avec justification. Défaut recommandé : pgvector sur Neon (zéro service externe) ; Cloudflare Vectorize si stack 100% CF Workers ; Pinecone/Qdrant/Weaviate si besoin spécifique. Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement.
 4. Retrieval : stratégie de recherche (similarity search, MMR pour diversité, hybrid search BM25 + vectoriel). Nombre de chunks à récupérer (top-k), seuil de similarité minimum, re-ranking optionnel.
 5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe). Protocole migration modèle : avant de changer de modèle, lire la doc API, tester 3+ requêtes RAG réelles, vérifier la qualité des citations.
 6. Évaluation : métriques (faithfulness, relevance, answer correctness), dataset de test avec questions/réponses attendues, pipeline d'évaluation automatisé.
@@ -1951,11 +1947,9 @@ Architecture base de données complète (D1/Neon priorité futurs projets, Postg
 
 Livrable : docs/dev-decisions.md section "Database schema" + schema Prisma/Drizzle dans src/.
 
-Puis @infrastructure : lis le schéma et vérifie la configuration PostgreSQL Replit :
-- Connection pooling (connection_limit adapté aux limites Replit, pool_timeout avec retry)
-- Backups : stratégie de backup automatique (pg_dump cron ou Replit backup si disponible). Documenter la fréquence et le plan de restauration.
-- Persistance : vérifier que le script start inclut prisma migrate deploy + seed conditionnel. Documenter que DATABASE_URL doit être en Replit Secrets.
-- Limites de taille : documenter les limites PostgreSQL Replit (storage, connexions simultanées, cold starts).
+Puis @infrastructure : lis le schéma et vérifie la configuration selon l'hébergement :
+- Futurs projets (D1/Neon) : migration en GitHub Action pre-deploy, DATABASE_URL en secret (wrangler/GH Actions), branching Neon par PR si applicable, backups automatiques du provider + export régulier hors plateforme.
+- Legacy Replit : connection pooling (connection_limit + pool_timeout avec retry pour les cold starts), backup pg_dump automatisé stocké HORS Replit, script start = prisma migrate deploy + seed conditionnel, DATABASE_URL en Replit Secrets, limites documentées (storage, connexions, cold starts).
 Mets à jour docs/infra/infrastructure.md.
 
 Critères de validation : chaque table a une clé primaire et des timestamps, les relations sont contraintes par des clés étrangères, les index couvrent les requêtes fréquentes, le seed script est fonctionnel.`
@@ -2356,7 +2350,7 @@ Mécanique de referral complète :
 
 Livrable : docs/growth/referral-program.md.
 
-Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles en suivant le template user story obligatoire : persona nommé (pas "utilisateur"), job-to-be-done, contexte de navigation, tableau de données/champs, 5 états UI par écran (Gate G21), critères d'acceptation Given/When/Then (minimum 9 par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), payload API si CRUD, events analytics. Mets à jour docs/product/functional-specs.md.
+Puis @product-manager : lis docs/growth/referral-program.md et intègre le programme dans les specs fonctionnelles en suivant le template user story obligatoire : persona nommé (pas "utilisateur"), job-to-be-done, contexte de navigation, tableau de données/champs, 5 états UI par écran, critères d'acceptation Given/When/Then (minimum 9 par story : 3 happy path + 2 erreur + 2 cas limites + 1 permissions + 1 données existantes), payload API si CRUD, events analytics. Mets à jour docs/product/functional-specs.md.
 
 Puis @fullstack : lis docs/growth/referral-program.md et docs/product/functional-specs.md. Implémente le système de referral : génération de liens uniques, tracking, attribution, interface in-app. Code dans src/.
 
@@ -2604,7 +2598,7 @@ Audit qualité complet :
 12. SEO technique : métadonnées par page, sitemap valide, robots.txt, structured data JSON-LD valide.
 13. Résilience : mode offline, API timeout, session expirée, données invalides serveur.
 14. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
-15. Régression visuelle (Gate G26) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
+15. Régression visuelle (obligatoire) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
 16. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) .
@@ -3319,7 +3313,7 @@ Critères de validation : l'agent créé passe le test unitaire (lit project-con
 
 Livrable : docs/dev-decisions.md (avec plan de migration détaillé).
 
-Puis @infrastructure : lis docs/dev-decisions.md et adapte la configuration de déploiement à la nouvelle stack : Replit/.replit ou Docker, CI/CD pipeline, variables d'environnement, CDN, cache strategy. Vérifie que les performances sont au moins équivalentes post-migration (TTFB, Core Web Vitals). Livrable : docs/infra/infrastructure.md mis à jour.
+Puis @infrastructure : lis docs/dev-decisions.md et adapte la configuration de déploiement à la nouvelle stack : Cloudflare Pages/Workers + wrangler.toml (futurs projets), .replit (legacy) ou Docker, CI/CD pipeline, variables d'environnement, CDN, cache strategy. Vérifie que les performances sont au moins équivalentes post-migration (TTFB, Core Web Vitals). Livrable : docs/infra/infrastructure.md mis à jour.
 
 Puis @qa : lis docs/dev-decisions.md et définis la stratégie de test pour la migration : tests de non-régression sur les parcours critiques (Playwright), tests unitaires sur les composants migrés (Vitest), smoke tests post-déploiement. Livrable : docs/qa/qa-strategy.md section "Migration".
 
@@ -3633,8 +3627,8 @@ Question OBLIGATOIRE en fin de session : "Le projet est-il EN LIGNE et FONCTIONN
 
 Critères binaires (TOUS doivent être OUI pour déclarer V1) :
 - URL production accessible publiquement (ou URL preview stable si projet B2B avec accès gated)
-- 100% gates BLOQUANT (voir _gates.md) PASS
-- Variable 1c respectée (Vitrine = pas de funnel agressif / Funnel = parcours d achat complet et testé)
+- 9/9 gates PASS (voir _gates.md)
+- Calibration Vitrine/Funnel respectée (Vitrine = pas de funnel agressif / Funnel = parcours d achat complet et testé)
 - Au moins 1 utilisateur cible a pu accomplir le parcours principal en conditions réelles
 
 Réponse OUI : marquer dans project-context.md section "V1 atteinte le [DATE]" + ajouter URL prod + ajouter note "Stade : V1 → Production" en haut du fichier.
