@@ -639,14 +639,14 @@ Ne lance rien — présente juste les recommandations et attends mon choix.`
 Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
 Qualité des Task — règle critique :
-Pour chaque agent que tu lances, lis la carte de référence de ton protocole (section "Prompts de la bibliothèque par phase") et extrais les instructions détaillées du prompt correspondant dans index.html. Chaque Task doit avoir le même niveau de détail que le prompt de la bibliothèque — sections numérotées, critères de validation, livrables précis. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
+Pour chaque agent que tu lances, applique ta règle "Routage bibliothèque d'abord" : identifie le prompt correspondant dans index.html (Grep sur le titre) et extrais ses instructions détaillées dans le prompt Task. Chaque Task doit avoir le même niveau de détail que le prompt de la bibliothèque — sections numérotées, critères de validation, livrables précis. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
 
 Renforcements spécifiques (en plus de ton protocole standard) :
 0. GATE BLOQUANTE LEARNINGS : avant de lancer la Phase 0, lis docs/lessons-learned.md. Si des learnings P0/P1 ont statut propagation = "non-propagé", applique les modifications listées dans "Fichiers impactés" AVANT tout autre travail. Marque chaque learning propagé après vérification par Grep. Ne lance AUCUN agent tant que des P0/P1 sont non-propagés.
 1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
 2. Vérification anti-placeholder (Grep) sur chaque livrable.
-3. 11 critères de cohérence (Étape 6) après chaque phase.
-4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable). Le scoring numérique est dérivé des gates pour le tracking.
+3. 11 critères de cohérence (section "Cohérence inter-livrables" de ton protocole) après chaque phase.
+4. GO finale : 9/9 gates PASS (toutes BLOQUANT, G_PROOF inclus — voir _gates.md) sur chaque livrable. NO-GO si 1 FAIL.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Lis et enrichis docs/lessons-learned.md — format v2 obligatoire (11 colonnes avec Cible propagation, Fichiers impactés, Statut correction, Statut propagation).
 7. Boucle visuelle en Phase 2 : quand @fullstack développe, il DOIT exécuter sa boucle visuelle pour chaque page (screenshot Playwright sur 3 devices, comparaison avec docs/design/page-compositions.md, correction des écarts, sauvegarde dans tests/screenshots/). Vérifier que tests/screenshots/ contient des baselines AVANT de passer à @qa (gate G26).
@@ -696,7 +696,7 @@ Lis project-context.md et fais un inventaire complet (Glob docs/**/*.md + src/**
 Lis docs/lessons-learned.md. Si des learnings P0/P1 ont statut propagation = "non-propagé", applique les modifications dans les "Fichiers impactés" AVANT de lancer les audits. Un check-up sur des fichiers non-propagés détecterait des faux problèmes déjà corrigés en source mais pas encore propagés. Marque chaque learning propagé après Grep de vérification.
 
 Étape 1 — Audit de cohérence croisée :
-Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 9 gates binaires (voir _gates.md, PASS/FAIL) par livrable. Verdict : 100% gates BLOQUANT + REQUIS PASS. Pré-requis persona et B2B (si applicable).
+Lance @reviewer avec les instructions complètes du prompt "Revue croisée GO/NO-GO" de la bibliothèque (Phase 5). Vérification : 9 gates binaires (voir _gates.md, PASS/FAIL) par livrable. Verdict : 9/9 PASS = GO, 1 FAIL = NO-GO (toutes les gates sont BLOQUANT).
 Livrable : docs/reviews/cross-review-report.md.
 
 Étape 2 — Audits spécialisés (lancer en parallèle les agents pertinents) :
@@ -733,12 +733,12 @@ Livrable : docs/reviews/elon-audit.md.
 Pour chaque livrable avec ≥ 1 gate BLOQUANT en FAIL :
 1. Produis un rapport de corrections (critère par critère, action précise)
 2. Relance l'agent responsable avec les instructions correctives
-3. Re-score après correction (max 3 passes)
-Score final dans le tableau Performance de project-context.md.
+3. Re-vérifie après correction (max 3 passes)
+Verdict final (gates PASS/FAIL par agent) dans le tableau Performance de project-context.md.
 
 Étape 5 — Verdict :
 Produis le GO/NO-GO avec :
-- Score global par domaine (stratégie, UX, design, code, contenu, SEO, légal, performance)
+- Verdict par domaine (stratégie, UX, design, code, contenu, SEO, légal, performance) : gates PASS/FAIL + points critiques
 - Problèmes restants par sévérité (P0/P1/P2) — tous doivent être corrigés, P0 en premier
 - Confirmation que le projet est prêt pour le lancement (GO si 0 problème restant)
 
@@ -826,7 +826,7 @@ Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 7. Validation persona et B2B (si applicable)
 8. Recommandation GO/NO-GO
 
-Critères de validation : chaque agent sélectionné a audité sa dimension, le reviewer a validé la cohérence et le persona, le verdict global est documenté (100% gates BLOQUANT PASS + 100% gates REQUIS PASS), les P0 sont corrigés (ou en attente de validation utilisateur), le plan d'action P1 est priorisé.`
+Critères de validation : chaque agent sélectionné a audité sa dimension, le reviewer a validé la cohérence et le persona, le verdict global est documenté (9/9 gates PASS par livrable = GO), les P0 sont corrigés (ou en attente de validation utilisateur), le plan d'action P1 est priorisé.`
       },
       {
         title:"Pivoter mon projet",
@@ -848,13 +848,13 @@ Identifie les dépendances entre livrables impactés.
 Checkpoint obligatoire : présente-moi l'inventaire (tableau garder/adapter/refaire) pour validation AVANT de lancer les agents. Si je reclasse un livrable, ajuste le plan.
 
 Étape 2 — Plan de re-séquencement :
-Suis l'ordre de dépendance de ta carte de référence (section "Prompts de la bibliothèque par phase", Phases 0→5). Ne relance que les agents dont au moins un livrable est classé "À adapter" ou "À refaire". Inclus TOUS les agents impactés — y compris @infrastructure, @legal, @growth, @social s'ils ont des livrables invalidés par le pivot. Pour chaque agent relancé, utilise les instructions détaillées du prompt de la bibliothèque correspondant.
+Suis l'ordre de dépendance des Phases 0→5 de ton protocole (section "Phases"). Ne relance que les agents dont au moins un livrable est classé "À adapter" ou "À refaire". Inclus TOUS les agents impactés — y compris @infrastructure, @legal, @growth, @social s'ils ont des livrables invalidés par le pivot. Pour chaque agent relancé, utilise les instructions détaillées du prompt de la bibliothèque correspondant (Grep sur le titre dans index.html).
 
 Renforcements (identiques au prompt "Lancer de A à Z") :
 1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
 2. Vérification anti-placeholder (Grep) sur chaque livrable.
 3. 11 critères de cohérence après chaque phase de pivot.
-4. GO finale : 100% gates BLOQUANT PASS + 100% gates REQUIS PASS + pré-requis persona PASS + pré-requis B2B PASS (si applicable).
+4. GO finale : 9/9 gates PASS (toutes BLOQUANT, G_PROOF inclus) sur chaque livrable relancé.
 5. Dégradation gracieuse si un agent échoue — ne bloque pas la chaîne.
 6. Enrichir docs/lessons-learned.md avec les learnings du pivot.
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
@@ -2539,7 +2539,7 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 9. Orthographe & accents : Grep tous les fichiers docs/ et le contenu visible de src/ pour détecter les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Un livrable client avec des accents manquants détruit la crédibilité.
 10. Interactions & liens : si du code existe dans src/, vérifier que chaque lien, bouton, filtre et formulaire fonctionne correctement (pas de liens morts, pas de boutons inactifs, filtres combinés cohérents).
 
-Identifie les angles morts et contradictions. Applique les 9 gates binaires du framework (voir _gates.md) sur chaque livrable audité. Classification : BLOQUANT (1 FAIL = NO-GO) / REQUIS (1 FAIL = GO conditionnel). Problèmes hors gates classés P0/P1/P2.
+Identifie les angles morts et contradictions. Applique les 9 gates binaires du framework (voir _gates.md) sur chaque livrable audité. Toutes les gates sont BLOQUANT : 1 FAIL = NO-GO. Problèmes hors gates classés P0/P1/P2.
 
 Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
 Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
@@ -2550,7 +2550,7 @@ Livrable : docs/reviews/cross-review-report.md.
 
 Puis @legal : lis docs/reviews/cross-review-report.md et vérifie que tous les points de conformité sont couverts. Ajoute les blockers légaux manquants si nécessaire. Mets à jour docs/legal/legal-audit.md.
 
-Critères de validation : chaque livrable a ses gates évaluées (PASS/FAIL), 100% gates BLOQUANT PASS + 100% gates REQUIS PASS pour un GO, zéro problème P0 non résolu.`
+Critères de validation : chaque livrable a ses gates évaluées (PASS/FAIL), 9/9 gates PASS pour un GO, zéro problème P0 non résolu.`
       },
       {
         title:"Revue intermédiaire (mid-projet)",
@@ -2575,7 +2575,7 @@ Livrable : docs/reviews/mid-review.md avec statut par axe (OK / Warning / Blocke
 
 Puis @legal : si des livrables existent dans docs/legal/, vérifie qu'ils sont toujours alignés avec l'état actuel du projet (le projet a pu évoluer depuis l'audit juridique initial). Signale les mises à jour nécessaires.
 
-Critères de validation : chaque axe a un verdict basé sur les gates applicables (PASS/FAIL, BLOQUANT/REQUIS), les actions correctives sont assignées à un agent spécifique avec le chemin du livrable à corriger, les dimensions légale, performance et GEO sont couvertes.`
+Critères de validation : chaque axe a un verdict basé sur les gates applicables (PASS/FAIL — toutes BLOQUANT), les actions correctives sont assignées à un agent spécifique avec le chemin du livrable à corriger, les dimensions légale, performance et GEO sont couvertes.`
       },
       {
         title:"Audit qualité & tests complets",
@@ -3899,8 +3899,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S4 2026-05-29 (-843L framework) : commandement 0 brief-first absolu, 9 gates dont G_PROOF (bloc Vérifié obligatoire), suppression @moi + orchestrator-reference, retrait Phases testeurs obligatoires, retrait règle Replit n°10, branche par défaut master → main, domaine agents.issa-capital.com, migration Opus 4.7 → 4.8 (8 agents). WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
-            <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md</code>. Backup auto + fusion CLAUDE.md + cure S4 (-843L : brief-first cmd 0, 9 gates dont G_PROOF, suppression @moi + orchestrator-reference). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S5 2026-06-11 « trust the model » : les 20 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 20 agents / 94 prompts / 9 gates. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com, Opus 4.8. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md</code>. Backup auto + fusion CLAUDE.md + cure S5 (20 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>
