@@ -4,6 +4,17 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## Session du 2026-06-11 (S5) — Cure "trust the model" : 20 agents + protocole réécrits (v3.0), -2 800L
+
+1. **Audit complet 4 agents parallèles** (@reviewer NO-GO cohérence, @ia agents + prompts, @elon stratégique) — rapports dans `docs/reviews/*-2026-06-11.md`. Constat : la cure S4 avait corrigé les sources de vérité mais pas leurs consommateurs (reviewer.md et _base-agent-protocol.md citaient encore "32 gates G1-G32", @moi mort référencé dans 3 agents, ~47 refs de gates supprimées).
+2. **Réécriture des 20 agents en version 3.0** (principe : garder le spécifique au projet et les learnings empiriques, couper le savoir générique qu'un LLM moderne possède déjà — tableaux AIDA/Schwartz, personas décoratifs, sections héritées dupliquées). Agents : ~5 700L → ~1 900L (-67%). Orchestrator 749→217L, agent-factory 444→132L, fullstack 423→118L. Zéro learning cross-projets perdu (self-fetch, SQL idempotent, bottom sheet iOS, Pattern A/B, testing honesty, walkthrough, 10 critères Thomas, etc. tous conservés).
+3. **_base-agent-protocol.md réécrit** (470→152L) : aligné 9 gates + G_PROOF, REPLIT_ACTIONS retiré, PVU sur _gates.md, chiffres périmés corrigés.
+4. **Corrections de comptes partout** : 20 agents (sales-enablement ajouté aux listes modèles CLAUDE.md et project-context = 12 Sonnet), 94 prompts, 9 gates. INSTALL.md 19→20.
+5. **"Un fait = un endroit" outillé** : `tests/validate-framework.sh` vérifie la cohérence des comptes contre les SOT (ls agents / _gates.md / index.html) et détecte les références mortes post-cure (@moi, REPLIT_ACTIONS, G1-G32) dans les fichiers actifs. Whitelist modèles corrigée (Opus 4.8 accepté). `validate-context.sh` tolérant aux accents. Suite `run-all.sh` : 0 erreur.
+6. **Décisions** : GP/GC purgées des phases obligatoires (testeurs = optionnels via @agent-factory, conforme décision S4) ; SOT prompts = index.html (94).
+
+---
+
 ## Session du 2026-03-22 — 20 nouveaux prompts (39→59) post-audits de couverture
 
 **Ce qui a ete fait :**

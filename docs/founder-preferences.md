@@ -1,6 +1,6 @@
 # Préférences fondateur — Thomas
 
-Ce fichier est la source de vérité pour l'agent @moi. Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible cross-projets via l'URL GitHub raw.
+Ce fichier est la source de vérité des préférences du fondateur, lue par tous les agents (protocole d'entrée standard). Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible cross-projets via l'URL GitHub raw.
 
 **URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 

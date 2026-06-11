@@ -56,17 +56,26 @@ echo "--- Champs critiques (bloquants) ---"
 IS_TABLE=false
 grep -q "^|.*|.*|" "$CONTEXT" 2>/dev/null && IS_TABLE=true
 
+# Tolérance accents : "Problème" matche aussi "Probleme" (fichiers écrits sans accents).
+# Normalisation ASCII des deux côtés via iconv (les locales non-UTF8 cassent sed/grep multi-octets).
+strip_accents() {
+  # Substitutions exactes (pas de classes []) : fiables même en locale non-UTF8
+  sed 's/é/e/g; s/è/e/g; s/ê/e/g; s/ë/e/g; s/à/a/g; s/â/a/g; s/ù/u/g; s/û/u/g; s/ô/o/g; s/î/i/g; s/ï/i/g; s/ç/c/g; s/É/E/g; s/È/E/g; s/À/A/g'
+}
+CONTEXT_ASCII=$(strip_accents < "$CONTEXT")
+
 extract_value() {
-  local field="$1"
+  local field
+  field=$(echo "$1" | strip_accents)
   local line
   # Try bold format first: **Field** : value
-  line=$(grep -i "\\*\\*$field\\*\\*" "$CONTEXT" 2>/dev/null | head -1 || true)
+  line=$(echo "$CONTEXT_ASCII" | grep -i "\\*\\*$field\\*\\*" 2>/dev/null | head -1 || true)
   if [ -n "$line" ]; then
     echo "$line" | sed "s/.*\\*\\*[^*]*\\*\\* *: *//" | sed 's/^ *//' | sed 's/ *$//'
     return
   fi
   # Try table format: | Field | value |
-  line=$(grep -i "| *$field *|" "$CONTEXT" 2>/dev/null | head -1 || true)
+  line=$(echo "$CONTEXT_ASCII" | grep -i "| *$field *|" 2>/dev/null | head -1 || true)
   if [ -n "$line" ]; then
     echo "$line" | sed "s/.*| *$field *| *//" | sed 's/ *|.*//' | sed 's/^ *//' | sed 's/ *$//' | tr -d '*'
     return
@@ -76,8 +85,9 @@ extract_value() {
 }
 
 field_exists() {
-  local field="$1"
-  grep -qi "\\*\\*$field\\*\\*\| *$field *|" "$CONTEXT" 2>/dev/null
+  local field
+  field=$(echo "$1" | strip_accents)
+  echo "$CONTEXT_ASCII" | grep -qi "\\*\\*$field\\*\\*\| *$field *|" 2>/dev/null
 }
 
 for field in "${CRITICAL_FIELDS[@]}"; do

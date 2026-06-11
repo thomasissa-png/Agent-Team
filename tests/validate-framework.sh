@@ -60,7 +60,7 @@ echo "--- Validation des agents ---"
 AGENT_COUNT=0
 for agent in "$AGENTS_DIR"/*.md; do
   basename_agent=$(basename "$agent")
-  [ "$basename_agent" = "_base-agent-protocol.md" ] && continue
+  case "$basename_agent" in _*) continue ;; esac
 
   AGENT_COUNT=$((AGENT_COUNT + 1))
   name=$(basename "$agent" .md)
@@ -100,7 +100,7 @@ for agent in "$AGENTS_DIR"/*.md; do
   else
     MODEL_VAL=$(grep "^model:" "$agent" | head -1 | awk '{print $2}')
     case "$MODEL_VAL" in
-      claude-opus-4-6|claude-sonnet-4-6|claude-haiku-4-5-20251001) ;;
+      claude-opus-4-8|claude-opus-4-6|claude-sonnet-4-6|claude-haiku-4-5-20251001) ;;
       *) err "$basename_agent: modèle invalide '$MODEL_VAL'" ;;
     esac
   fi
@@ -143,12 +143,8 @@ for agent in "$AGENTS_DIR"/*.md; do
     err "$basename_agent: section '## Identité' manquante"
   fi
 
-  if ! grep -qi "## Domaines de compétence\|## Domaines" "$agent"; then
-    warn "$basename_agent: section 'Domaines de compétence' manquante"
-  fi
-
-  if ! grep -q "project-context.md" "$agent"; then
-    err "$basename_agent: pas de référence à project-context.md"
+  if ! grep -q "project-context.md\|_base-agent-protocol.md" "$agent"; then
+    err "$basename_agent: pas de référence à project-context.md ni au protocole standard"
   fi
 
   # Champs critiques définis
@@ -161,19 +157,9 @@ for agent in "$AGENTS_DIR"/*.md; do
     warn "$basename_agent: pas de section Calibration détectée"
   fi
 
-  # Gestion des timeouts / anti-timeout
-  if ! grep -qi "Règle n°3\|anti-timeout\|timeout" "$agent"; then
-    warn "$basename_agent: pas de référence aux règles anti-timeout"
-  fi
-
   # Protocole d'escalade / anti-invention
   if ! grep -qi "Règle n°2\|anti-invention\|JAMAIS inventer\|escalade" "$agent"; then
     warn "$basename_agent: pas de référence à la règle anti-invention / escalade"
-  fi
-
-  # Mode révision
-  if ! grep -qi "révision\|revision" "$agent"; then
-    warn "$basename_agent: pas de section Mode révision détectée"
   fi
 
   # Auto-évaluation: at least 5 checkbox questions
@@ -192,10 +178,6 @@ for agent in "$AGENTS_DIR"/*.md; do
     warn "$basename_agent: pas de section Handoff détectée"
   fi
 
-  # Protocole de fin de livrable
-  if ! grep -qi "Protocole de fin\|Historique des interventions" "$agent"; then
-    warn "$basename_agent: pas de référence au protocole de fin de livrable"
-  fi
   # Cohérence tools déclarés vs tools référencés dans les instructions
   # Extraire les tools déclarés (format YAML list: "  - ToolName")
   DECLARED_TOOLS=$(sed -n '/^tools:/,/^[^ -]/p' "$agent" | grep "^  - " | sed 's/^  - //' | tr '\n' ' ')
@@ -219,7 +201,7 @@ echo "--- Cohérence CLAUDE.md <-> agents ---"
 # 3a. Chaque agent doit être dans CLAUDE.md
 for agent in "$AGENTS_DIR"/*.md; do
   basename_agent=$(basename "$agent" .md)
-  [ "$basename_agent" = "_base-agent-protocol" ] && continue
+  case "$basename_agent" in _*) continue ;; esac
   if ! grep -q "@$basename_agent" "$CLAUDE_MD"; then
     err "@$basename_agent absent de CLAUDE.md"
   fi
@@ -264,7 +246,7 @@ echo "--- Mapping orchestrator ---"
 if [ -f "$ORCH" ]; then
   for agent in "$AGENTS_DIR"/*.md; do
     basename_agent=$(basename "$agent" .md)
-    [ "$basename_agent" = "_base-agent-protocol" ] && continue
+    case "$basename_agent" in _*) continue ;; esac
     [ "$basename_agent" = "orchestrator" ] && continue
     if ! grep -q "$basename_agent" "$ORCH"; then
       warn "@$basename_agent non référencé dans orchestrator.md"
@@ -277,21 +259,15 @@ echo ""
 echo "--- Références croisées ---"
 for agent in "$AGENTS_DIR"/*.md; do
   basename_agent=$(basename "$agent" .md)
-  [ "$basename_agent" = "_base-agent-protocol" ] && continue
+  case "$basename_agent" in _*) continue ;; esac
 
-  # Vérifier que l'agent a un chemin livrable défini dans CLAUDE.md
-  if grep -q "@$basename_agent" "$CLAUDE_MD" 2>/dev/null && grep -q "docs/" "$CLAUDE_MD" 2>/dev/null; then
-    # Check if agent is mentioned in the livrable path section (← @agent or @agent :)
-    CLAUDE_LIVRABLE=$(grep -E "@$basename_agent" "$CLAUDE_MD" 2>/dev/null | grep -E "←|docs/|\.md" | head -1 || true)
-    if [ -n "$CLAUDE_LIVRABLE" ]; then
-      ok "$basename_agent: référencé dans les chemins livrables CLAUDE.md"
-    else
-      # Exceptions connues : agent-factory, orchestrator, fullstack n'ont pas de dossier docs/ standard
-      case "$basename_agent" in
-        agent-factory|orchestrator|fullstack) ;;
-        *) warn "$basename_agent: pas de chemin livrable défini dans CLAUDE.md (convention de chemin)" ;;
-      esac
-    fi
+  # Vérifier que l'agent a un chemin livrable dans la convention (_base-agent-protocol.md depuis la cure S4)
+  BASE_PROTO="$AGENTS_DIR/_base-agent-protocol.md"
+  if [ -f "$BASE_PROTO" ] && ! grep -q "@$basename_agent" "$BASE_PROTO" 2>/dev/null; then
+    case "$basename_agent" in
+      agent-factory|orchestrator|fullstack) ;;
+      *) warn "$basename_agent: pas de chemin livrable dans _base-agent-protocol.md (convention de chemin)" ;;
+    esac
   fi
 
   # Check handoff targets exist (skip examples in code blocks and known non-agent patterns)
@@ -299,7 +275,7 @@ for agent in "$AGENTS_DIR"/*.md; do
   for target in $HANDOFF_TARGETS; do
     # Skip self, orchestrator, utilisateur, and known library/tool names
     case "$target" in
-      "$basename_agent"|orchestrator|utilisateur|playwright|testing-library|vercel|supabase|shadcn|tailwind|nextjs|react|expo) continue ;;
+      "$basename_agent"|orchestrator|utilisateur|playwright|testing-library|vercel|supabase|shadcn|tailwind|nextjs|react|expo|cloudflare|next|anthropic-ai|v) continue ;;
     esac
     if [ ! -f "$AGENTS_DIR/$target.md" ] && ! grep -q "@$target" "$CLAUDE_MD" 2>/dev/null; then
       warn "$basename_agent: référence @$target mais l'agent n'existe pas"
@@ -307,7 +283,60 @@ for agent in "$AGENTS_DIR"/*.md; do
   done
 done
 
-# 8. Fichiers support
+# 8. Cohérence des comptes (un fait = un endroit — SOT : ls agents / _gates.md / index.html)
+# Exécuté uniquement sur le repo framework (index.html présent), pas sur les projets clients.
+if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/dev/null; then
+  echo ""
+  echo "--- Cohérence des comptes (anti-drift) ---"
+
+  # SOT agents = nombre de fichiers (hors _*)
+  for f in "$CLAUDE_MD" "$ROOT/project-context.md" "$ROOT/index.html" "$ROOT/INSTALL.md"; do
+    [ -f "$f" ] || continue
+    STALE_AGENTS=$(grep -oE "(19|21) agents" "$f" 2>/dev/null | head -1 || true)
+    if [ -n "$STALE_AGENTS" ]; then
+      err "$(basename "$f"): '$STALE_AGENTS' alors que le repo contient $AGENT_COUNT agents (SOT: ls .claude/agents)"
+    fi
+  done
+
+  # SOT gates = _gates.md (lignes "| G..." + G_PROOF en gras). Historique de project-context exclu (mentions légitimes).
+  if [ -f "$AGENTS_DIR/_gates.md" ]; then
+    GATES_COUNT=$(grep -cE '^\| \*{0,2}G' "$AGENTS_DIR/_gates.md" || true)
+    for f in "$CLAUDE_MD" "$AGENTS_DIR/_base-agent-protocol.md" "$AGENTS_DIR/reviewer.md" "$ORCH"; do
+      [ -f "$f" ] || continue
+      if grep -qE "32 gates|G1-G32|25 gates" "$f" 2>/dev/null; then
+        err "$(basename "$f"): référence un ancien compte de gates (SOT: _gates.md = $GATES_COUNT gates)"
+      fi
+    done
+  fi
+
+  # SOT prompts = index.html (un prompt = un champ "prompt:\`"). Historique de project-context exclu.
+  PROMPT_COUNT=$(grep -c 'prompt:`' "$ROOT/index.html" || true)
+  for f in "$ORCH" "$ROOT/README.md" "$ROOT/INSTALL.md"; do
+    [ -f "$f" ] || continue
+    STALE_PROMPTS=$(grep -oE "(89|91) prompts" "$f" 2>/dev/null | head -1 || true)
+    if [ -n "$STALE_PROMPTS" ]; then
+      err "$(basename "$f"): '$STALE_PROMPTS' alors que index.html contient $PROMPT_COUNT prompts"
+    fi
+  done
+  ANNOUNCED=$(grep -oE "[0-9]+ prompts" "$ROOT/index.html" | head -1 | grep -oE "^[0-9]+" || true)
+  if [ -n "$ANNOUNCED" ] && [ "$ANNOUNCED" != "$PROMPT_COUNT" ]; then
+    err "index.html annonce '$ANNOUNCED prompts' mais en contient $PROMPT_COUNT"
+  fi
+
+  # Références mortes post-cure S4 dans les fichiers ACTIFS (docs/reviews et archives exclus)
+  DEAD_REFS=$(grep -rlE "@moi[^t-]|REPLIT_ACTIONS|orchestrator-reference" "$AGENTS_DIR" "$CLAUDE_MD" "$ROOT/docs/founder-preferences.md" 2>/dev/null || true)
+  if [ -n "$DEAD_REFS" ]; then
+    for df in $DEAD_REFS; do
+      err "$(basename "$df"): référence morte post-cure S4 (@moi / REPLIT_ACTIONS / orchestrator-reference)"
+    done
+  else
+    ok "0 référence morte post-cure (agents + CLAUDE.md + founder-preferences)"
+  fi
+
+  ok "Comptes vérifiés : $AGENT_COUNT agents, $GATES_COUNT gates (_gates.md), $PROMPT_COUNT prompts (index.html)"
+fi
+
+# 9. Fichiers support
 echo ""
 echo "--- Fichiers support ---"
 for f in "$ROOT/INSTALL.md" "$ROOT/CHANGELOG.md" "$ROOT/docs/lessons-learned.md"; do
