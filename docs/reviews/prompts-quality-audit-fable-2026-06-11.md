@@ -33,7 +33,7 @@ Chaque prompt jugé sur 5 axes : Mission claire (livrable + chemin précis) / Au
 
 ## Constats systémiques
 
-1. **Boilerplate benchmark répété ~20×** : "recherche via WebSearch 2-3 exemples réels… pour les dépasser, pas juste les égaler. Documente les références" — mot pour mot dans ~20 prompts, alors que la calibration marché est déjà héritée de `_base-agent-protocol.md` par tous les agents. ~60 lignes supprimables sans perte.
+1. **Boilerplate benchmark répété 12×** : "recherche via WebSearch 2-3 exemples réels… pour les dépasser, pas juste les égaler. Documente les références" — quasi mot pour mot dans 12 prompts, alors que la calibration marché est déjà héritée de `_base-agent-protocol.md` par tous les agents. ~36 lignes supprimables sans perte.
 2. **Sur-spécification générique dans ~15 prompts** : même maladie que les agents pré-cure (définitions de frameworks, conventions standard). Moins grave qu'un agent (coût ponctuel, pas récurrent) mais ça dilue l'attention sur les vraies instructions.
 3. **6 paires de doublons partiels** : Onboarding gamifié ↔ Optimiser l'onboarding (~60%) ; Emails onboarding ↔ Emailing automation (~70%) ; SEO+GEO combinés ↔ SEO + GEO séparés (~85%) ; Choisir les modèles IA ↔ Feature IA ↔ Fine-tuning (tableau comparatif ×3) ; Performance budget ↔ Diagnostic performance (préventif/curatif, OK mais checklists jumelles) ; 4 niveaux d'audit qualité (tests complets / page par page / crash test / stress test — frontières documentées, mais le choix repose sur le sélecteur).
 4. **Critères de validation : ~70% binaires, ~30% mous** ("compréhensible en < 5 secondes", "justifié par la valeur perçue" — invérifiables par Grep/test).
@@ -56,5 +56,5 @@ Chaque prompt jugé sur 5 axes : Mission claire (livrable + chemin précis) / Au
 **Vérifié :**
 ```
 grep -c 'prompt:`' index.html                      # 94 prompts jugés
-grep -c "pour les dépasser, pas juste les égaler" index.html   # ~20 occurrences du boilerplate benchmark
+grep -cE "recherche via WebSearch 2-3 exemples" index.html   # 12 occurrences du boilerplate benchmark
 ```
