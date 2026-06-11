@@ -1,5 +1,9 @@
 # Project Context — Gradient Agents Framework
 
+> **Stade : V1 → Production** (atteinte 2026-05-29 S4)
+> **URL prod** : https://agents.issa-capital.com (Caddy VPS, cron pull main 15 min)
+> KPI North Star (projets/semaine) reste mesuré au niveau projets-utilisateurs du framework, pas du framework lui-même.
+
 ## Identite
 - **Nom du projet** : Gradient Agents
 - **Secteur** : Framework multi-agents IA pour pilotage de projets digitaux (dev tools / productivity)
@@ -79,6 +83,8 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 | session 2026-05-06 (S3) | 2026-05-06 | qa.md (Pattern A/B), orchestrator.md (-72L : S2/S3/S7/S20/S30/S39/S42/S44), orchestrator-reference.md (+57L : Mapping subagent_type + Routage demande), agent-factory.md (3 edits cohérence), docs/lessons-learned.md (+2 learnings + update DEFER D11), docs/reviews/ia-orchestrator-d11-audit-2026-05-06.md, docs/reviews/elon-fullstack-overinvocation-rootcause-2026-05-06.md, docs/reviews/qa-fullstack-overinvocation-investigation-2026-05-06.md, docs/reviews/qa-pattern-ab-diff-2026-05-06.md, docs/reviews/ia-orchestrator-d11-phase1-diff-2026-05-06.md, docs/reviews/reviewer-d11-phase1-qa-validation-2026-05-06.md | Session structurée triple audit pré-application. (1) Investigation pattern @fullstack 16x : @elon (NO-GO patch, "thermomètre pas fièvre", mindset humain résiduel 70%) + @qa (3 causes R1/R2/R3, fusible bloquant) → arbitrage @moi compromis (qa.md sémantique now + ratio @elon différé DevRefs). (2) Phase 1 D11 orchestrator.md : audit théorique @ia 9 sections "doublon" → audit empirique révèle S16 spécifique (NO-GO) → 7 GO appliqués Option A. M5 orchestrator 891L → 819L (WARN 900 levé, marge +81L). (3) qa.md ligne 275 : Pattern A (bug récurrent, 100% sémantique préservée) + Pattern B (agent récurrent, WARNING non-bloquant additif). (4) Triple audit pré-application @ia + @qa + @reviewer = 0 régression confirmée par 9/9 tests Bash post-application. (5) 2 learnings P0/P1 capitalisés : pattern "audit théorique ≠ audit empirique" (P0) + pattern "triple audit pré-application" (P1). (6) DEFER D11 status "à-faire" → "fait partiellement (Phase 1 S3)". | Session focalisée DEFER D11 + investigation pattern 16x. Méthode triple audit pré-application validée empiriquement (1 faux positif détecté = S16). Compromis @elon × @qa arbitré par @moi (~92% confiance estimée). Delta framework : -72L orchestrator + 57L reference + 9 lignes net learnings = framework réduit net pour la 1ère fois en 8 sessions. À reprendre : Phases 2-3 D11 (S16 anti-timeout condensé + autres vers cible 400L) + ratio invocations/features sur DevRefs. |
 
+| session 2026-05-29 (S4) | 2026-05-29 | CLAUDE.md (cmd 0 brief-first absolu + retrait règle commune 10 + alignement 9 gates), orchestrator.md (-192L : retrait Gestion timeouts + section @moi CHECKPOINT + nettoyage refs @moi/orchestrator-reference), _gates.md (32→9 gates + G_PROOF bloquant), _base-agent-protocol.md (-1L renvoi orchestrator-reference + +3L net), agent-factory.md (refs orchestrator-reference → orchestrator), index.html (cure complète : @moi retiré, gates 32→9, testeurs GP/GC optionnels, REPLIT_ACTIONS retiré, G31/G32 deviennent checks recommandés, bouton install refresh systématique avec détection branche auto, 21→20 agents, 91→94 prompts, og:url → agents.issa-capital.com), install.sh + update.sh (détection auto branche main/master fallback bootstrap), CNAME (agents.issa-capital.com), suppression moi.md (-322L) + orchestrator-reference.md (-296L), 8 agents Opus 4.7 → 4.8, project-context.md (stack 4.8), founder-preferences.md (+3 prefs + 2 anti-patterns S4 + URL master→main), lessons-learned.md (+6 entrées S4 + archivage S26-03-31), 6 reviews docs/reviews/* (audit + 2 notations + plan + audit index.html + audit dégradation) | (1) Cure framework -843L (-38%) suite à plainte Thomas "tu réfléchis mal, vérifies rien, fais à moitié". Méthode : 4 agents parallèles (@elon + @ia + @qa + @moi) → synthèse @ia → @reviewer notation /10 → itération diff exact 8.5→9.5. (2) 5 actions cure : commandement 0 brief-first, suppression @moi, retrait gestion timeouts orchestrator, retrait Phases testeurs Phase 2c/2d/5b, refonte _gates.md 32→9+G_PROOF bloquant. (3) Migration Opus 4.7→4.8 sur 8 agents critiques. (4) Migration domaine site agents.issa-capital.com (CNAME + 3 og: tags + retrait github.io). (5) Rename branche par défaut master → main (22 références hardcodées updates AVANT bascule : install.sh, update.sh, README, INSTALL, index.html). (6) Bootstrap problem détecté par session externe : ancien update.sh local code en dur sur master inexistant → fix défensif détection auto branche + bouton "TOUJOURS refresh". (7) Cron VPS Caddy également patché master→main + freq 24h→15min. (8) 3 bugs cure incomplète signalés par session externe corrigés : orchestrator.md L229-237/L462 référençait encore @moi, CLAUDE.md L65/L106 disait encore "32 gates G1-G32", infrastructure.md L145 "non-Replit" présupposait Replit défaut. (9) Audit Replit complet : 88 mentions classées, 10 anti-patterns corrigés (Replit comme défaut → conditionnel CF priorité + legacy Replit), savoir technique legacy préservé. | Session marathon multi-pivots. Cure framework déclenchée par épisode d'échec d'écoute orchestrator (Thomas a dû reformuler 3x sa demande de plan). Méthode "fais travailler l'équipe" parallèle multi-agents validée empiriquement (8.5→9.5/10 en 1 itération). 0 régression sur 12 commits S4 mergés main. Delta framework : -843L cure + propagation site/agents/index.html alignée. Workflow déploiement VPS Caddy clarifié et fixé. Test grandeur réelle gardes-fous (brief-first, walkthrough, G_PROOF) à confirmer S5+ sur projets utilisateurs. |
+
 ---
 
 ## Score de fidelite @moi
@@ -94,63 +100,68 @@ Mission actuelle : framework consolide avec 89 prompts, 20 agents, 32 gates bina
 
 ## Memo de reprise — derniere session
 
-- **Date de cloture** : 2026-05-06
-- **Numéro de session** : 3
-- **Branche** : `claude/agent-team-s3-sanity-then-d11-Oq5ou`
+- **Date de cloture** : 2026-05-29
+- **Numéro de session** : 4
+- **Branche** : `claude/agent-team-s4-cure-framework-lzE5Y`
+- **Branche par défaut** : `main` (renommée de master cette session)
+- **Site en ligne** : `https://agents.issa-capital.com` (VPS Caddy, cron pull main toutes les 15 min)
 
 ### Resume de la session
-Session structurée triple audit pré-application. Focus : DEFER D11 (orchestrator.md à 891L, 1 ligne du WARN) + investigation pattern @fullstack 16x signalé en clôture S2. Méthode : audits parallèles indépendants (@ia + @qa + @elon + @reviewer) → arbitrage @moi → application atomique → 9 tests Bash post-application.
+Session marathon multi-pivots déclenchée par une plainte directe de Thomas : "tu réfléchis mal, poses des questions bêtes, fais à moitié, vérifies rien". Méthode "fais travailler l'équipe" parallèle multi-agents (@elon + @ia + @qa + @moi) → synthèse @ia → @reviewer notation /10 → itération diff exact (8.5→9.5).
 
 **Actions majeures :**
-(1) **Investigation pattern @fullstack 16x** : @elon NO-GO patch ("thermomètre pas fièvre", mindset humain résiduel 70%) vs @qa GO 3 patches (R1 gap sémantique, R2 M7 passif, R3 Variable 1c). **Arbitrage @moi compromis** : qa.md sémantique now (faible risque) + ratio @elon différé sur DevRefs + fusible orchestrator différé.
-(2) **Phase 1 D11 orchestrator.md** : audit @ia théorique 9 sections "doublon" → audit empirique pré-application révèle **S16 spécifique non couverte** (NO-GO) → Option A appliquée (7 sections + 3 edits agent-factory.md). M5 **891L → 819L** (WARN 900 levé, marge +81L).
-(3) **qa.md ligne 275 patch sémantique** : Pattern A (bug récurrent — 100% sémantique préservée) + Pattern B (agent récurrent — WARNING non-bloquant additif).
-(4) **Triple audit pré-application @ia + @qa + @reviewer** : 0 régression confirmée par 9/9 tests Bash post-application (renvois orphelins, base intact, qa.md préservé, agent-factory cohérent, index.html clean).
-(5) **2 learnings capitalisés** : P0 "audit théorique ≠ audit empirique" (Grep cross-fichiers cible obligatoire avant suppression) + P1 "triple audit pré-application" (workflow validé).
-(6) **DEFER D11 status** : "à-faire" → "fait partiellement (Phase 1 S3)". Phases 2-3 (S16 anti-timeout + condensations vers cible 400L) différées S4.
+(1) **Cure framework -843L (-38%)** : 5 actions structurelles appliquées (commandement 0 brief-first absolu CLAUDE.md, suppression @moi agent + références, retrait Gestion timeouts orchestrator -72L, _gates.md 32→9 gates + G_PROOF bloquant, retrait Phases 2c/2d/5b testeurs obligatoires). Validation auto-review fallback 9.5/10 (reviewer API 529 × 2 → orchestrator transparent).
+(2) **Migration Opus 4.7 → 4.8** sur 8 agents critiques (orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure) + ia.md mentions capability + project-context stack.
+(3) **Migration domaine site** github.io → `agents.issa-capital.com` (CNAME + 3 og: tags + retrait github.io). Confirmation HTTPS, certificat Let's Encrypt auto Caddy.
+(4) **Rename branche par défaut master → main** : séquence 6 étapes safe (22 références hardcodées update AVANT bascule pour éviter casser installs en cours), Thomas a changé default branch via GitHub UI, push delete master remote = HTTP 403 env containerisé donc fait via UI GitHub.
+(5) **Bootstrap problem détecté par session externe** : ancien `update.sh` local des projets clients codé en dur sur master inexistant → fix défensif détection auto branche dans install.sh + update.sh + bouton install "TOUJOURS refresh".
+(6) **Cron VPS Caddy patché** : master→main + freq 24h→15min sur `/home/thomas/Agent-Team` (workflow Caddy file_server clarifié). Aussi fix `safe.directory` git pour user thomas vs root.
+(7) **3 bugs cure incomplète signalés par session externe corrigés** : orchestrator.md L229-237 + L462 référençait encore @moi (section CHECKPOINT @moi + invocation quick-check), CLAUDE.md L65/L106 disait encore "32 gates G1-G32", infrastructure.md L145 "non-Replit" présupposait Replit défaut.
+(8) **Audit Replit complet** : 88 mentions classées (legacy explicite légitime ~70 / historique 3 / anti-patterns post-S3 ~15), 10 anti-patterns corrigés (Replit comme défaut → conditionnel CF priorité + legacy Replit), savoir technique legacy préservé pour projets Versi/Sarani/Marrant/ImmoCrew/ISSA Capital.
+(9) **Capitalisation S4** : 6 entrées lessons-learned.md (3 P0 + 3 P1) + 3 préférences fondateur + 2 anti-patterns, net-zero strict (archive S26-03-31 vers archive). URL access master→main propagée.
 
-**Delta framework :** -72L orchestrator + 57L reference + 9L net learnings + 1L qa.md = **framework réduit net pour la 1ère fois en 8 sessions**. CLAUDE.md 108/125. Lessons 68/80. Project-context ~155/250. Orchestrator 819/900 (WARN levé). Tous caps PASS.
+**Delta framework :** -843L net cure structurelle. CLAUDE.md 108→110/125. Lessons 69→70/80. Project-context 156→~250 (entrée S4 + nouveau mémo). Founder-prefs 119→124/150. Orchestrator.md 831→749. _gates.md 121→25 (9 gates + G_PROOF). 19 commits S4 mergés main. Net-zero respecté.
 
-**Perf-trend session #8 (verdict PASS)** : M1=1034 / M3=32 / M4=27 / M5=819 / M6=81 / M7=2 reviewer.
+**Tests grandeur réelle** : déploiement complet ISSA-Capital via `update.sh --all` confirmé (11 agents synchronisés + cure validée + moi.md/orchestrator-reference.md supprimés). Site en ligne `agents.issa-capital.com` 6/6 marqueurs cure servis (last-modified 2026-05-29 13:03 UTC).
 
 ### Travaux en cours / non termines (DEFER)
-1. **DEFER D11 Phases 2-3** : S16 anti-timeout (substance unique orchestrateur, condensation 18L → 8L) + autres condensations vers cible 400L. À reprendre S4 avec audit empirique.
-2. **Ratio @elon `invocations / features livrées`** : à mesurer sur DevRefs (1-2 projets) avant tout fusible orchestrator. Décide si pattern 16x = vraie fièvre ou thermomètre.
-3. **Fusible orchestrator @qa** (différé S3) : à appliquer SI ratio @elon confirme pathologie. Patch prêt dans `docs/reviews/qa-fullstack-overinvocation-investigation-2026-05-06.md`.
-4. **Phase D pilote Memory tool sur Sarani** (3 sessions consécutives) : toujours non commencé.
-5. **DEFER D9 diet `_base-agent-protocol.md`** (467L → 380 puis 280) : à reprendre.
-6. **DEFER D13 context layering** : à évaluer après D9/D11 complets.
-7. **Marrant V1 atteinte ?** : statut toujours non documenté.
-8. **Calibrer M7 seuil arbitraire >3** sur p75/p90 historique réel.
-9. **Pattern B qa.md → @orchestrator** : protocole de réception WARNING non documenté côté orchestrateur. Non-bloquant Phase 1, à formaliser après validation empirique DevRefs (signalé par @reviewer).
-10. **Cap WARN/HARD orchestrator.md** dans hook pre-commit (recommandation @reviewer S3, hors scope D11) : aujourd'hui seul CLAUDE.md a un cap dur.
+1. **Cron VPS pre-commit hook actif** : `fatal: not in a git directory` durant update.sh = hook non installé sur projets clients. Fix : `git config core.hooksPath .githooks` post-update. À automatiser dans update.sh.
+2. **Permissions root vs thomas sur projets VPS** : Thomas a lancé update.sh en root sur Agent-Team + ISSA-Capital → fichiers root, cron tourne sous thomas. `chown -R thomas:thomas` ponctuel nécessaire ou exécuter via `sudo -u thomas`.
+3. **DEFER D9 diet `_base-agent-protocol.md`** (467L → 380 puis 280) : à reprendre.
+4. **DEFER D13 context layering** : à évaluer après D9 complet.
+5. **DEFER D11 Phases 2-3** : marqué partiellement fait S3 + cure S4 a réduit orchestrator 831→749. Cible 400L pas atteinte mais marge confortable. Priorité abaissée.
+6. **Phase D pilote Memory tool sur Sarani** : toujours non commencé.
+7. **Ratio @elon `invocations / features livrées`** sur DevRefs : non mesuré (DevRefs pas encore lancé).
+8. **Marrant V1 statut** : toujours non documenté.
+9. **Calibrer M7 seuil >3** sur p75/p90 historique réel.
+10. **Workflow auto-déploiement** : webhook ou GH Actions SSH VPS pour ne plus dépendre du cron 15 min. Optionnel (cron 15 min suffit actuellement).
+11. **Propagation cure aux autres projets** (Versi, Sarani, Marrant, Mandataire) : `bash update.sh --all` + `rm -f moi.md orchestrator-reference.md` côté Thomas. ISSA-Capital déjà fait.
 
 ### Prochaines actions recommandees
-1. **DevRefs V1 (priorité 1 inchangée S2)** : lancement effectif + mesure du ratio @elon `invocations/features` pour valider/invalider pattern 16x. Premier test grandeur réelle des gardes-fous A1+A2+A3 (Verdict V1 + sync branche + M7).
-2. **DEFER D11 Phases 2-3** : audit empirique @ia sur S16 anti-timeout + autres sections candidates condensation. Cible 400L (vs 819L actuel). Méthode validée S3.
-3. **Phase D pilote Memory** sur Sarani 3 sessions consécutives.
-4. **Marrant V1 statut** : vérification rapide (1 prompt) — déclenche le KPI North Star si V1 atteinte.
+1. **Test grandeur réelle des gardes-fous cure** sur S5 : observer si l'orchestrator tient le brief-first (commandement 0), si bloc Vérifié G_PROOF apparaît dans les livrables agents, si questions A/B/C ont diminué. **C'est le vrai test du plan S4**.
+2. **Propager cure aux 4 autres projets VPS** : Versi, Sarani, Marrant, Mandataire. Commande : `cd /home/thomas/PROJET && bash update.sh --all && rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md`.
+3. **Fix permissions root/thomas** post-update.sh sur Agent-Team + ISSA-Capital : `chown -R thomas:thomas .claude/ CLAUDE.md .githooks/` sur chacun.
+4. **DevRefs V1** (priorité 1 inchangée depuis S2) : lancement effectif pour mesurer ratio invocations/features et confirmer si cure a impact mesurable.
 
 ### Blockers eventuels
-- **Aucun blocker bloquant.** Framework à jour, tous learnings P0/P1 propagés, tous caps PASS, M5 WARN levé, perf-trend session #8 verdict PASS.
-- **Point d'attention** : DEFER D11 reste 419L à réduire (819 → 400 cible). Modifications orchestrator.md futures = OK (marge +81L) mais ne pas accumuler avant Phases 2-3.
+- **Aucun blocker bloquant.** Framework à jour, tous learnings P0/P1 propagés, tous caps PASS, V1 atteinte pour site Gradient Agents (agents.issa-capital.com), 19 commits mergés main, cron VPS pull main toutes les 15 min OK.
+- **Point d'attention** : la cure S4 est largement THÉORIQUE tant qu'elle n'a pas été éprouvée par 1-2 sessions réelles. La S5 sera le vrai juge. Si pattern "rituel > pensée" réémerge, l'audit S4 a été insuffisant (ratio retrait/bloat à augmenter).
 
 ### Nom de branche recommandé pour la prochaine session
-`claude/agent-team-s4-devrefs-or-d11p2-[suffix]`
-- Priorité 1 : DevRefs V1 (mesure ratio + premier test gardes-fous)
-- Priorité 2 : DEFER D11 Phases 2-3 (orchestrator.md vers cible 400L)
+`claude/agent-team-s5-test-cure-[suffix]`
+- Priorité 1 : observer comportement orchestrator post-cure (gardes-fous tenus ?)
+- Priorité 2 : propagation cure aux projets VPS restants
 
 Le suffix aléatoire est généré par Claude Code au démarrage.
 
 ### Commande de reprise suggeree
 ```
-Lis project-context.md (memo de reprise S3). Session DEFER D11 Phase 1 + qa.md Pattern A/B + investigation pattern 16x. Triple audit pré-application @ia/@qa/@reviewer (0 régression, 9/9 tests Bash PASS). Compromis @elon×@qa arbitré @moi (~92%). Framework réduit net pour 1ère fois en 8 sessions (M5 891→819, WARN levé). Priorité S4 : (1) DevRefs V1 + ratio invocations/features, OU (2) D11 Phases 2-3 vers 400L, OU (3) pilote Memory Sarani.
+Lis project-context.md (memo de reprise S4). Session cure framework -843L + migration Opus 4.8 + domaine agents.issa-capital.com + rename master→main + bootstrap fix update.sh. Méthode "fais travailler l'équipe" parallèle multi-agents validée (8.5→9.5/10). Priorité S5 : (1) observer si gardes-fous cure tiennent en conditions réelles (brief-first, bloc Vérifié, pas d'A/B/C), (2) propager cure aux 4 projets VPS restants (Versi/Sarani/Marrant/Mandataire), (3) DevRefs V1 si bandwidth.
 ```
 
-> Mémo S2 (clôture 2026-04-24) synthétisé ligne `session 2026-04-24` du tableau d'historique. Mémo S1 (clôture 2026-04-17) ligne `session 2026-04-17`.
+> Mémo S3 (clôture 2026-05-06) synthétisé ligne `session 2026-05-06` du tableau d'historique.
 
-### Score @moi S3
-- Décisions arbitrées : 2 (D11 Option A vs B, Pattern 16x compromis)
-- Confiance auto-estimée : ~92%
-- Validation Thomas attendue à la prochaine session si désaccord (sinon présumée acquise — précédents directs trouvés pour les deux décisions).
+### Score @moi S4
+- **Agent @moi supprimé cette session** (cure S4). Score @moi non pertinent pour les sessions futures.
+- Décisions S4 arbitrées par orchestrator + équipe parallèle + reviewer notation /10 (méthode validée empiriquement 8.5→9.5).
 
