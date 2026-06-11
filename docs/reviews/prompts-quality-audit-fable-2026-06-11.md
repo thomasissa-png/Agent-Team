@@ -39,7 +39,7 @@ Chaque prompt jugé sur 5 axes : Mission claire (livrable + chemin précis) / Au
 4. **Critères de validation : ~70% binaires, ~30% mous** ("compréhensible en < 5 secondes", "justifié par la valeur perçue" — invérifiables par Grep/test).
 5. **Risque timeout sur 6-8 prompts multi-livrables** (4 fichiers + 3-4 agents chaînés) malgré les notes anti-timeout — Positionnement (4 fichiers), Audit juridique (4), Marketing automation, Refonte (4 agents).
 
-## Recommandation — "cure prompts" légère (décision fondateur requise : change le chiffre public "94 prompts")
+## Recommandation — "cure prompts" légère — **STATUT : APPLIQUÉE le 2026-06-11 (décision Thomas "corrige tout en autopilote") — 94→91 prompts**
 
 - **MERGE (6→3)** : Onboarding gamifié + Optimiser l'onboarding → 1 prompt à deux modes (concevoir/auditer) ; Emails onboarding + Emailing automation → 1 ; supprimer SEO+GEO combinés (remplacé par une ligne "lancez les deux" dans chacun).
 - **TRIM (~10 prompts)** : retirer le boilerplate benchmark (hérité du protocole), dégraisser Reporting investisseurs / Veille concurrentielle / Design responsive / API design / Auth de leur savoir générique (-30 à -50% chacun).

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gradient Agents — Dashboard</title>
-<meta name="description" content="20 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement. 94 prompts prêts à l'emploi.">
+<meta name="description" content="20 agents IA spécialisés qui coordonnent votre projet de la stratégie au déploiement. 91 prompts prêts à l'emploi.">
 <meta property="og:title" content="Gradient Agents — Dashboard">
 <meta property="og:description" content="Une équipe de 20 agents IA spécialisés pour piloter votre projet de A à Z.">
 <meta property="og:type" content="website">
@@ -589,7 +589,7 @@ Continuité de session : rappelle à l'utilisateur de nommer sa session (claude 
       {
         title:"Quel prompt utiliser ? (guide rapide)",
         agents:["orchestrator"],
-        quand:"Tu ne sais pas par où commencer parmi les 94 prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
+        quand:"Tu ne sais pas par où commencer parmi les 91 prompts. Réponds à 3 questions et l'orchestrateur te recommande les 2-3 prompts les plus pertinents pour ta situation.",
         prompt:`@orchestrator Mode sélecteur guidé. Ne lance aucun agent.
 
 Lis project-context.md si il existe. Puis pose-moi ces 3 questions (une à la fois si possible, sinon les 3 ensemble) :
@@ -1192,7 +1192,7 @@ Critères de validation : chaque feature retenue a une justification liée au pe
         quand:"En début de projet pour poser les fondations stratégiques, ou quand le marché bouge (nouveau concurrent, pivot technologique). Complémentaire à l'audit first principles — ici on construit, là-bas on challenge. Si coupure : 'Lis docs/reviews/moat-analysis.md et docs/product/vision-long-terme.md, quels agents restent ?'",
         prompt:`@elon Lis project-context.md (positionnement, concurrent principal, objectif 6 mois). Lis docs/strategy/brand-platform.md et docs/product/product-vision.md s'ils existent. S'ils n'existent pas, base l'analyse sur project-context.md seul.
 
-Audit du moat actuel — note chaque dimension sur 10 avec justification :
+Complément de l'audit first principles (qui challenge l'exécution) : ici on audite la DÉFENDABILITÉ. Verdict par dimension : FORT / FAIBLE / ABSENT avec justification factuelle — pas de note chiffrée :
 1. Network effects : le produit gagne-t-il en valeur avec chaque nouvel utilisateur ? (marketplace, communauté, données partagées). Si non, est-ce activable ?
 2. Data moat : les données accumulées créent-elles un avantage irréproductible ? (modèles entraînés, historique utilisateur, benchmarks propriétaires). Quelles données collecter en priorité pour creuser le fossé ?
 3. Switching costs : que perd un utilisateur en partant ? (données, intégrations, habitudes, contenu créé). Comment augmenter ces coûts sans nuire à l'expérience ?
@@ -1200,7 +1200,7 @@ Audit du moat actuel — note chaque dimension sur 10 avec justification :
 5. Technologie : y a-t-il un avantage technique défendable ? (algorithme propriétaire, infrastructure unique, expertise rare). Durée de vie estimée de l'avantage.
 6. Vitesse d'exécution : le rythme d'itération est-il un moat en soi ? (shipping faster than competitors can copy).
 
-Synthèse : score moat global /10, top 2 leviers à renforcer, top 2 vulnérabilités.
+Synthèse : verdict global (moat DÉFENDABLE / FRAGILE / INEXISTANT), top 2 leviers à renforcer, top 2 vulnérabilités.
 
 Livrable : docs/reviews/moat-analysis.md.
 
@@ -1212,7 +1212,7 @@ Livrable : docs/product/vision-long-terme.md.
 
 Puis @creative-strategy : lis docs/reviews/moat-analysis.md et docs/product/vision-long-terme.md. Évalue si le positionnement actuel (docs/strategy/brand-platform.md) soutient la vision long terme ou s'il faut le faire évoluer. Recommande les ajustements de messaging pour communiquer le moat aux utilisateurs. Livrable : docs/strategy/brand-platform.md section "Vision et moat".
 
-Critères de validation : chaque dimension du moat est notée avec justification factuelle (pas de "notre produit est unique" sans preuve), les scénarios de disruption sont réalistes, le plan d'action est directement implémentable, la vision 3-5 ans a des jalons mesurables.`
+Critères de validation : chaque dimension du moat a un verdict FORT/FAIBLE/ABSENT avec justification factuelle (pas de "notre produit est unique" sans preuve), les scénarios de disruption sont réalistes, le plan d'action est directement implémentable, la vision 3-5 ans a des jalons mesurables.`
       }
     ]
   },
@@ -1226,7 +1226,6 @@ Critères de validation : chaque dimension du moat est notée avec justification
         quand:"Après la stratégie — ou directement, l'agent créera les prérequis manquants. Les parcours sont le squelette de ton produit.",
         prompt:`@ux Lis docs/strategy/brand-platform.md (personas, jobs-to-be-done). S'il n'existe pas, pose-moi les questions nécessaires pour le créer (personas détaillés, jobs-to-be-done, positionnement) et génère-le avant de continuer. Lis aussi docs/product/functional-specs.md si disponible (features, critères d'acceptation).
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures expériences utilisateur du secteur du projet. Analyse ce qui fait leur qualité (parcours, onboarding, conversion, rétention) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Conçois les parcours utilisateur complets :
 1. Onboarding : du premier contact à la première valeur (time-to-value cible < 3 min). Chaque étape justifiée — supprimer toute étape qui n'apporte pas de valeur immédiate.
@@ -1266,7 +1265,6 @@ Critères de validation : chaque parcours a un objectif mesurable, chaque écran
         quand:"Après les wireframes UX — ou directement, l'agent demandera les infos manquantes. Livrable volumineux : si timeout, relancer l'agent. Pour reprendre : 'Lis docs/design/design-system.md et docs/design/design-tokens.json, complète ce qui manque.'",
         prompt:`@design Lis docs/design/art-direction.md (direction artistique retenue : palette, typographie, style composants). S'il n'existe pas, lis docs/strategy/brand-platform.md et pose-moi les questions pour définir la direction artistique d'abord (palette, polices, style). Lis aussi docs/ux/wireframes.md et docs/strategy/personas.md si disponibles.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs design systems d'apps similaires dans le secteur du projet. Analyse ce qui fait leur qualité (tokens, composants, cohérence, accessibilité) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Crée le design system complet :
 1. Architecture tokens 3 tiers : (1) Primitive = valeurs brutes (blue-500, 4px), (2) Semantic = signification (color-background-primary, spacing-sm), (3) Component = usage spécifique (button-padding-x). Les composants ne référencent JAMAIS les primitives directement.
@@ -1295,7 +1293,6 @@ Critères de validation : tous les tokens sont définis dans design-tokens.json,
         quand:"Après la plateforme de marque — ou directement, l'agent créera les prérequis manquants. La voix de marque est ce qui rend ton produit reconnaissable même sans logo. Couvre ton, vocabulaire, UX writing ET territoire verbal propriétaire. Si coupure : 'Lis docs/copy/brand-voice.md et docs/strategy/verbal-identity.md, quel agent reste ?'",
         prompt:`@copywriter Lis docs/strategy/brand-platform.md. S'il n'existe pas, pose-moi les questions nécessaires pour le créer (ton de marque, personas, positionnement, concurrents) et génère-le avant de continuer.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs exemples de brand voice du secteur du projet. Analyse ce qui fait leur qualité (ton, vocabulaire, cohérence, différenciation) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Produis le brand voice guide complet :
 1. Ton et registre : description du ton (ex : "expert et bienveillant"), registre de langue (soutenu/courant/familier), exemples concrets de ce qu'on dit vs ce qu'on ne dit pas.
@@ -1326,7 +1323,6 @@ Critères de validation : le guide est suffisamment précis pour que deux rédac
         quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas. 3 agents en chaîne. Si coupure : 'Lis docs/copy/landing-page-copy.md, quel agent n'a pas terminé ?'",
         prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/value-proposition.md. S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures landing pages du secteur du projet. Analyse ce qui fait leur qualité (structure, arguments, design, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Identifier le niveau de conscience Schwartz du visiteur cible (Unaware → Problem-Aware → Solution-Aware → Product-Aware → Most-Aware). Adapter le copy par section : hero = niveau de conscience dominant, FAQ = objections des Product-Aware.
 
@@ -1432,21 +1428,13 @@ Produis les specs responsive pour les composants et layouts critiques. Format pa
 | lg (1024px) | ... | ... | ... |
 | xl (1280px) | ... | ... | ... |
 
-Composants/layouts à couvrir :
-1. Navigation : desktop (horizontale) vs mobile (hamburger + drawer). Seuil de bascule. Touch targets 44x44px minimum.
-2. Grille de contenu : nombre de colonnes par breakpoint, gouttières.
-3. Cards : disposition (grille → pile), taille des images, troncature du texte.
-4. Formulaires : largeur des champs, disposition des labels (side vs top), clavier virtuel.
-5. Tableaux : scroll horizontal vs cards empilées sur mobile.
-6. Modals : plein écran sur mobile vs centré sur desktop.
-7. Typographie : échelle responsive (clamp() CSS), line-height adaptatif, longueur de ligne optimale (45-75 caractères).
-8. Composants complexes : pour chaque composant complexe (tableaux de données, dashboards, formulaires multi-étapes, sidebars, carousels), repenser l'interaction par breakpoint — pas juste empiler (tableau → cards sur mobile, sidebar → bottom sheet, formulaire long → stepper).
-9. Navigation adaptative : hamburger menu vs bottom nav bar (mobile) vs sidebar (desktop). Navigation au pouce (zone de confort : bas de l'écran).
-10. Interactions tactiles : swipe gestures, pull-to-refresh si pertinent, long press comme alternatives aux hover states.
-11. Performance mobile : budget spécifique mobile (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset par device, images art direction (cadrage différent par device), srcset avec tailles exactes.
-
-Règle de densité : documenter ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique. Aucun contenu critique ne doit disparaître sur mobile.
-12. Anti-placeholder : aucune section avec image placeholder générique (gray box, "image à venir") ne doit passer en production. Chaque image prévue dans le design doit avoir un asset réel, ou la section est retirée jusqu'à disponibilité.
+Composants/layouts à couvrir (le standard responsive — navigation, grilles, cards, formulaires, typo clamp() — est appliqué sans le re-documenter ; ne spécifier que les décisions propres à CE projet) :
+1. **Composants complexes — repenser l'interaction par breakpoint, pas juste empiler** : tableau de données → cards sur mobile, sidebar → bottom sheet, formulaire long → stepper, dashboard → priorisation des widgets. C'est ici que le responsive se gagne ou se perd.
+2. Navigation adaptative : hamburger vs bottom nav bar (mobile) vs sidebar (desktop) — choix justifié par le persona. Navigation au pouce (actions principales en bas d'écran), touch targets ≥ 44px.
+3. Interactions tactiles : swipe, pull-to-refresh si pertinent, long press comme alternative aux hover states (le hover n'existe pas sur mobile).
+4. Performance mobile : budget spécifique (JS < 150KB, LCP < 3s sur 3G), critical CSS inline, fonts subset, images art direction (cadrage différent par device) avec srcset exact.
+5. **Règle de densité** : documenter explicitement ce qui se cache sur mobile, ce qui se réorganise, ce qui reste identique. Aucun contenu critique ne disparaît sur mobile.
+6. Anti-placeholder : aucune section avec image placeholder générique en production — asset réel ou section retirée jusqu'à disponibilité.
 
 Livrable : section "Responsive" dans docs/design/design-system.md (ajoutée via Edit, pas un fichier séparé).
 
@@ -1459,30 +1447,34 @@ Puis @infrastructure : lis la section responsive et vérifie la compatibilité a
 Critères de validation : chaque breakpoint est documenté avec composants basiques ET complexes, les touch targets font 44x44px minimum, aucun parcours critique n'est dégradé sur mobile, la performance mobile respecte le budget (LCP < 3s sur 3G).`
       },
       {
-        title:"Onboarding utilisateur gamifié",
+        title:"Concevoir ou optimiser l'onboarding",
         agents:["ux","design","copywriter","data-analyst"],
-        quand:"Après les parcours utilisateur — pour concevoir un onboarding qui maximise l'activation et la rétention. Complémentaire au raccourci 'Optimiser l'onboarding' (celui-ci est plus axé conception, l'autre est un audit). 4 agents en chaîne. Si coupure : 'Lis docs/ux/onboarding-flow.md, quels agents n'ont pas encore contribué ?'",
-        prompt:`@ux Lis docs/ux/user-flows.md (parcours existants ou à créer) et docs/strategy/brand-platform.md (persona). S'ils n'existent pas, pose-moi les questions (persona principal, action d'activation, job-to-be-done principal) et génère-les avant de continuer.
+        quand:"Pour CONCEVOIR l'onboarding d'un nouveau produit, ou OPTIMISER un onboarding existant (time-to-value trop long, abandon élevé, NPS négatif des nouveaux utilisateurs). 4 agents en chaîne. Si coupure : 'Lis docs/ux/onboarding-flow.md, quels agents n'ont pas encore contribué ?'",
+        prompt:`@ux Lis docs/ux/user-flows.md et docs/strategy/brand-platform.md (persona). S'ils n'existent pas, pose-moi les questions (persona principal, action d'activation, job-to-be-done principal) et génère-les avant de continuer.
 
-Conçois le système d'onboarding complet :
-1. Parcours d'activation : du signup au "aha moment" en < 3 minutes. Identifier l'action unique qui prédit la rétention (ex : "créer son premier dashboard", "inviter un collègue", "connecter sa source de données"). Tout l'onboarding doit guider vers cette action.
-2. Progressive profiling : ne demander que l'email au signup. Collecter les informations supplémentaires au fil de l'usage (nom, entreprise, rôle — quand elles deviennent utiles). Chaque champ supplémentaire au signup = ~5% d'abandon.
-3. Guided tour : checklist de démarrage (3-5 items max), tooltips contextuels (pas un tour linéaire imposé), hotspots sur les fonctionnalités clés. L'utilisateur doit pouvoir skipper et revenir.
-4. Empty states : chaque écran vide est une opportunité d'engagement — template de données, appel à l'action contextuel, tutoriel intégré. Jamais d'écran blanc sans guide.
-5. Gamification (si cohérent avec la marque) : barre de progression, célébrations au milestone, streaks, badges — uniquement si aligné avec le persona (éviter sur du B2B enterprise sérieux).
+Mode : détecte si un onboarding existe déjà (Glob src/ + docs/ux/onboarding-flow.md). S'il existe → mode OPTIMISATION : mapper chaque étape actuelle avec son taux de complétion (si données disponibles), identifier les étapes à plus fort abandon, appliquer les points ci-dessous comme grille de correction. Sinon → mode CONCEPTION.
+
+Conçois (ou corrige) le système d'onboarding complet :
+1. Parcours d'activation : du signup au "aha moment" en < 3 minutes. Identifier l'action unique qui prédit la rétention (ex : "créer son premier dashboard", "inviter un collègue"). Tout l'onboarding guide vers cette action. Pour chaque étape, justifier sa présence (supprimable ? reportable ? simplifiable ?).
+2. Progressive profiling + "show, don't ask" : ne demander que l'email au signup, pré-remplir au maximum via données existantes ou défauts intelligents. Chaque champ supplémentaire au signup = ~5% d'abandon.
+3. Guided tour : checklist de démarrage (3-5 items max), tooltips contextuels (pas un tour linéaire imposé). L'utilisateur doit pouvoir skipper et revenir.
+4. Empty states : chaque écran vide est une opportunité d'engagement — template de données, CTA contextuel, tutoriel intégré. Jamais d'écran blanc sans guide.
+5. Moments de succès / gamification (si cohérent avec la marque) : célébration à chaque micro-accomplissement, barre de progression, streaks — uniquement si aligné avec le persona (éviter sur du B2B enterprise sérieux).
 6. Réengagement : emails automatiques si onboarding incomplet (J+1, J+3, J+7), notification in-app au retour, sauvegarde de la progression.
-7. Accessibilité : le parcours doit être navigable au clavier, les tooltips accessibles, les animations désactivables (prefers-reduced-motion).
-8. Conviction-first : les CTAs de conversion (upgrade, achat) apparaissent APRÈS la démonstration de valeur. Ne jamais demander un engagement avant que l'utilisateur ait expérimenté le "aha moment".
+7. Accessibilité : navigable au clavier, tooltips accessibles (pas juste hover), animations désactivables (prefers-reduced-motion).
+8. Conviction-first : les CTAs de conversion (upgrade, achat) apparaissent APRÈS la démonstration de valeur. Jamais d'engagement demandé avant le "aha moment".
 
-Livrable : docs/ux/onboarding-flow.md (avec wireframes textuels de chaque écran et métriques de conversion cibles par étape).
+Livrable : docs/ux/onboarding-flow.md (wireframes textuels de chaque écran + métriques de conversion cibles par étape).
 
-Puis @design : lis docs/ux/onboarding-flow.md et docs/design/design-system.md. Conçois les composants visuels de l'onboarding : checklist UI, tooltips, barre de progression, empty states, écrans de célébration. Les animations doivent être compatibles avec un LCP < 2.5s. Livrable : docs/design/component-library.md section "Onboarding".
+Puis @design : lis docs/ux/onboarding-flow.md et docs/design/design-system.md. Conçois les composants visuels : checklist UI, tooltips, barre de progression, empty states, écrans de célébration. Compatible LCP < 2.5s. Livrable : docs/design/component-library.md section "Onboarding".
 
-Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. Rédige le microcopy de chaque étape : welcome message personnalisé, labels de checklist motivants (pas "Étape 1" mais "Crée ton premier X"), tooltips concis, messages de succès engageants, emails de réengagement (sujet + corps). Livrable : docs/copy/ux-writing-guide.md section "Onboarding".
+Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. Rédige le microcopy de chaque étape : welcome message personnalisé, labels de checklist motivants (pas "Étape 1" mais "Crée ton premier X"), tooltips concis, messages de succès engageants, messages d'erreur humains et actionnables, emails de réengagement (sujet + corps). Chaque texte réduit la friction, pas l'augmente. Livrable : docs/copy/ux-writing-guide.md section "Onboarding".
 
-Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel d'activation : event par étape, taux de complétion cible, cohorte analysis par semaine, alerte si drop > 20% entre deux étapes. Définis le "activation rate" comme KPI clé de l'onboarding. Livrable : docs/analytics/tracking-plan.md section "Onboarding funnel".
+Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel d'activation : event par étape, taux de complétion cible, cohorte analysis par semaine, alerte si drop > 20% entre deux étapes sur 48h. Définis le "activation rate" comme KPI clé. Livrable : docs/analytics/tracking-plan.md section "Onboarding funnel".
 
-Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'action, les emails de réengagement sont rédigés, le funnel d'activation est trackable.`
+Conformité : consentement explicite pour le marketing, double opt-in email si applicable, onboarding complétable sans accepter les cookies non essentiels. Si docs/legal/legal-audit.md existe, vérifier la cohérence.
+
+Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'action, le microcopy et les emails de réengagement sont rédigés, le funnel d'activation est trackable, la conformité RGPD est assurée.`
       },
       {
         title:"Design système de notifications",
@@ -1523,7 +1515,6 @@ Critères de validation : la matrice type × canal × urgence est complète et j
         quand:"Idéalement après specs et design system — fonctionne aussi directement avec project-context.md. Remplace [nom de la feature] par ta feature avant de lancer. Si coupure sur une feature complexe : 'Lis docs/dev-decisions.md et src/, où en est l'implémentation de [feature] ?'",
         prompt:`@fullstack Implémente la feature [nom de la feature, ex : "système de notifications" ou "tableau de bord analytics"]. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes avant de continuer. Si la description fait moins de 20 mots, pose 3 questions de clarification avant de coder (quels écrans ? quels états ? quelles données ?).
 
-Avant de coder, recherche via WebSearch 2-3 exemples réels des meilleures implémentations UX de features similaires dans le secteur du projet. Analyse ce qui fait leur qualité (UX, interactions, performance, edge cases) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Lis docs/product/functional-specs.md. S'il n'existe pas, pose-moi les questions pour spécifier cette feature (user stories, critères d'acceptation, contraintes techniques) et génère les specs avant de coder.
 Lis docs/design/design-system.md et docs/design/design-tokens.json pour les composants UI — s'ils n'existent pas, utilise les conventions du code existant dans src/.
@@ -1960,14 +1951,14 @@ Critères de validation : chaque table a une clé primaire et des timestamps, le
         quand:"Avant l'implémentation des routes API — ou pour documenter une API existante. Une API bien conçue est utilisable sans lire le code source. Si coupure : 'Lis docs/dev-decisions.md section API, quelles routes manquent ?'",
         prompt:`@fullstack Lis project-context.md (stack technique). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quelles actions l'utilisateur peut faire (CRUD sur quelles entités), quelles intégrations tierces (webhooks, OAuth), quel format de réponse attendu.
 
-Design API complet :
-1. Convention : REST ou tRPC (justifier le choix selon la stack et les besoins). Nommage des routes (kebab-case, pluriel pour les collections). Versioning (URL path /api/v1/ ou header).
-2. Routes : pour chaque entité métier, documenter les endpoints CRUD avec méthode HTTP, path, params, body (avec types TypeScript), réponse (avec types), codes d'erreur possibles.
-3. Authentification : stratégie d'auth sur les routes (JWT, session, API key). Quelles routes sont publiques vs protégées vs admin.
-4. Validation : schéma de validation des inputs (Zod recommandé). Réponses d'erreur standardisées (format { error: string, code: string, details?: object }).
-5. Pagination : cursor-based pour les listes (pas de offset — problème de performance et de cohérence). Format : { data: [], nextCursor: string | null }.
-6. Rate limiting : limites par route et par utilisateur. Réponse 429 avec header Retry-After.
-7. Documentation : auto-générée si possible (Swagger/OpenAPI via Zod-to-OpenAPI, ou documentation Markdown structurée).
+Design API complet (les conventions REST standard sont appliquées sans les re-documenter — spécifier uniquement les décisions de CE projet) :
+1. Convention : REST ou tRPC, choix justifié selon la stack. Versioning retenu.
+2. Routes : pour chaque entité métier, les endpoints avec méthode, path, types TypeScript request/response, codes d'erreur possibles.
+3. Authentification : publique vs protégée vs admin, route par route.
+4. Validation Zod côté serveur + format d'erreur standardisé unique : { error: string, code: string, details?: object }.
+5. Pagination cursor-based obligatoire pour les listes (jamais offset — performance et cohérence) : { data: [], nextCursor: string | null }.
+6. Rate limiting par route et par utilisateur, 429 + Retry-After.
+7. Documentation auto-générée (Zod-to-OpenAPI) ou Markdown structuré.
 
 Livrable : docs/dev-decisions.md section "API design" + types TypeScript dans src/lib/types/.
 
@@ -1983,12 +1974,11 @@ Critères de validation : chaque endpoint a ses types TypeScript (request + resp
 
 Architecture d'authentification et d'autorisation :
 1. Choix de la solution : NextAuth.js, Clerk, Lucia, ou custom — justifier selon la valeur technique pour le projet (contrôle des données, flexibilité, ownership) et le budget récurrent. IMPORTANT (mindset IA) : ne JAMAIS choisir une solution parce qu'elle est "plus rapide à coder" — le temps de développement n'est PAS un critère de choix avec une équipe IA. Préférer la solution qui donne le plus de contrôle et de flexibilité au projet sur le long terme, même si elle demande plus de code initial. Tableau comparatif avec : prix mensuel, ownership des données, flexibilité (custom flows, branding), dépendance vendor, providers supportés.
-2. Flows d'authentification : signup (email + password ou OAuth), login, logout, reset password, email verification. Pour chaque flow : étapes, redirections, messages d'erreur, états de l'UI.
-3. Sessions : stratégie de gestion (JWT stateless vs session DB). Durée de session (recommandation : 7 jours avec refresh, 30 min pour les actions sensibles). Invalidation (logout, changement de mot de passe).
-4. Autorisation : modèle de permissions (RBAC recommandé pour la plupart des cas). Matrice rôle × action × ressource. Middleware de vérification des permissions sur chaque route protégée.
-5. Sécurité : rate limiting sur login (5 tentatives puis lockout 15 min), CSRF protection, secure cookies (HttpOnly, SameSite, Secure), protection contre le brute force.
-6. Multi-tenant : si pertinent, isolation des données par tenant (schema-based ou row-based avec RLS).
-7. Zéro self-fetch : un Server Component ne doit JAMAIS appeler sa propre API via fetch("/api/..."). Appeler directement la fonction serveur (Prisma, service) pour éviter la boucle réseau inutile et les deadlocks en SSR.
+2. Flows : signup (email/OAuth), login, logout, reset password, email verification — pour chacun : étapes, redirections, messages d'erreur, états UI (les standards de sécurité — hash moderne, cookies HttpOnly/SameSite/Secure, CSRF, lockout après 5 tentatives — sont appliqués d'office, pas re-spécifiés).
+3. Sessions : JWT stateless vs session DB (choix justifié), durées (7 jours avec refresh, 30 min pour les actions sensibles), invalidation (logout, changement de mot de passe).
+4. Autorisation : matrice rôle × action × ressource (RBAC par défaut), middleware de vérification sur chaque route protégée.
+5. Multi-tenant si pertinent : isolation par tenant (schema-based ou row-based avec RLS).
+6. Zéro self-fetch : un Server Component ne doit JAMAIS appeler sa propre API via fetch("/api/..."). Appeler directement la fonction serveur (Prisma, service) pour éviter la boucle réseau inutile et les deadlocks en SSR.
 
 Livrable : docs/dev-decisions.md section "Auth" + code dans src/lib/auth/.
 
@@ -2054,7 +2044,6 @@ Critères de validation : le bug est reproduit et corrigé, un test de non-régr
         quand:"Contenu rédigé, site en production ou pré-lancement. Le SEO est un investissement long terme — commencer tôt.",
         prompt:`@seo Lis project-context.md (persona, secteur). Lis docs/copy/landing-page-copy.md et docs/strategy/brand-platform.md. S'ils n'existent pas, pose-moi les questions sur le persona cible, les mots-clés de marque et le contenu principal du site pour calibrer l'audit.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures pages positionnées du secteur du projet. Analyse ce qui fait leur qualité (structure, mots-clés, maillage, données structurées, contenu) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Construire la topical authority map AVANT le keyword-map : topic principal → piliers (3-5) → clusters (5-10 par pilier) → articles. Maillage interne bidirectionnel entre chaque nœud. Livrable : docs/seo/topical-map.md.
 
@@ -2098,7 +2087,6 @@ Critères de validation : le keyword map contient au minimum 20 mots-clés avec 
         quand:"Après le SEO, pour cibler ChatGPT, Claude, Gemini, Perplexity. En 2026, la visibilité IA est aussi stratégique que le SEO classique.",
         prompt:`@geo Lis docs/seo/seo-strategy.md et docs/seo/keyword-map.md (stratégie SEO, pages cibles). S'ils n'existent pas, ALERTE : "Les livrables SEO (docs/seo/) sont absents. Le GEO complète le SEO, il ne le remplace pas. Recommandation : lancer d'abord le prompt 'Stratégie SEO technique & éditoriale' pour obtenir le keyword map et l'audit technique, puis relancer ce prompt GEO." Si l'utilisateur confirme de continuer sans SEO, pose les questions pour travailler avec project-context.md seul. Lis aussi docs/strategy/brand-platform.md (entités de marque) et docs/strategy/verbal-identity.md si disponible.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des pages les plus citées par les LLM dans le secteur du projet. Analyse ce qui fait leur qualité (structure, claims vérifiables, entités, format citable) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Analyse et plan GEO :
 1. Audit de visibilité actuelle : interroger ChatGPT, Claude, Gemini, Perplexity sur les requêtes clés du secteur via WebSearch. La marque est-elle mentionnée ? Les concurrents le sont-ils ?
@@ -2115,28 +2103,11 @@ Puis @copywriter : lis docs/geo/content-restructuring.md et rédige les claims v
 Critères de validation : au moins 10 claims vérifiables documentés, la FAQ est structurée pour la citation LLM, les entités de marque sont cohérentes avec docs/strategy/verbal-identity.md.`
       },
       {
-        title:"SEO + GEO combinés",
-        agents:["seo","geo","infrastructure"],
-        quand:"Offensive complète sur Google + IA génératives — le combo qui maximise la visibilité sur tous les canaux de recherche en 2026. 3 agents. Si coupure : 'Lis docs/seo/ et docs/geo/, quels agents restent ?'",
-        prompt:`@seo Lis project-context.md (persona, secteur) et docs/copy/landing-page-copy.md. S'il n'existe pas, pose-moi les questions sur le contenu principal du site et les mots-clés cibles.
-
-Produis l'audit SEO technique complet (Core Web Vitals avec scores actuels, JSON-LD, maillage, sitemap) + keyword map avec pages prioritaires classées par intention (informationnelle / transactionnelle). Chaque recommandation avec priorité P0/P1/P2 et impact estimé.
-
-Livrable : docs/seo/seo-strategy.md + docs/seo/keyword-map.md.
-
-Puis @geo : prends docs/seo/seo-strategy.md et docs/seo/keyword-map.md (pages auditées) et analyse la visibilité sur ChatGPT/Claude/Gemini/Perplexity via WebSearch. Propose le plan GEO en réutilisant les mêmes pages cibles pour maximiser la synergie SEO+GEO. Livrable : docs/geo/geo-strategy.md avec une section "Synergies SEO ↔ GEO" listant les actions communes (un contenu optimisé SEO qui est aussi citable par les LLM = double ROI).
-
-Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals. Identifie les optimisations techniques (compression images, lazy loading, preconnect, cache headers). Mets à jour docs/infra/performance-audit.md.
-
-Critères de validation : chaque page prioritaire a une stratégie SEO + GEO combinée, les synergies sont documentées, les Core Web Vitals sont mesurés.`
-      },
-      {
         title:"Stratégie de contenu & calendrier éditorial",
         agents:["copywriter","seo","geo"],
         quand:"Après la stratégie SEO — pour alimenter l'acquisition organique avec du contenu régulier. Le contenu est le seul canal d'acquisition qui s'apprécie avec le temps. Contenu long (articles piliers). Si coupure : 'Lis docs/copy/content-strategy.md, combien d'articles sont rédigés ? Continue.'",
         prompt:`@copywriter Lis docs/seo/keyword-map.md (mots-clés cibles avec volume et difficulté). S'il n'existe pas, pose-moi les questions pour le créer (secteur, persona, mots-clés principaux) et génère-le avant de continuer. Lis aussi docs/copy/brand-voice.md, docs/strategy/brand-platform.md, et docs/geo/geo-strategy.md si disponible.
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleures stratégies de contenu du secteur du projet. Analyse ce qui fait leur qualité (piliers, fréquence, formats, engagement, SEO) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Définis la stratégie de contenu complète :
 1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
@@ -2171,7 +2142,6 @@ Critères de validation : chaque article du calendrier a un mot-clé cible uniqu
         quand:"Produit lancé, premiers utilisateurs à acquérir. Triple chaînage : si timeout, relancer l'agent manquant séparément. Le bon canal au bon moment vaut mieux que tous les canaux en même temps. Pour reprendre : 'Lis docs/growth/acquisition-plan.md, docs/social/ et docs/copy/, quels agents restent ?'",
         prompt:`@growth Lis docs/strategy/personas.md. S'il n'existe pas, pose-moi les questions pour le créer (profil persona, frustrations, canaux préférés, budget) et génère-le avant de continuer. Lis aussi project-context.md (budget acquisition, objectif 6 mois) et docs/product/pricing-strategy.md si disponible (pour le calcul LTV).
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs funnels d'acquisition du secteur du projet. Analyse ce qui fait leur qualité (canaux, unit economics, conversion, automatisation) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Définis la stratégie d'acquisition :
 1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/effort pour CE persona et CE budget. Justification par canal (pas de liste générique).
@@ -2195,7 +2165,6 @@ Critères de validation : chaque canal a un CAC estimé et une timeline, le budg
         quand:"Produit prêt à vendre, besoin de propositions commerciales, deck de vente, gestion des objections, ROI calculator. L'armurier qui équipe le fondateur pour closer sans décrocher le téléphone.",
         prompt:`@sales-enablement Lis project-context.md (persona, modèle économique, promesse unique, objectif 6 mois). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/product/functional-specs.md (pricing, features) et docs/growth/growth-strategy.md (funnel).
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels de propositions commerciales et sales decks de référence dans le secteur du projet. Analyse la structure, les arguments, les preuves. Objectif : produire des documents au niveau des meilleurs du marché.
 
 Produis dans docs/sales/ :
 1. sales-playbook.md — playbook complet (pipeline, étapes, documents par étape, métriques conversion). Framework adapté au cycle de vente : BANT pour qualification, SPIN pour discovery, MEDDIC pour B2B complexe, Challenger Sale pour vente consultative.
@@ -2237,7 +2206,6 @@ Critères de validation : au moins 3 pipelines activés avec budget et fréquenc
         quand:"Besoin d'une présence organique sur les réseaux. Les réseaux sociaux sont un marathon, pas un sprint — la régularité bat la viralité. 3 agents. Si coupure : 'Lis docs/social/social-strategy.md, quel agent n'a pas terminé ?'",
         prompt:`@social Lis docs/copy/brand-voice.md (ton de marque, vocabulaire) et docs/strategy/personas.md. Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le avant de continuer. Lis aussi project-context.md (présence existante, budget).
 
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs comptes sociaux du secteur du projet. Analyse ce qui fait leur qualité (ton, formats, engagement, fréquence, communauté) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
 
 Stratégie social media complète :
 1. Social Listening & Monitoring : keywords à monitorer (marque, concurrents, secteur, pain points), outils (Brand24/Mention ou alertes Google en budget zéro), cadence hebdomadaire, boucle insights → ajustement calendrier.
@@ -2258,37 +2226,6 @@ Puis @copywriter : prends docs/social/social-strategy.md et rédige 3 templates 
 Puis @legal : vérifie les mentions obligatoires sur les posts sponsorisés/paid (règles ARPP, FTC selon le pays), les règles de concours/jeux si mentionnés, et le consentement pour le retargeting. Note dans docs/legal/legal-audit.md.
 
 Critères de validation : les plateformes sont justifiées par le persona (pas par habitude), le rythme est réaliste, les KPIs sont mesurables.`
-      },
-      {
-        title:"Emails onboarding & conversion",
-        agents:["copywriter","growth","legal"],
-        quand:"Besoin de convertir les inscrits en utilisateurs actifs puis en payants. L'email est le canal avec le meilleur ROI — s'il est bien fait. 3 agents. Si coupure : 'Lis docs/copy/email-sequences.md, quels agents restent ?'",
-        prompt:`@copywriter Lis docs/copy/brand-voice.md et docs/ux/onboarding-flow.md (étapes clés). Pour chaque fichier manquant, pose-moi les questions nécessaires pour le créer et génère-le (brand-voice : ton, registre, vocabulaire ; onboarding : étapes clés, premier moment de valeur, "aha moment").
-
-Avant de produire, recherche via WebSearch 2-3 exemples réels des meilleurs emails d'onboarding SaaS du secteur du projet. Analyse ce qui fait leur qualité (structure, copywriting, timing, conversion) pour les dépasser, pas juste les égaler. Documente les références dans le handoff.
-
-Choisir le framework de persuasion par email : AIDA pour les emails d'activation, PAS pour les emails de récupération de panier/churn. Documenter le framework par email : [Framework : PAS].
-
-Identifier le niveau de conscience Schwartz du destinataire pour chaque email de la séquence (de Unaware pour les premiers emails à Product-Aware pour les emails de conversion). Adapter le contenu et le CTA au niveau.
-
-Extraire les 3-5 objections du persona et les traiter dans la séquence : au moins 1 email dédié à chaque objection majeure.
-
-Crée la séquence de 5 emails :
-1. Bienvenue (J+0) : rappel de la promesse, première action à faire, lien direct vers le produit. Pas de présentation corporate — la valeur d'abord.
-2. Activation feature clé (J+1) : guide vers le "aha moment" — l'action qui prédit la rétention. Avec screenshot/GIF si possible.
-3. Social proof (J+3) : témoignage RÉEL ou résultat d'un utilisateur similaire au persona. JAMAIS de faux témoignage avec des noms de personas fictifs. Si pas encore disponible, utiliser un placeholder "[À remplacer par témoignage réel]".
-4. Upgrade (J+7) : proposition de valeur du plan payant, contextualisée par l'usage de l'utilisateur. Pas de pression — de la valeur.
-5. Réengagement (J+14) : pour les utilisateurs inactifs. Question ouverte ("qu'est-ce qui t'a bloqué ?") + incentive si pertinent.
-
-Format par email : objet (< 50 chars, 2 variantes A/B) + preview text + corps (< 200 mots) + CTA (un seul, clair) + note de segmentation.
-
-Livrable : docs/copy/email-sequences.md.
-
-Puis @growth : prends docs/copy/email-sequences.md et définis les triggers (event qui déclenche chaque email), KPIs par étape (open rate cible, click rate, conversion), critères de segmentation, et conditions de suppression (ne pas envoyer si l'utilisateur a déjà fait l'action). Livrable : section ajoutée dans docs/growth/growth-strategy.md.
-
-Puis @legal : vérifie la conformité RGPD des emails (consentement opt-in, lien de désinscription, mention de l'expéditeur, base légale). Note dans docs/legal/legal-audit.md.
-
-Critères de validation : chaque email a un objectif unique et un CTA unique, les triggers sont définis, la conformité RGPD est vérifiée.`
       },
       {
         title:"Auditer le funnel existant",
@@ -2427,15 +2364,15 @@ Puis @data-analyst : configure le dashboard PMF (Sean Ellis results, rétention 
 Critères de validation : chaque métrique a un seuil cible, le verdict est argumenté avec des données (pas des opinions), les actions suivantes sont concrètes.`
       },
       {
-        title:"Stratégie d'emailing automation",
-        agents:["growth","copywriter","data-analyst"],
-        quand:"Produit avec une base d'utilisateurs inscrits (même petite). L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer. Livrable détaillé + 3 agents. Si coupure : 'Lis docs/growth/email-automation-plan.md, quels agents restent ?'",
+        title:"Emailing : séquences & automation",
+        agents:["growth","copywriter","data-analyst","legal"],
+        quand:"Produit avec une base d'utilisateurs inscrits (même petite) — pour convertir les inscrits en actifs puis en payants, et automatiser tout l'emailing. L'email reste le canal avec le meilleur ROI en 2026 — à condition de ne pas spammer. 4 agents. Si coupure : 'Lis docs/growth/email-automation-plan.md, quels agents restent ?'",
         prompt:`@growth Lis project-context.md (persona, modèle économique). Lis docs/growth/growth-strategy.md et docs/analytics/kpi-framework.md s'ils existent. Lis docs/ux/user-flows.md pour les parcours utilisateur. S'ils n'existent pas, pose-moi les questions : parcours utilisateur principal, points de conversion, taille de la base email, outil d'emailing actuel ou budget pour en choisir un.
 
 Stratégie d'emailing automation complète :
 1. Choix de l'outil : comparatif selon le volume et le budget (Resend pour les devs/transactionnel, Loops pour le product-led, Brevo/Mailchimp pour le marketing classique, Customer.io pour l'automation avancée). Critères : prix par email/contact, API/SDK, templates, automation, analytics, conformité RGPD, délivrabilité.
 2. Séquences transactionnelles : emails déclenchés par une action (confirmation inscription, reset password, confirmation achat, facture). Template pour chaque email avec : objet, contenu, CTA, timing (immédiat).
-3. Séquences d'onboarding : série de 3-5 emails post-inscription pour activer l'utilisateur. Chaque email : objectif (découvrir feature X), timing (J+0, J+1, J+3, J+7, J+14), condition d'envoi (n'envoyer J+3 que si l'utilisateur n'a pas fait l'action X). Objectif : augmenter le taux d'activation de 20%.
+3. Séquences d'onboarding : série de 5 emails post-inscription pour activer puis convertir. Structure de référence : (1) Bienvenue J+0 — rappel de la promesse, première action, lien direct, pas de présentation corporate ; (2) Activation J+1 — guide vers le "aha moment" avec screenshot/GIF ; (3) Social proof J+3 — témoignage RÉEL ou résultat d'un utilisateur similaire (JAMAIS de faux témoignage avec noms de personas — placeholder "[À remplacer par témoignage réel]" si indisponible) ; (4) Upgrade J+7 — valeur du plan payant contextualisée par l'usage, pas de pression ; (5) Réengagement J+14 si inactif — question ouverte + incentive si pertinent. Condition d'envoi par email (n'envoyer J+3 que si l'action X n'est pas faite). Objectif : +20% de taux d'activation.
 4. Séquences de rétention : email de réengagement si inactif > 7 jours, email de milestone (premier succès, 10ème utilisation), email de feedback (NPS à J+30). Segmentation par comportement (actif/inactif/power user).
 5. Séquences marketing : newsletter (fréquence, contenu type), annonces produit (new features), promotions si pertinent. Segmentation par intérêt et engagement.
 6. Triggers comportementaux : mapper chaque trigger (événement utilisateur) à un email. Exemples : abandon de panier → email à H+1, feature non utilisée → email éducatif à J+3, upgrade potentiel → email de proposition. Maximum 1 email automatique par jour par utilisateur.
@@ -2445,11 +2382,13 @@ Stratégie d'emailing automation complète :
 
 Livrable : docs/growth/email-automation-plan.md.
 
-Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-voice.md (ton de marque). Rédige les templates de chaque séquence : objet (< 50 caractères, testé anti-spam), preview text, corps (court, 1 CTA par email, mobile-first), CTA (verbe d'action). Ton : humain, utile, pas vendeur. Livrable : docs/copy/email-sequences.md.
+Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-voice.md (ton de marque). Choisis le framework de persuasion par email (AIDA pour l'activation, PAS pour la récupération churn — documenté [Framework : X]) et le niveau de conscience Schwartz du destinataire par étape de séquence (Unaware au début → Product-Aware pour la conversion). Extrais les 3-5 objections du persona (personas.md) : au moins 1 email traite chaque objection majeure. Rédige les templates de chaque séquence : objet (< 50 caractères, 2 variantes A/B, testé anti-spam), preview text, corps (< 200 mots, 1 CTA unique par email, mobile-first), note de segmentation. Ton : humain, utile, pas vendeur. Livrable : docs/copy/email-sequences.md.
 
 Puis @data-analyst : lis docs/growth/email-automation-plan.md et configure le tracking : events d'ouverture/clic/conversion par séquence, dashboard de performance email (taux par séquence, par cohorte, tendance), alertes si délivrabilité < 95% ou désabonnement > 1%. Mets à jour docs/analytics/tracking-plan.md.
 
-Critères de validation : chaque séquence a un trigger, un timing et un objectif mesurable, les templates sont rédigés et conformes RGPD, le tracking par séquence est configuré, les métriques cibles sont définies.`
+Puis @legal : vérifie la conformité RGPD (consentement opt-in / double opt-in si requis, lien de désinscription, mention de l'expéditeur, base légale par séquence, gestion des préférences). Note dans docs/legal/legal-audit.md.
+
+Critères de validation : chaque séquence a un trigger, un timing et un objectif mesurable, chaque email a un objectif unique et un CTA unique, les objections du persona sont traitées, les templates sont rédigés et conformes RGPD, le tracking par séquence est configuré.`
       },
       {
         title:"Automatisation marketing complète",
@@ -3250,30 +3189,6 @@ Conformité : @legal vérifie les obligations d'accessibilité numérique applic
 Critères de validation : chaque écart visuel est documenté avec page/composant/fichier/correction ; les contrastes WCAG 2.2 AA sont vérifiés avec valeurs mesurées ; les corrections sont priorisées par impact conversion ; les obligations légales d'accessibilité sont identifiées.`
       },
       {
-        title:"Optimiser l'onboarding",
-        agents:["ux","copywriter","data-analyst","legal"],
-        quand:"Time-to-value trop long, taux d'abandon élevé sur les premières sessions, ou NPS négatif des nouveaux utilisateurs. Triple chaînage : si timeout, relancer l'agent manquant séparément. 4 agents. Si coupure : 'Lis docs/ux/onboarding-flow.md, quels agents restent ?'",
-        prompt:`@ux Lis docs/ux/user-flows.md (parcours onboarding actuel) et docs/analytics/tracking-plan.md (events onboarding). S'ils n'existent pas, pose-moi les questions nécessaires pour les créer (étapes actuelles, taux d'abandon par étape si connus, persona principal, action d'activation) et génère-les avant de continuer.
-
-Optimise le parcours d'onboarding :
-1. Audit de l'existant : mapper chaque étape actuelle avec son taux de complétion (si données disponibles). Identifier les étapes à plus fort abandon.
-2. Réduction du time-to-value : objectif < 3 minutes du signup à la première valeur. Pour chaque étape, justifier sa présence (supprimable ? reportable ? simplifiable ?). Appliquer le principe "show, don't ask" — pré-remplir au maximum via données existantes ou défauts intelligents.
-3. Moments de succès : ajouter une célébration/feedback positif à chaque micro-accomplissement. Le "aha moment" (l'action qui prédit la rétention) doit être atteint le plus vite possible.
-4. Progressive disclosure : ne demander les informations que quand elles sont nécessaires (email au signup, le reste plus tard). Chaque champ supplémentaire = ~5% d'abandon.
-5. Fallback & empty states : chaque écran vide doit guider vers l'action suivante (pas d'écran blanc). Prévoir le parcours de l'utilisateur qui abandonne en cours de route et revient.
-6. Accessibilité : le parcours onboarding doit être navigable au clavier et compatible lecteur d'écran. Les tooltips doivent être accessibles (pas juste hover).
-
-Livrable : docs/ux/onboarding-flow.md (avec wireframes textuels des écrans clés et métriques cibles par étape).
-
-Puis @copywriter : lis docs/ux/onboarding-flow.md et docs/copy/brand-voice.md. S'il n'existe pas, pose-moi les questions pour le créer (ton, personnalité, vocabulaire) et génère-le. Rédige le microcopy complet : welcome message (personnalisé si possible), tooltips contextuels, labels de formulaire clairs, empty states engageants, messages de succès motivants, messages d'erreur humains et actionnables. Chaque texte doit réduire la friction, pas l'augmenter. Livrable : docs/copy/ux-writing-guide.md section "Onboarding".
-
-Puis @data-analyst : lis docs/ux/onboarding-flow.md et configure le funnel onboarding avec : event de tracking par étape, taux de complétion cible par étape, alertes automatiques si drop > 20% entre deux étapes sur 48h, cohorte analysis (comparer les onboardings par semaine). Livrable : docs/analytics/dashboard-specs.md section "Funnel onboarding".
-
-Conformité : l'onboarding doit respecter le RGPD — consentement explicite pour le marketing, double opt-in email si applicable, possibilité de compléter l'onboarding sans accepter les cookies non essentiels. Si @legal a produit docs/legal/legal-audit.md, vérifier la cohérence.
-
-Critères de validation : le time-to-value est < 3 minutes, chaque étape a un taux de complétion cible, les empty states guident l'utilisateur, le microcopy est rédigé pour chaque écran, le tracking couvre chaque étape du funnel, la conformité RGPD est assurée.`
-      },
-      {
         title:"Créer un agent spécialisé",
         agents:["agent-factory"],
         quand:"Besoin d'un expert que l'équipe n'a pas encore. Remplace [domaine] et [contexte] par tes besoins avant de lancer. Si ce prompt contient encore des crochets [...], signale-le et demande les informations manquantes.",
@@ -3425,13 +3340,11 @@ Critères de validation : chaque test a une hypothèse falsifiable et un protoco
         quand:"Levée de fonds en cours ou prévue, ou investisseurs existants à informer. Un bon reporting investisseur montre que tu maîtrises tes métriques — un mauvais reporting montre que tu pilotes à vue.",
         prompt:`@data-analyst Lis project-context.md (modèle économique, KPIs, stade de maturité). Lis docs/analytics/kpi-framework.md s'il existe. S'il n'existe pas, pose-moi les questions : modèle de revenu (SaaS, marketplace, transactionnel), stade (pre-seed, seed, série A), métriques actuelles connues (MRR, utilisateurs, churn), fréquence de reporting souhaitée.
 
-Dashboard et reporting investisseurs complet :
-1. Métriques SaaS essentielles : MRR (Monthly Recurring Revenue) et croissance MoM, ARR (Annual Recurring Revenue), churn rate (gross et net), LTV (Lifetime Value), CAC (Customer Acquisition Cost), ratio LTV/CAC (cible > 3), payback period. Pour les marketplaces : GMV, take rate, liquidité. Pour le transactionnel : revenu/transaction, fréquence d'achat.
-2. Métriques produit : DAU/MAU ratio (engagement), taux d'activation (% des inscrits qui atteignent le "aha moment"), rétention par cohorte (J1, J7, J30), NPS. Ces métriques montrent la santé du produit indépendamment du revenu.
-3. Métriques de croissance : nouveaux utilisateurs/mois, source d'acquisition (organique vs payant vs referral), taux de conversion par étape du funnel, viral coefficient si applicable.
-4. Dashboard investisseur : layout recommandé (métriques clés en haut, tendances sur 6-12 mois, cohortes, unit economics). Outil : Notion dashboard, Google Sheets, ou intégré au produit admin. Mise à jour automatique si possible (API analytics → dashboard).
-5. Template de reporting mensuel : format email/doc structuré — highlights (3 wins), lowlights (3 challenges), métriques clés avec tendance, cash position et runway, asks (ce dont l'équipe a besoin). Maximum 1 page. Les investisseurs lisent en diagonale — aller à l'essentiel.
-6. Narrative : comment raconter l'histoire des métriques (pas juste les chiffres). Contextualiser : pourquoi le churn a augmenté ce mois (changement de pricing), pourquoi le MRR a stagné (focus produit, pas acquisition). Les investisseurs investissent dans des équipes qui comprennent leurs métriques.
+Dashboard et reporting investisseurs :
+1. Sélection des métriques selon le modèle (SaaS : MRR/ARR, churn gross et net, LTV/CAC > 3, payback ; marketplace : GMV, take rate, liquidité ; transactionnel : revenu/transaction, fréquence) + santé produit (activation, rétention par cohorte J1/J7/J30, DAU/MAU, NPS) + croissance (nouveaux utilisateurs par source, conversion par étape). Pour CHAQUE métrique retenue : formule de calcul exacte sur les données de CE projet, source de la donnée, définition stable d'un mois à l'autre. Pas de liste générique — uniquement les métriques que ce stade et ce modèle justifient.
+2. Dashboard investisseur : layout (métriques clés en haut, tendances 6-12 mois, cohortes, unit economics), outil adapté au budget, mise à jour automatique si possible (API analytics → dashboard).
+3. Template de reporting mensuel : highlights (3 wins), lowlights (3 challenges), métriques avec tendance, cash position et runway, asks. Maximum 1 page — les investisseurs lisent en diagonale.
+4. Narrative : contextualiser chaque variation (pourquoi le churn a bougé, pourquoi le MRR stagne). Les investisseurs investissent dans des équipes qui comprennent leurs métriques.
 
 Livrable : docs/analytics/investor-reporting.md + docs/analytics/dashboard-specs.md (section investisseurs).
 
@@ -3450,12 +3363,11 @@ Critères de validation : toutes les métriques SaaS essentielles sont définies
         prompt:`@creative-strategy Lis project-context.md (secteur, concurrents identifiés, positionnement). Lis docs/strategy/brand-platform.md et docs/strategy/competitive-benchmark.md s'ils existent. S'ils n'existent pas, pose-moi les questions : 3-5 concurrents directs, concurrents indirects, sur quels axes surveiller (pricing, features, contenu, levées de fonds, recrutement).
 
 Stratégie de veille concurrentielle :
-1. Cartographie concurrentielle : matrice des concurrents directs (même problème, même cible) et indirects (même problème, cible différente ou solution alternative). Pour chaque concurrent : positionnement, pricing, features clés, forces/faiblesses, taille estimée (employés, trafic via SimilarWeb/WebSearch), dernière levée de fonds.
-2. Axes de surveillance : features (changelog, product hunt, blog), pricing (pages pricing, annonces), contenu (blog, SEO, réseaux sociaux), recrutement (LinkedIn, Welcome to the Jungle — indicateur de croissance et de direction stratégique), avis utilisateurs (G2, Trustpilot, Product Hunt, App Store), levées de fonds (Crunchbase, presse).
-3. Outils de monitoring : alertes Google (nom concurrent + mots-clés), suivi des pages pricing (Visualping ou équivalent), suivi des changelogs (RSS), suivi SEO (positions sur les mots-clés partagés via Ahrefs/SEMrush ou WebSearch mensuel), suivi réseaux sociaux (mentions, engagement).
-4. Différenciation : pour chaque concurrent, identifier 2-3 axes de différenciation exploitables. Ce que le produit fait mieux, ce que le concurrent fait mieux, ce que personne ne fait encore. Opportunités de positionnement "blue ocean".
-5. Rapport de veille mensuel : template structuré — mouvements concurrents du mois (features lancées, changements de prix, contenus publiés, levées), impact sur notre positionnement, actions recommandées (réactive : répondre à un mouvement concurrent, proactive : exploiter une faiblesse identifiée).
-6. Alertes critiques : définir les événements qui nécessitent une réaction rapide (concurrent qui copie notre feature phare, concurrent qui baisse drastiquement son prix, nouveau concurrent sur notre niche, concurrent qui lève > 10M€).
+1. Cartographie : matrice concurrents directs (même problème, même cible) et indirects (solution alternative), avec pour chacun — via WebSearch, données réelles — positionnement, pricing, features clés, forces/faiblesses observées dans les avis négatifs (G2, Trustpilot), signaux de trajectoire (recrutement, levées).
+2. Axes de surveillance et outillage budget 0 : alertes Google (nom + mots-clés), RSS des changelogs, suivi mensuel WebSearch des positions SEO sur les mots-clés partagés, suivi des pages pricing. N'ajouter un outil payant que si un axe le justifie.
+3. Différenciation : pour chaque concurrent, 2-3 axes exploitables — ce qu'on fait mieux, ce qu'il fait mieux, ce que personne ne fait. Croiser avec le Strategy Canvas de competitive-benchmark.md.
+4. Rapport mensuel : mouvements du mois, impact sur notre positionnement, 1 action réactive + 1 proactive maximum (pas une liste).
+5. Alertes critiques nécessitant réaction rapide : copie de notre feature phare, baisse de prix drastique, nouvel entrant sur la niche, levée > 10M€.
 
 Livrable : docs/strategy/competitive-watch.md + mise à jour de docs/strategy/competitive-benchmark.md.
 
@@ -3753,6 +3665,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 
 const CHANGELOG = [
   {
+    date:"2026-06-11",
+    agent:"tous",
+    type:"mise à jour",
+    description:"Cure prompts S5 (94→91) — fusions : Onboarding gamifié + Optimiser l'onboarding → 'Concevoir ou optimiser l'onboarding', Emails onboarding + Emailing automation → 'Emailing : séquences & automation', suppression de 'SEO + GEO combinés' (doublon — lancer les 2 prompts SEO et GEO à la suite). Dégraissage du savoir générique (reporting investisseurs, veille concurrentielle, responsive, API, auth), boilerplate benchmark retiré (hérité du protocole), prompt moat passé en verdicts FORT/FAIBLE/ABSENT. Agents v3.0 (-67%) : voir card MAJ."
+  },
+  {
     date:"2026-03-24",
     agent:"orchestrator",
     type:"nouveau",
@@ -3893,7 +3811,7 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S5 2026-06-11 « trust the model » : les 20 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 20 agents / 94 prompts / 9 gates. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com, Opus 4.8. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md) car update.sh ne supprime pas les fichiers absents en remote. Inclut la cure S5 2026-06-11 « trust the model » : les 20 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 20 agents / 91 prompts / 9 gates. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com, Opus 4.8. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
             <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md</code>. Backup auto + fusion CLAUDE.md + cure S5 (20 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>

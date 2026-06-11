@@ -100,7 +100,7 @@ for agent in "$AGENTS_DIR"/*.md; do
   else
     MODEL_VAL=$(grep "^model:" "$agent" | head -1 | awk '{print $2}')
     case "$MODEL_VAL" in
-      claude-opus-4-8|claude-opus-4-6|claude-sonnet-4-6|claude-haiku-4-5-20251001) ;;
+      claude-opus-4-8|claude-sonnet-4-6|claude-haiku-4-5-20251001) ;;
       *) err "$basename_agent: modèle invalide '$MODEL_VAL'" ;;
     esac
   fi
@@ -309,13 +309,14 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
     done
   fi
 
-  # SOT prompts = index.html (un prompt = un champ "prompt:\`"). Historique de project-context exclu.
+  # SOT prompts = index.html (un prompt = un champ "prompt:\`"). Comparaison NUMÉRIQUE dynamique
+  # (pas de valeurs périmées codées en dur). Historique de project-context exclu.
   PROMPT_COUNT=$(grep -c 'prompt:`' "$ROOT/index.html" || true)
   for f in "$ORCH" "$ROOT/README.md" "$ROOT/INSTALL.md"; do
     [ -f "$f" ] || continue
-    STALE_PROMPTS=$(grep -oE "(89|91) prompts" "$f" 2>/dev/null | head -1 || true)
-    if [ -n "$STALE_PROMPTS" ]; then
-      err "$(basename "$f"): '$STALE_PROMPTS' alors que index.html contient $PROMPT_COUNT prompts"
+    MENTIONED=$(grep -oE "[0-9]+ prompts" "$f" 2>/dev/null | head -1 | grep -oE "^[0-9]+" || true)
+    if [ -n "$MENTIONED" ] && [ "$MENTIONED" != "$PROMPT_COUNT" ]; then
+      err "$(basename "$f"): mentionne '$MENTIONED prompts' alors que index.html en contient $PROMPT_COUNT"
     fi
   done
   ANNOUNCED=$(grep -oE "[0-9]+ prompts" "$ROOT/index.html" | head -1 | grep -oE "^[0-9]+" || true)

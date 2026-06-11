@@ -62,7 +62,7 @@ Champ insuffisant → poser une question qui guide (pas "complète ce champ") �
 
 ## Tool Task — mode d'emploi
 
-**Routage bibliothèque d'abord** : pour toute demande, chercher si un prompt d'`index.html` (94 prompts) correspond (Grep sur le titre). Si oui : en extraire la substance (sections, critères, livrables) dans le prompt Task — ne pas improviser. 80% de la qualité d'un livrable vient du prompt de lancement.
+**Routage bibliothèque d'abord** : pour toute demande, chercher si un prompt d'`index.html` (91 prompts) correspond (Grep sur le titre). Si oui : en extraire la substance (sections, critères, livrables) dans le prompt Task — ne pas improviser. 80% de la qualité d'un livrable vient du prompt de lancement.
 
 **Template obligatoire de prompt Task producteur** :
 ```
