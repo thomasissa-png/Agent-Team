@@ -321,9 +321,20 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
       err "$(basename "$f"): mentionne '$MENTIONED prompts' alors que index.html en contient $PROMPT_COUNT"
     fi
   done
-  ANNOUNCED=$(grep -oE "[0-9]+ prompts" "$ROOT/index.html" | head -1 | grep -oE "^[0-9]+" || true)
-  if [ -n "$ANNOUNCED" ] && [ "$ANNOUNCED" != "$PROMPT_COUNT" ]; then
-    err "index.html annonce '$ANNOUNCED prompts' mais en contient $PROMPT_COUNT"
+  # Claims CANONIQUES du compteur (meta, sélecteur, sous-titre, card) — doivent valoir PROMPT_COUNT.
+  # On exclut les lignes de changelog (description:) = historique légitime, et on extrait le nombre AVANT "prompts".
+  for n in $(grep -v 'description:' "$ROOT/index.html" \
+              | grep -oE "[0-9]+ prompts prêts|parmi les [0-9]+ prompts|[0-9]+ prompts organisés par phase|[0-9]+ prompts / 9 gates" \
+              | grep -oE "[0-9]+ prompts" | grep -oE "^[0-9]+" | sort -u); do
+    [ "$n" != "$PROMPT_COUNT" ] && err "index.html : claim de compteur '$n prompts' != $PROMPT_COUNT réels"
+  done
+
+  # Tiret cadratin (—) interdit dans le brand-facing du site (head + chrome HTML rendu), pas dans les prompts/data-text.
+  EMDASH_BRAND=$(awk 'NR<=25 || NR>=3745' "$ROOT/index.html" | grep -P '—' | grep -vE "data-text=|description:\"|prompt:\`" | grep -E "title>|og:|twitter:|section-sub|install-sub|install-step|hero-sub|diff-|<em>|<h3|<td|<li" | head -1 || true)
+  if [ -n "$EMDASH_BRAND" ]; then
+    err "index.html : tiret cadratin (—) dans le brand-facing (signature IA, voir CLAUDE.md règle 12) : ${EMDASH_BRAND:0:70}"
+  else
+    ok "Brand-facing sans tiret cadratin (—)"
   fi
 
   # Références mortes post-cure S4 dans les fichiers ACTIFS (docs/reviews et archives exclus)

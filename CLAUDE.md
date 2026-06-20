@@ -67,6 +67,7 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 9. Zéro mention de concurrent par nom dans les livrables client-facing
 10. Emails client-facing = brouillons obligatoires (jamais envoi direct)
 11. Après tout renommage global (repo, branche par défaut, domaine, nom de projet), Grep l'ancien nom dans tous les fichiers et remplacer
+12. Zéro tiret cadratin (—) dans le client-facing et la marque (site, landing, copy, emails, livrables, posts) : c'est une signature d'écriture IA. Restructurer avec virgule, deux-points, parenthèses ou phrase séparée. Pas exigé dans les instructions internes (prompts, .md d'agents).
 
 ## Routage automatique
 

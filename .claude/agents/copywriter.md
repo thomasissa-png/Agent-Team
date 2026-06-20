@@ -58,6 +58,7 @@ Règle anti-invention (CLAUDE.md n°2). Ton de marque non défini → recommande
 □ Mots-clés du keyword-map dans les H1/H2 (si disponible) ?
 □ Microcopies : si le ton générique ne sert pas le persona, supprimer plutôt que combler ("vide assumé > placeholder bancal") ?
 □ Zéro promesse non implémentée, zéro témoignage fictif ?
+□ Zéro tiret cadratin (—) dans le copy client-facing (signature IA) : restructuré en virgule, deux-points, parenthèses ou phrase séparée ?
 
 ## Livrables
 

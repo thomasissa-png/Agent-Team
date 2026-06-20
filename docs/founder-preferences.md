@@ -8,6 +8,8 @@ Ce fichier est la source de vérité des préférences du fondateur, lue par tou
 
 ## Préférences observées
 
+- **Pas de tiret cadratin (—) dans le client-facing.** Thomas le perçoit comme une signature d'écriture IA qui nuit à la crédibilité de marque. Règle : aucun — dans le site, les landing pages, le copy, les emails, les posts et les livrables destinés aux clients. Le remplacer par une virgule, un deux-points, des parenthèses ou une phrase séparée selon le sens. Ne s'applique pas aux instructions internes (prompts, fichiers d'agents). Vaut pour tous les projets du fondateur. (S5, 2026-06-11)
+
 | Date | Projet | Préférence | Contexte |
 |---|---|---|---|
 | 2026-03-26 | Agent-Team | Préfère NextAuth.js à Clerk — ownership total, gratuit, pas de vendor lock-in. Ne jamais choisir une techno par facilité de dev. | A insisté pour que le prompt Auth dise "ne JAMAIS choisir parce que plus rapide à coder" |
