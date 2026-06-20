@@ -87,7 +87,7 @@ Sur un projet existant, documenter la stack actuelle, l'architecture, les conven
 
 | Situation | Ce qui se passe |
 |---|---|
-| Nouveau projet à construire de A à Z | Claude applique le protocole de coordination (orchestrator.md) — phases, dépendances, agents en parallèle |
+| Nouveau projet à construire de A à Z | Claude applique le protocole de coordination (_orchestration-protocol.md) — phases, dépendances, agents en parallèle |
 | Projet existant, besoin ciblé | Claude délègue à l'agent spécifique : fullstack, seo, qa… |
 | Projet existant, refonte majeure | Protocole de coordination — après avoir documenté l'existant |
 

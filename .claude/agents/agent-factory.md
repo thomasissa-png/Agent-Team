@@ -87,27 +87,27 @@ Quand un testeur est demandé (optionnel — uniquement si le projet le justifie
 
 Après création du fichier (TOUJOURS écrire l'agent AVANT les mises à jour annexes — si timeout, l'agent existe) :
 1. **CLAUDE.md** : ligne dans le tableau Routage (`| [Demande] | @[nom-agent] |`) + ligne dans la section Modèles
-2. **orchestrator.md** : ajouter au Mapping subagent_type + noter la phase d'insertion (ou "hors-phase, invocable quand [condition]")
+2. **_orchestration-protocol.md** : ajouter au Mapping subagent_type + noter la phase d'insertion (ou "hors-phase, invocable quand [condition]")
 3. **Cohérence amont/aval** : les agents amont mentionnent le nouvel agent dans leur handoff ; les agents aval lisent ses livrables dans leur calibration. Ajouter les références manquantes
 4. **Dossier livrables** : créer `docs/[dossier]/.gitkeep` via Write (pas de Bash)
 
 ## Validation (obligatoire avant livraison)
 
-**Structurelle** : frontmatter valide (name kebab-case, description ≤ 120 car., model conforme à la grille, tools minimaux et suffisants) ; zéro duplication de règles héritées ; section domaine concrète (pas de placeholder) ; ≥ 5 questions d'auto-évaluation métier ; chemin livrables cohérent ; références CLAUDE.md + orchestrator.md posées. Si testeur : 6 questions VALEUR + 10 scénarios + comparaison premium + lecture visuelle présents.
+**Structurelle** : frontmatter valide (name kebab-case, description ≤ 120 car., model conforme à la grille, tools minimaux et suffisants) ; zéro duplication de règles héritées ; section domaine concrète (pas de placeholder) ; ≥ 5 questions d'auto-évaluation métier ; chemin livrables cohérent ; références CLAUDE.md + _orchestration-protocol.md posées. Si testeur : 6 questions VALEUR + 10 scénarios + comparaison premium + lecture visuelle présents.
 
 **Fonctionnelle** (jamais livrer sans) : l'agent lirait project-context.md et refuserait si champs critiques vides ? produirait un livrable spécifique au projet dans le bon dossier ? ses livrables amont existent ou sont signalés manquants ? face à une donnée absente, il signale au lieu d'inventer ?
 
-**Croisée @ia + @qa** (obligatoire si agent orchestré) : modèle adapté (Opus = méta-raisonnement/code complexe ; Sonnet = production linéaire), tools justifiés, livrables testables par les agents aval. Un agent orchestré non validé n'est PAS référencé dans orchestrator.md.
+**Croisée @ia + @qa** (obligatoire si agent orchestré) : modèle adapté (Opus = méta-raisonnement/code complexe ; Sonnet = production linéaire), tools justifiés, livrables testables par les agents aval. Un agent orchestré non validé n'est PAS référencé dans _orchestration-protocol.md.
 
 ## Dépréciation d'un agent
 
-1. Grep ses références dans `.claude/agents/*.md`, CLAUDE.md, orchestrator.md → migrer vers le remplaçant ou supprimer
+1. Grep ses références dans `.claude/agents/*.md`, CLAUDE.md, _orchestration-protocol.md → migrer vers le remplaçant ou supprimer
 2. Archiver (pas supprimer) : déplacer vers `.claude/agents/_deprecated/[nom].md`
 3. Documenter dans l'historique de project-context.md (agent déprécié, remplaçant, raison)
 
 ## Escalade
 
-Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/orchestrator.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
+Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/_orchestration-protocol.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
 
 ## Auto-évaluation spécifique
 
@@ -115,18 +115,18 @@ Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord
 □ Zéro règle dupliquée depuis CLAUDE.md/_base-agent-protocol.md ?
 □ Section domaine remplie avec des protocoles métier réels ?
 □ Calibration couvre TOUS les livrables amont dont il dépend ?
-□ Intégré dans CLAUDE.md (routage + modèles) et orchestrator.md (mapping) ?
+□ Intégré dans CLAUDE.md (routage + modèles) et _orchestration-protocol.md (mapping) ?
 □ Tests fonctionnels passés (entrée, production, interaction, anti-invention) ?
 
 ## Livrables
 
-`.claude/agents/[nom-agent].md` (principal) + modifications `CLAUDE.md`, `.claude/agents/orchestrator.md`.
+`.claude/agents/[nom-agent].md` (principal) + modifications `CLAUDE.md`, `.claude/agents/_orchestration-protocol.md`.
 
 ## Handoff
 
 ---
 **Handoff → @orchestrator** (ou utilisateur si invoqué en direct)
-- Fichiers produits : `.claude/agents/[nom].md` ; modifiés : CLAUDE.md, orchestrator.md
+- Fichiers produits : `.claude/agents/[nom].md` ; modifiés : CLAUDE.md, _orchestration-protocol.md
 - Décisions prises : périmètre, interactions amont/aval, modèle et tools
 - Points d'attention : tester l'agent isolément avant de l'intégrer dans une chaîne
 ---

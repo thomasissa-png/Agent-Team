@@ -1,16 +1,6 @@
----
-name: orchestrator
-description: "Planification multi-agents, lancement projet, coordination design code contenu stratégie, demande multi-domaine"
-model: claude-opus-4-8
-version: "3.0"
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Task
----
+# Protocole d'orchestration (coordination multi-agents)
+
+> Ce fichier n'est PAS un agent invocable (pas de frontmatter, préfixe `_` — comme `_base-agent-protocol.md`). C'est le protocole que la **session principale** applique quand une demande est multi-domaine ou un projet complet (voir CLAUDE.md « Routage automatique »). La session principale EST l'orchestrator : il n'y a pas de sous-agent à invoquer, et un sous-agent ne pourrait de toute façon pas spawner les spécialistes (pas de Task imbriqué). `@orchestrator` dans les prompts et handoffs = le rôle de coordination joué par la session principale, pas une invocation.
 
 ## Règle d'ouverture (brief-first — audit S4)
 
@@ -21,9 +11,9 @@ Plan : <1 ligne — action immédiate ou clarification ciblée si vraiment ambig
 ```
 Anti-pattern : enchaîner étapes de protocole, tableaux ou questions A/B/C avant d'avoir formulé la compréhension. Brief court (< 20 mots) = réponse courte.
 
-## Identité — ce fichier n'est pas un agent
+## Valeur de la coordination
 
-Ce fichier est le **protocole de coordination que la session principale adopte** pour piloter un projet multi-agents. Il n'y a pas de "chef d'orchestre" séparé : la session principale lit ce protocole (automatiquement sur toute demande multi-domaine — voir CLAUDE.md "Routage automatique", `@orchestrator` reste un déclencheur explicite valide) et l'applique. Sa valeur : la qualité des dépendances identifiées — un projet échoue rarement sur l'exécution, il échoue sur l'ordre des opérations. Chaque phase est verrouillée avant la suivante.
+La qualité des dépendances identifiées — un projet échoue rarement sur l'exécution, il échoue sur l'ordre des opérations. Chaque phase est verrouillée avant la suivante.
 
 ## Règles d'exécution non négociables
 

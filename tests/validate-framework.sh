@@ -21,7 +21,7 @@ done
 
 AGENTS_DIR="$ROOT/.claude/agents"
 CLAUDE_MD="$ROOT/CLAUDE.md"
-ORCH="$AGENTS_DIR/orchestrator.md"
+ORCH="$AGENTS_DIR/_orchestration-protocol.md"
 ERRORS=0
 WARNINGS=0
 
@@ -46,7 +46,7 @@ echo ""
 
 # 1. Fichiers critiques
 echo "--- Fichiers critiques ---"
-for f in "$CLAUDE_MD" "$AGENTS_DIR/_base-agent-protocol.md" "$AGENTS_DIR/orchestrator.md" "$AGENTS_DIR/agent-factory.md" "$ROOT/templates/project-context.md"; do
+for f in "$CLAUDE_MD" "$AGENTS_DIR/_base-agent-protocol.md" "$AGENTS_DIR/_orchestration-protocol.md" "$AGENTS_DIR/agent-factory.md" "$ROOT/templates/project-context.md"; do
   if [ -f "$f" ]; then
     ok "$(basename "$f") existe"
   else
@@ -240,7 +240,7 @@ if [ -f "$TEMPLATE" ]; then
   done
 fi
 
-# 6. Vérification orchestrator.md — mapping subagent_type
+# 6. Vérification orchestrator.md — mapping subagent_type (_orchestration-protocol.md)
 echo ""
 echo "--- Mapping orchestrator ---"
 if [ -f "$ORCH" ]; then
@@ -249,7 +249,7 @@ if [ -f "$ORCH" ]; then
     case "$basename_agent" in _*) continue ;; esac
     [ "$basename_agent" = "orchestrator" ] && continue
     if ! grep -q "$basename_agent" "$ORCH"; then
-      warn "@$basename_agent non référencé dans orchestrator.md"
+      warn "@$basename_agent non référencé dans _orchestration-protocol.md"
     fi
   done
 fi
@@ -289,12 +289,14 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
   echo ""
   echo "--- Cohérence des comptes (anti-drift) ---"
 
-  # SOT agents = nombre de fichiers (hors _*)
-  for f in "$CLAUDE_MD" "$ROOT/project-context.md" "$ROOT/index.html" "$ROOT/INSTALL.md"; do
+  # SOT agents = nombre de fichiers hors _* (l'orchestration est un protocole _*, pas un agent).
+  # Comparaison NUMÉRIQUE dynamique : le 1er "N agents" du fichier (= mention live) doit valoir AGENT_COUNT.
+  # project-context.md exclu (historique chargé de comptes anciens légitimes).
+  for f in "$ROOT/index.html" "$ROOT/INSTALL.md"; do
     [ -f "$f" ] || continue
-    STALE_AGENTS=$(grep -oE "(19|21) agents" "$f" 2>/dev/null | head -1 || true)
-    if [ -n "$STALE_AGENTS" ]; then
-      err "$(basename "$f"): '$STALE_AGENTS' alors que le repo contient $AGENT_COUNT agents (SOT: ls .claude/agents)"
+    MENTIONED_A=$(grep -oE "[0-9]+ agents" "$f" 2>/dev/null | head -1 | grep -oE "^[0-9]+" || true)
+    if [ -n "$MENTIONED_A" ] && [ "$MENTIONED_A" != "$AGENT_COUNT" ]; then
+      err "$(basename "$f"): mentionne '$MENTIONED_A agents' alors que le repo contient $AGENT_COUNT agents (SOT: ls .claude/agents hors _*)"
     fi
   done
 
@@ -384,12 +386,12 @@ if [ -n "$NEW_AGENT_FILE" ]; then
     ERRORS=$((ERRORS + 1))
   fi
 
-  # Vérification référence dans orchestrator.md
+  # Vérification référence dans _orchestration-protocol.md
   if [ -f "$ORCH" ] && grep -q "$NA_NAME" "$ORCH" 2>/dev/null; then
-    green "[OK] $NA_NAME référencé dans orchestrator.md"
+    green "[OK] $NA_NAME référencé dans _orchestration-protocol.md"
     NA_CHECKS=$((NA_CHECKS + 1))
   else
-    red "[ERREUR] $NA_NAME non référencé dans orchestrator.md (mapping)"
+    red "[ERREUR] $NA_NAME non référencé dans _orchestration-protocol.md (mapping)"
     NA_ERRORS=$((NA_ERRORS + 1))
     ERRORS=$((ERRORS + 1))
   fi

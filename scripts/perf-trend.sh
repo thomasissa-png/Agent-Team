@@ -92,8 +92,8 @@ M3=$(safe_grep_c "^| G[0-9]" "$GATES_FILE")
 LL_FILE="docs/lessons-learned.md"
 M4=$(safe_grep_c "^| 2026-" "$LL_FILE")
 
-# --- M5 : Taille orchestrator.md ---
-ORCH_FILE=".claude/agents/orchestrator.md"
+# --- M5 : Taille _orchestration-protocol.md ---
+ORCH_FILE=".claude/agents/_orchestration-protocol.md"
 M5=$(count_lines "$ORCH_FILE")
 
 # --- M6 : Nombre de fichiers docs/ ---
@@ -228,7 +228,7 @@ Genere automatiquement par scripts/perf-trend.sh a chaque cloture (P2 Etape 5e).
 | M2 — Total /memories/* | < 250 | > 350 |
 | M3 — Gates actives | 30-40 | > 50 |
 | M4 — Learnings actifs | < 20 | > 30 |
-| M5 — orchestrator.md (lignes) | < 500 | > 900 |
+| M5 — _orchestration-protocol.md (lignes) | < 500 | > 900 |
 | M6 — Fichiers docs/ | < 100 | > 150 |
 | M7 — Max invocations agent (meme feature) | <= 3 | > 3 (CRITICAL > 6) |
 
@@ -302,7 +302,7 @@ echo "M1 (contexte commun)     : ${M1}    [cible <${M1_TARGET}, warn >${M1_WARN}
 echo "M2 (memories)            : ${M2_DISPLAY}    [cible <${M2_TARGET}, warn >${M2_WARN}]"
 echo "M3 (gates)               : ${M3}    [cible ${M3_TARGET_LO}-${M3_TARGET_HI}, warn >${M3_WARN}]"
 echo "M4 (learnings actifs)    : ${M4}    [cible <${M4_TARGET}, warn >${M4_WARN}]"
-echo "M5 (orchestrator.md)     : ${M5}    [cible <${M5_TARGET}, warn >${M5_WARN}]"
+echo "M5 (_orchestration-protocol.md)     : ${M5}    [cible <${M5_TARGET}, warn >${M5_WARN}]"
 echo "M6 (fichiers docs/)      : ${M6}    [cible <${M6_TARGET}, warn >${M6_WARN}]"
 echo "M7 (max invoc agent)     : ${M7_DISPLAY}    [cible <=${M7_TARGET}, warn >${M7_WARN}, crit >${M7_CRIT}]"
 echo "------------------------------------------------"

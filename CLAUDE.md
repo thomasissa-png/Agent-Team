@@ -70,7 +70,7 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 
 ## Routage automatique
 
-**L'utilisateur n'a PAS besoin de taper `@agent`.** La session principale identifie le(s) domaine(s) de la demande et délègue elle-même via Task (table ci-dessous). `@agent` explicite = override qui force le routage. Demande multi-domaine ou projet complet → la session principale lit `.claude/agents/orchestrator.md` (son protocole de coordination) et l'applique.
+**L'utilisateur n'a PAS besoin de taper `@agent`.** La session principale identifie le(s) domaine(s) de la demande et délègue elle-même via Task (table ci-dessous). `@agent` explicite = override qui force le routage. Demande multi-domaine ou projet complet → la session principale lit `.claude/agents/_orchestration-protocol.md` (son protocole de coordination — ce N'EST pas un 20e agent, c'est la session principale qui l'applique) et l'exécute.
 
 | Demande | Agent délégué |
 |---|---|
@@ -97,10 +97,11 @@ Pour toute règle/learning ajouté en fin de session, une obsolète doit être s
 
 Agents dans `.claude/agents/`. Ambiguïté de domaine → trancher soi-même (founder-preferences), ne pas demander.
 
-## Modèles
+## Modèles (19 agents spécialisés)
 
-- **Opus** : orchestrator, agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure
-- **Sonnet** : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, sales-enablement, seo, social, ux
+- **Opus** (7) : agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure
+- **Sonnet** (12) : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, sales-enablement, seo, social, ux
+- **Protocole d'orchestration** : appliqué par la session principale (pas un agent invocable — voir `_orchestration-protocol.md`). Tourne sur le modèle de la session.
 
 ## Références
 

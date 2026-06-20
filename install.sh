@@ -219,7 +219,7 @@ print_summary() {
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo ""
   echo -e "  ${YELLOW}1.${NC} Remplis ${BOLD}project-context.md${NC} à la racine du projet"
-  echo -e "  ${YELLOW}2.${NC} Dans Claude Code, tape : ${BOLD}@orchestrator lance le projet${NC}"
+  echo -e "  ${YELLOW}2.${NC} Dans Claude Code, décris ton besoin (ex : ${BOLD}lance mon projet${NC}) — le routage est automatique"
   echo -e "  ${YELLOW}3.${NC} Pour un agent seul : ${BOLD}@design crée le design system${NC}"
   echo ""
   echo -e "  Mise à jour : ${BOLD}bash update.sh${NC}"

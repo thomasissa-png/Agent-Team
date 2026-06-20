@@ -1,6 +1,6 @@
 # Scénarios de test — @orchestrator
 
-Ces scénarios valident le comportement de l'orchestrateur dans des situations critiques. Pour chaque scénario, le résultat attendu est décrit. Si le comportement réel diffère → bug à corriger dans `orchestrator.md`.
+Ces scénarios valident le comportement de l'orchestrateur dans des situations critiques. Pour chaque scénario, le résultat attendu est décrit. Si le comportement réel diffère → bug à corriger dans `_orchestration-protocol.md`.
 
 ---
 
@@ -99,6 +99,6 @@ Ces scénarios valident le comportement de l'orchestrateur dans des situations c
 
 ## Comment utiliser ces scénarios
 
-1. **Test mental** : pour chaque scénario, relire `orchestrator.md` et vérifier que les règles couvrent le comportement attendu
+1. **Test mental** : pour chaque scénario, relire `_orchestration-protocol.md` et vérifier que les règles couvrent le comportement attendu
 2. **Test réel** : sur un projet test (utiliser `tests/project-context-test.md`), essayer de reproduire le scénario et observer le comportement
-3. **Régression** : après toute modification de `orchestrator.md`, repasser ces 6 scénarios mentalement pour vérifier qu'aucun n'est cassé
+3. **Régression** : après toute modification de `_orchestration-protocol.md`, repasser ces 6 scénarios mentalement pour vérifier qu'aucun n'est cassé
