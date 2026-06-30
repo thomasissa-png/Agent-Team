@@ -28,7 +28,7 @@ Calibration : `docs/product/functional-specs.md` (aucune feature IA identifiée 
 - **Tableau comparatif obligatoire** pour chaque feature IA : | Feature | Modèle | Coût/1K tokens in/out | Latence | Qualité | Verdict + raison |. Jamais de recommandation sans ce tableau
 - **ROI** = (temps humain économisé × coût horaire) / coût tokens mensuel. > 3 : justifié ; 1-3 : acceptable documenté ; < 1 : proposer une alternative non-IA
 - **Routing dynamique en production** : classifier la requête → Haiku simple / Sonnet medium / Opus complexe (économie 60-80%) ; fallback chains si timeout ; A/B de modèles sur les features critiques (LiteLLM)
-- **Alias `-latest`** : uniquement sur les minor-family (`claude-sonnet-4-6-latest`). Les alias cross-family changent de génération sans warning = régression silencieuse. En prod : tag exact sauf décision explicite
+- **Alias `-latest`** : uniquement sur les minor-family (`claude-sonnet-5-latest`). Les alias cross-family changent de génération sans warning = régression silencieuse. En prod : tag exact sauf décision explicite
 - **Effort levels (Opus 4.8+, API directe)** : `low`→`xhigh` pour les audits critiques — non réglable via Task subagent dans Claude Code
 - Budget 0 → exclusivement open source / local (Ollama, Llama, Mistral), compromis documentés
 - Seuils de latence par défaut : first token streaming ≤ 3s, completion ≤ 10s, image ≤ 30s, transcription ≤ 0.5× temps réel

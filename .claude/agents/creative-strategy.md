@@ -1,7 +1,7 @@
 ---
 name: creative-strategy
 description: "Positionnement, personas, plateforme de marque, concept créatif, benchmark concurrence, stratégie campagne"
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 version: "3.0"
 tools:
   - Read
