@@ -368,142 +368,142 @@
 <script>
 const AGENTS = [
   {
-    id:"orchestrator", name:"Orchestrator", at:"@orchestrator", version:"2.1", model:"claude-opus-4-8",
-    role:"Chef d'orchestre — 20 ans d'expérience",
-    phase:"Phase 0 — Coordination",
-    desc:"Point d'entrée de tout projet. Décompose le travail entre agents, définit l'ordre d'exécution et vérifie que les livrables s'assemblent sans contradiction.",
+    id:"orchestrator", name:"Orchestration", at:"@orchestrator", version:"3.0", model:"claude-opus-4-8",
+    role:"Protocole de coordination, appliqué par la session principale",
+    phase:"Coordination (session principale)",
+    desc:"Pas un agent à invoquer : le protocole que la session principale applique pour décomposer le travail entre agents, ordonner l'exécution et vérifier que les livrables s'assemblent sans contradiction. Routage automatique, plus besoin de taper @agent.",
     required:["Nom du projet","Secteur","Persona principal","Objectif à 6 mois","Stack technique","KPI North Star","Promesse unique","Ton de marque"]
   },
   {
-    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy", version:"2.1", model:"claude-sonnet-5",
-    role:"Directrice de stratégie créative — 18 ans",
-    phase:"Phase 0 — Stratégie",
+    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy", version:"4.0", model:"claude-sonnet-5",
+    role:"Directrice de stratégie créative, 18 ans",
+    phase:"Phase 0 : Stratégie",
     desc:"Définit le positionnement, les personas et la plateforme de marque. Produit le brief créatif qui guide tous les autres agents.",
     required:["Secteur","Persona principal","Problème principal","Alternative actuelle"]
   },
   {
-    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"2.0", model:"claude-sonnet-5",
-    role:"VP Product — 12 ans",
-    phase:"Phase 0 — Produit",
+    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"4.0", model:"claude-sonnet-5",
+    role:"VP Product, 12 ans",
+    phase:"Phase 0 : Produit",
     desc:"Traduit la stratégie en roadmap actionnable : vision produit, specs fonctionnelles, user stories priorisées et backlog.",
     required:["Objectif principal à 6 mois","Persona principal","Modèle économique (SaaS/marketplace/freemium/B2B/B2C)"]
   },
   {
-    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"2.1", model:"claude-sonnet-5",
-    role:"Head of Analytics — 10 ans",
-    phase:"Phase 0 — Analytics",
+    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"4.0", model:"claude-sonnet-5",
+    role:"Head of Analytics, 10 ans",
+    phase:"Phase 0 : Analytics",
     desc:"Définit ce qu'il faut mesurer, configure le tracking et construit les tableaux de bord. Répond à la question : est-ce que ça marche ?",
     required:["Objectif principal à 6 mois","KPI North Star","Stack technique","Budget analytics (ou 'à recommander')"]
   },
   {
-    id:"legal", name:"Legal", at:"@legal", version:"2.1", model:"claude-sonnet-5",
-    role:"Juriste digital senior — 19 ans",
-    phase:"Phase 0→5 — Parallèle",
+    id:"legal", name:"Legal", at:"@legal", version:"4.0", model:"claude-sonnet-5",
+    role:"Juriste digital senior, 19 ans",
+    phase:"Phase 0→5 : Parallèle",
     desc:"Vérifie la conformité juridique en parallèle de toutes les phases : RGPD, CGU/CGV, protection IP, contrats SaaS, EU AI Act.",
     required:["Pays de commercialisation","Données sensibles collectées (santé/finance/mineurs : oui/non)","Utilisation d'IA générative (oui/non)","Modèle économique"]
   },
   {
-    id:"ux", name:"UX", at:"@ux", version:"2.0", model:"claude-sonnet-5",
-    role:"Lead UX Researcher & Designer — 14 ans",
-    phase:"Phase 1 — Expérience",
+    id:"ux", name:"UX", at:"@ux", version:"4.0", model:"claude-sonnet-5",
+    role:"Lead UX Researcher & Designer, 14 ans",
+    phase:"Phase 1 : Expérience",
     desc:"Conçoit les parcours utilisateur : comment on arrive, comment on comprend, comment on agit. Wireframes, architecture de pages, conversion.",
     required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
   },
   {
-    id:"design", name:"Design", at:"@design", version:"2.0", model:"claude-sonnet-5",
-    role:"Directeur artistique digital — 11 ans",
-    phase:"Phase 1 — Visuel",
+    id:"design", name:"Design", at:"@design", version:"4.0", model:"claude-sonnet-5",
+    role:"Directeur artistique digital, 11 ans",
+    phase:"Phase 1 : Visuel",
     desc:"Traduit les parcours UX en interface visuelle : couleurs, typographies, composants, tokens. Garant de la cohérence visuelle sur tous les écrans.",
     required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
   },
   {
-    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"2.1", model:"claude-sonnet-5",
-    role:"Senior copywriter — 13 ans",
-    phase:"Phase 1–3 — Contenu",
+    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"4.0", model:"claude-sonnet-5",
+    role:"Senior copywriter, 13 ans",
+    phase:"Phase 1 à 3 : Contenu",
     desc:"Rédige tous les textes du projet : landing pages, brand voice, UX writing, emails. Chaque mot est calibré pour le persona cible.",
     required:["Persona principal","Ton de marque","Promesse unique"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"2.0", model:"claude-opus-4-8",
-    role:"Développeur senior full-stack — 16 ans",
-    phase:"Phase 2 — Développement",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"3.0", model:"claude-opus-4-8",
+    role:"Développeur senior full-stack, 16 ans",
+    phase:"Phase 2 : Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Neon Postgres (futurs projets) ou PostgreSQL Replit (legacy), Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"qa", name:"QA", at:"@qa", version:"2.0", model:"claude-opus-4-8",
-    role:"QA Engineering Manager — 9 ans",
-    phase:"Phase 2 — Tests",
+    id:"qa", name:"QA", at:"@qa", version:"3.0", model:"claude-opus-4-8",
+    role:"QA Engineering Manager, 9 ans",
+    phase:"Phase 2 : Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"2.0", model:"claude-opus-4-8",
-    role:"SRE / Platform Engineer — 13 ans",
-    phase:"Phase 2 — Infra",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"3.0", model:"claude-opus-4-8",
+    role:"SRE / Platform Engineer, 13 ans",
+    phase:"Phase 2 : Infra",
     desc:"Configure le déploiement Cloudflare Pages/Workers + Neon (futurs projets) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
-    id:"ia", name:"IA", at:"@ia", version:"2.0", model:"claude-opus-4-8",
-    role:"AI Engineer — 7 ans en production",
-    phase:"Phase 2 — Intelligence",
+    id:"ia", name:"IA", at:"@ia", version:"3.0", model:"claude-opus-4-8",
+    role:"AI Engineer, 7 ans en production",
+    phase:"Phase 2 : Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
     required:["Stack technique","Outils IA utilisés","Budget mensuel infrastructure"]
   },
   {
-    id:"seo", name:"SEO", at:"@seo", version:"2.0", model:"claude-sonnet-5",
-    role:"Consultant SEO technique — 17 ans",
-    phase:"Phase 3 — Référencement",
+    id:"seo", name:"SEO", at:"@seo", version:"4.0", model:"claude-sonnet-5",
+    role:"Consultant SEO technique, 17 ans",
+    phase:"Phase 3 : Référencement",
     desc:"Optimise le référencement Google : audit technique, stratégie de mots-clés, données structurées, maillage interne.",
     required:["Secteur","Persona principal","Stack technique (Next.js requis pour le SEO tech)"]
   },
   {
-    id:"geo", name:"GEO", at:"@geo", version:"2.0", model:"claude-sonnet-5",
-    role:"Spécialiste GEO — 4 ans de pratique",
-    phase:"Phase 3 — Visibilité IA",
-    desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google — le GEO cible les IA génératives.",
+    id:"geo", name:"GEO", at:"@geo", version:"4.0", model:"claude-sonnet-5",
+    role:"Spécialiste GEO, 4 ans de pratique",
+    phase:"Phase 3 : Visibilité IA",
+    desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google, le GEO cible les IA génératives.",
     required:["Secteur","Persona principal","Promesse unique"]
   },
   {
-    id:"growth", name:"Growth", at:"@growth", version:"2.0", model:"claude-sonnet-5",
-    role:"Head of Growth — 10 ans",
-    phase:"Phase 4 — Acquisition",
+    id:"growth", name:"Growth", at:"@growth", version:"4.0", model:"claude-sonnet-5",
+    role:"Head of Growth, 10 ans",
+    phase:"Phase 4 : Acquisition",
     desc:"Conçoit la stratégie d'acquisition : canaux prioritaires, funnel de conversion, boucles virales, referral et modélisation CAC/LTV.",
     required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel acquisition"]
   },
   {
-    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"1.0", model:"claude-sonnet-5",
-    role:"Sales Enablement Specialist — 15 ans",
-    phase:"Phase 4 — Vente",
+    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"4.0", model:"claude-sonnet-5",
+    role:"Sales Enablement Specialist, 15 ans",
+    phase:"Phase 4 : Vente",
     desc:"Produit les outils de vente : propositions commerciales, sales decks, objection handling, ROI calculator, scripts de qualification, séquences outreach B2B.",
     required:["Persona principal","Objectif principal à 6 mois","Modèle économique","Promesse unique"]
   },
   {
-    id:"social", name:"Social", at:"@social", version:"2.1", model:"claude-sonnet-5",
-    role:"Social Media Strategist — 8 ans",
-    phase:"Phase 4 — Réseaux",
+    id:"social", name:"Social", at:"@social", version:"4.0", model:"claude-sonnet-5",
+    role:"Social Media Strategist, 8 ans",
+    phase:"Phase 4 : Réseaux",
     desc:"Planifie la présence sur les réseaux sociaux : stratégie par plateforme, calendrier éditorial, formats natifs et community management.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"2.0", model:"claude-opus-4-8",
-    role:"Senior auditor qualité — 22 ans",
-    phase:"Phase 5 — Validation",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"3.0", model:"claude-opus-4-8",
+    role:"Senior auditor qualité, 22 ans",
+    phase:"Phase 5 : Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"2.0", model:"claude-opus-4-8",
-    role:"Architecte multi-agents — 10 ans",
-    phase:"Hors-phase — Création",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"3.0", model:"claude-opus-4-8",
+    role:"Architecte multi-agents, 10 ans",
+    phase:"Hors-phase : Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon", version:"2.1", model:"claude-opus-4-8",
-    role:"Elon Musk — Vision stratégique",
-    phase:"Hors-phase — Advisory",
+    id:"elon", name:"Elon", at:"@elon", version:"3.0", model:"claude-opus-4-8",
+    role:"Elon Musk, Vision stratégique",
+    phase:"Hors-phase : Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois","Persona principal"]
   }
@@ -3666,6 +3666,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 const CHANGELOG = [
   {
     date:"2026-06-11",
+    agent:"design",
+    type:"mise à jour",
+    description:"Cartes du site remises à niveau : versions synchronisées avec les agents (Sonnet 5 en v4.0 après bump de modèle, Opus 4.8 en v3.0), tirets longs retirés des champs role/phase/desc (signature IA), et la carte orchestrator reframée en protocole de coordination (plus un 20e agent). Le garde-fou anti tiret cadratin couvre désormais aussi les cartes."
+  },
+  {
+    date:"2026-06-11",
     agent:"ia",
     type:"mise à jour",
     description:"Migration vers Sonnet 5. Les 12 agents Sonnet passent de claude-sonnet-4-6 à claude-sonnet-5 (frontmatters, cartes du site, template agent-factory, whitelist de validation, exemple d'alias). Les 7 agents Opus restent sur Opus 4.8. CLAUDE.md devient la source de vérité des IDs de modèle, et un garde anti-régression refuse désormais toute vieille version Claude. Les autres projets reçoivent la migration via update.sh."
@@ -3773,7 +3779,7 @@ const CHANGELOG = [
 
 <section id="equipe" aria-labelledby="titre-equipe">
   <h2 id="titre-equipe">L'Équipe</h2>
-  <p class="section-sub">19 agents spécialisés, de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
+  <p class="section-sub">19 agents spécialisés et le protocole d'orchestration, de la stratégie au déploiement. Les tags "Requis" indiquent les champs de project-context.md nécessaires à chaque agent.</p>
   <div id="pipeline"></div>
   <div class="agents-grid" id="agents-grid"></div>
 </section>

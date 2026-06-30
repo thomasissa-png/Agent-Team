@@ -331,10 +331,12 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
 
   # Tiret cadratin (—) interdit dans le brand-facing du site (head + chrome HTML rendu), pas dans les prompts/data-text.
   EMDASH_BRAND=$(awk 'NR<=25 || NR>=3745' "$ROOT/index.html" | grep -P '—' | grep -vE "data-text=|description:\"|prompt:\`" | grep -E "title>|og:|twitter:|section-sub|install-sub|install-step|hero-sub|diff-|<em>|<h3|<td|<li" | head -1 || true)
-  if [ -n "$EMDASH_BRAND" ]; then
-    err "index.html : tiret cadratin (—) dans le brand-facing (signature IA, voir CLAUDE.md règle 12) : ${EMDASH_BRAND:0:70}"
+  # Champs de cartes agents (role/phase/desc/name) rendus sur le site = brand-facing aussi.
+  EMDASH_CARDS=$(grep -E '(role|phase|desc|name):"[^"]*—' "$ROOT/index.html" | head -1 || true)
+  if [ -n "$EMDASH_BRAND" ] || [ -n "$EMDASH_CARDS" ]; then
+    err "index.html : tiret cadratin (—) dans le brand-facing (signature IA, voir CLAUDE.md règle 12) : ${EMDASH_BRAND:0:60}${EMDASH_CARDS:0:60}"
   else
-    ok "Brand-facing sans tiret cadratin (—)"
+    ok "Brand-facing sans tiret cadratin (— dans chrome ET cartes)"
   fi
 
   # Références mortes post-cure S4 dans les fichiers ACTIFS (docs/reviews et archives exclus)

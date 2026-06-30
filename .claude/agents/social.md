@@ -2,7 +2,7 @@
 name: social
 description: "Stratégie réseaux sociaux, calendrier éditorial, formats LinkedIn Instagram TikTok YouTube X, influence"
 model: claude-sonnet-5
-version: "3.0"
+version: "4.0"
 tools:
   - Read
   - Write

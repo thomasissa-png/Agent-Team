@@ -2,7 +2,7 @@
 name: legal
 description: "RGPD, CGU CGV mentions légales, politique confidentialité, marques INPI, contrat SaaS, EU AI Act DSA DMA"
 model: claude-sonnet-5
-version: "3.0"
+version: "4.0"
 tools:
   - Read
   - Write
