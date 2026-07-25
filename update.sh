@@ -146,6 +146,17 @@ for remote_agent in "$TEMP_DIR/repo/.claude/agents"/*.md; do
   fi
 done
 
+# ─── Nettoyage des fichiers framework obsolètes (renommés/supprimés en amont) ───
+# update.sh copie les fichiers présents en remote mais ne supprime pas ceux qui
+# en ont disparu. Ces fichiers-là sont d'anciens agents/protocoles remplacés :
+# les laisser réenregistrerait des agents fantômes. Backup déjà fait ci-dessus.
+for obsolete in moi.md orchestrator-reference.md orchestrator.md; do
+  if [ -f "$OLDPWD/$AGENTS_DIR/$obsolete" ]; then
+    rm -f "$OLDPWD/$AGENTS_DIR/$obsolete"
+    echo -e "  ${GREEN}✓ Fichier obsolète retiré : ${obsolete}${NC}"
+  fi
+done
+
 # ─── Mise à jour de settings.json ─────────────────
 if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
   cp "$TEMP_DIR/repo/.claude/settings.json" "$OLDPWD/.claude/settings.json"
