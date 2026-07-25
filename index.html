@@ -368,7 +368,7 @@
 <script>
 const AGENTS = [
   {
-    id:"orchestrator", name:"Orchestration", at:"@orchestrator", version:"3.0", model:"claude-opus-4-8",
+    id:"orchestrator", name:"Orchestration", at:"@orchestrator", version:"3.0", model:"claude-opus-5",
     role:"Protocole de coordination, appliqué par la session principale",
     phase:"Coordination (session principale)",
     desc:"Pas un agent à invoquer : le protocole que la session principale applique pour décomposer le travail entre agents, ordonner l'exécution et vérifier que les livrables s'assemblent sans contradiction. Routage automatique, plus besoin de taper @agent.",
@@ -424,28 +424,28 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Promesse unique"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"3.0", model:"claude-opus-4-8",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"4.0", model:"claude-opus-5",
     role:"Développeur senior full-stack, 16 ans",
     phase:"Phase 2 : Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Neon Postgres (futurs projets) ou PostgreSQL Replit (legacy), Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"qa", name:"QA", at:"@qa", version:"3.0", model:"claude-opus-4-8",
+    id:"qa", name:"QA", at:"@qa", version:"4.0", model:"claude-opus-5",
     role:"QA Engineering Manager, 9 ans",
     phase:"Phase 2 : Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"3.0", model:"claude-opus-4-8",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"4.0", model:"claude-opus-5",
     role:"SRE / Platform Engineer, 13 ans",
     phase:"Phase 2 : Infra",
     desc:"Configure le déploiement Cloudflare Pages/Workers + Neon (futurs projets) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
-    id:"ia", name:"IA", at:"@ia", version:"3.0", model:"claude-opus-4-8",
+    id:"ia", name:"IA", at:"@ia", version:"4.0", model:"claude-opus-5",
     role:"AI Engineer, 7 ans en production",
     phase:"Phase 2 : Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
@@ -487,21 +487,21 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"3.0", model:"claude-opus-4-8",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"4.0", model:"claude-opus-5",
     role:"Senior auditor qualité, 22 ans",
     phase:"Phase 5 : Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"3.0", model:"claude-opus-4-8",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"4.0", model:"claude-opus-5",
     role:"Architecte multi-agents, 10 ans",
     phase:"Hors-phase : Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon", version:"3.0", model:"claude-opus-4-8",
+    id:"elon", name:"Elon", at:"@elon", version:"4.0", model:"claude-opus-5",
     role:"Elon Musk, Vision stratégique",
     phase:"Hors-phase : Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
@@ -3666,6 +3666,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 const CHANGELOG = [
   {
     date:"2026-06-11",
+    agent:"ia",
+    type:"mise à jour",
+    description:"Migration vers Opus 5. Les 7 agents Opus passent de claude-opus-4-8 à claude-opus-5 (frontmatters en v4.0, cartes du site, template agent-factory, whitelist, carte orchestrator). Combinée à Sonnet 5, toute l'équipe tourne désormais sur la génération 5. CLAUDE.md reste la source de vérité des IDs, le garde anti-régression refuse maintenant aussi Opus 4.8. Propagation aux autres projets via update.sh."
+  },
+  {
+    date:"2026-06-11",
     agent:"design",
     type:"mise à jour",
     description:"Cartes du site remises à niveau : versions synchronisées avec les agents (Sonnet 5 en v4.0 après bump de modèle, Opus 4.8 en v3.0), tirets longs retirés des champs role/phase/desc (signature IA), et la carte orchestrator reframée en protocole de coordination (plus un 20e agent). Le garde-fou anti tiret cadratin couvre désormais aussi les cartes."
@@ -3841,7 +3847,7 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md .claude/agents/orchestrator.md) car update.sh ne supprime pas les fichiers absents en remote — orchestrator.md a été renommé en _orchestration-protocol.md (déjà copié par update.sh). Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : les 12 agents Sonnet passent à Sonnet 5 (claude-sonnet-5), les 7 agents Opus restent sur Opus 4.8 (claude-opus-4-8). Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. APRÈS update.sh : supprime manuellement les fichiers obsolètes localement (rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md .claude/agents/orchestrator.md) car update.sh ne supprime pas les fichiers absents en remote — orchestrator.md a été renommé en _orchestration-protocol.md (déjà copié par update.sh). Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5 (claude-sonnet-5) et 7 agents Opus sur Opus 5 (claude-opus-5). Toute l'équipe tourne sur la génération 5. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
             <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> puis <code>rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md .claude/agents/orchestrator.md</code> (orchestrator → protocole _orchestration-protocol.md). Backup auto + fusion CLAUDE.md + cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
