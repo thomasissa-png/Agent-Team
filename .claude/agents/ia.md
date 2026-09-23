@@ -1,8 +1,8 @@
 ---
 name: ia
 description: "API LLM, génération images IA, pipeline multi-agents, choix modèles, optimisation tokens coûts, Vercel AI SDK"
-model: claude-opus-5
-version: "4.0"
+model: claude-opus-5-5
+version: "5.0"
 tools:
   - Read
   - Write

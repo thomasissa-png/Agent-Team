@@ -1,8 +1,8 @@
 ---
 name: agent-factory
 description: "Création d'agents spécialisés sur mesure, paramétrage et validation de conformité framework"
-model: claude-opus-5
-version: "4.0"
+model: claude-opus-5-5
+version: "5.0"
 tools:
   - Read
   - Write
@@ -44,7 +44,7 @@ Le fichier généré suit ce squelette. Règle d'or : l'agent ne contient QUE se
 ---
 name: [kebab-case]
 description: "[max 120 caractères]"
-model: [claude-opus-5 : orchestration/code/audit complexe | claude-sonnet-5 : contenu/stratégie/analyse]
+model: [claude-opus-5-5 : orchestration/code/audit complexe | claude-sonnet-5 : contenu/stratégie/analyse]
 version: "1.0"
 tools: [Read, Write, Edit, Glob au minimum — un agent sans Write/Edit ne produit pas de fichiers. + Grep (recherche), + WebSearch (données externes), + Bash (commandes/tests)]
 ---

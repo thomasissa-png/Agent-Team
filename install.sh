@@ -6,7 +6,7 @@ set -euo pipefail
 # Usage : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/install.sh | bash
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-VERSION="3.1.0"
+VERSION="3.2.0"
 REPO_URL="https://github.com/thomasissa-png/Agent-Team"
 RAW_URL="https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main"
 AGENTS_DIR=".claude/agents"
@@ -30,7 +30,7 @@ print_header() {
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo -e "${BOLD}  gradient-agents v${VERSION}${NC}"
-  echo -e "${BOLD}  Librairie d'agents Claude Code — Gradient One${NC}"
+  echo -e "${BOLD}  Librairie d'agents Claude Code · Gradient One${NC}"
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo ""
 }
@@ -82,7 +82,7 @@ clone_repo() {
   # Tentative avec sparse checkout (repos publics et privés avec auth)
   if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
-    git sparse-checkout set --no-cone .claude/agents .claude/settings.json templates CLAUDE.md
+    git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /templates/ /CLAUDE.md /update.sh /.githooks/
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
@@ -107,7 +107,10 @@ install_agents() {
   fi
   mkdir -p "$target_dir"
   cp -r "$TEMP_DIR/repo/.claude/agents/." "$target_dir/"
-  echo -e "${GREEN}✓ $(ls "$target_dir"/*.md 2>/dev/null | wc -l | tr -d ' ') agents installés dans ${AGENTS_DIR}/${NC}"
+  # Les fichiers _*.md sont des protocoles partagés, pas des agents invocables
+  local agent_count
+  agent_count=$(ls "$target_dir"/*.md 2>/dev/null | grep -v '/_' | wc -l | tr -d ' ')
+  echo -e "${GREEN}✓ ${agent_count} agents installés dans ${AGENTS_DIR}/ (+ protocoles partagés)${NC}"
 }
 
 install_settings_json() {
@@ -174,10 +177,10 @@ install_project_context() {
   if [ ! -f "$target_dir/project-context.md" ]; then
     if [ -f "$TEMP_DIR/repo/templates/project-context.md" ]; then
       cp "$TEMP_DIR/repo/templates/project-context.md" "$target_dir/project-context.md"
-      echo -e "${GREEN}✓ project-context.md créé à la racine — à remplir avant d'utiliser les agents${NC}"
+      echo -e "${GREEN}✓ project-context.md créé à la racine, à remplir avant d'utiliser les agents${NC}"
     fi
   else
-    echo -e "${YELLOW}⚠ project-context.md existe déjà — non écrasé${NC}"
+    echo -e "${YELLOW}⚠ project-context.md existe déjà, non écrasé${NC}"
   fi
 }
 
@@ -195,6 +198,25 @@ install_update_script() {
   fi
 }
 
+install_githooks() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+
+  if [ -d "$TEMP_DIR/repo/.githooks" ]; then
+    mkdir -p "$target_dir/.githooks"
+    cp "$TEMP_DIR/repo/.githooks"/* "$target_dir/.githooks/" 2>/dev/null || true
+    chmod +x "$target_dir/.githooks"/* 2>/dev/null || true
+    if (cd "$target_dir" && git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks); then
+      echo -e "${GREEN}✓ .githooks/ installé et activé (garde-fou CLAUDE.md + pre-commit)${NC}"
+    else
+      echo -e "${YELLOW}⚠ .githooks/ copié. Projet hors git : lance 'git config core.hooksPath .githooks' après git init${NC}"
+    fi
+  fi
+}
+
 print_summary() {
   local target_dir
   target_dir="$(pwd)"
@@ -209,7 +231,8 @@ print_summary() {
 
   for agent_file in "$target_dir/$AGENTS_DIR"/*.md; do
     agent_name=$(basename "$agent_file" .md)
-    description=$(grep -m1 "^description:" "$agent_file" 2>/dev/null | sed 's/description: *//;s/^"//;s/"$//' || echo "—")
+    case "$agent_name" in _*) continue ;; esac
+    description=$(grep -m1 "^description:" "$agent_file" 2>/dev/null | sed 's/description: *//;s/^"//;s/"$//' || echo "")
     printf "  ${GREEN}%-20s${NC} %s\n" "@$agent_name" "$description"
   done
 
@@ -219,7 +242,7 @@ print_summary() {
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo ""
   echo -e "  ${YELLOW}1.${NC} Remplis ${BOLD}project-context.md${NC} à la racine du projet"
-  echo -e "  ${YELLOW}2.${NC} Dans Claude Code, décris ton besoin (ex : ${BOLD}lance mon projet${NC}) — le routage est automatique"
+  echo -e "  ${YELLOW}2.${NC} Dans Claude Code, décris ton besoin (ex : ${BOLD}lance mon projet${NC}), le routage est automatique"
   echo -e "  ${YELLOW}3.${NC} Pour un agent seul : ${BOLD}@design crée le design system${NC}"
   echo ""
   echo -e "  Mise à jour : ${BOLD}bash update.sh${NC}"
@@ -237,4 +260,5 @@ install_settings_json
 install_claude_md
 install_project_context
 install_update_script
+install_githooks
 print_summary

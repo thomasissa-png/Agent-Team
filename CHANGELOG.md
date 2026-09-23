@@ -4,6 +4,15 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-23 (S6) : migration Opus 5.5 + installeurs fiabilisés
+
+1. **Migration Opus 5.5** : les 7 agents Opus (agent-factory, elon, fullstack, ia, infrastructure, qa, reviewer) passent de `claude-opus-5` à `claude-opus-5-5` (frontmatters v5.0, cartes index.html v5.0, carte Orchestration, template agent-factory, whitelist). Garde anti-régression : `claude-opus-5` nu désormais rejeté comme obsolète. Tiering 7 Opus / 12 Sonnet inchangé.
+2. **install.sh v3.2.0** (bugs trouvés par test réel) : le sparse checkout omettait `update.sh` et `.githooks`, donc une nouvelle équipe n'avait ni script de mise à jour ni hooks. Ajoutés, avec activation `core.hooksPath`. Comptage corrigé (19 agents, plus 22 : les `_*.md` sont des protocoles) et résumé qui ne liste plus les protocoles comme agents. Chemins sparse ancrés (plus d'avertissements git).
+3. **update.sh** : `update.sh` absent de son propre sparse checkout, donc l'auto-mise à jour ne se déclenchait jamais. Corrigé, ce qui a révélé un 2e bug : `cp` écrasait le script pendant que bash le lisait (exit 127), remplacé par un `mv` atomique. Hooks : plus de plantage si le projet n'est pas un repo git. Tests bout en bout : install neuf, mise à jour d'une ancienne équipe (fichiers obsolètes retirés, qa restauré, update.sh remplacé, hooks réactivés), projet hors git.
+4. **Site** : les cartes d'installation (nouveau projet, projet existant) passent par `install.sh` au lieu d'un clone manuel qui n'installait que `.claude/agents/` (ni CLAUDE.md, ni settings, ni update.sh, ni hooks). Prompt « Définir mon projet » adapté au modèle vide posé par l'installation. Prompt de migration : rafraîchit update.sh avant de le lancer.
+
+---
+
 ## Session du 2026-06-11 (S5) — Cure "trust the model" : 20 agents + protocole réécrits (v3.0), -2 800L
 
 1. **Audit complet 4 agents parallèles** (@reviewer NO-GO cohérence, @ia agents + prompts, @elon stratégique) — rapports dans `docs/reviews/*-2026-06-11.md`. Constat : la cure S4 avait corrigé les sources de vérité mais pas leurs consommateurs (reviewer.md et _base-agent-protocol.md citaient encore "32 gates G1-G32", @moi mort référencé dans 3 agents, ~47 refs de gates supprimées).

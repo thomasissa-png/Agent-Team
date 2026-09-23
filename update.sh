@@ -45,7 +45,7 @@ if [ "$ROLLBACK" = true ]; then
   fi
 
   backup_count=$(ls "$BACKUP_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
-  echo -e "${BOLD}gradient-agents — Rollback${NC}"
+  echo -e "${BOLD}gradient-agents : rollback${NC}"
   echo -e "${YELLOW}→ Restauration de ${backup_count} agent(s) depuis la sauvegarde...${NC}"
 
   for backup_file in "$BACKUP_DIR"/*.md; do
@@ -61,7 +61,7 @@ if [ "$ROLLBACK" = true ]; then
 fi
 
 # ─── Mode mise à jour ────────────────────────────────
-echo -e "${BOLD}gradient-agents — Mise à jour${NC}"
+echo -e "${BOLD}gradient-agents : mise à jour${NC}"
 echo ""
 echo -e "${BLUE}→ Récupération des dernières versions...${NC}"
 
@@ -86,7 +86,7 @@ echo -e "${BLUE}  Branche cible : ${DETECTED_BRANCH}${NC}"
 # Clone avec fallback pour repos privés
 if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
   cd "$TEMP_DIR/repo"
-  git sparse-checkout set --no-cone .claude/agents .claude/settings.json CLAUDE.md .githooks
+  git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /CLAUDE.md /.githooks/ /update.sh
 else
   if git clone --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
@@ -164,9 +164,12 @@ if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
 fi
 
 # ─── Mise à jour de update.sh lui-même ─────────────
+# Remplacement atomique (mv, nouvel inode) : un cp écraserait le fichier que bash
+# est en train de lire, et la suite du script s'exécuterait à partir d'octets décalés.
 if [ -f "$TEMP_DIR/repo/update.sh" ]; then
-  cp "$TEMP_DIR/repo/update.sh" "$OLDPWD/update.sh"
-  chmod +x "$OLDPWD/update.sh"
+  cp "$TEMP_DIR/repo/update.sh" "$OLDPWD/.update.sh.new"
+  chmod +x "$OLDPWD/.update.sh.new"
+  mv -f "$OLDPWD/.update.sh.new" "$OLDPWD/update.sh"
   echo -e "  ${GREEN}✓ update.sh mis à jour${NC}"
 fi
 
@@ -175,8 +178,12 @@ if [ -d "$TEMP_DIR/repo/.githooks" ]; then
   mkdir -p "$OLDPWD/.githooks"
   cp "$TEMP_DIR/repo/.githooks"/* "$OLDPWD/.githooks/" 2>/dev/null || true
   chmod +x "$OLDPWD/.githooks"/* 2>/dev/null || true
-  cd "$OLDPWD" && git config core.hooksPath .githooks && cd "$TEMP_DIR/repo"
-  echo -e "  ${GREEN}✓ .githooks/ synchronisé (CLAUDE.md guard + pre-commit)${NC}"
+  # Sous-shell : ne pas perturber OLDPWD, et ne pas planter si le projet n'est pas un repo git
+  if (cd "$OLDPWD" && git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks); then
+    echo -e "  ${GREEN}✓ .githooks/ synchronisé (CLAUDE.md guard + pre-commit)${NC}"
+  else
+    echo -e "  ${YELLOW}⚠ .githooks/ copié (projet hors git, hooks non activés)${NC}"
+  fi
 fi
 
 # ─── Mise à jour de CLAUDE.md (fusion avec marqueurs) ─
@@ -195,7 +202,7 @@ if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
     echo "$gradient_content" | cat - "$tmp_merged" > "$local_claude"
     echo -e "  ${GREEN}✓ CLAUDE.md mis à jour (section Gradient remplacée, contenu custom préservé)${NC}"
   else
-    echo -e "  ${YELLOW}⚠ CLAUDE.md sans marqueurs Gradient — ajout en fin de fichier${NC}"
+    echo -e "  ${YELLOW}⚠ CLAUDE.md sans marqueurs Gradient, ajout en fin de fichier${NC}"
     echo "" >> "$local_claude"
     cat "$source_claude" >> "$local_claude"
     echo -e "  ${GREEN}✓ CLAUDE.md fusionné${NC}"

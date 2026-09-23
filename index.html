@@ -368,7 +368,7 @@
 <script>
 const AGENTS = [
   {
-    id:"orchestrator", name:"Orchestration", at:"@orchestrator", version:"3.0", model:"claude-opus-5",
+    id:"orchestrator", name:"Orchestration", at:"@orchestrator", version:"3.0", model:"claude-opus-5-5",
     role:"Protocole de coordination, appliqué par la session principale",
     phase:"Coordination (session principale)",
     desc:"Pas un agent à invoquer : le protocole que la session principale applique pour décomposer le travail entre agents, ordonner l'exécution et vérifier que les livrables s'assemblent sans contradiction. Routage automatique, plus besoin de taper @agent.",
@@ -424,28 +424,28 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Promesse unique"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"4.0", model:"claude-opus-5",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"5.0", model:"claude-opus-5-5",
     role:"Développeur senior full-stack, 16 ans",
     phase:"Phase 2 : Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Neon Postgres (futurs projets) ou PostgreSQL Replit (legacy), Stripe. TypeScript strict uniquement.",
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"qa", name:"QA", at:"@qa", version:"4.0", model:"claude-opus-5",
+    id:"qa", name:"QA", at:"@qa", version:"5.0", model:"claude-opus-5-5",
     role:"QA Engineering Manager, 9 ans",
     phase:"Phase 2 : Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"4.0", model:"claude-opus-5",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"5.0", model:"claude-opus-5-5",
     role:"SRE / Platform Engineer, 13 ans",
     phase:"Phase 2 : Infra",
     desc:"Configure le déploiement Cloudflare Pages/Workers + Neon (futurs projets) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
-    id:"ia", name:"IA", at:"@ia", version:"4.0", model:"claude-opus-5",
+    id:"ia", name:"IA", at:"@ia", version:"5.0", model:"claude-opus-5-5",
     role:"AI Engineer, 7 ans en production",
     phase:"Phase 2 : Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
@@ -487,21 +487,21 @@ const AGENTS = [
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"4.0", model:"claude-opus-5",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"5.0", model:"claude-opus-5-5",
     role:"Senior auditor qualité, 22 ans",
     phase:"Phase 5 : Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
     required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"4.0", model:"claude-opus-5",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"5.0", model:"claude-opus-5-5",
     role:"Architecte multi-agents, 10 ans",
     phase:"Hors-phase : Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon", version:"4.0", model:"claude-opus-5",
+    id:"elon", name:"Elon", at:"@elon", version:"5.0", model:"claude-opus-5-5",
     role:"Elon Musk, Vision stratégique",
     phase:"Hors-phase : Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
@@ -530,8 +530,8 @@ const PROMPTS = [
       {
         title:"Définir mon projet (obligatoire en premier)",
         agents:["orchestrator"],
-        quand:"Premier prompt à lancer — crée automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler. Astuce : lancez Claude avec claude -n \'setup-monprojet\' pour nommer cette session et la retrouver facilement.",
-        prompt:`Lis templates/project-context.md pour la structure complète. Si project-context.md existe déjà à la racine, lis-le et propose de mettre à jour les champs modifiés (ne pas écraser les données existantes). Sinon, crée-le avec les informations ci-dessous. Remplis tous les champs. Voici les infos :
+        quand:"Premier prompt à lancer : remplit automatiquement project-context.md à partir de tes réponses. Les agents en ont besoin pour travailler. Astuce : lancez Claude avec claude -n \'setup-monprojet\' pour nommer cette session et la retrouver facilement.",
+        prompt:`Lis project-context.md à la racine pour la structure complète (l'installation y pose un modèle vide ; à défaut, templates/project-context.md). S'il contient déjà des données réelles (pas seulement des [placeholders]), propose de mettre à jour les champs modifiés sans écraser l'existant. Sinon, remplis-le avec les informations ci-dessous. Remplis tous les champs. Voici les infos :
 
 — IDENTITÉ —
 Nom du projet : [NOM]
@@ -576,13 +576,13 @@ Réseaux sociaux : [comptes existants, nombre d'abonnés]
 Site web existant : [URL ou "aucun"]
 Base email : [taille ou "aucune"]
 
-Après avoir créé project-context.md :
+Après avoir rempli project-context.md :
 1. Confirme ce qui a été rempli et signale les champs laissés vides qui devront être complétés plus tard.
 2. Vérifie la qualité de chaque champ critique (un persona sans frustration concrète ou un KPI trop vague = insuffisant — pose des questions ciblées).
 3. Signale les implications légales évidentes (données sensibles, IA, e-commerce) : "Tu auras besoin de lancer le prompt Audit juridique & conformité pour couvrir [points identifiés]."
 4. Propose les 3 prochains prompts à lancer selon le stade du projet. Mentionne aussi le prompt "Quel prompt utiliser ?" (catégorie Démarrage) si l'utilisateur veut explorer la bibliothèque par lui-même.
 
-Critères de validation : project-context.md créé avec tous les champs, chaque champ critique passe le seuil de qualité (pas juste rempli, mais exploitable par les agents).
+Critères de validation : project-context.md rempli sur tous les champs, chaque champ critique passe le seuil de qualité (pas juste rempli, mais exploitable par les agents).
 
 Continuité de session : rappelle à l'utilisateur de nommer sa session (claude -n "nom") s'il ne l'a pas fait, et indique que pour reprendre plus tard il suffit de lancer claude --resume "nom" puis de dire "Lis project-context.md, où en est-on ?".`
       },
@@ -941,7 +941,7 @@ Afficher le plan et attendre ma validation.
 
 Étape 3 — Exécution (après mon feu vert) :
 1. Déplacer chaque bloc custom vers sa destination (Edit sur chaque fichier cible).
-2. Exécuter bash update.sh --all pour remplacer la section Gradient par la dernière version.
+2. Rafraîchir le script puis l'exécuter : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && bash update.sh --all (remplace la section Gradient par la dernière version ; un ancien update.sh local ne sait pas se mettre à jour seul).
 3. Aligner toutes les références au compteur de gates avec _gates.md actuel (actuellement 9 gates (voir _gates.md)). Grep les compteurs résiduels et corriger.
 4. Si .husky/pre-commit absent → @fullstack l'installe (voir _base-agent-protocol.md section "Setup pre-commit hook").
 5. Vérifier : git config core.hooksPath .githooks (pour le guard CLAUDE.md).
@@ -3665,6 +3665,18 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 
 const CHANGELOG = [
   {
+    date:"2026-09-23",
+    agent:"infrastructure",
+    type:"mise à jour",
+    description:"Installeurs fiabilisés après test réel. Une nouvelle équipe reçoit maintenant bien update.sh et les hooks git (ils manquaient au téléchargement), l'installeur annonce 19 agents au lieu de 22 et ne liste plus les protocoles internes comme des agents. update.sh se met enfin à jour lui-même (sans se corrompre en cours d'exécution) et ne plante plus sur un projet hors git. Les cartes d'installation du site passent désormais par install.sh, qui pose tout : agents, CLAUDE.md, settings, update.sh et hooks."
+  },
+  {
+    date:"2026-09-23",
+    agent:"ia",
+    type:"mise à jour",
+    description:"Migration vers Opus 5.5. Les 7 agents Opus passent de claude-opus-5 à claude-opus-5-5 (frontmatters et cartes en v5.0, template agent-factory, whitelist). Le garde anti-régression refuse désormais Opus 5. Les 12 agents Sonnet restent sur Sonnet 5. Propagation aux autres projets via update.sh --all."
+  },
+  {
     date:"2026-06-11",
     agent:"infrastructure",
     type:"mise à jour",
@@ -3811,12 +3823,12 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Créez un repo git et ouvrez Claude Code dessus</span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b main dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel).">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b main</code>) dans /tmp et installe l'équipe Gradient Agents dans ce projet. Nouveau projet."</em>
+            <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents dans ce projet. C'est un nouveau projet. Si le dossier n'est pas encore un repo git, lance git init. Puis, depuis la racine du repo (cd &quot;$(git rev-parse --show-toplevel)&quot;), lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/install.sh | bash. Le script installe les 19 agents et leurs protocoles partagés dans .claude/agents/, .claude/settings.json, CLAUDE.md, le modèle project-context.md, update.sh et les hooks git (.githooks/ activés). Vérifie ensuite : 19 agents dans .claude/agents/ (hors fichiers _*.md), update.sh présent, git config core.hooksPath = .githooks. Donne-moi le résultat en 3 lignes.">Copier</button>
+            <em>"Installe l'équipe Gradient Agents via <code>install.sh</code> : 19 agents, CLAUDE.md, settings, <code>update.sh</code> et hooks git. Nouveau projet."</em>
           </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez : Claude crée <code>project-context.md</code> automatiquement</span></div>
-        <div class="install-step"><span class="step-num">4</span><span>Lancez <strong>@orchestrator</strong> ou l'agent de votre choix</span></div>
+        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez : Claude remplit <code>project-context.md</code> automatiquement</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Décrivez votre besoin (ex : <strong>« lance mon projet »</strong>) : le routage vers les agents est automatique</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Résultat :</div>
@@ -3832,12 +3844,12 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>à la racine de votre repo git</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Clone https://github.com/thomasissa-png/Agent-Team -b main dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un projet existant, ne rien écraser. Installe .claude/agents/ à la racine du repo git (git rev-parse --show-toplevel), pas dans un sous-dossier.">Copier</button>
-            <em>"Clone <code>https://github.com/thomasissa-png/Agent-Team</code> (<code>-b main</code>) dans /tmp et installe l'équipe Gradient Agents. Projet existant, ne rien écraser."</em>
+            <button class="install-btn-copy" data-text="Installe l'équipe Gradient Agents dans ce projet existant, sans rien écraser. Si .claude/agents/ contient déjà des agents Gradient, arrête-toi : c'est une mise à jour, pas une installation. Sinon, depuis la racine du repo git (cd &quot;$(git rev-parse --show-toplevel)&quot;, pas un sous-dossier), lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/install.sh | bash. Le script ne touche ni à docs/, ni à src/, ni à un project-context.md existant, et fusionne CLAUDE.md (section Gradient ajoutée entre marqueurs, contenu existant préservé). Il installe les 19 agents et leurs protocoles partagés, .claude/settings.json, update.sh et les hooks git. Vérifie ensuite : 19 agents dans .claude/agents/ (hors fichiers _*.md), update.sh présent, git config core.hooksPath = .githooks, contenu CLAUDE.md d'origine toujours là. Donne-moi le résultat en 3 lignes.">Copier</button>
+            <em>"Installe l'équipe Gradient Agents via <code>install.sh</code>, sans rien écraser : CLAUDE.md fusionné, docs/ et src/ intacts. Projet existant."</em>
           </div></span>
         </div>
-        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez : Claude crée <code>project-context.md</code> automatiquement</span></div>
-        <div class="install-step"><span class="step-num">4</span><span>Lancez l'agent dont vous avez besoin (<strong>@fullstack</strong>, <strong>@seo</strong>, etc.)</span></div>
+        <div class="install-step"><span class="step-num">3</span><span>Copiez le prompt <strong>"Définir mon projet"</strong> (section Prompts → Démarrage), remplissez les champs, collez : Claude remplit <code>project-context.md</code> automatiquement</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Décrivez votre besoin : le routage est automatique (<strong>@fullstack</strong>, <strong>@seo</strong>, etc. pour forcer un agent)</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Résultat :</div>
@@ -3853,8 +3865,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L — savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5 (claude-sonnet-5) et 7 agents Opus sur Opus 5 (claude-opus-5). Toute l'équipe tourne sur la génération 5. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
-            <em>"Mets à jour Gradient Agents via <code>bash update.sh --all</code> Backup auto + fusion CLAUDE.md + cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L : savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5 (claude-sonnet-5) et 7 agents Opus sur Opus 5.5 (claude-opus-5-5). Toute l'équipe tourne sur les derniers modèles. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <em>"Mets à jour Gradient Agents : télécharge le dernier <code>update.sh</code> puis lance <code>bash update.sh --all</code>. Backup auto, fusion CLAUDE.md, agents sur Opus 5.5 et Sonnet 5, cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>

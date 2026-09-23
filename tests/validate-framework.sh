@@ -100,7 +100,7 @@ for agent in "$AGENTS_DIR"/*.md; do
   else
     MODEL_VAL=$(grep "^model:" "$agent" | head -1 | awk '{print $2}')
     case "$MODEL_VAL" in
-      claude-opus-5|claude-sonnet-5|claude-haiku-4-5-20251001) ;;
+      claude-opus-5-5|claude-sonnet-5|claude-haiku-4-5-20251001) ;;
       *) err "$basename_agent: modèle invalide '$MODEL_VAL'" ;;
     esac
   fi
@@ -350,15 +350,15 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
   fi
 
   # Anti-régression modèle : aucune VIEILLE version Claude dans les fichiers actifs (agents, CLAUDE.md, index.html cards).
-  OLD_MODELS=$(grep -rlE "sonnet-4-6|sonnet-4-5|opus-4-8|opus-4-7|opus-4-6|claude-3" "$AGENTS_DIR" "$CLAUDE_MD" 2>/dev/null || true)
-  OLD_MODELS="$OLD_MODELS $(grep -lE 'model:"claude-(sonnet-4|opus-4-[678])' "$ROOT/index.html" 2>/dev/null || true)"
+  OLD_MODELS=$(grep -rlE "sonnet-4-6|sonnet-4-5|opus-5([^-]|$)|opus-4-8|opus-4-7|opus-4-6|claude-3" "$AGENTS_DIR" "$CLAUDE_MD" 2>/dev/null || true)
+  OLD_MODELS="$OLD_MODELS $(grep -lE 'model:"claude-(sonnet-4|opus-4-[678]|opus-5")' "$ROOT/index.html" 2>/dev/null || true)"
   OLD_MODELS=$(echo "$OLD_MODELS" | tr ' ' '\n' | grep -v '^$' | sort -u || true)
   if [ -n "$OLD_MODELS" ]; then
     for mf in $OLD_MODELS; do
-      err "$(basename "$mf"): version Claude obsolète détectée (attendu : opus-5 / sonnet-5 / haiku-4-5)"
+      err "$(basename "$mf"): version Claude obsolète détectée (attendu : opus-5-5 / sonnet-5 / haiku-4-5)"
     done
   else
-    ok "Modèles à jour (opus-5 / sonnet-5 / haiku-4-5, aucune vieille version)"
+    ok "Modèles à jour (opus-5-5 / sonnet-5 / haiku-4-5, aucune vieille version)"
   fi
 
   ok "Comptes vérifiés : $AGENT_COUNT agents, $GATES_COUNT gates (_gates.md), $PROMPT_COUNT prompts (index.html)"

@@ -100,7 +100,7 @@ Agents dans `.claude/agents/`. Ambiguïté de domaine → trancher soi-même (fo
 
 ## Modèles (19 agents spécialisés)
 
-- **Opus 5** (`claude-opus-5`, 7 agents) : agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure
+- **Opus 5.5** (`claude-opus-5-5`, 7 agents) : agent-factory, reviewer, elon, fullstack, ia, qa, infrastructure
 - **Sonnet 5** (`claude-sonnet-5`, 12 agents) : copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, sales-enablement, seo, social, ux
 - **Protocole d'orchestration** : appliqué par la session principale (pas un agent invocable — voir `_orchestration-protocol.md`). Tourne sur le modèle de la session.
 
