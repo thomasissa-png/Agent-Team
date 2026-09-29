@@ -1,7 +1,7 @@
 # Project Context — Gradient Agents Framework
 
 > **Stade : V1 → Production** (atteinte 2026-05-29 S4)
-> **URL prod** : https://agents.issa-capital.com (Caddy VPS, cron pull main 15 min)
+> **URL prod** : https://agents.issa-capital.com (Caddy VPS, cron nuit 4h Paris : fetch + reset --hard main, trace OK/ECHEC dans agent-team-update.log)
 > KPI North Star (projets/semaine) reste mesuré au niveau projets-utilisateurs du framework, pas du framework lui-même.
 
 ## Identite
@@ -117,7 +117,7 @@ Mission actuelle : framework consolide avec 91 prompts, 19 agents specialises + 
 - **Numéro de session** : 4
 - **Branche** : `claude/agent-team-s4-cure-framework-lzE5Y`
 - **Branche par défaut** : `main` (renommée de master cette session)
-- **Site en ligne** : `https://agents.issa-capital.com` (VPS Caddy, cron pull main toutes les 15 min)
+- **Site en ligne** : `https://agents.issa-capital.com` (VPS Caddy, cron nuit 4h Paris : fetch + reset --hard main ; réparation sans SSH : agent-team-repair via deploy/vps-ops.queue)
 
 ### Resume de la session
 Session marathon multi-pivots déclenchée par une plainte directe de Thomas : "tu réfléchis mal, poses des questions bêtes, fais à moitié, vérifies rien". Méthode "fais travailler l'équipe" parallèle multi-agents (@elon + @ia + @qa + @moi) → synthèse @ia → @reviewer notation /10 → itération diff exact (8.5→9.5).
@@ -128,7 +128,7 @@ Session marathon multi-pivots déclenchée par une plainte directe de Thomas : "
 (3) **Migration domaine site** github.io → `agents.issa-capital.com` (CNAME + 3 og: tags + retrait github.io). Confirmation HTTPS, certificat Let's Encrypt auto Caddy.
 (4) **Rename branche par défaut master → main** : séquence 6 étapes safe (22 références hardcodées update AVANT bascule pour éviter casser installs en cours), Thomas a changé default branch via GitHub UI, push delete master remote = HTTP 403 env containerisé donc fait via UI GitHub.
 (5) **Bootstrap problem détecté par session externe** : ancien `update.sh` local des projets clients codé en dur sur master inexistant → fix défensif détection auto branche dans install.sh + update.sh + bouton install "TOUJOURS refresh".
-(6) **Cron VPS Caddy patché** : master→main + freq 24h→15min sur `/home/thomas/Agent-Team` (workflow Caddy file_server clarifié). Aussi fix `safe.directory` git pour user thomas vs root.
+(6) **Cron VPS Caddy patché** [INEXACT, corrigé 2026-09-29 : le cron tirait encore master] : master→main + freq 24h→15min sur `/home/thomas/Agent-Team` (workflow Caddy file_server clarifié). Aussi fix `safe.directory` git pour user thomas vs root.
 (7) **3 bugs cure incomplète signalés par session externe corrigés** : orchestrator.md L229-237 + L462 référençait encore @moi (section CHECKPOINT @moi + invocation quick-check), CLAUDE.md L65/L106 disait encore "32 gates G1-G32", infrastructure.md L145 "non-Replit" présupposait Replit défaut.
 (8) **Audit Replit complet** : 88 mentions classées (legacy explicite légitime ~70 / historique 3 / anti-patterns post-S3 ~15), 10 anti-patterns corrigés (Replit comme défaut → conditionnel CF priorité + legacy Replit), savoir technique legacy préservé pour projets Versi/Sarani/Marrant/ImmoCrew/ISSA Capital.
 (9) **Capitalisation S4** : 6 entrées lessons-learned.md (3 P0 + 3 P1) + 3 préférences fondateur + 2 anti-patterns, net-zero strict (archive S26-03-31 vers archive). URL access master→main propagée.
@@ -139,7 +139,7 @@ Session marathon multi-pivots déclenchée par une plainte directe de Thomas : "
 
 ### Travaux en cours / non termines (DEFER)
 1. **Cron VPS pre-commit hook actif** : `fatal: not in a git directory` durant update.sh = hook non installé sur projets clients. Fix : `git config core.hooksPath .githooks` post-update. À automatiser dans update.sh.
-2. **BLOQUANT site figé depuis le 2026-05-29** (constaté 2026-09-29 : last-modified 29 May 13:03, contenu = commit e459e50, soit 20 agents / Opus 4.8 / Sonnet 4.6 en ligne). Le cron `git pull` de `/home/thomas/Agent-Team` échoue en silence : fichiers passés en root (update.sh lancé en root) et/ou modifs locales (update.sh lancé DANS le repo source) qui bloquent le pull. Fix VPS : `chown -R thomas:thomas`, puis `git fetch origin main && git reset --hard origin/main` en thomas, cron remplacé par fetch + reset (miroir de déploiement, pas de travail local). Ne jamais lancer update.sh dans le repo source.
+2. **RÉSOLU 2026-09-29 : site figé du 29/05 au 29/09.** Seule cause : le cron tirait encore `master` (supprimé au rename S4) et échouait chaque nuit en silence (`couldn't find remote ref master`). Ni fichiers root, ni modif locale. Corrigé côté repo infra : cron = `git fetch origin main && git reset --hard origin/main` (deploy/crontab.anya, resynchronisé par sync-crons.sh), trace OK/ECHEC datée dans agent-team-update.log, commande agent-team-repair. Learning : après tout renommage de branche, vérifier aussi les consommateurs hors repo (crons, déploiements), pas seulement les fichiers. À confirmer : ligne OK dans agent-team-update.log après le run de 4h du 2026-09-30.
 3. **DEFER D9 diet `_base-agent-protocol.md`** (467L → 380 puis 280) : à reprendre.
 4. **DEFER D13 context layering** : à évaluer après D9 complet.
 5. **DEFER D11 Phases 2-3** : marqué partiellement fait S3 + cure S4 a réduit orchestrator 831→749. Cible 400L pas atteinte mais marge confortable. Priorité abaissée.
