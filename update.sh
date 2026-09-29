@@ -8,7 +8,10 @@ set -euo pipefail
 
 REPO_URL="https://github.com/thomasissa-png/Agent-Team"
 AGENTS_DIR=".claude/agents"
-BACKUP_DIR=".claude/agents/.backup"
+# Sauvegarde HORS de .claude/agents/ : Claude Code charge ce dossier récursivement,
+# des copies d'agents dans un sous-dossier seraient chargées comme de vrais agents.
+BACKUP_DIR=".claude/gradient-backup"
+LEGACY_BACKUP_DIR=".claude/agents/.backup"
 TEMP_DIR=$(mktemp -d)
 UPDATE_ALL=false
 ROLLBACK=false
@@ -69,6 +72,16 @@ PY
   fi
 }
 
+# Ajoute au .gitignore du projet les fichiers techniques du framework (sauvegardes)
+ensure_gitignore() {
+  local gi="$1/.gitignore" line
+  [ -f "$gi" ] || return 0
+  for line in ".claude/gradient-backup/" ".claude/settings.gradient.json"; do
+    grep -qxF "$line" "$gi" || printf '%s\n' "$line" >> "$gi"
+  done
+  return 0
+}
+
 # Ancien pre-commit Gradient (avant le marqueur GRADIENT-HOOK), jamais modifié par le projet
 is_legacy_gradient_hook() {
   grep -q "Guard: la section Gradient de CLAUDE.md" "$1" \
@@ -117,6 +130,47 @@ sync_githooks() {
   return 0
 }
 
+# ─── Fonctions propres à update.sh ────────────────────
+# Réponse oui/non qui ne plante pas sans terminal (Claude Code, CI) : pas de terminal = non
+ask_yes_no() {
+  local r=""
+  if [ -t 0 ]; then
+    read -r -p "$1" r || r=""
+  elif (: < /dev/tty) 2>/dev/null; then
+    read -r -p "$1" r < /dev/tty || r=""
+  else
+    echo "$1 (pas de terminal : non)"
+  fi
+  [[ "$r" =~ ^[oO]$ ]]
+}
+
+# Règles propres au projet dans un agent Gradient : bloc préservé à chaque mise à jour
+extract_project_rules() {
+  sed -n '/^<!-- PROJECT-RULES-START -->$/,/^<!-- PROJECT-RULES-END -->$/p' "$1"
+}
+strip_project_rules() {
+  awk '/^<!-- PROJECT-RULES-START -->$/{inb=1; b=""; next}
+       /^<!-- PROJECT-RULES-END -->$/{inb=0; next}
+       inb{next}
+       /^[[:space:]]*$/{b=b $0 "\n"; next}
+       {printf "%s", b; b=""; print}
+       END{printf "%s", b}' "$1"
+}
+
+# Toutes les versions qu'un fichier a eues dans le repo Gradient (identifiants git,
+# sans télécharger les contenus). Vide = ce fichier n'a jamais appartenu à Gradient.
+gradient_history_blobs() {
+  (cd "$TEMP_DIR/repo" && git log --all --format=%H -- "$1" 2>/dev/null \
+    | while read -r c; do git rev-parse -q --verify "$c:$1" 2>/dev/null || true; done) | sort -u
+}
+
+# Le fichier (bloc projet retiré) est-il une version Gradient d'origine, jamais modifiée ?
+is_pristine_gradient_version() {
+  local h
+  h=$(git hash-object "$1")
+  gradient_history_blobs "$2" | grep -qx "$h"
+}
+
 # ─── Parsing des arguments ───────────────────────────
 for arg in "$@"; do
   case "$arg" in
@@ -130,23 +184,43 @@ if [ ! -d "$AGENTS_DIR" ]; then
   exit 1
 fi
 
+# ─── Migration : sortir les anciennes sauvegardes de .claude/agents/ ───
+# Elles contenaient une ancienne copie de chaque agent (mêmes noms) que Claude Code
+# pouvait charger à la place de la vraie. Idem pour les agents dépréciés.
+if [ -d "$LEGACY_BACKUP_DIR" ]; then
+  mkdir -p "$BACKUP_DIR/agents"
+  cp "$LEGACY_BACKUP_DIR"/*.md "$BACKUP_DIR/agents/" 2>/dev/null || true
+  rm -rf "$LEGACY_BACKUP_DIR"
+  echo -e "${GREEN}✓ Ancienne sauvegarde sortie de .claude/agents/ (ses copies pouvaient être chargées à la place des vrais agents) → ${BACKUP_DIR}/${NC}"
+fi
+if [ -d "$AGENTS_DIR/_deprecated" ]; then
+  mkdir -p .claude/deprecated-agents
+  cp -r "$AGENTS_DIR/_deprecated/." .claude/deprecated-agents/ 2>/dev/null || true
+  rm -rf "$AGENTS_DIR/_deprecated"
+  echo -e "${GREEN}✓ Agents dépréciés sortis de .claude/agents/ (ils restaient chargés) → .claude/deprecated-agents/${NC}"
+fi
+
 # ─── Mode rollback ───────────────────────────────────
 if [ "$ROLLBACK" = true ]; then
-  if [ ! -d "$BACKUP_DIR" ]; then
-    echo -e "${RED}✗ Aucune sauvegarde trouvée dans ${BACKUP_DIR}/${NC}"
+  if [ ! -d "$BACKUP_DIR/agents" ]; then
+    echo -e "${RED}✗ Aucune sauvegarde trouvée dans ${BACKUP_DIR}/agents/${NC}"
     echo -e "  Le rollback n'est possible qu'après une mise à jour."
     exit 1
   fi
 
-  backup_count=$(ls "$BACKUP_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+  backup_count=$(ls "$BACKUP_DIR/agents"/*.md 2>/dev/null | wc -l | tr -d ' ')
   echo -e "${BOLD}gradient-agents : rollback${NC}"
   echo -e "${YELLOW}→ Restauration de ${backup_count} agent(s) depuis la sauvegarde...${NC}"
 
-  for backup_file in "$BACKUP_DIR"/*.md; do
+  for backup_file in "$BACKUP_DIR/agents"/*.md; do
     agent_name=$(basename "$backup_file")
     cp "$backup_file" "$AGENTS_DIR/$agent_name"
     echo -e "  ${GREEN}✓ Restauré : ${agent_name}${NC}"
   done
+  if [ -f "$BACKUP_DIR/settings.json" ]; then
+    cp "$BACKUP_DIR/settings.json" .claude/settings.json
+    echo -e "  ${GREEN}✓ Restauré : .claude/settings.json${NC}"
+  fi
 
   rm -rf "$BACKUP_DIR"
   echo ""
@@ -180,7 +254,7 @@ echo -e "${BLUE}  Branche cible : ${DETECTED_BRANCH}${NC}"
 # Clone avec fallback pour repos privés
 if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
   cd "$TEMP_DIR/repo"
-  git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /CLAUDE.md /.githooks/ /update.sh /docs/founder-preferences.md /index.html
+  git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /CLAUDE.md /.githooks/ /update.sh /docs/founder-preferences.md /index.html /.claude/checklists/
 else
   if git clone --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
@@ -194,15 +268,16 @@ fi
 echo -e "${GREEN}✓ Dernières versions récupérées${NC}"
 echo ""
 
-# Créer une sauvegarde avant mise à jour
-mkdir -p "$OLDPWD/$BACKUP_DIR"
-cp "$OLDPWD/$AGENTS_DIR"/*.md "$OLDPWD/$BACKUP_DIR/" 2>/dev/null || true
+# Créer une sauvegarde avant mise à jour (hors de .claude/agents/)
+mkdir -p "$OLDPWD/$BACKUP_DIR/agents"
+cp "$OLDPWD/$AGENTS_DIR"/*.md "$OLDPWD/$BACKUP_DIR/agents/" 2>/dev/null || true
 echo -e "${BLUE}→ Sauvegarde créée dans ${BACKUP_DIR}/ (rollback : bash update.sh --rollback)${NC}"
 echo ""
 
 updated=0
 skipped=0
 new_agents=0
+customized=0
 
 for remote_agent in "$TEMP_DIR/repo/.claude/agents"/*.md; do
   agent_name=$(basename "$remote_agent")
@@ -215,41 +290,66 @@ for remote_agent in "$TEMP_DIR/repo/.claude/agents"/*.md; do
     continue
   fi
 
-  remote_hash=$(md5sum "$remote_agent" | cut -d' ' -f1)
-  local_hash=$(md5sum "$local_agent" | cut -d' ' -f1)
+  # Nouvelle version + bloc PROJECT-RULES du projet (s'il existe), recollé à la fin
+  candidate="$TEMP_DIR/candidate.md"
+  cp "$remote_agent" "$candidate"
+  project_rules=$(extract_project_rules "$local_agent")
+  if [ -n "$project_rules" ]; then
+    printf '\n%s\n' "$project_rules" >> "$candidate"
+  fi
 
-  if [ "$remote_hash" == "$local_hash" ]; then
+  if cmp -s "$candidate" "$local_agent"; then
     skipped=$((skipped+1))
     continue
   fi
 
-  if [ "$UPDATE_ALL" = true ]; then
-    cp "$remote_agent" "$local_agent"
-    echo -e "  ${GREEN}✓ Mis à jour : ${agent_name}${NC}"
+  # Version Gradient d'origine (simple retard) ou modifiée par le projet hors du bloc ?
+  strip_project_rules "$local_agent" > "$TEMP_DIR/stripped.md"
+  is_custom=false
+  if ! is_pristine_gradient_version "$TEMP_DIR/stripped.md" ".claude/agents/$agent_name"; then
+    is_custom=true
+  fi
+
+  if [ "$UPDATE_ALL" = true ] || ask_yes_no "    ${agent_name} : mettre à jour ? [o/N] "; then
+    cp "$candidate" "$local_agent"
+    if [ "$is_custom" = true ]; then
+      customized=$((customized+1))
+      echo -e "  ${YELLOW}⚠ ${agent_name} : modifié par le projet HORS du bloc PROJECT-RULES, remplacé. Ancienne version : ${BACKUP_DIR}/agents/${agent_name}. Remettez vos règles propres dans un bloc <!-- PROJECT-RULES-START --> … <!-- PROJECT-RULES-END --> en fin de fichier : il sera préservé aux prochaines mises à jour.${NC}"
+    else
+      echo -e "  ${GREEN}✓ Mis à jour : ${agent_name}$([ -n "$project_rules" ] && echo ' (bloc PROJECT-RULES préservé)')${NC}"
+    fi
     updated=$((updated+1))
   else
-    echo -e "  ${YELLOW}↑ Mise à jour disponible : ${agent_name}${NC}"
-    read -r -p "    Mettre à jour ? [o/N] " response
-    if [[ "$response" =~ ^[oO]$ ]]; then
-      cp "$remote_agent" "$local_agent"
-      echo -e "    ${GREEN}✓ Mis à jour${NC}"
-      updated=$((updated+1))
-    else
-      skipped=$((skipped+1))
-    fi
+    skipped=$((skipped+1))
   fi
 done
 
-# ─── Nettoyage des fichiers framework obsolètes (renommés/supprimés en amont) ───
-# update.sh copie les fichiers présents en remote mais ne supprime pas ceux qui
-# en ont disparu. Ces fichiers-là sont d'anciens agents/protocoles remplacés :
-# les laisser réenregistrerait des agents fantômes. Backup déjà fait ci-dessus.
-for obsolete in moi.md orchestrator-reference.md orchestrator.md; do
-  if [ -f "$OLDPWD/$AGENTS_DIR/$obsolete" ]; then
-    rm -f "$OLDPWD/$AGENTS_DIR/$obsolete"
-    echo -e "  ${GREEN}✓ Fichier obsolète retiré : ${obsolete}${NC}"
+# ─── Fichiers Gradient disparus en amont (renommés/supprimés) ───
+# Retirés seulement s'ils sont une version Gradient d'origine ; un fichier qui n'a
+# jamais existé dans Gradient est un agent maison et n'est jamais touché.
+for local_file in "$OLDPWD/$AGENTS_DIR"/*.md; do
+  [ -f "$local_file" ] || continue
+  file_name=$(basename "$local_file")
+  if [ -f "$TEMP_DIR/repo/.claude/agents/$file_name" ]; then continue; fi
+  if [ -z "$(gradient_history_blobs ".claude/agents/$file_name")" ]; then continue; fi
+  strip_project_rules "$local_file" > "$TEMP_DIR/stripped.md"
+  if is_pristine_gradient_version "$TEMP_DIR/stripped.md" ".claude/agents/$file_name"; then
+    rm -f "$local_file"
+    echo -e "  ${GREEN}✓ Fichier Gradient obsolète retiré : ${file_name}${NC}"
+  else
+    echo -e "  ${YELLOW}⚠ ${file_name} : ancien fichier Gradient retiré en amont mais modifié par le projet, conservé. À supprimer s'il n'est plus utile (il reste chargé comme agent s'il a un frontmatter).${NC}"
   fi
 done
+
+# ─── Doublons chargés par Claude Code (chargement récursif de .claude/agents/) ───
+top_names=$(grep -h '^name:' "$OLDPWD/$AGENTS_DIR"/*.md 2>/dev/null | sed 's/^name: *//' | tr -d '"'"'"' ' | sort -u)
+while IFS= read -r nested; do
+  [ -n "$nested" ] || continue
+  nested_name=$(grep -m1 '^name:' "$nested" 2>/dev/null | sed 's/^name: *//' | tr -d '"'"'"' ' || true)
+  if [ -n "$nested_name" ] && echo "$top_names" | grep -qx "$nested_name"; then
+    echo -e "  ${YELLOW}⚠ Doublon : ${nested#$OLDPWD/} déclare l'agent « ${nested_name} » déjà défini dans .claude/agents/. Claude Code charge les sous-dossiers et peut prendre cette copie à la place : déplacez-la hors de .claude/agents/.${NC}"
+  fi
+done < <(find "$OLDPWD/$AGENTS_DIR" -mindepth 2 -name '*.md' 2>/dev/null)
 
 # ─── Agents maison sur un modèle obsolète (le script ne les modifie jamais) ───
 current_models=$(grep -h '^model: claude-' "$TEMP_DIR/repo/.claude/agents"/*.md 2>/dev/null | sed 's/^model: *//' | sort -u)
@@ -274,6 +374,11 @@ if [ -f "$TEMP_DIR/repo/docs/founder-preferences.md" ]; then
   cp "$TEMP_DIR/repo/docs/founder-preferences.md" "$OLDPWD/.claude/founder-preferences.md"
   echo -e "  ${GREEN}✓ .claude/founder-preferences.md synchronisé${NC}"
 fi
+if [ -d "$TEMP_DIR/repo/.claude/checklists" ]; then
+  mkdir -p "$OLDPWD/.claude/checklists"
+  cp "$TEMP_DIR/repo/.claude/checklists"/*.md "$OLDPWD/.claude/checklists/" 2>/dev/null || true
+  echo -e "  ${GREEN}✓ .claude/checklists/ synchronisé${NC}"
+fi
 if [ -f "$TEMP_DIR/repo/index.html" ]; then
   cp "$TEMP_DIR/repo/index.html" "$OLDPWD/.claude/prompts-library.html"
   echo -e "  ${GREEN}✓ .claude/prompts-library.html synchronisé${NC}"
@@ -291,6 +396,7 @@ fi
 
 # ─── Hooks git : garde-fou CLAUDE.md, hook du projet et Husky préservés ───
 sync_githooks "$TEMP_DIR/repo" "$OLDPWD"
+ensure_gitignore "$OLDPWD"
 
 # ─── Mise à jour de CLAUDE.md (fusion avec marqueurs) ─
 if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
@@ -309,6 +415,9 @@ if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
     echo -e "  ${GREEN}✓ CLAUDE.md mis à jour (section Gradient remplacée, contenu custom préservé)${NC}"
   else
     echo -e "  ${YELLOW}⚠ CLAUDE.md sans marqueurs Gradient, ajout en fin de fichier${NC}"
+    if grep -qiE "Gradient Agents|commandements|Règles communes" "$local_claude"; then
+      echo -e "  ${YELLOW}⚠ Votre CLAUDE.md contient une ANCIENNE version des règles Gradient (sans marqueurs) : les deux versions coexistent et peuvent se contredire. Lancez le prompt « Migrer un projet existant vers le nouveau framework » pour retirer l'ancienne.${NC}"
+    fi
     echo "" >> "$local_claude"
     cat "$source_claude" >> "$local_claude"
     echo -e "  ${GREEN}✓ CLAUDE.md fusionné${NC}"
@@ -322,6 +431,7 @@ echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "  ${GREEN}${updated}${NC} agents mis à jour"
 echo -e "  ${GREEN}${new_agents}${NC} nouveaux agents"
 echo -e "  ${BLUE}${skipped}${NC} déjà à jour"
+[ "$customized" -gt 0 ] && echo -e "  ${YELLOW}${customized}${NC} agent(s) modifié(s) par le projet remplacé(s) : voir les ⚠ ci-dessus" || true
 echo -e "  ${GREEN}✓${NC} settings.json fusionné, CLAUDE.md synchronisé (réglages du projet préservés)"
 echo ""
 echo -e "${YELLOW}Note : project-context.md n'est jamais écrasé.${NC}"

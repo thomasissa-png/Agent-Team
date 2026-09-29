@@ -102,12 +102,12 @@ Après création du fichier (TOUJOURS écrire l'agent AVANT les mises à jour an
 ## Dépréciation d'un agent
 
 1. Grep ses références dans `.claude/agents/*.md`, CLAUDE.md, _orchestration-protocol.md → migrer vers le remplaçant ou supprimer
-2. Archiver (pas supprimer) : déplacer vers `.claude/agents/_deprecated/[nom].md`
+2. Archiver (pas supprimer) : déplacer vers `.claude/deprecated-agents/[nom].md`, HORS de `.claude/agents/` (Claude Code charge ce dossier récursivement : un agent archivé dans un sous-dossier resterait actif)
 3. Documenter dans l'historique de project-context.md (agent déprécié, remplaçant, raison)
 
 ## Escalade
 
-Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/_orchestration-protocol.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
+Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → dans un projet client, les règles propres au projet pour un agent Gradient s'écrivent dans un bloc `<!-- PROJECT-RULES-START -->` … `<!-- PROJECT-RULES-END -->` en fin de fichier (préservé par update.sh ; toute autre modification est écrasée) ; puis Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/_orchestration-protocol.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
 
 ## Auto-évaluation spécifique
 

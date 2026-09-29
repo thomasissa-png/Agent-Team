@@ -4,6 +4,18 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : autres failles de même famille (install/update chez les clients)
+
+1. **Agents fantômes (grave)** : Claude Code charge `.claude/agents/` récursivement (doc officielle, vérifiée) et, à noms égaux, n'en garde qu'un selon l'ordre du système de fichiers. La sauvegarde `.claude/agents/.backup/` (ancienne copie de chaque agent) et `_deprecated/` pouvaient donc remplacer les vrais agents. Sauvegarde → `.claude/gradient-backup/`, dépréciés → `.claude/deprecated-agents/`, migration automatique de l'existant, signalement de tout doublon en sous-dossier. agent-factory aligné.
+2. **Agents Gradient personnalisés écrasés sans prévenir** (et le prompt de migration conseillait d'écrire dans fullstack.md) : bloc `PROJECT-RULES` en fin d'agent recollé à chaque mise à jour ; modification hors bloc détectée par comparaison à l'historique git d'Agent-Team → remplacement avec avertissement et sauvegarde. Documenté (base protocol, agent-factory, prompt de migration, INSTALL). Garde de validation : aucun marqueur seul dans les fichiers Gradient (bug réel trouvé en test : la doc elle-même déclenchait la détection).
+3. **Fichiers obsolètes** : liste figée remplacée par l'historique git (retiré seulement si version Gradient d'origine ; un agent maison n'est jamais touché).
+4. **Référence morte** : `docs/checklists/favicon-checklist.md` (citée par design, fullstack, qa) n'était jamais installée → déplacée en `.claude/checklists/`, installée et synchronisée.
+5. **Scripts sans terminal** : `read` interactifs (install et update) ne plantent plus sous Claude Code ; install n'est plus bloqué par de simples agents maison et oriente vers update.sh si l'équipe est déjà là.
+6. **Divers** : alerte si CLAUDE.md contient une ancienne version Gradient sans marqueurs ; sauvegardes ajoutées au .gitignore du projet ; rollback restaure aussi settings.json ; préférences projet : les copies de globales périmées ne l'emportent plus (règle + détection au démarrage de session) ; références au seul repo Agent-Team étiquetées.
+Testé bout en bout sur un historique git réel : ancienne équipe (3 passages, stables), rollback, install avec agents maison seuls, install sur équipe existante, + non-régression ISSA, Husky, ancien hook, hors git.
+
+---
+
 ## 2026-09-29 (S6 suite) : mise à jour d'équipe non destructive (retour ISSA Capital)
 
 La session de mise à jour d'ISSA a dû empêcher à la main trois casses causées par nos scripts. Corrigé à la source :

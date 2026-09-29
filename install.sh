@@ -72,6 +72,16 @@ PY
   fi
 }
 
+# Ajoute au .gitignore du projet les fichiers techniques du framework (sauvegardes)
+ensure_gitignore() {
+  local gi="$1/.gitignore" line
+  [ -f "$gi" ] || return 0
+  for line in ".claude/gradient-backup/" ".claude/settings.gradient.json"; do
+    grep -qxF "$line" "$gi" || printf '%s\n' "$line" >> "$gi"
+  done
+  return 0
+}
+
 # Ancien pre-commit Gradient (avant le marqueur GRADIENT-HOOK), jamais modifié par le projet
 is_legacy_gradient_hook() {
   grep -q "Guard: la section Gradient de CLAUDE.md" "$1" \
@@ -142,13 +152,21 @@ check_requirements() {
 }
 
 check_existing_agents() {
-  if [ -d "$AGENTS_DIR" ] && [ "$(ls -A $AGENTS_DIR 2>/dev/null)" ]; then
-    echo -e "${YELLOW}⚠ Des agents existent déjà dans ${AGENTS_DIR}/${NC}"
+  # Seule la présence des agents GRADIENT déclenche l'alerte : des agents maison seuls
+  # ne bloquent pas l'installation (leurs noms ne sont jamais écrasés).
+  if [ -f "$AGENTS_DIR/_base-agent-protocol.md" ] || [ -f "$AGENTS_DIR/fullstack.md" ] || [ -f "$AGENTS_DIR/orchestrator.md" ]; then
+    echo -e "${YELLOW}⚠ L'équipe Gradient est déjà installée dans ${AGENTS_DIR}/${NC}"
     echo -e "  Agents existants : $(ls $AGENTS_DIR/*.md 2>/dev/null | wc -l | tr -d ' ') fichier(s)"
     echo ""
-    read -r -p "  Écraser avec la version du repo ? [o/N] " response
+    # Pas de terminal (Claude Code, curl | bash) : ne jamais écraser, orienter vers update.sh
+    response=""
+    if [ -t 0 ]; then
+      read -r -p "  Écraser avec la version du repo ? [o/N] " response || response=""
+    elif (: < /dev/tty) 2>/dev/null; then
+      read -r -p "  Écraser avec la version du repo ? [o/N] " response < /dev/tty || response=""
+    fi
     if [[ ! "$response" =~ ^[oO]$ ]]; then
-      echo -e "${YELLOW}  Installation annulée. Utilise update.sh pour une mise à jour sélective.${NC}"
+      echo -e "${YELLOW}  Installation annulée : l'équipe est déjà là, c'est une mise à jour. Lance update.sh (il préserve settings, hooks, agents maison et règles projet).${NC}"
       exit 0
     fi
   fi
@@ -176,7 +194,7 @@ clone_repo() {
   # Tentative avec sparse checkout (repos publics et privés avec auth)
   if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
-    git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /templates/ /CLAUDE.md /update.sh /.githooks/ /docs/founder-preferences.md /index.html
+    git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /templates/ /CLAUDE.md /update.sh /.githooks/ /docs/founder-preferences.md /index.html /.claude/checklists/
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
@@ -215,7 +233,7 @@ install_settings_json() {
   fi
 
   if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
-    merge_settings_json "$TEMP_DIR/repo/.claude/settings.json" "$target_dir/.claude/settings.json" "$target_dir/.claude/agents/.backup"
+    merge_settings_json "$TEMP_DIR/repo/.claude/settings.json" "$target_dir/.claude/settings.json" "$target_dir/.claude/gradient-backup"
   fi
 }
 
@@ -302,6 +320,11 @@ install_shared_refs() {
     cp "$TEMP_DIR/repo/docs/founder-preferences.md" "$target_dir/.claude/founder-preferences.md"
     echo -e "${GREEN}✓ .claude/founder-preferences.md installé (stack par défaut, préférences fondateur)${NC}"
   fi
+  if [ -d "$TEMP_DIR/repo/.claude/checklists" ]; then
+    mkdir -p "$target_dir/.claude/checklists"
+    cp "$TEMP_DIR/repo/.claude/checklists"/*.md "$target_dir/.claude/checklists/" 2>/dev/null || true
+    echo -e "${GREEN}✓ .claude/checklists/ installé (checklists citées par les agents)${NC}"
+  fi
   if [ -f "$TEMP_DIR/repo/index.html" ]; then
     cp "$TEMP_DIR/repo/index.html" "$target_dir/.claude/prompts-library.html"
     echo -e "${GREEN}✓ .claude/prompts-library.html installé (bibliothèque de prompts)${NC}"
@@ -315,6 +338,7 @@ install_githooks() {
     target_dir="$OLDPWD"
   fi
   sync_githooks "$TEMP_DIR/repo" "$target_dir"
+  ensure_gitignore "$target_dir"
 }
 
 print_summary() {

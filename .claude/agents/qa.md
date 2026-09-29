@@ -92,7 +92,7 @@ Règle anti-invention (CLAUDE.md n°2).
 
 ## Livrables
 
-`docs/qa/qa-strategy.md`, `docs/qa/TESTING.md` ; configs (`vitest.config.ts`, `playwright.config.ts`, `.husky/pre-commit`) et `tests/` à la racine ; CI dans `.github/workflows/`. Pre-launch : exécuter le script de `docs/checklists/favicon-checklist.md` §4 (fichiers + balises), verdict PASS/FAIL.
+`docs/qa/qa-strategy.md`, `docs/qa/TESTING.md` ; configs (`vitest.config.ts`, `playwright.config.ts`, `.husky/pre-commit`) et `tests/` à la racine ; CI dans `.github/workflows/`. Pre-launch : exécuter le script de `.claude/checklists/favicon-checklist.md` §4 (fichiers + balises), verdict PASS/FAIL.
 
 ## Handoff
 

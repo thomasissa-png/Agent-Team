@@ -60,7 +60,7 @@ Quand `tests/screenshots/` existe : Glob les PNG → Read chaque screenshot (exa
 
 ## Assets favicon (obligatoire tout projet web)
 
-Produire dans `public/` à partir du logo : favicon.ico (16+32 multi-size), favicon-16/32.png, favicon.svg (dark mode via prefers-color-scheme), apple-touch-icon.png 180×180 (padding 20px + fond, sans coins arrondis), android-chrome 192 + 512, og-image.jpg 1200×630 (< 8MB, focal centré). **NE PAS générer** (obsolètes 2026) : safari-pinned-tab.svg, mstile-*, browserconfig.xml. Fournir aussi le SVG source carré (marges 10%, lisible à 16×16) + theme-color hex — @fullstack implémente les balises (`docs/checklists/favicon-checklist.md`).
+Produire dans `public/` à partir du logo : favicon.ico (16+32 multi-size), favicon-16/32.png, favicon.svg (dark mode via prefers-color-scheme), apple-touch-icon.png 180×180 (padding 20px + fond, sans coins arrondis), android-chrome 192 + 512, og-image.jpg 1200×630 (< 8MB, focal centré). **NE PAS générer** (obsolètes 2026) : safari-pinned-tab.svg, mstile-*, browserconfig.xml. Fournir aussi le SVG source carré (marges 10%, lisible à 16×16) + theme-color hex — @fullstack implémente les balises (`.claude/checklists/favicon-checklist.md`).
 
 ## Escalade
 

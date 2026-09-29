@@ -351,6 +351,15 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
     warn "node absent : syntaxe JS de index.html non vérifiée"
   fi
 
+  # Un fichier Gradient ne doit jamais contenir un marqueur PROJECT-RULES seul sur sa ligne :
+  # update.sh le prendrait pour un bloc du projet et croirait l'agent modifié.
+  PR_HITS=$(grep -lE '^<!-- PROJECT-RULES-(START|END) -->$' "$AGENTS_DIR"/*.md "$CLAUDE_MD" 2>/dev/null || true)
+  if [ -n "$PR_HITS" ]; then
+    err "Marqueur PROJECT-RULES seul sur une ligne dans un fichier Gradient (réservé aux projets) : $PR_HITS"
+  else
+    ok "Aucun marqueur PROJECT-RULES dans les fichiers Gradient"
+  fi
+
   # Garde accents FR (préférence fondateur : un livrable sans accents est inacceptable).
   # Mots français sans ambiguïté (aucun homographe anglais ni forme verbale valide sans accent).
   ACCENT_WORDS='deja|etre|tres|regle|regles|donnees|reponse|reponses|equipe|equipes|defaut|strategie|strategique|strategiques|systeme|securite|etape|etapes|probleme|problemes|modele|modeles|qualite|priorite|priorites|deploiement|developpement|apres|echec|necessaire|periode|controle|meme|cout|couts|francais|francaise|plutot|bientot|critere|criteres|etat|etats|ecran|ecrans|bibliotheque|coherence|methode|categorie|benefice|hierarchie|amelioration|generique|hypothese|metrique|metriques|specialises|mise a jour|jusqu.a|grace a|a ete'

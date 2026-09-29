@@ -9,7 +9,7 @@
 1. Lire `project-context.md` à la racine. Absent → STOP : "project-context.md manquant. Lance le prompt « Définir mon projet » (site Gradient Agents, section Démarrage) avant que je puisse travailler."
 2. Lire le tableau "Historique des interventions agents" — ne jamais contredire une décision sans le signaler
 3. Lire `docs/lessons-learned.md` si existant — un learning `non-propagé` qui concerne le domaine de l'agent : le signaler dans le handoff et l'intégrer au livrable
-4. Lire les préférences fondateur, en deux couches : (a) **globales**, valables sur tous les projets (dont la **stack par défaut** : Cloudflare, Umami, VPS en renfort) : `.claude/founder-preferences.md` dans un projet client (copie rafraîchie par install/update, ne jamais l'éditer), `docs/founder-preferences.md` dans le repo Agent-Team ; (b) **propres au projet** : `docs/founder-preferences.md` du projet client s'il existe (vocabulaire, marque, règles métier). En cas de conflit, le projet l'emporte. Nouvelle préférence : propre au projet → `docs/founder-preferences.md` du projet ; valable partout → `docs/framework-feedback.md`
+4. Lire les préférences fondateur, en deux couches : (a) **globales**, valables sur tous les projets (dont la **stack par défaut** : Cloudflare, Umami, VPS en renfort) : `.claude/founder-preferences.md` dans un projet client (copie rafraîchie par install/update, ne jamais l'éditer), `docs/founder-preferences.md` dans le repo Agent-Team ; (b) **propres au projet** : `docs/founder-preferences.md` du projet client s'il existe (vocabulaire, marque, règles métier). En cas de conflit, le projet l'emporte sur ce qui lui est propre (marque, vocabulaire, métier) ; pour la stack et les règles générales, les globales font foi (une ligne du fichier projet qui recopie une ancienne préférence globale, souvent héritée d'anciennes clôtures, est périmée : la signaler) Nouvelle préférence : propre au projet → `docs/founder-preferences.md` du projet ; valable partout → `docs/framework-feedback.md`
 5. Lire `docs/decisions-log.md` si existant — l'historique des décisions structurantes de CE projet. Ne jamais contredire sans signaler. Tout agent qui prend une décision structurante (architecture, lib, design, arbitrage) y ajoute une ligne : `| Date | Agent | Décision | Pourquoi | Contrainte |`
 6. Vérifier les champs critiques de l'agent (liste propre à chaque agent). Vides → lister les manques, refuser d'avancer
 
@@ -119,9 +119,14 @@ L'agent ne modifie PAS lessons-learned.md — il signale, l'orchestrateur centra
 
 **6. Historique** : ajouter une ligne au tableau "Historique des interventions agents" de project-context.md : `| agent | date | fichiers | décisions clés | pourquoi, alternatives écartées |`.
 
+## Personnaliser un agent Gradient dans un projet (standard)
+
+Les fichiers des 19 agents et des protocoles appartiennent au framework : update.sh les remplace. Une règle propre au projet pour un agent (ex. « pas de barrel exports » pour @fullstack) s'écrit en fin de fichier dans un bloc que update.sh recolle à chaque mise à jour : une ligne contenant uniquement `<!-- PROJECT-RULES-START -->`, puis un titre « Règles propres à ce projet » et les règles, puis une ligne contenant uniquement `<!-- PROJECT-RULES-END -->`.
+Toute autre modification d'un fichier Gradient est écrasée (sauvegarde dans `.claude/gradient-backup/`, avertissement du script). Règles transverses au projet → `project-context.md` (Notes libres) ou `CLAUDE.md` hors du bloc Gradient. Jamais de copie d'agent dans un sous-dossier de `.claude/agents/` : Claude Code charge ce dossier récursivement.
+
 ## Versioning des agents (standard)
 
-Frontmatter `version` : dernier chiffre (2.0→2.1) pour corrections de prompt, calibration, auto-évaluation ; premier chiffre (2.1→3.0) pour changement de périmètre, livrables, modèle, refonte. Changement majeur → noter dans CHANGELOG.md.
+Frontmatter `version` : dernier chiffre (2.0→2.1) pour corrections de prompt, calibration, auto-évaluation ; premier chiffre (2.1→3.0) pour changement de périmètre, livrables, modèle, refonte. Changement majeur → noter dans CHANGELOG.md (repo Agent-Team).
 
 ## Handoff (standard)
 

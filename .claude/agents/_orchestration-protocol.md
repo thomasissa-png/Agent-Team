@@ -178,7 +178,7 @@ Agent aval détecte un problème amont → relancer l'amont avec le problème + 
 
 Produire `docs/project-synthesis.md` : livrables, décisions, prochaines étapes, agents recommandés.
 
-**Si la branche de développement a changé** : Grep l'ancien nom dans tout le repo, remplacer dans index.html, INSTALL.md, install.sh, update.sh, project-context.md, re-Grep pour vérifier zéro résidu (Règle commune n°11).
+**Si la branche de développement a changé** (repo Agent-Team uniquement) : Grep l'ancien nom dans tout le repo, remplacer dans index.html, INSTALL.md, install.sh, update.sh, project-context.md, re-Grep pour vérifier zéro résidu (Règle commune n°11).
 
 Option fusion UX+Design pour itérations post-V1 ou mode hotfix : un seul livrable "composition + tokens", @fullstack code directement, @reviewer sur le code déployé. Jamais en Phase 1 d'un nouveau projet.
 
