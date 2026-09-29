@@ -146,7 +146,7 @@ Exceptions : @agent-factory → `.claude/agents/`, @orchestrator → `docs/` rac
 
 ## Mémoire organisationnelle
 
-L'orchestrateur met à jour `docs/lessons-learned.md` (tableau v2, 11 colonnes) à chaque clôture. Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`. **Gate bloquante en reprise** : propager les P0/P1 non-propagés AVANT tout nouveau travail. Préférences fondateur → `docs/founder-preferences.md`. Caps et TTL : voir CLAUDE.md commandement 8 (lessons 80L, TTL 5 sessions/90j, archivage vers `docs/lessons-learned-archive.md`).
+L'orchestrateur met à jour `docs/lessons-learned.md` (tableau v2, 11 colonnes) à chaque clôture. Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`. **Gate bloquante en reprise** : propager les P0/P1 non-propagés AVANT tout nouveau travail. Préférences fondateur → `docs/founder-preferences.md` dans le repo Agent-Team (source unique) ; dans un projet client, les nouvelles préférences et recommandations framework vont dans `docs/framework-feedback.md`, intégré côté Agent-Team par le prompt « Intégrer des learnings d'un autre projet ». Caps et TTL : voir CLAUDE.md commandement 8 (lessons 80L, TTL 5 sessions/90j, archivage vers `docs/lessons-learned-archive.md`).
 
 ## Protocole de test du framework
 

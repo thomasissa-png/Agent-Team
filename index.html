@@ -494,7 +494,7 @@ const AGENTS = [
     required:["Persona principal","Objectif principal à 6 mois","Stade (Idée/V1/Production/Croissance)"]
   },
   {
-    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"5.0", model:"claude-opus-5-5",
+    id:"agent-factory", name:"Agent Factory", at:"@agent-factory", version:"5.1", model:"claude-opus-5-5",
     role:"Architecte multi-agents, 10 ans",
     phase:"Hors-phase : Création",
     desc:"Crée des agents spécialisés sur mesure pour chaque projet. Vérifie la conformité au framework, détecte les doublons, et intègre le nouvel agent dans l'écosystème.",
@@ -637,10 +637,10 @@ Ne lance rien — présente juste les recommandations et attends mon choix.`
         quand:"project-context.md existe (créé via le prompt Démarrage ci-dessus) — lance toute la chaîne automatiquement. Projet complet : prévoir plusieurs sessions. Pour reprendre : claude --resume \'nom\' puis \'Lis project-context.md et docs/orchestration-plan.md, continue.\'",
         prompt:`@orchestrator Lance mon projet en mode autopilot (phases 0→5). Objectif : livraison complète — 100% gates PASS (9 gates binaires (voir _gates.md)) partout — le même résultat que si je lançais chaque prompt de la bibliothèque un par un.
 
-Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure dans templates/project-context.md). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
+Si project-context.md n'existe pas : pose-moi les questions pour le créer (structure : le modèle posé par l'installation, ou le prompt « Définir mon projet »). Ne me renvoie pas au template — crée-le avec moi. Sois exigeant sur la qualité de chaque champ (un persona sans frustration concrète ou un KPI vague = insuffisant, challenge-moi).
 
 Qualité des Task — règle critique :
-Pour chaque agent que tu lances, applique ta règle "Routage bibliothèque d'abord" : identifie le prompt correspondant dans index.html (Grep sur le titre) et extrais ses instructions détaillées dans le prompt Task. Chaque Task doit avoir le même niveau de détail que le prompt de la bibliothèque — sections numérotées, critères de validation, livrables précis. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
+Pour chaque agent que tu lances, applique ta règle "Routage bibliothèque d'abord" : identifie le prompt correspondant dans la bibliothèque (.claude/prompts-library.html en projet client, index.html dans le repo Agent-Team ; Grep sur le titre) et extrais ses instructions détaillées dans le prompt Task. Chaque Task doit avoir le même niveau de détail que le prompt de la bibliothèque — sections numérotées, critères de validation, livrables précis. L'autopilot est un raccourci d'exécution, pas un raccourci de qualité.
 
 Renforcements spécifiques (en plus de ton protocole standard) :
 0. GATE BLOQUANTE LEARNINGS : avant de lancer la Phase 0, lis docs/lessons-learned.md. Si des learnings P0/P1 ont statut propagation = "non-propagé", applique les modifications listées dans "Fichiers impactés" AVANT tout autre travail. Marque chaque learning propagé après vérification par Grep. Ne lance AUCUN agent tant que des P0/P1 sont non-propagés.
@@ -657,11 +657,11 @@ Renforcements spécifiques (en plus de ton protocole standard) :
 11. PROPAGATION CHECK en clôture : avant de clôturer, vérifier que TOUS les learnings P0/P1 de la session ont statut propagation = propagé. Si non → propager avant de quitter. Documenter dans le mémo de reprise si timeout.
 12. Learnings cross-projets (renforcements obligatoires) :
     - Zéro fausse promesse : le copy ne promet QUE des features implémentées.
-    - Anti-témoignage fictif : jamais de noms de personas comme faux témoignages.
-    - Conviction-first : CTAs en fin de parcours, pas au premier écran (sauf pages d'action).
+    - Zéro témoignage, avis ou chiffre inventé (même anonymisé) : réel et sourcé, sinon [À COLLECTER].
+    - Placement des CTAs selon le mode Vitrine/Funnel tranché en Phase 0 (Vitrine : après la démonstration de valeur ; Funnel : dès le hero ; pages d'action : immédiat).
     - Anti-placeholder galerie : jamais d'images identiques labellées différemment.
     - Backoffice = même design system que le front.
-    - Self-fetch Next.js : JAMAIS l'URL publique, toujours 127.0.0.1:PORT.
+    - Self-fetch Next.js : JAMAIS l'URL publique ; appeler directement la fonction extraite dans src/lib/ (127.0.0.1:PORT uniquement sur Replit legacy).
     - React Hooks AVANT tout return conditionnel.
     - Stale-while-revalidate pour tout fetch > 3 secondes.
     - Seuil réécriture : si 10+ edits avec erreurs récurrentes, réécrire le fichier en entier.
@@ -671,10 +671,13 @@ Renforcements spécifiques (en plus de ton protocole standard) :
     - Parcours d'achat testé end-to-end obligatoire avant livraison.
     - Bugs corrigés immédiatement : jamais de bug documenté "en attente".
     - Agents testeurs calibrés VALEUR : évaluer la valeur perçue, pas juste la conformité technique.
-    - @sales-enablement obligatoire en Phase 4 : playbook commercial, propositions, objection handling, ROI calculator. L'armurier qui équipe le fondateur pour closer.
+    - @sales-enablement en Phase 4 dès que le projet a une dimension vente (B2B, services) : playbook commercial, propositions, objection handling, ROI calculator.
     - Earned media en Phase 4 : activer les pipelines @growth earned media (communiqués, newsjacking, data stories, directories, Dev.to). ROI en [HYPOTHÈSE].
     - Pre-commit build check (Règle n°6) : AVANT chaque commit sur src/, exécuter tsc --noEmit && npm run lint && npm run build. Si échec → NE PAS COMMITER.
     - Actions infra (Replit legacy / Cloudflare) : chaque agent qui modifie src/ ou config DOIT lister les actions infra dans son handoff (variables env, packages, migrations).
+    - Stack par défaut (préférences fondateur) : Cloudflare Workers, Umami, VPS seulement en renfort ; écart = décision documentée.
+    - Écriture client-facing : accents, zéro tiret cadratin, zéro tic d'écriture IA (_base-agent-protocol.md).
+    - Features IA : états d'échec/refus spécifiés, tests avec LLM mocké, code compatible API génération 5.5 (ia.md).
     - Favicons/icônes : @design produit les assets (favicon.ico, PNG, SVG, apple-touch-icon, android-chrome, og-image), @fullstack implémente les balises Metadata API, @seo vérifie (Organization.logo inclus).
 
 Gestion multi-sessions :
@@ -683,7 +686,7 @@ Gestion multi-sessions :
 - À chaque fin de session : résumé + prochaines actions + commande de reprise.
 - Pour reprendre : 'Lis project-context.md et docs/orchestration-plan.md, continue où on s'est arrêté.'
 
-Commence."`
+Commence.`
       },
       {
         title:"Faire un check-up complet de mon projet",
@@ -784,7 +787,7 @@ Analyse le sujet demandé et sélectionne les 2-4 agents les plus qualifiés pou
 - Intégrité DB / Migrations → @fullstack + @qa + @infrastructure
 - Documents client-facing (PDF, exports, rapports) → @design + @fullstack + @copywriter
 - Auth / Sessions → @fullstack + @qa + @infrastructure
-Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant sur la matrice de CLAUDE.md (tableau "Ordre de priorité des agents par type de demande"). Explique ta logique et demande confirmation à l'utilisateur avant de lancer.
+Si le sujet ne correspond à aucun mapping, sélectionne les agents en te basant sur le tableau « Routage automatique » de CLAUDE.md. Explique ta logique et demande confirmation à l'utilisateur avant de lancer.
 
 Écris docs/reviews/audit-[sujet]-plan.md avec : sujet, agents sélectionnés, justification, périmètre de chaque agent, critères d'évaluation.
 
@@ -799,7 +802,7 @@ Lance les agents sélectionnés par batch de 2-3 maximum (règle anti-timeout). 
 7. Si le projet est B2B : inclure la dimension "client du client" — les outputs du persona sont-ils professionnels ?
 8. Signaler les gates ad-hoc récurrentes pour promotion en gate permanente (si applicable)
 9. Calibration VALEUR obligatoire : distinguer ce qui est du "théâtre" (qui a l'air bien mais n'apporte rien) de ce qui crée de la valeur réelle pour le persona. Couper ce qui est du théâtre.
-10. Bugs corrigés immédiatement : tout bug détecté pendant l'audit est corrigé AVANT de passer au point suivant — pas de "on note pour plus tard".
+10. Chaque bug détecté est noté avec fichier:ligne et corrigé dans cette même session (Étape 5, par l'agent responsable), jamais reporté à plus tard.
 Si un agent timeout sans produire de livrable, relance-le une fois avec un périmètre réduit. Si échec à nouveau, documente l'angle non couvert dans la synthèse.
 
 Étape 3 — Validation reviewer :
@@ -807,12 +810,11 @@ Lance @reviewer sur le sujet audité. Le reviewer applique sa checklist persona 
 
 Étape 4 — Synthèse croisée :
 Consolide les rapports des agents et du reviewer en un seul audit :
-- Gates binaires par dimension auditée (PASS/FAIL, seuil 100% gates BLOQUANT)
-- Gates PASS/FAIL par dimension auditée (gates applicables (voir _gates.md))
+- Gates PASS/FAIL par dimension auditée (gates applicables de _gates.md + gates ad-hoc), 100% PASS requis
 - Tous les problèmes critiques (P0) avec agent responsable et action corrective
 - Améliorations majeures (P1) classées par impact décroissant
 - Améliorations mineures (P2)
-- Recommandation : GO / GO avec réserves / NO-GO sur le sujet audité
+- Recommandation : GO (tout PASS) / NO-GO (≥ 1 FAIL, avec corrections) sur le sujet audité
 - Décisions à confirmer par l'utilisateur (s'il y en a)
 - Plan d'action ordonné par impact
 
@@ -823,7 +825,7 @@ Après correction, vérifier que chaque problème est résolu (Read du fichier c
 Livrable final : docs/reviews/audit-[sujet].md avec cette structure :
 1. Résumé exécutif (3-5 lignes, non-technique, destiné au fondateur)
 2. Agents mobilisés et périmètre de chacun
-3. Score par dimension (tableau)
+3. Gates PASS/FAIL par dimension (tableau)
 4. Problèmes P0 (bloquants) avec corrections appliquées ou à appliquer
 5. Améliorations P1 avec plan d'action priorisé
 6. Corrections P2 (mineures — à corriger aussi, pas optionnelles)
@@ -852,7 +854,7 @@ Identifie les dépendances entre livrables impactés.
 Checkpoint obligatoire : présente-moi l'inventaire (tableau garder/adapter/refaire) pour validation AVANT de lancer les agents. Si je reclasse un livrable, ajuste le plan.
 
 Étape 2 — Plan de re-séquencement :
-Suis l'ordre de dépendance des Phases 0→5 de ton protocole (section "Phases"). Ne relance que les agents dont au moins un livrable est classé "À adapter" ou "À refaire". Inclus TOUS les agents impactés — y compris @infrastructure, @legal, @growth, @social s'ils ont des livrables invalidés par le pivot. Pour chaque agent relancé, utilise les instructions détaillées du prompt de la bibliothèque correspondant (Grep sur le titre dans index.html).
+Suis l'ordre de dépendance des Phases 0→5 de ton protocole (section "Phases"). Ne relance que les agents dont au moins un livrable est classé "À adapter" ou "À refaire". Inclus TOUS les agents impactés — y compris @infrastructure, @legal, @growth, @social s'ils ont des livrables invalidés par le pivot. Pour chaque agent relancé, utilise les instructions détaillées du prompt de la bibliothèque correspondant (Grep sur le titre dans .claude/prompts-library.html, ou index.html dans le repo Agent-Team).
 
 Renforcements (identiques au prompt "Lancer de A à Z") :
 1. Vrais outputs obligatoires : chaque livrable contenant des prompts/templates DOIT être testé avec un input réaliste du persona avant validation.
@@ -864,7 +866,7 @@ Renforcements (identiques au prompt "Lancer de A à Z") :
 7. Si le projet a un pipeline de contenu automatisé : invalider et régénérer docs/copy/content-templates.md et docs/ia/prompt-library.md section "Content automation" pour aligner avec le nouveau positionnement. Archiver le content_registry et retagguer les articles pertinents.
 8. Si le pivot impacte du code (nouvelles pages, nouveau flow, modifications UI) ET que du code existe dans src/ : relancer la "Revue finale page par page (dernier kilomètre)" sur les pages impactées — audit chirurgical 21 dimensions, correction de TOUS les bugs, itération jusqu'à 100% gates PASS.
 9. Testeurs persona/client : optionnels via @agent-factory si projet le justifie. @reviewer + bloc Vérifié G_PROOF couvrent la validation par défaut.
-10. Learnings cross-projets : zéro fausse promesse (copy = features implémentées), anti-témoignage fictif, conviction-first (CTAs en fin de parcours), parcours d'achat testé E2E, bugs corrigés immédiatement, agents testeurs calibrés VALEUR.
+10. Learnings cross-projets : zéro fausse promesse (copy = features implémentées), anti-témoignage fictif, CTAs placés selon le mode Vitrine/Funnel, parcours d'achat testé E2E, bugs corrigés immédiatement, agents testeurs calibrés VALEUR.
 
 Gestion multi-sessions :
 - On avance phase par phase, session par session, jusqu'à ce que tous les livrables impactés aient 100% gates PASS.
@@ -887,7 +889,7 @@ Source des learnings : [COLLE ICI le texte, le lien GitHub, ou le chemin du fich
 Lis la source fournie (texte collé, URL GitHub via WebFetch, ou fichier local via Read). Extrais chaque learning sous forme structurée :
 - Titre court
 - Description (2-3 phrases)
-- Catégorie : problème | insistance | requête | biais | pattern | recommandation | performance-ia (catégories standard du framework — voir CLAUDE.md "Mémoire organisationnelle")
+- Catégorie : problème | insistance | requête | biais | pattern | recommandation | performance-ia (catégories standard du framework : voir _base-agent-protocol.md, sections « Protocole de fin de livrable » et « Mémoire organisationnelle »)
 - Impact estimé : P0 (change la qualité de tous les livrables) / P1 (améliore un domaine) / P2 (optimisation)
 
 Étape 2 — Analyse de couverture :
@@ -908,8 +910,8 @@ Pour les learnings ⚠️ et ❌, propose un plan d'intégration précis :
 Présente le diagnostic complet dans un tableau et attends ma validation avant d'appliquer quoi que ce soit.
 
 Après validation :
-1. Applique les modifications dans les fichiers agents et CLAUDE.md.
-2. Lance @ia pour auditer la cohérence : pas de contradiction avec les règles existantes, pas de doublon, pas de régression sur les prompts de la bibliothèque.
+1. Applique les modifications dans les fichiers agents et CLAUDE.md, UNIQUEMENT dans le repo Agent-Team (source). Dans un projet client, ces fichiers sont écrasés à chaque mise à jour : produis plutôt docs/framework-feedback.md (modifications prêtes à appliquer) et indique de relancer ce prompt dans le repo Agent-Team avec le lien GitHub de ce fichier.
+2. Lance @reviewer pour auditer la cohérence : pas de contradiction avec les règles existantes, pas de doublon, pas de régression sur les prompts de la bibliothèque.
 3. Mets à jour docs/lessons-learned.md avec : source des learnings, date, modifications appliquées, agents impactés.
 
 Critères de validation : chaque learning est classé avec référence, les modifications sont prêtes à appliquer (pas de vague "il faudrait..."), aucune contradiction introduite, docs/lessons-learned.md est mis à jour.`
@@ -955,6 +957,7 @@ Afficher le plan et attendre ma validation.
 - CLAUDE.md section Gradient : <= 125 lignes ? Si non → du contenu custom n'a pas été migré.
 - Aligner les compteurs de gates avec _gates.md actuel (9 gates (voir _gates.md). Note : checks favicon (12 fichiers + 7 balises) et typo FR (guillemets, apostrophes, insécables) restent recommandés pour livrables web mais ne sont plus des gates formelles).
 - Hook pre-commit fonctionnel (tester un commit).
+- .claude/founder-preferences.md et .claude/prompts-library.html présents (sinon relancer update.sh).
 - Lancer le prompt "Faire un check-up complet" pour vérifier la cohérence post-migration.
 
 Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions, caps cmd n°8 : CLAUDE.md 125L / lessons-learned 80L / project-context 250L hors mémo+historique) :
@@ -1013,7 +1016,7 @@ Produire l'Assumption Mapping : hypothèses critiques par feature, niveau de pre
 
 Définis la vision produit et la roadmap :
 1. Vision produit : la description du monde une fois le problème résolu (en 3-5 phrases).
-2. Roadmap priorisée RICE sur [horizon temporel, par défaut 6 mois] : chaque feature scorée Reach × Impact × Confidence / Effort, avec lien explicite au KPI North Star.
+2. Roadmap organisée par dépendances et jalons (jamais en semaines), horizon de l'objectif 6 mois : chaque feature scorée RICE avec un effort quasi nul en équipe IA (prioriser Reach × Impact × Confidence), avec lien explicite au KPI North Star.
 3. Backlog initial avec user stories au template obligatoire : "En tant que [persona], je veux [action], afin de [bénéfice]" + critères d'acceptation Given/When/Then (minimum 9 par story) + 5 états UI par écran + payload API si CRUD. Pour le backlog, un format allégé est acceptable (job-to-be-done + critères Given/When/Then + dépendances). Les specs complètes sont produites dans functional-specs.md.
 4. Contraintes techniques identifiées : dépendances, limites de la stack (voir project-context.md), intégrations tierces nécessaires.
 5. Risques produit : les 3 hypothèses les plus risquées et comment les valider.
@@ -1054,7 +1057,8 @@ Critères de validation : chaque event du tracking plan a un nom, un trigger et 
 3. Protection IP : stratégie de dépôt de marque (INPI pour la France, EUIPO pour l'UE), veille concurrentielle sur le nom.
 4. Conformité EU AI Act si IA générative : classification du risque, obligations de transparence, documentation technique requise.
 5. Cookies & consentement : catégorisation des cookies (strictement nécessaires, analytics, marketing), conformité TCF v2, recommandations CNIL.
-6. Accessibilité : obligations RGAA/WCAG selon le type d'organisme et le pays.
+6. Accessibilité : RGAA/WCAG selon le type d'organisme, et European Accessibility Act (depuis le 28 juin 2025) pour les services B2C hors microentreprises.
+7. Autres obligations : faux avis interdits et information sur la vérification des avis, facturation électronique (réforme française en cours de déploiement, à vérifier par WebSearch), échéances AI Act vérifiées à la date du jour (jamais de mémoire).
 
 Livrables (un fichier à la fois, sauvegarder au fur et à mesure) : docs/legal/legal-audit.md, docs/legal/rgpd-checklist.md, docs/legal/cgu-draft.md, docs/legal/privacy-policy.md.
 
@@ -1101,9 +1105,9 @@ Anti-timeout : ce livrable peut dépasser 150 lignes. Écrire d'abord la structu
         quand:"Tout début de projet, avant de coder — pour vérifier que le marché existe. Le prompt le plus important si tu n'as pas encore de clients. 3 agents en chaîne. Si coupure : 'Lis docs/growth/demand-validation.md, quel agent n'a pas encore terminé ?'",
         prompt:`@growth Lis project-context.md (persona, secteur, problème principal). S'il n'existe pas, pose-moi les questions pour le créer et génère-le avant de continuer. Lis docs/strategy/brand-platform.md si disponible (positionnement, personas). Conçois le protocole de validation de la demande :
 
-1. Recherche marché : volume de recherche des mots-clés problème via WebSearch (pas les mots-clés solution), taille du marché adressable (TAM → SAM → SOM), tendances Google Trends, signaux de demande existants (forums, Reddit, tweets de frustration).
+1. Recherche marché : volume de recherche des mots-clés problème via WebSearch (pas les mots-clés solution), taille du marché adressable (TAM → SAM → SOM), tendances Google Trends, signaux de demande existants (forums, Reddit, posts X de frustration).
 2. Script d'interviews discovery : 10 questions ouvertes (jobs-to-be-done, pains, alternatives actuelles, willingness-to-pay, budget actuel). Protocole de recrutement (5-8 profils cibles, où les trouver, comment les contacter, incentive).
-3. Test de demande : landing page waitlist ou fake door test — structure de la page (headline, sous-titre, 3 bénéfices, CTA email), objectif de conversion, critère go/no-go chiffré (>5% de conversion = signal positif, >10% = signal fort).
+3. Test de demande : landing page waitlist ou fake door test — structure de la page (headline, sous-titre, 3 bénéfices, CTA email), objectif de conversion, critère go/no-go chiffré (seuils par défaut : > 5 % de conversion = signal positif, > 10 % = signal fort, à recaler sur un benchmark sectoriel sourcé ; sinon marqués [HYPOTHÈSE]).
 4. Analyse concurrentielle de la demande : les concurrents ont-ils du trafic ? Des avis ? Des clients visibles ? Un concurrent avec des clients mécontents = signal positif.
 5. Verdict : matrice hypothèses/validations avec recommandation GO/NO-GO argumentée et niveau de confiance (faible/moyen/élevé).
 
@@ -1119,7 +1123,7 @@ Critères de validation : au moins 3 signaux de demande documentés (volume rech
         title:"Construire la messaging matrix",
         agents:["creative-strategy","copywriter"],
         quand:"Après la proposition de valeur — avant la landing page et les contenus marketing. La messaging matrix est le GPS de toute ta communication. Si coupure : 'Lis docs/strategy/messaging-matrix.md, quel agent reste ?'",
-        prompt:`@creative-strategy Lis docs/strategy/value-proposition.md et docs/strategy/personas.md. S'ils n'existent pas, pose-moi les questions pour les créer (proposition de valeur, personas avec objections) et génère-les avant de continuer. Lis aussi docs/strategy/competitive-benchmark.md si disponible.
+        prompt:`@creative-strategy Lis docs/strategy/brand-platform.md (proposition de valeur, hiérarchie de messages) et docs/strategy/personas.md. S'ils n'existent pas, pose-moi les questions pour les créer (proposition de valeur, personas avec objections) et génère-les avant de continuer. Lis aussi docs/strategy/competitive-benchmark.md si disponible.
 
 Construis la messaging matrix : une grille qui croise persona x canal x étape du funnel x message clé. Pour chaque combinaison :
 - Message principal (1 phrase — dans les mots du persona, pas du marketeur)
@@ -1128,7 +1132,7 @@ Construis la messaging matrix : une grille qui croise persona x canal x étape d
 - Vocabulaire à utiliser vs à éviter (lien avec docs/copy/brand-voice.md si existant)
 - CTA recommandé (verbe d'action spécifique, pas "En savoir plus")
 
-Canaux à couvrir : landing page, email, réseaux sociaux (LinkedIn, Twitter/X), publicité paid, in-app.
+Canaux à couvrir : landing page, email, réseaux sociaux (LinkedIn, X), publicité paid, in-app.
 Étapes funnel : découverte, considération, décision, onboarding, expansion.
 
 Structure le contenu pour être citable par les LLM : claims vérifiables, entités nommées, format structuré.
@@ -1149,7 +1153,7 @@ Définis la stratégie de pricing complète :
 1. Benchmark : analyse des prix de 3-5 concurrents directs via WebSearch (tiers, prix, features par tier, modèle — données réelles, pas inventées).
 2. Modèle : freemium, free trial (7j/14j/30j), paywall direct — avec justification selon le persona, le secteur et le stade du projet.
 3. Tiers : nombre de plans (2-4), noms, prix, feature gating par plan justifié par la valeur perçue (pas par le coût technique).
-4. Psychologie des prix : ancrage, price ending, mise en avant du plan recommandé, affichage mensuel vs annuel.
+4. Psychologie des prix : ancrage, mise en avant du plan recommandé, affichage mensuel vs annuel. Prix ronds obligatoires (préférence fondateur : jamais de 97/497).
 5. Upgrade path : triggers d'upgrade (limites d'usage, features avancées, collaboration), parcours de montée en tier, downgrade path.
 6. Modélisation : estimation ARPU cible, projection MRR à 6 mois selon 3 scénarios (conservateur, base, optimiste). Hypothèses explicites pour chaque scénario.
 
@@ -1303,12 +1307,13 @@ Critères de validation : tous les tokens sont définis dans design-tokens.json,
 Produis le brand voice guide complet :
 1. Ton et registre : description du ton (ex : "expert et bienveillant"), registre de langue (soutenu/courant/familier), exemples concrets de ce qu'on dit vs ce qu'on ne dit pas.
 2. Vocabulaire : mots autorisés, mots interdits (ceux que tous les concurrents utilisent), glossaire de marque (termes propriétaires).
-3. Exemples par contexte : landing page (hero, bénéfices, CTA), email (objet, corps), in-app (messages de succès, erreurs, empty states), social media (LinkedIn, Twitter/X).
+3. Exemples par contexte : landing page (hero, bénéfices, CTA), email (objet, corps), in-app (messages de succès, erreurs, empty states), social media (LinkedIn, X).
 4. Guide UX writing : messages d'erreur (empathiques, actionnables), empty states (utiles, pas juste "rien ici"), tooltips (concis), CTAs (verbes d'action spécifiques), microcopy de formulaires.
 5. Règles de formatage : majuscules, ponctuation, emojis (oui/non), longueur max par type de texte.
 6. Garde-fous cross-projets :
    - Zéro fausse promesse : le copy ne promet QUE des features réellement implémentées. Un bénéfice affiché doit être livré.
-   - Anti-témoignage fictif : JAMAIS utiliser les noms de personas comme faux témoignages. Les témoignages sont réels ou absents.
+   - Anti-témoignage fictif : aucun témoignage inventé, même anonymisé. Les témoignages sont réels ou absents.
+   - Anti-signature IA : la liste « Écriture client-facing » de _base-agent-protocol.md (tirets cadratins, « ce n'est pas X, c'est Y », énumérations par trois, verbes gonflés…) figure dans le guide avec des exemples avant/après propres à la marque.
 
 Livrables : docs/copy/brand-voice.md + docs/copy/ux-writing-guide.md.
 
@@ -1327,7 +1332,7 @@ Critères de validation : le guide est suffisamment précis pour que deux rédac
         title:"Landing page complète",
         agents:["copywriter","seo","geo"],
         quand:"Idéalement après brand voice et personas — fonctionne aussi avec project-context.md seul. La landing page est ta première impression — et souvent la dernière si elle ne convertit pas. 3 agents en chaîne. Si coupure : 'Lis docs/copy/landing-page-copy.md, quel agent n'a pas terminé ?'",
-        prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/value-proposition.md. S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
+        prompt:`@copywriter Lis docs/copy/brand-voice.md (ton, vocabulaire autorisé/interdit). S'il n'existe pas, pose-moi les questions pour le créer (ton, registre, vocabulaire autorisé/interdit, exemples) et génère-le avant de continuer. Lis aussi docs/strategy/personas.md et docs/strategy/brand-platform.md (proposition de valeur, hiérarchie de messages). S'ils n'existent pas, pose-moi les questions sur le persona principal (profil, frustrations, objectifs, objections) et génère-les.
 
 
 Identifier le niveau de conscience Schwartz du visiteur cible (Unaware → Problem-Aware → Solution-Aware → Product-Aware → Most-Aware). Adapter le copy par section : hero = niveau de conscience dominant, FAQ = objections des Product-Aware.
@@ -1338,8 +1343,8 @@ Extraire les 3-5 objections principales du persona (depuis personas.md ou projec
 
 Règles anti-bullshit :
 - Zéro fausse promesse : le copy ne promet QUE des features réellement implémentées. Un bénéfice listé sur la landing DOIT être disponible en V1.
-- Anti-témoignage fictif : JAMAIS utiliser les noms de personas (Sophie, Marie...) comme faux témoignages. Les témoignages sont réels ou absents. Utiliser des placeholders "[Témoignage réel à ajouter]" si non disponibles.
-- Conviction-first : les CTAs apparaissent en fin de section/parcours, pas au premier écran (sauf hero). L'objectif est de convaincre d'abord, convertir ensuite. Exception : les pages dont le seul but est l'action (pricing, signup).
+- Anti-témoignage fictif : JAMAIS utiliser les noms de personas (Sophie, Marie...) comme faux témoignages. Les témoignages sont réels ou absents. Si non disponibles : marqueur [À COLLECTER : témoignage réel], jamais un texte inventé.
+- Placement des CTAs selon le mode tranché en Phase 0 : VITRINE → conviction-first (CTAs de conversion après la démonstration de valeur, hero sobre) ; FUNNEL → CTA principal dès le hero, répété après chaque preuve. Pages d'action (pricing, signup) : CTA immédiat.
 
 Rédige le copy complet de la landing page :
 1. Hero : headline (< 10 mots, problème ou résultat), sous-titre (proposition de valeur 1-2 phrases), CTA principal (verbe d'action spécifique, pas "En savoir plus"). [Framework : AIDA — Attention]
@@ -1348,7 +1353,7 @@ Rédige le copy complet de la landing page :
 4. Comment ça marche : 3 étapes simples du parcours utilisateur.
 5. Pricing preview : lien vers la page pricing ou aperçu des plans. Prix ronds obligatoires (pas de charm pricing).
 6. FAQ : 5-7 questions réelles du persona (= objections déguisées). Chaque réponse traite l'objection + apporte une preuve.
-7. CTA final : répétition du CTA principal avec urgence contextuelle. [Framework : AIDA — Action]
+7. CTA final : répétition du CTA principal, urgence uniquement si elle est réelle (jamais de fausse rareté ni de compte à rebours factice). [Framework : AIDA — Action]
 
 Performance : les choix de contenu doivent être compatibles avec un LCP < 2.5s (pas de vidéo autoplay, images optimisées, contenu above the fold priorisé).
 
@@ -1377,6 +1382,8 @@ Produis 2-3 directions artistiques sous forme de brief visuel textuel. Pour chaq
 8. Impact performance : estimation du poids visuel (fonts custom, images, animations). Compatible avec LCP < 2.5s ?
 
 Anti-placeholder galerie : dans les moodboards et exemples visuels, JAMAIS d'images identiques labellées différemment. Chaque visuel doit être unique ou clairement marqué "[Image à remplacer : description]".
+
+Les directions partent du benchmark (espace visuel libre) et de la plateforme de marque, jamais d'un cliché sectoriel. Anti-look IA : pas de rendu « template généré » (dégradés violet-bleu par défaut, glassmorphism partout, blobs 3D, icône dans un carré arrondi au-dessus de chaque paragraphe).
 
 Recommande la direction la plus alignée avec le positionnement de marque ET les attentes visuelles du persona, avec justification. La palette et la typographie doivent parler au persona — un CMO de 38 ans n'a pas les mêmes codes visuels qu'un dev indie de 25 ans.
 
@@ -1462,7 +1469,7 @@ Mode : détecte si un onboarding existe déjà (Glob src/ + docs/ux/onboarding-f
 
 Conçois (ou corrige) le système d'onboarding complet :
 1. Parcours d'activation : du signup au "aha moment" en < 3 minutes. Identifier l'action unique qui prédit la rétention (ex : "créer son premier dashboard", "inviter un collègue"). Tout l'onboarding guide vers cette action. Pour chaque étape, justifier sa présence (supprimable ? reportable ? simplifiable ?).
-2. Progressive profiling + "show, don't ask" : ne demander que l'email au signup, pré-remplir au maximum via données existantes ou défauts intelligents. Chaque champ supplémentaire au signup = ~5% d'abandon.
+2. Progressive profiling + "show, don't ask" : ne demander que l'email au signup, pré-remplir au maximum via données existantes ou défauts intelligents. Chaque champ supplémentaire au signup augmente l'abandon.
 3. Guided tour : checklist de démarrage (3-5 items max), tooltips contextuels (pas un tour linéaire imposé). L'utilisateur doit pouvoir skipper et revenir.
 4. Empty states : chaque écran vide est une opportunité d'engagement — template de données, CTA contextuel, tutoriel intégré. Jamais d'écran blanc sans guide.
 5. Moments de succès / gamification (si cohérent avec la marque) : célébration à chaque micro-accomplissement, barre de progression, streaks — uniquement si aligné avec le persona (éviter sur du B2B enterprise sérieux).
@@ -1531,11 +1538,12 @@ Implémentation :
 - Un composant par fichier dans src/.
 - Respecter les design tokens (pas de valeurs hardcodées). Le backoffice/admin utilise le MÊME design system que le front — pas de UI au rabais pour les pages internes.
 - Implémenter les events de tracking définis.
-- Gérer tous les états : loading, error, empty, success.
+- Gérer les 5 états UI : défaut, loading, vide, erreur, succès.
+- Feature IA : appels uniquement via src/lib/ai/ (@ia), streaming, états d'échec/refus, contraintes API génération 5.5 de ia.md.
 - Accessibilité : aria-labels, focus management, keyboard navigation.
 - Performance : lazy loading si pertinent, pas de re-renders inutiles. Utiliser stale-while-revalidate pour tout fetch dont la latence dépasse 3 secondes (afficher les données en cache puis rafraîchir en arrière-plan).
 - React Hooks : TOUS les hooks (useState, useEffect, useMemo, etc.) DOIVENT être appelés AVANT tout return conditionnel dans un composant. Un hook après un early return = crash React.
-- Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours utiliser 127.0.0.1:PORT ou appeler la fonction directement.
+- Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours appeler directement la fonction extraite dans src/lib/ (127.0.0.1:PORT uniquement sur Replit legacy).
 - Seuil de réécriture : si un fichier cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier plutôt que de patcher indéfiniment.
 
 Boucle visuelle obligatoire : pour chaque page implémentée, prendre un screenshot Playwright sur 3 devices (iPhone 13, iPad, Desktop Chrome), comparer avec docs/design/page-compositions.md, corriger les écarts AVANT de passer à la page suivante. Sauvegarder les screenshots dans tests/screenshots/ comme baselines de non-régression visuelle.
@@ -1563,7 +1571,7 @@ Intègre Stripe :
 2. Checkout : Stripe Checkout Session pour l'abonnement initial, gestion des modes (payment/subscription).
 3. Gestion des abonnements : création, upgrade, downgrade (proration), annulation (immédiate vs fin de période), pause.
 4. Portail client : lien vers le Stripe Customer Portal pour la gestion autonome.
-5. Sécurité : vérification du webhook signature, pas de prix en frontend, vérification côté serveur de l'état de l'abonnement.
+5. Sécurité : vérification du webhook signature, pas de prix en frontend, vérification côté serveur de l'état de l'abonnement, route webhook exemptée de l'auth (proxy.ts) mais protégée par la signature. Prix centralisés dans src/config/pricing.ts, prix ronds.
 6. Edge cases : paiement échoué (retry logic), carte expirée, changement de devise, remboursement.
 7. Parcours d'achat testé end-to-end OBLIGATOIRE : le flow complet signup → sélection plan → paiement → confirmation → accès premium doit être testé avec un scénario E2E Playwright avant validation. Ne JAMAIS livrer un paiement non testé de bout en bout.
 
@@ -1588,14 +1596,16 @@ Architecture IA complète :
 2. Choix du modèle principal + fallback (si le principal est indisponible ou rate-limited).
 3. Structure des prompts : system prompt, few-shot examples, variables dynamiques, output format.
 4. Limites : tokens max input/output, rate limiting, budget plafond mensuel avec alerte à 80%.
-5. UX de l'IA : latence perçue (streaming vs batch), animations de chargement, fallback UI si le modèle est indisponible.
+5. UX de l'IA : latence perçue (streaming vs batch), animations de chargement, fallback UI si le modèle est indisponible ou refuse, régénérer, éditer la sortie.
 6. Conformité : données envoyées au modèle (PII ? données sensibles ?), data processing agreement avec le fournisseur.
 7. Flux progressifs obligatoires : pour les features IA complexes (génération de documents, workflows multi-étapes), suivre le flux brief → storyboard → final. Ne JAMAIS générer un output final en une seule passe — valider chaque étape intermédiaire.
 8. Protocole migration modèle : si un changement de modèle est envisagé, lire la doc API, identifier les params spécifiques, tester 3+ exemples réels, propager à TOUS les builders.
+9. Contraintes API génération 5.5 (voir ia.md) : effort fixé explicitement, pas de tool forcé ni de prefill (JSON via structured outputs natifs), stop_reason refusal géré avec fallback, historique en append-only.
+10. Évals : chaque prompt a ses test cases dans docs/ia/prompt-library.md et un critère de qualité mesurable avant intégration.
 
 Livrable : docs/ia/ai-architecture.md.
 
-Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md. Streaming si supporté. Rate limiting côté serveur. Gestion des erreurs (timeout, rate limit, token overflow).
+Puis @fullstack : implémente les routes API dans src/app/api/ avec le Vercel AI SDK selon docs/ia/ai-architecture.md (vérifier que le provider utilise les structured outputs natifs et pas un tool forcé, refusé par les modèles 5.5). Streaming si supporté. Rate limiting côté serveur. Gestion des erreurs (timeout, rate limit, token overflow).
 
 Puis @legal : lis docs/ia/ai-architecture.md et vérifie la conformité RGPD de l'envoi de données au fournisseur IA (DPA, data residency, information utilisateur). EU AI Act si applicable. Note dans docs/legal/legal-audit.md.
 
@@ -1608,7 +1618,7 @@ Critères de validation : le tableau comparatif contient au moins 3 modèles ave
         prompt:`@qa Lis le code dans src/ et docs/qa/qa-strategy.md s'il existe. Lis aussi docs/product/functional-specs.md pour identifier les parcours critiques.
 
 Écris le workflow GitHub Actions (.github/workflows/ci.yml) :
-1. Lint : ESLint avec config strict (no-any, no-unused-vars).
+1. Lint : ESLint avec config strict (no-any, no-unused-vars), lancé explicitement (npm run lint) : next build ne lint plus depuis Next.js 16.
 2. Type-check : tsc --noEmit.
 3. Tests unitaires : Vitest avec seuil de couverture > 80%.
 4. Tests E2E : Playwright sur les parcours critiques.
@@ -1617,11 +1627,11 @@ Critères de validation : le tableau comparatif contient au moins 3 modèles ave
 
 Seuils bloquants : le pipeline doit échouer si un seuil n'est pas atteint (pas de warning ignoré).
 
-Vérification self-fetch en CI : Grep le codebase pour les appels à l'URL publique du site dans les Server Components et API routes. JAMAIS l'URL publique — toujours 127.0.0.1:PORT ou appel direct de la fonction.
+Vérification self-fetch en CI : Grep le codebase pour les appels à l'URL publique du site dans les Server Components et API routes. JAMAIS l'URL publique : appeler directement la fonction extraite dans src/lib/ (127.0.0.1:PORT uniquement sur Replit legacy).
 
 Philosophie Testing Trophy : static analysis → unit (30%) → integration (40%) → E2E (20%). Pipeline CI : tsc --noEmit → ESLint → Vitest → Playwright E2E parcours critiques.
 
-Playwright Agents en CI : activer le Healer pour auto-réparer les locators cassés. Si réparation réussie → committer le fix auto. Si échec → bloquer le deploy.
+Playwright Agents en CI : le Healer propose la réparation des locators cassés dans une PR (revue des assertions avant merge, jamais de commit direct sur main). Si échec → bloquer le deploy.
 
 Contract testing : inclure les tests de contrats API (Pact/Zod) dans le pipeline CI. Mutation testing Stryker sur les fichiers modifiés (pas full codebase).
 
@@ -1648,12 +1658,12 @@ Produis le tableau comparatif obligatoire :
 | Modèle | Qualité (/10) | Latence P95 | Coût/1000 req | Streaming | Context window | Data residency | Conformité RGPD |
 |---|---|---|---|---|---|---|---|
 
-Inclus au minimum : Claude (Sonnet + Opus), GPT-4o, GPT-4o-mini, Gemini Pro, Mistral Large, et les modèles open-source pertinents (Llama, Mixtral).
+Inclus les modèles actuels de chaque fournisseur, identifiés par WebSearch à la date du jour (Anthropic : Opus, Sonnet, Haiku ; OpenAI ; Google ; Mistral ; open source pertinents). Jamais de nom ni de version de modèle de mémoire : les générations changent tous les quelques mois.
 
 Analyse avancée :
 1. ROI : coût IA mensuel estimé vs valeur business générée (gagner/économiser pour l'utilisateur).
 2. Qualité perceptible : au-delà du benchmark technique, comment l'utilisateur perçoit-il la qualité ? (pertinence, ton, formatage, hallucinations).
-3. Optimisation prompts : réduis les tokens de 20%+ sans perte de qualité. Techniques : suppression des instructions redondantes, few-shot → zero-shot si possible, output structuré.
+3. Optimisation coût dans cet ordre (voir ia.md) : prompt caching (préfixe stable), Batch API pour le non temps réel, réglage de l'effort sur un seul modèle, puis seulement un routage multi-modèles mesuré. Réduire les tokens sans perte de qualité : instructions redondantes supprimées, output structuré.
 4. Fallback chain : modèle principal → fallback 1 → fallback 2 → réponse dégradée gracieuse.
 5. Budget plafond : alerte à 80% du budget mensuel, coupure automatique à 100% (ou dégradation vers un modèle moins cher).
 6. Protocole migration modèle : avant de changer de modèle, lire la doc API, identifier les paramètres spécifiques, tester sur 3+ exemples réels du use case, puis propager le changement à TOUS les builders/prompts qui utilisent ce modèle.
@@ -1683,10 +1693,11 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
 5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
 6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
-7. Linting : ESLint + Prettier configurés, scripts npm (dev, build, lint, test).
+7. Linting : ESLint + Prettier configurés, scripts npm (dev, build, lint, test) ; le script lint appelle ESLint directement (next lint n'existe plus depuis Next.js 16).
+7b. Analytics : Umami (préférence fondateur), website ID en variable d'environnement, events du tracking-plan via umami.track.
 8. Sécurité : headers HTTP (CSP, HSTS, X-Frame-Options), rate limiting sur les routes API.
 9. Règles dev cross-projets :
-   - Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours utiliser 127.0.0.1:PORT ou appeler la fonction directement.
+   - Self-fetch : JAMAIS appeler sa propre URL publique dans un Server Component ou une API route. Toujours appeler directement la fonction extraite dans src/lib/ (127.0.0.1:PORT uniquement sur Replit legacy).
    - React Hooks : TOUS les hooks DOIVENT être appelés AVANT tout return conditionnel dans un composant. Un hook après un early return = crash React.
    - Seuil de réécriture : si un fichier cumule 10+ edits avec des erreurs récurrentes, le réécrire en entier.
    - Migrations SQL idempotentes : utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque colonne. Les migrations doivent être re-exécutables sans erreur.
@@ -1735,7 +1746,7 @@ Critères de validation : zéro écart bloquant restant, tous les contrastes pas
         title:"Gestion cookies & consent (RGPD)",
         agents:["legal","fullstack","infrastructure"],
         quand:"Dès que le site collecte des données utilisateur (analytics, auth, pixels marketing). Obligatoire avant la mise en production — les amendes CNIL sont réelles et proportionnelles au CA. 3 agents. Si coupure : 'Lis docs/legal/cookie-policy.md, quel agent n'a pas terminé ?'",
-        prompt:`@legal Lis project-context.md (modèle économique, données collectées). Lis docs/legal/rgpd-checklist.md et docs/legal/legal-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les données collectées (analytics, auth, paiement, marketing) et les services tiers utilisés (Stripe, Google Analytics, Hotjar, etc.) pour calibrer l'audit.
+        prompt:`@legal Lis project-context.md (modèle économique, données collectées). Lis docs/legal/rgpd-checklist.md et docs/legal/legal-audit.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur les données collectées (analytics, auth, paiement, marketing) et les services tiers utilisés (Stripe, Umami, outil de session replay éventuel, etc.) pour calibrer l'audit. Umami ne pose pas de cookie : vérifier les conditions de dispense de consentement CNIL avant de le soumettre au bandeau.
 
 Audit cookies et consentement complet :
 1. Inventaire des cookies : liste exhaustive des cookies et traceurs (first-party et third-party), pour chaque cookie : nom, finalité, durée, service tiers associé, base légale (consentement / intérêt légitime / nécessité contractuelle). Catégories : strictement nécessaires, performance, fonctionnels, marketing/ciblage.
@@ -1761,10 +1772,10 @@ Critères de validation : aucun cookie non essentiel n'est déposé avant consen
 
 Architecture RAG complète :
 1. Ingestion : pipeline d'ingestion des documents (PDF, Markdown, HTML, CSV). Chunking strategy : taille optimale des chunks (512-1024 tokens recommandé), overlap (10-20%), métadonnées à conserver (source, date, section). Gestion des mises à jour (re-indexation incrémentale vs complète).
-2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options : OpenAI text-embedding-3-small, Voyage AI, Cohere embed-v3, ou modèle open source (BGE, E5). Benchmark sur un échantillon du corpus réel.
+2. Embeddings : choix du modèle d'embedding avec tableau comparatif (coût, dimension, qualité). Options actuelles identifiées par WebSearch (Voyage, OpenAI, Cohere, open source), jamais de version de mémoire. Benchmark sur un échantillon du corpus réel.
 3. Vector store : choix de la base vectorielle avec justification. Défaut recommandé : pgvector sur Neon (zéro service externe) ; Cloudflare Vectorize si stack 100% CF Workers ; Pinecone/Qdrant/Weaviate si besoin spécifique. Critères : coût, latence, scalabilité, filtrage métadonnées, hébergement.
 4. Retrieval : stratégie de recherche (similarity search, MMR pour diversité, hybrid search BM25 + vectoriel). Nombre de chunks à récupérer (top-k), seuil de similarité minimum, re-ranking optionnel.
-5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Grille de sélection du modèle de génération (Claude Haiku pour le RAG simple, Sonnet pour le complexe). Protocole migration modèle : avant de changer de modèle, lire la doc API, tester 3+ requêtes RAG réelles, vérifier la qualité des citations.
+5. Prompt engineering : system prompt pour le LLM avec instructions de citation des sources, gestion du "je ne sais pas" (pas d'hallucination), format de réponse structuré. Sélection du modèle de génération mesurée sur le dataset d'éval (Haiku, ou Sonnet à effort bas, selon la qualité obtenue). Protocole migration modèle : avant de changer de modèle, lire la doc API, tester 3+ requêtes RAG réelles, vérifier la qualité des citations.
 6. Évaluation : métriques (faithfulness, relevance, answer correctness), dataset de test avec questions/réponses attendues, pipeline d'évaluation automatisé.
 7. Coût : estimation mensuelle détaillée (embeddings + stockage vectoriel + tokens LLM) selon le volume de requêtes estimé.
 
@@ -1780,10 +1791,10 @@ Critères de validation : le pipeline ingère au moins un document de test, la r
         title:"Disaster recovery & backup",
         agents:["infrastructure","fullstack","qa"],
         quand:"Avant la mise en production, ou dès que la base de données contient des données utilisateur réelles. Perdre des données utilisateur est le scénario catastrophe numéro 1. Si coupure : 'Lis docs/infra/disaster-recovery.md, quels agents n'ont pas terminé ?'",
-        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Vercel, AWS, Railway, etc.), la base de données (D1/Neon priorité futurs projets, PostgreSQL Replit pour legacy), et les services critiques (auth, paiement, stockage fichiers).
+        prompt:`@infrastructure Lis project-context.md (stack technique, hébergement, budget). Lis docs/infra/infrastructure.md s'il existe. S'il n'existe pas, pose-moi les questions sur l'hébergeur (Cloudflare par défaut, VPS, Replit legacy, autre), la base de données (D1/Neon priorité futurs projets, PostgreSQL Replit pour legacy), et les services critiques (auth, paiement, stockage fichiers).
 
 Plan de disaster recovery complet :
-1. Stratégie de backup : backup automatique de la base de données via pg_dump (fréquence : au minimum quotidien, idéalement toutes les 6h pour les données critiques). IMPORTANT : stocker les backups HORS de Replit (S3, R2, ou autre stockage cloud) — le storage Replit est éphémère, un backup stocké sur Replit disparaît avec les données qu'il est censé protéger. Rétention : 7 jours glissants minimum, 1 backup mensuel conservé 90 jours. Backup des fichiers uploadés (S3/stockage cloud). Backup de la configuration (variables d'environnement, secrets — chiffrés).
+1. Stratégie de backup selon la base : D1 → Time Travel (restauration à un instant donné) + export régulier (wrangler d1 export) vers R2 ; Neon → restauration à un instant donné + pg_dump ; Replit/Postgres → backup automatique via pg_dump (fréquence : au minimum quotidien, idéalement toutes les 6h pour les données critiques). IMPORTANT : stocker les backups HORS de Replit (S3, R2, ou autre stockage cloud) — le storage Replit est éphémère, un backup stocké sur Replit disparaît avec les données qu'il est censé protéger. Rétention : 7 jours glissants minimum, 1 backup mensuel conservé 90 jours. Backup des fichiers uploadés (S3/stockage cloud). Backup de la configuration (variables d'environnement, secrets — chiffrés).
 2. RTO/RPO : définir le Recovery Time Objective (temps max d'indisponibilité acceptable) et le Recovery Point Objective (perte de données max acceptable). Recommandations par type de service : auth (RTO < 1h, RPO < 1h), données business (RTO < 4h, RPO < 6h), fichiers (RTO < 24h, RPO < 24h).
 3. Plan de reprise : procédure pas à pas pour chaque scénario (crash base de données, corruption de données, suppression accidentelle, compromission sécurité, panne hébergeur). Chaque procédure : étapes numérotées, commandes exactes, personne responsable, temps estimé.
 4. Redondance : base de données en mode réplica si le budget le permet, CDN pour les assets statiques, DNS failover.
@@ -1806,7 +1817,7 @@ Critères de validation : les backups sont automatisés et monitorés, le RTO/RP
 
 Stratégie de gestion des erreurs complète :
 1. Error boundaries React : composants ErrorBoundary par section de l'app (layout, page, composant). Fallback UI adapté (pas un écran blanc, mais un message utile avec action de recovery). Logging automatique vers Sentry ou équivalent.
-2. Gestion des erreurs API : intercepteur global (middleware Next.js ou wrapper fetch). Catégorisation : erreur réseau (retry automatique avec backoff exponentiel), erreur 4xx (feedback utilisateur), erreur 5xx (fallback + alerte). Format d'erreur standardisé (code, message user-friendly, message technique pour les logs).
+2. Gestion des erreurs API : intercepteur global (wrapper fetch côté client + helper d'erreurs côté serveur ; proxy.ts n'est pas fait pour ça). Catégorisation : erreur réseau (retry automatique avec backoff exponentiel), erreur 4xx (feedback utilisateur), erreur 5xx (fallback + alerte). Format d'erreur standardisé (code, message user-friendly, message technique pour les logs).
 3. Retry patterns : pour les opérations idempotentes (GET, lecture), retry automatique (3 tentatives, backoff exponentiel 1s-2s-4s). Pour les mutations (POST, PUT), pas de retry automatique (risque de doublon), mais bouton "Réessayer" dans l'UI.
 4. États de chargement : skeleton screens (pas de spinners), optimistic updates pour les actions rapides, progress bars pour les opérations longues (upload, génération IA).
 5. Offline handling : détection de la perte de connexion, queue des actions en attente, synchronisation au retour, notification utilisateur.
@@ -1859,10 +1870,10 @@ Critères de validation : chaque route critique a un budget défini et mesuré, 
 
 Plan de scalabilité technique :
 1. Audit de la capacité actuelle : identifier les bottlenecks (base de données, API, compute, stockage). Estimer la charge max supportée actuellement (requêtes/seconde, connexions simultanées, taille DB).
-2. Caching multi-niveaux : CDN pour les assets et pages statiques, cache applicatif (Redis/Upstash) pour les requêtes fréquentes, cache de requêtes DB (query caching), cache navigateur (Service Worker si pertinent). Pour chaque niveau : TTL, invalidation strategy, taille estimée.
-3. Base de données : indexation (identifier les requêtes lentes, ajouter les index manquants), connection pooling (PgBouncer ou équivalent), read replicas si le ratio lecture/écriture le justifie (> 80% lectures), sharding si volume > 10M rows sur une table. Migration plan si changement de tier nécessaire.
-4. API et compute : rate limiting par utilisateur et par IP, queue pour les tâches longues (génération IA, emails, exports) avec BullMQ ou équivalent, autoscaling si l'hébergeur le supporte, serverless vs always-on selon le pattern de trafic.
-5. CDN et edge : servir les assets depuis l'edge (Vercel Edge, Cloudflare), edge functions pour la personnalisation géographique, optimisation des images à la volée.
+2. Caching multi-niveaux : CDN pour les assets et pages statiques, cache applicatif (Cloudflare Cache API / KV par défaut ; Redis sur le VPS si besoin) pour les requêtes fréquentes, cache de requêtes DB (query caching), cache navigateur (Service Worker si pertinent). Pour chaque niveau : TTL, invalidation strategy, taille estimée.
+3. Base de données : indexation (identifier les requêtes lentes, ajouter les index manquants), connection pooling (intégré chez Neon, PgBouncer sinon), read replicas si le ratio lecture/écriture le justifie (> 80% lectures), sharding si volume > 10M rows sur une table. Migration plan si changement de tier nécessaire.
+4. API et compute : rate limiting par utilisateur et par IP, queue pour les tâches longues (génération IA, emails, exports) avec Cloudflare Queues par défaut (BullMQ + Redis sur le VPS si besoin), autoscaling si l'hébergeur le supporte, serverless vs always-on selon le pattern de trafic.
+5. CDN et edge : servir les assets depuis l'edge Cloudflare, edge functions pour la personnalisation géographique, optimisation des images à la volée.
 6. Load balancing : si multi-instance, stratégie de répartition (round-robin, least connections), health checks, sticky sessions si nécessaire (WebSocket, uploads).
 7. Coût de scaling : estimation du coût par palier (100, 1K, 10K, 100K utilisateurs). Identifier le palier où un changement d'architecture est nécessaire. Le scaling doit être progressif, pas un big bang.
 8. Monitoring de charge : métriques à surveiller (CPU, mémoire, connexions DB, queue depth, latence P95, P99). Alertes avant saturation (80% de la capacité).
@@ -1879,7 +1890,7 @@ Critères de validation : les bottlenecks actuels sont identifiés et documenté
         title:"Data pipeline et ETL",
         agents:["ia","infrastructure","fullstack"],
         quand:"Le produit ingère des données externes (APIs tierces, fichiers uploadés, scraping, webhooks) ou transforme des données internes (agrégations, rapports, ML features). Sans pipeline structuré, les données arrivent en vrac et cassent en silence. Si coupure : 'Lis docs/ia/data-pipeline-architecture.md et docs/infra/infrastructure.md section Data pipelines, quels agents restent ?'",
-        prompt:`@ia Lis project-context.md (stack technique, IA utilisée). Lis docs/ia/ai-architecture.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quelles sources de données (APIs, fichiers, webhooks, scraping), quel volume (lignes/jour), quelles transformations nécessaires, quelle destination (PostgreSQL Replit, cache, vector store, export).
+        prompt:`@ia Lis project-context.md (stack technique, IA utilisée). Lis docs/ia/ai-architecture.md et docs/product/functional-specs.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quelles sources de données (APIs, fichiers, webhooks, scraping), quel volume (lignes/jour), quelles transformations nécessaires, quelle destination (D1/Neon par défaut, PostgreSQL Replit en legacy, cache, vector store, export).
 
 Architecture data pipeline :
 1. Sources et ingestion : pour chaque source, documenter le format (JSON, CSV, XML, API REST/GraphQL), la fréquence de mise à jour (temps réel, horaire, quotidien, batch), l'authentification requise, le volume estimé. Schéma d'ingestion : pull (cron/scheduler) vs push (webhook). Rate limits et pagination.
@@ -1891,16 +1902,16 @@ Architecture data pipeline :
 
 Livrable : docs/ia/data-pipeline-architecture.md.
 
-Puis @infrastructure : lis docs/ia/data-pipeline-architecture.md. Configure l'environnement d'exécution : Cloudflare Cron Triggers (priorité futurs projets) ou crons Replit (legacy), variables d'environnement pour les credentials sources, monitoring des ressources (CPU/mémoire pendant les pipelines). Si le volume dépasse la capacité Replit, recommande une alternative (Railway, fly.io). Livrable : docs/infra/infrastructure.md section "Data pipelines".
+Puis @infrastructure : lis docs/ia/data-pipeline-architecture.md. Configure l'environnement d'exécution : Cloudflare Cron Triggers (priorité futurs projets) ou crons Replit (legacy), variables d'environnement pour les credentials sources, monitoring des ressources (CPU/mémoire pendant les pipelines). Si le volume dépasse la capacité de Workers ou de Replit (traitement long, mémoire), recommande le VPS de Thomas (préférence fondateur) avant un service tiers. Livrable : docs/infra/infrastructure.md section "Data pipelines".
 
 Puis @fullstack : lis docs/ia/data-pipeline-architecture.md et docs/infra/infrastructure.md. Implémente :
 1. Connecteurs sources dans src/lib/pipelines/ (un fichier par source).
 2. Transformateurs dans src/lib/pipelines/transforms/ (fonctions pures, testables).
-3. Schema Prisma pour les tables staging et clean.
+3. Schéma Drizzle ou Prisma (selon la stack) pour les tables staging et clean.
 4. Route admin /api/admin/pipelines (status, trigger manuel, historique).
 5. Tests unitaires pour chaque transformateur.
 
-Critères de validation : chaque source a un connecteur avec gestion d'erreur, les transformations sont testées unitairement, les pipelines sont idempotents, le monitoring alerte en cas d'échec, le schéma PostgreSQL est optimisé (index, types corrects).`
+Critères de validation : chaque source a un connecteur avec gestion d'erreur, les transformations sont testées unitairement, les pipelines sont idempotents, le monitoring alerte en cas d'échec, le schéma de base est optimisé (index, types corrects).`
       },
       {
         title:"Fine-tuning et prompt engineering avancé",
@@ -1912,15 +1923,15 @@ Audit et optimisation des prompts :
 1. Inventaire : lister chaque appel LLM dans le produit (Grep sur les appels API). Pour chacun : use case, modèle actuel, tokens moyens (input + output), coût/appel, fréquence, qualité perçue (1-5).
 2. Stratégie d'optimisation par prompt :
    - Few-shot : ajouter 2-3 exemples représentatifs pour les tâches de classification ou extraction.
-   - Chain-of-thought : pour les tâches de raisonnement, ajouter "Raisonne étape par étape" et structurer la réponse.
-   - Structured output : forcer le JSON/XML pour les réponses parsées programmatiquement (réduire les erreurs de parsing de >80%).
+   - Raisonnement : sur les modèles actuels (réflexion adaptative), régler l'effort plutôt qu'écrire « raisonne étape par étape » ; ce type de consigne date des anciens modèles.
+   - Structured output : structured outputs natifs (output_config.format) pour les réponses parsées programmatiquement, jamais un tool forcé (refusé par les modèles 5.5).
    - System prompt : séparer les instructions stables (system) des données variables (user). Réduire la répétition.
    - Prompt compression : identifier les instructions redondantes ou inutiles, mesurer l'impact de leur suppression.
-3. Sélection de modèle par tâche : matrice use case × modèle recommandé. Règle : utiliser le modèle le moins cher qui atteint la qualité requise. Haiku pour la classification/extraction simple, Sonnet pour la génération/raisonnement, Opus uniquement pour les tâches complexes multi-étapes. Protocole migration modèle : avant chaque changement, lire la doc API du nouveau modèle, identifier les params spécifiques, tester 3+ exemples réels, propager à TOUS les builders. Flux progressifs pour les générations complexes : brief → storyboard → final (ne jamais générer un output final en une seule passe).
-4. Prompt library : template structuré pour chaque prompt (nom, version, system prompt, user prompt template, variables, modèle, temperature, max_tokens, exemples de test).
+3. Sélection de modèle par tâche : matrice use case × modèle recommandé. Règle : le coût le plus bas qui tient la qualité mesurée en évals, en commençant par régler l'effort sur un seul modèle avant de router (Haiku pour la classification/extraction simple, Sonnet pour la génération, Opus pour le complexe multi-étapes, à confirmer par les évals). Protocole migration modèle : avant chaque changement, lire la doc API du nouveau modèle, identifier les params spécifiques, tester 3+ exemples réels, propager à TOUS les builders. Flux progressifs pour les générations complexes : brief → storyboard → final (ne jamais générer un output final en une seule passe).
+4. Prompt library : template structuré pour chaque prompt (nom, version, system prompt, user prompt template, variables, modèle, effort, max_tokens, exemples de test). Pas de temperature sur les modèles 5.5 (valeurs non par défaut refusées).
 5. Fallback chains : si le modèle principal échoue (timeout, rate limit, réponse invalide), cascade vers un modèle de secours. Retry avec prompt simplifié si la réponse est hors format.
 6. A/B testing : framework pour tester 2 versions d'un prompt sur le même trafic. Métriques : qualité (évaluation humaine ou LLM-as-judge), coût, latence. Durée minimale de test : 100 exécutions par variante.
-7. Optimisation des coûts : prompt caching (réponses identiques pour les mêmes inputs), batching des requêtes non temps réel, estimation du coût mensuel après optimisation vs avant.
+7. Optimisation des coûts : prompt caching (mise en cache du préfixe stable du prompt : system prompt, outils, contexte fixe ; vérifier cache_read_input_tokens), Batch API pour le non temps réel, estimation du coût mensuel après optimisation vs avant. Fine-tuning seulement si le fournisseur le permet et si les évals prouvent que le prompting ne suffit pas.
 
 Livrable : docs/ia/prompt-optimization.md + docs/ia/prompt-library.md (mis à jour ou créé).
 
@@ -1937,10 +1948,10 @@ Critères de validation : chaque prompt du produit est documenté dans la prompt
 Architecture base de données complète (D1/Neon priorité futurs projets, PostgreSQL Replit pour legacy) :
 1. Schéma de données : diagramme ERD textuel avec toutes les tables, colonnes (nom, type, contraintes), relations (1:1, 1:N, N:N), clés primaires et étrangères.
 2. Indexation : index par colonne de requête fréquente (WHERE, JOIN, ORDER BY). Index composites si pertinent. Justifier chaque index par un use case de requête réel.
-3. Migrations : stratégie de migration (Prisma migrate ou Drizzle). Convention de nommage des migrations. Gestion des données existantes lors des migrations destructives. Migrations SQL idempotentes OBLIGATOIRES : utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque colonne. Chaque migration doit être re-exécutable sans erreur (important pour les redéploiements Replit).
+3. Migrations : stratégie de migration (Prisma migrate ou Drizzle). Convention de nommage des migrations. Gestion des données existantes lors des migrations destructives. Migrations SQL idempotentes OBLIGATOIRES : sur Postgres/Neon, ADD COLUMN IF NOT EXISTS pour chaque colonne ; sur D1 (SQLite, qui ne connaît pas ADD COLUMN IF NOT EXISTS), migrations versionnées par wrangler d1 migrations (table de suivi) et contrôle via pragma table_info si un script doit être rejouable. Chaque migration doit être re-exécutable sans erreur.
 4. Seed data : script de seed pour l'environnement de développement (données réalistes, pas juste "test1, test2").
 5. Performance : requêtes N+1 à éviter (recommander eager loading), pagination (cursor-based pour les listes longues), dénormalisation stratégique si volume > 100K lignes.
-6. Sécurité : Row Level Security (RLS) si multi-tenant, chiffrement des colonnes sensibles, audit trail (created_at, updated_at, deleted_at soft delete).
+6. Sécurité : Row Level Security (RLS) si multi-tenant sur Postgres/Neon (sur D1/SQLite, pas de RLS : filtre tenant_id systématique dans la couche d'accès), chiffrement des colonnes sensibles, audit trail (created_at, updated_at, deleted_at soft delete).
 
 Livrable : docs/dev-decisions.md section "Database schema" + schema Prisma/Drizzle dans src/.
 
@@ -1982,7 +1993,7 @@ Architecture d'authentification et d'autorisation :
 1. Choix de la solution : Better Auth (défaut nouveau projet), Clerk, Auth.js/NextAuth (projets existants seulement : correctifs de sécurité uniquement depuis septembre 2025), ou custom. Justifier selon la valeur technique pour le projet (contrôle des données, flexibilité, ownership) et le budget récurrent. IMPORTANT (mindset IA) : ne JAMAIS choisir une solution parce qu'elle est "plus rapide à coder" — le temps de développement n'est PAS un critère de choix avec une équipe IA. Préférer la solution qui donne le plus de contrôle et de flexibilité au projet sur le long terme, même si elle demande plus de code initial. Tableau comparatif avec : prix mensuel, ownership des données, flexibilité (custom flows, branding), dépendance vendor, providers supportés.
 2. Flows : signup (email/OAuth), login, logout, reset password, email verification — pour chacun : étapes, redirections, messages d'erreur, états UI (les standards de sécurité — hash moderne, cookies HttpOnly/SameSite/Secure, CSRF, lockout après 5 tentatives — sont appliqués d'office, pas re-spécifiés).
 3. Sessions : JWT stateless vs session DB (choix justifié), durées (7 jours avec refresh, 30 min pour les actions sensibles), invalidation (logout, changement de mot de passe).
-4. Autorisation : matrice rôle × action × ressource (RBAC par défaut), middleware de vérification sur chaque route protégée.
+4. Autorisation : matrice rôle × action × ressource (RBAC par défaut), contrôle d'autorisation côté serveur dans CHAQUE handler et Server Action ; proxy.ts ne sert qu'à rediriger (ne jamais s'y fier seul : un contournement du middleware Next.js a déjà existé, CVE-2025-29927).
 5. Multi-tenant si pertinent : isolation par tenant (schema-based ou row-based avec RLS).
 6. Zéro self-fetch : un Server Component ne doit JAMAIS appeler sa propre API via fetch("/api/..."). Appeler directement la fonction serveur (Prisma, service) pour éviter la boucle réseau inutile et les deadlocks en SSR.
 
@@ -2002,7 +2013,7 @@ Critères de validation : tous les flows d'auth sont documentés avec états d'e
 
 Plan de migration de données :
 1. Inventaire : schéma source vs schéma cible. Pour chaque table/colonne : ajout, suppression, renommage, transformation de type, split/merge.
-2. Script de migration : script idempotent (re-exécutable sans doublon). Utiliser ALTER TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS pour chaque modification de schéma. Étapes numérotées avec rollback pour chaque étape. Transactions pour l'atomicité.
+2. Script de migration : script idempotent (re-exécutable sans doublon). Postgres/Neon : ADD COLUMN IF NOT EXISTS pour chaque modification de schéma ; D1/SQLite : migrations versionnées wrangler + contrôle pragma table_info. Étapes numérotées avec rollback pour chaque étape. Transactions pour l'atomicité.
 3. Transformation des données : pour chaque colonne transformée, règle de conversion explicite (ex : "status string → status enum", "fullName → firstName + lastName"). Gestion des valeurs NULL et invalides.
 4. Downtime : estimation du temps de migration selon le volume. Stratégie zero-downtime si possible (migration en 2 phases : ajout colonnes → migration données → suppression anciennes colonnes). Communication utilisateurs si downtime nécessaire.
 5. Rollback : plan de rollback complet en cas d'échec. Backup avant migration (obligatoire). Procédure de restauration testée.
@@ -2061,7 +2072,9 @@ Keyword Clustering : grouper les mots-clés par proximité sémantique. 1 page =
 
 Content Decay (si site existant) : auditer les top 20 pages, identifier les déclins >20% sur 3 mois.
 
-AI Crawlers : vérifier robots.txt pour GPTBot, ClaudeBot, PerplexityBot — ne PAS bloquer. Recommander llms.txt. Coordonner avec @geo.
+AI Crawlers : ne jamais bloquer les bots de recherche IA (sinon aucune citation) ; bots d'entraînement = décision business documentée (liste et distinction dans geo.md). llms.txt optionnel. Coordonner avec @geo.
+
+Contenu automatisé : garde-fou contre la pénalité Google « scaled content abuse » : chaque article apporte un élément first-hand (données propres, cas réel), volume justifié par la demande réelle.
 
 Audit SEO complet :
 1. Technique : Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), données structurées JSON-LD (Organization, Product, FAQ, BreadcrumbList), sitemap.xml, robots.txt, canonical URLs, hreflang si multilingue.
@@ -2083,7 +2096,7 @@ Livrables (un fichier à la fois) : docs/seo/seo-strategy.md + docs/seo/keyword-
 
 Puis @infrastructure : lis docs/seo/seo-strategy.md et vérifie les Core Web Vitals actuels. Identifie les bottlenecks techniques (bundle size, images non optimisées, TTFB). Mets à jour docs/infra/performance-audit.md.
 
-IMPORTANT : le SEO couvre le référencement Google. Pour la visibilité sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity), lancer aussi le prompt "Visibilité sur les IA génératives (GEO)". Les deux sont complémentaires et doivent être lancés ensemble en Phase 3.
+IMPORTANT : le SEO couvre le référencement Google ET Bing (canonicals absolus, IndexNow, Bing Webmaster Tools). Pour la visibilité sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity), lancer aussi le prompt "Visibilité sur les IA génératives (GEO)". Les deux sont complémentaires et doivent être lancés ensemble en Phase 3.
 
 Critères de validation : le keyword map contient au minimum 20 mots-clés avec volume réel (pas inventé), chaque mot-clé a une page cible assignée, les clusters sémantiques sont formés, le content gap vs concurrents est documenté, chaque recommandation est actionnable avec priorité P0/P1/P2.`
       },
@@ -2095,7 +2108,7 @@ Critères de validation : le keyword map contient au minimum 20 mots-clés avec 
 
 
 Analyse et plan GEO :
-1. Audit de visibilité actuelle : interroger ChatGPT, Claude, Gemini, Perplexity sur les requêtes clés du secteur via WebSearch. La marque est-elle mentionnée ? Les concurrents le sont-ils ?
+1. Audit de visibilité actuelle : l'agent n'a pas accès à ChatGPT, Gemini ou Perplexity (WebSearch est un moteur web). Il prépare 10-20 prompts de test (requêtes réelles du persona) ; l'utilisateur les exécute (ou un outil de suivi de citations) et colle les réponses. La marque est-elle mentionnée ? Les concurrents le sont-ils ? Sans réponses : baseline [À MESURER], jamais déduit.
 2. Entités nommées : liste des termes, noms et concepts que la marque doit s'approprier dans les réponses des LLM.
 3. Claims vérifiables : assertions factuelles avec sources citables que les LLM peuvent reprendre en confiance.
 4. FAQ optimisée pour les citations IA : format question-réponse structuré, chaque réponse < 3 phrases avec claim vérifiable.
@@ -2119,14 +2132,14 @@ Définis la stratégie de contenu complète :
 1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
 2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues, glossaire. Pour chaque type : objectif (SEO, conversion, autorité, GEO), fréquence, format, KPI de mesure.
 3. Calendrier éditorial perpétuel : planning des 8 premières semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, étape funnel (découverte/considération/décision), et format GEO (claims vérifiables inclus). Puis le mécanisme de renouvellement automatique : à chaque fin de cycle 8 semaines, le prochain cycle est généré automatiquement à partir du keyword map restant (mots-clés non encore couverts), des performances du cycle précédent (articles les plus performants → créer des contenus similaires), et de la saisonnalité (via WebSearch : quels sujets du secteur ont un pic de recherche dans les 2 prochains mois).
-   Anti-répétition obligatoire : le registre des articles déjà publiés (titres, mots-clés, piliers, dates, performances) est maintenu dans docs/copy/content-registry.md (ou en table PostgreSQL si la stack le permet). Avant de générer un nouveau planning, le cron DOIT : (a) relire docs/copy/brand-voice.md pour vérifier l'alignement tonalité, (b) vérifier qu'aucun mot-clé déjà couvert (ni variante sémantique proche) n'est réutilisé (anti-cannibalisation SEO), (c) équilibrer la répartition par pilier (pas plus de 2 consécutifs sur le même) ET par étape funnel (au moins 1 contenu découverte + 1 considération + 1 décision par cycle), (d) varier les angles (how-to, comparatif, case study, FAQ — pas le même format 2 fois de suite). Un article peut revisiter un sujet ancien uniquement si > 6 mois et avec un angle clairement différent. Si tous les mots-clés du keyword map sont couverts → alerter l'utilisateur et recommander un nouveau cycle de keyword research (@seo). Feedback loop : le cron lit les métriques de performance via l'API Umami — pages vues, temps de lecture, taux de rebond par article — pour prioriser les sujets similaires aux articles performants. Escalade stratégique : si un pilier thématique sous-performe sur 2 cycles consécutifs (engagement < 50% de la moyenne), signaler à l'utilisateur "Pilier [X] en sous-performance — à revoir avec @creative-strategy avant le prochain cycle." Un pilier qui ne performe pas est peut-être un problème de positionnement, pas de SEO.
-4. Horaires de publication optimaux : via WebSearch, identifier les jours et heures de publication les plus performants par canal pour le secteur et le persona du projet. Blog : jour + heure de publication (ex : mardi 7h vs jeudi 10h selon le secteur). Social : horaires par plateforme (LinkedIn mardi-jeudi 8h-10h, Twitter/X 12h-14h, etc.). Newsletter : jour d'envoi + heure. Documenter les sources des données. Le scheduling des crons doit utiliser ces horaires.
+   Anti-répétition obligatoire : le registre des articles déjà publiés (titres, mots-clés, piliers, dates, performances) est maintenu dans docs/copy/content-registry.md (ou en table de la base du projet si la stack le permet). Avant de générer un nouveau planning, le cron DOIT : (a) relire docs/copy/brand-voice.md pour vérifier l'alignement tonalité, (b) vérifier qu'aucun mot-clé déjà couvert (ni variante sémantique proche) n'est réutilisé (anti-cannibalisation SEO), (c) équilibrer la répartition par pilier (pas plus de 2 consécutifs sur le même) ET par étape funnel (au moins 1 contenu découverte + 1 considération + 1 décision par cycle), (d) varier les angles (how-to, comparatif, case study, FAQ — pas le même format 2 fois de suite). Un article peut revisiter un sujet ancien uniquement si > 6 mois et avec un angle clairement différent. Si tous les mots-clés du keyword map sont couverts → alerter l'utilisateur et recommander un nouveau cycle de keyword research (@seo). Feedback loop : le cron lit les métriques de performance via l'API Umami — pages vues, temps de lecture, taux de rebond par article — pour prioriser les sujets similaires aux articles performants. Escalade stratégique : si un pilier thématique sous-performe sur 2 cycles consécutifs (engagement < 50% de la moyenne), signaler à l'utilisateur "Pilier [X] en sous-performance — à revoir avec @creative-strategy avant le prochain cycle." Un pilier qui ne performe pas est peut-être un problème de positionnement, pas de SEO.
+4. Horaires de publication optimaux : via WebSearch, identifier les jours et heures de publication les plus performants par canal pour le secteur et le persona du projet. Blog : jour + heure de publication (ex : mardi 7h vs jeudi 10h selon le secteur). Social : horaires par plateforme (LinkedIn mardi-jeudi 8h-10h, X 12h-14h, etc.). Newsletter : jour d'envoi + heure. Documenter les sources des données. Le scheduling des crons doit utiliser ces horaires.
 5. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email. Lien avec la proposition de valeur.
 6. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication, Product Hunt Blog si pertinent).
 
-Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description, claims GEO).
+Rédige les 3 premiers articles piliers (structure détaillée : titre, H2/H3, points clés par section, CTA, meta description, claims GEO, élément first-hand propre au projet). Écriture sans signature IA (« Écriture client-facing », _base-agent-protocol.md).
 
-7. Automatisation : pipeline de génération IA des articles (prompts de génération calibrés sur les mots-clés, workflow de relecture, publication automatisée via API ou CMS). Un fondateur solo ne produit pas manuellement 2 contenus/semaine — l'IA le fait.
+7. Automatisation : pipeline de génération IA des articles (prompts de génération calibrés sur les mots-clés, workflow de relecture, publication automatisée via API ou CMS). Un fondateur solo ne produit pas manuellement 2 contenus/semaine : l'IA le fait, avec un élément first-hand par article et une validation fondateur sur un échantillon des premiers articles (garde-fou « scaled content abuse »).
 
 Livrable : docs/copy/content-strategy.md.
 
@@ -2150,7 +2163,7 @@ Critères de validation : chaque article du calendrier a un mot-clé cible uniqu
 
 
 Définis la stratégie d'acquisition :
-1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/effort pour CE persona et CE budget. Justification par canal (pas de liste générique).
+1. Canaux prioritaires : les 3 canaux avec le meilleur ratio impact/coût pour CE persona et CE budget (inclure les réponses des assistants IA via @geo si le persona s'y informe). Justification par canal (pas de liste générique).
 2. Modélisation par canal : CAC estimé, volume atteignable, timeline de résultat, automatisabilité IA (note /5 — ce canal peut-il être automatisé à 80%+ via IA ?).
 3. Unit economics : CAC vs LTV par canal. LTV/CAC cible > 3x. Si le budget est 0, prioriser les canaux organiques (SEO, communautés, social, product-led).
 4. Budget allocation : répartition du budget entre les canaux, avec seuils de réallocation (si CAC canal A > X, basculer vers canal B).
@@ -2161,7 +2174,7 @@ Livrable : docs/growth/acquisition-plan.md.
 
 Puis @social : prends docs/growth/acquisition-plan.md. Lis docs/copy/brand-voice.md — s'il n'existe pas, pose-moi les questions. Planifie le calendrier éditorial 4 semaines avec formats natifs par plateforme, heures de publication optimales, hashtags. Livrable : docs/social/editorial-calendar.md.
 
-Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Adapte le ton au canal (LinkedIn ≠ Twitter/X ≠ Reddit). Livrable : docs/copy/acquisition-copies.md.
+Puis @copywriter : prends les deux livrables et rédige les accroches et copies pour chaque canal identifié. Adapte le ton au canal (LinkedIn ≠ X ≠ Reddit). Livrable : docs/copy/acquisition-copies.md.
 
 Critères de validation : chaque canal a un CAC estimé et une timeline, le budget est alloué, les quick wins sont actionnables immédiatement.`
       },
@@ -2169,13 +2182,13 @@ Critères de validation : chaque canal a un CAC estimé et une timeline, le budg
         title:"Outils de vente & sales enablement",
         agents:["sales-enablement","copywriter","design","fullstack"],
         quand:"Produit prêt à vendre, besoin de propositions commerciales, deck de vente, gestion des objections, ROI calculator. L'armurier qui équipe le fondateur pour closer sans décrocher le téléphone.",
-        prompt:`@sales-enablement Lis project-context.md (persona, modèle économique, promesse unique, objectif 6 mois). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/product/functional-specs.md (pricing, features) et docs/growth/growth-strategy.md (funnel).
+        prompt:`@sales-enablement Lis project-context.md (persona, modèle économique, promesse unique, objectif 6 mois). Lis docs/strategy/brand-platform.md et docs/strategy/personas.md s'ils existent. Lis docs/product/functional-specs.md (features), docs/product/pricing-strategy.md (prix) et docs/growth/growth-strategy.md (funnel).
 
 
 Produis dans docs/sales/ :
 1. sales-playbook.md — playbook complet (pipeline, étapes, documents par étape, métriques conversion). Framework adapté au cycle de vente : BANT pour qualification, SPIN pour discovery, MEDDIC pour B2B complexe, Challenger Sale pour vente consultative.
 2. proposal-templates.md — templates de propositions commerciales par vertical/persona (contexte client, solution calibrée, ROI projeté, investissement, prochaines étapes). Conçues pour génération automatique à partir des données prospect.
-3. objection-handling.md — cartographie des objections par persona avec réponses calibrées (courte pour email, développée pour call), preuves associées (case study, chiffre, témoignage). Minimum 5 objections par persona.
+3. objection-handling.md — cartographie des objections par persona avec réponses calibrées (courte pour email, développée pour call), preuves associées réelles (case study, chiffre, témoignage vérifiables ; sinon [À COLLECTER : preuve]). Minimum 5 objections par persona.
 4. roi-calculator-specs.md — specs fonctionnelles pour un calculateur ROI interactif : inputs prospect, formules de calcul avec sources, outputs visuels. Handoff → @fullstack pour implémentation.
 5. sales-deck.md — structure de deck de vente (problème → solution → preuve → offre → CTA). Handoff → @design pour mise en forme visuelle.
 6. qualification-scripts.md — scripts pour chatbot/formulaire de qualification basés sur BANT. Scoring automatisé des leads.
@@ -2193,7 +2206,7 @@ Critères de validation : chaque document est calibré sur le persona (pas gén�
 Produis docs/growth/earned-media-plan.md :
 1. Sélection des pipelines activables pour CE projet (communiqués, newsjacking, data stories, directories, Product Hunt, Dev.to, monitoring). Justifier chaque choix.
 2. Calendrier earned media 3 mois : 1-2 communiqués/mois, 1 data story/trimestre, timing directories (one-shot), cross-posting 2-4/mois.
-3. Budget détaillé par pipeline (EIN Presswire ~149$/release, Pressonify ~49€/release, gratuit pour Dev.to/directories).
+3. Budget détaillé par pipeline (tarifs des services de diffusion vérifiés par WebSearch à la date du jour, jamais de mémoire ; gratuit pour Dev.to/directories).
 4. Plan de monitoring : Google Alerts configurés, métriques à tracker (reprises, backlinks DA, mentions de marque).
 5. Kill criteria newsjacking : sujets interdits, process de retrait, fenêtre temporelle (4-24h max).
 6. [HYPOTHÈSE] ROI estimé avec fourchette : taux de reprise 5-15%, valeur backlink DA 30-60. À valider sur les 3 premiers communiqués.
@@ -2216,11 +2229,11 @@ Critères de validation : au moins 3 pipelines activés avec budget et fréquenc
 Stratégie social media complète :
 1. Social Listening & Monitoring : keywords à monitorer (marque, concurrents, secteur, pain points), outils (Brand24/Mention ou alertes Google en budget zéro), cadence hebdomadaire, boucle insights → ajustement calendrier.
 2. Content Pillars : définir 3-5 piliers spécifiques au projet (PAS génériques). Répartition cible (ex: 40% éducation, 25% preuves sociales, 20% engagement, 15% produit). Framework 3E : chaque post doit Éduquer, Divertir, OU Engager. Chaque post rattaché à un pilier.
-3. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps. Justification par plateforme + algorithme spécifique (LinkedIn: dwell time + commentaires, Instagram: saves > likes, TikTok: watch time, X: replies > retweets).
-4. Hooks & Copywriting : formules obligatoires (pattern interrupt, question provocante, stat choc, storytelling open loop, how-to avec chiffre). Adaptation par plateforme.
+3. Plateformes prioritaires : 2-3 max, choisies selon où le persona passe du temps. Justification par plateforme + logique d'algorithme actuelle, reconfirmée par WebSearch (elle change souvent).
+4. Hooks & Copywriting : formules (pattern interrupt, question provocante, stat choc sourcée, storytelling open loop, how-to avec chiffre), sans tics d'écriture IA. Visuels réalistes générés par IA : label « contenu IA » exigé par les plateformes. Adaptation par plateforme.
 5. Social Flywheel : la stratégie est une boucle, pas une ligne — contenu → engagement actif (réponses, DMs) → construction communauté (hashtag brandé) → UGC/advocacy → amplification → nouveau contenu.
 6. Stratégie UGC : hashtag brandé, protocole de re-share (permission, crédit, format), intégration au calendrier (X% des posts = UGC curé).
-7. Formats natifs : carrousels, threads, vidéos courtes, polls, stories — adaptés aux algorithmes 2026.
+7. Formats natifs : carrousels, threads, vidéos courtes, polls, stories, adaptés aux algorithmes actuels (vérifiés par WebSearch).
 8. Rythme de publication : fréquence réaliste (3 posts/semaine > 7 bâclés).
 9. KPIs par plateforme : reach, engagement rate, clicks, conversions. Benchmarks sectoriels.
 10. Automatisation : workflow de génération et scheduling des posts via IA, repurposing automatique. Un fondateur solo ne crée pas 15 posts/semaine manuellement.
@@ -2263,7 +2276,7 @@ Critères de validation : chaque étape du funnel a un taux documenté (réel ou
 Plan de lancement pour les 48 premières heures :
 1. Plateforme de lancement : Product Hunt, Hacker News Show HN, BetaList, Reddit (subreddits cibles), IndieHackers — avec justification selon le persona et le secteur.
 2. Assets à préparer : tagline (< 10 mots), description courte (80 mots), description longue (250 mots), visuels/screenshots (specs de taille par plateforme), maker comment, 5 réponses types aux questions anticipées.
-3. J-7 checklist : tester le produit en conditions réelles, préparer les supporters (demander upvotes/soutien), planifier les posts, vérifier le monitoring (le site tiendra-t-il le pic ?).
+3. J-7 checklist : tester le produit en conditions réelles, prévenir sa communauté du lancement (sans demander d'upvotes : Product Hunt et Hacker News l'interdisent et pénalisent), planifier les posts, vérifier le monitoring (le site tiendra-t-il le pic ?).
 4. J0 timeline heure par heure : publication, relais social, réponses communauté, engagement, ajustement en temps réel.
 5. J+1 à J+7 : suivi post-lancement, email aux premiers inscrits, récolte des premiers feedbacks, itération rapide sur les retours.
 6. Objectifs chiffrés : nombre de visiteurs, inscriptions, taux de conversion. Critère de succès / d'échec clair.
@@ -2336,7 +2349,7 @@ Mécanique PLG complète :
 2. Triggers d'upgrade : les moments où l'utilisateur atteint une limite naturelle et le passage au payant est logique (pas frustrant). Chaque trigger doit être un moment de succès, pas de blocage.
 3. In-app upgrade prompts : placement, timing et contenu. Règles : max 1 prompt par session, jamais pendant une action critique, toujours contextuel, toujours montrer la valeur du tier supérieur (pas juste le prix). Conviction-first : le prompt apparaît APRÈS un moment de succès (valeur démontrée), pas au milieu d'un parcours.
 4. Time-to-value : combien de temps pour le "aha moment". Objectif : < 5 minutes. Chaque étape entre l'inscription et le "aha moment" doit être mesurée et optimisée.
-5. Métriques PLG : taux de conversion free → paid (cible : 2-5% pour freemium, 15-25% pour free trial), temps médian avant upgrade, feature adoption rate par tier, expansion revenue (upgrades + add-ons).
+5. Métriques PLG : taux de conversion free → paid (ordres de grandeur 2-5 % en freemium, 15-25 % en free trial, à recaler par benchmark sectoriel sourcé), temps médian avant upgrade, feature adoption rate par tier, expansion revenue (upgrades + add-ons).
 6. Recommandation freemium vs free trial : avec justification basée sur le persona et le type de produit.
 
 Livrable : docs/growth/plg-strategy.md.
@@ -2354,8 +2367,8 @@ Critères de validation : le free tier délivre de la valeur en < 5 min, chaque 
         prompt:`@product-manager Lis docs/analytics/kpi-framework.md (KPIs, North Star Metric). S'il n'existe pas, pose-moi les questions pour le créer (objectif, KPI North Star, métriques de rétention) et génère-le avant de continuer. Si des données utilisateur sont disponibles (analytics, NPS, feedbacks), colle-les dans le prompt ou dans project-context.md section Notes libres.
 
 Protocole de mesure du Product-Market Fit :
-1. Sondage Sean Ellis : script exact (question : "Comment te sentirais si tu ne pouvais plus utiliser [produit] ?' — réponses : très déçu / un peu déçu / pas déçu / N/A). Seuil PMF : > 40% "très déçu". Méthode de collecte (in-app popup, email, entretien).
-2. Rétention par cohorte : J1 (activation), J7 (habitude), J30 (rétention durable). Seuils cibles par type de produit (SaaS B2B : J30 > 40%, B2C : J30 > 25%, marketplace : J30 > 20%). Formule de calcul de la rétention.
+1. Sondage Sean Ellis : script exact (question : « Comment te sentirais-tu si tu ne pouvais plus utiliser [produit] ? » — réponses : très déçu / un peu déçu / pas déçu / N/A). Seuil PMF : > 40% "très déçu". Méthode de collecte (in-app popup, email, entretien).
+2. Rétention par cohorte : J1 (activation), J7 (habitude), J30 (rétention durable). Seuils cibles par type de produit (ordres de grandeur : SaaS B2B J30 > 40 %, B2C > 25 %, marketplace > 20 %, à recaler par benchmark sourcé). Formule de calcul de la rétention.
 3. Engagement depth : features utilisées par session, fréquence d'usage (DAU/WAU/MAU ratio). DAU/MAU > 20% = signal fort, > 50% = exceptionnel.
 4. NPS : score et verbatims des promoteurs (9-10) et détracteurs (0-6). Patterns récurrents — les détracteurs révèlent les axes d'amélioration.
 5. Signaux qualitatifs : recommandation spontanée ? Questions sur les features futures ? Propositions de payer plus ? Demandes de features = signal fort.
@@ -2378,17 +2391,17 @@ Critères de validation : chaque métrique a un seuil cible, le verdict est argu
 Stratégie d'emailing automation complète :
 1. Choix de l'outil : comparatif selon le volume et le budget (Resend pour les devs/transactionnel, Loops pour le product-led, Brevo/Mailchimp pour le marketing classique, Customer.io pour l'automation avancée). Critères : prix par email/contact, API/SDK, templates, automation, analytics, conformité RGPD, délivrabilité.
 2. Séquences transactionnelles : emails déclenchés par une action (confirmation inscription, reset password, confirmation achat, facture). Template pour chaque email avec : objet, contenu, CTA, timing (immédiat).
-3. Séquences d'onboarding : série de 5 emails post-inscription pour activer puis convertir. Structure de référence : (1) Bienvenue J+0 — rappel de la promesse, première action, lien direct, pas de présentation corporate ; (2) Activation J+1 — guide vers le "aha moment" avec screenshot/GIF ; (3) Social proof J+3 — témoignage RÉEL ou résultat d'un utilisateur similaire (JAMAIS de faux témoignage avec noms de personas — placeholder "[À remplacer par témoignage réel]" si indisponible) ; (4) Upgrade J+7 — valeur du plan payant contextualisée par l'usage, pas de pression ; (5) Réengagement J+14 si inactif — question ouverte + incentive si pertinent. Condition d'envoi par email (n'envoyer J+3 que si l'action X n'est pas faite). Objectif : +20% de taux d'activation.
+3. Séquences d'onboarding : série de 5 emails post-inscription pour activer puis convertir. Structure de référence : (1) Bienvenue J+0 — rappel de la promesse, première action, lien direct, pas de présentation corporate ; (2) Activation J+1 — guide vers le "aha moment" avec screenshot/GIF ; (3) Social proof J+3 — témoignage RÉEL ou résultat d'un utilisateur similaire (JAMAIS de faux témoignage avec noms de personas — marqueur [À COLLECTER : témoignage réel] si indisponible) ; (4) Upgrade J+7 — valeur du plan payant contextualisée par l'usage, pas de pression ; (5) Réengagement J+14 si inactif — question ouverte + incentive si pertinent. Condition d'envoi par email (n'envoyer J+3 que si l'action X n'est pas faite). Objectif : gain d'activation chiffré par rapport à la baseline mesurée (pas de pourcentage posé a priori).
 4. Séquences de rétention : email de réengagement si inactif > 7 jours, email de milestone (premier succès, 10ème utilisation), email de feedback (NPS à J+30). Segmentation par comportement (actif/inactif/power user).
 5. Séquences marketing : newsletter (fréquence, contenu type), annonces produit (new features), promotions si pertinent. Segmentation par intérêt et engagement.
 6. Triggers comportementaux : mapper chaque trigger (événement utilisateur) à un email. Exemples : abandon de panier → email à H+1, feature non utilisée → email éducatif à J+3, upgrade potentiel → email de proposition. Maximum 1 email automatique par jour par utilisateur.
 7. A/B testing emails : tester les objets (2 variantes minimum), les CTA, le timing d'envoi. Taille d'échantillon minimum par test. Dashboard de suivi.
-8. Métriques : taux d'ouverture cible (> 25%), taux de clic (> 3%), taux de désabonnement (< 0.5%), taux de bounce (< 2%). Alerte si une métrique dévie.
+8. Métriques (les ouvertures sont faussées par la protection de confidentialité d'Apple Mail : piloter surtout clics et conversions) : taux d'ouverture indicatif (> 25%), taux de clic (> 3%), taux de désabonnement (< 0.5%), taux de bounce (< 2%). Alerte si une métrique dévie.
 9. Conformité : double opt-in si requis (RGPD), lien de désabonnement obligatoire, adresse physique dans le footer, gestion des préférences email (fréquence, type de contenu).
 
 Livrable : docs/growth/email-automation-plan.md.
 
-Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-voice.md (ton de marque). Choisis le framework de persuasion par email (AIDA pour l'activation, PAS pour la récupération churn — documenté [Framework : X]) et le niveau de conscience Schwartz du destinataire par étape de séquence (Unaware au début → Product-Aware pour la conversion). Extrais les 3-5 objections du persona (personas.md) : au moins 1 email traite chaque objection majeure. Rédige les templates de chaque séquence : objet (< 50 caractères, 2 variantes A/B, testé anti-spam), preview text, corps (< 200 mots, 1 CTA unique par email, mobile-first), note de segmentation. Ton : humain, utile, pas vendeur. Livrable : docs/copy/email-sequences.md.
+Puis @copywriter : lis docs/growth/email-automation-plan.md et docs/copy/brand-voice.md (ton de marque). Choisis le framework de persuasion par email (AIDA pour l'activation, PAS pour la récupération churn — documenté [Framework : X]) et le niveau de conscience Schwartz du destinataire par étape de séquence (Unaware au début → Product-Aware pour la conversion). Extrais les 3-5 objections du persona (personas.md) : au moins 1 email traite chaque objection majeure. Rédige les templates de chaque séquence : objet (< 50 caractères, 2 variantes A/B, testé anti-spam), preview text, corps (< 200 mots, 1 CTA unique par email, mobile-first), note de segmentation. Ton : humain, utile, pas vendeur, sans signature IA. Livrable : docs/copy/email-sequences.md.
 
 Puis @data-analyst : lis docs/growth/email-automation-plan.md et configure le tracking : events d'ouverture/clic/conversion par séquence, dashboard de performance email (taux par séquence, par cohorte, tendance), alertes si délivrabilité < 95% ou désabonnement > 1%. Mets à jour docs/analytics/tracking-plan.md.
 
@@ -2400,15 +2413,15 @@ Critères de validation : chaque séquence a un trigger, un timing et un objecti
         title:"Automatisation marketing complète",
         agents:["growth","ia","fullstack","copywriter"],
         quand:"Le produit a une audience (même petite) et tu veux scaler le contenu sans y passer tes journées. Règle Gradient Agents : ne jamais recommander une stratégie de contenu qui suppose une production manuelle régulière. Un fondateur solo ne peut pas produire 20 posts/semaine — l'IA si. Si coupure : 'Lis docs/growth/marketing-automation-plan.md et docs/ia/prompt-library.md section Content automation, quels agents restent ?'",
-        prompt:`@growth Lis project-context.md (persona, canaux d'acquisition, budget). Lis docs/strategy/brand-platform.md (positionnement, promesse) et docs/copy/brand-voice.md (ton de marque) AVANT de décider les volumes et fréquences — la cadence de publication est une décision de positionnement autant que de croissance. Lis docs/growth/growth-strategy.md, docs/seo/seo-strategy.md et docs/social/social-strategy.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels canaux de contenu actifs (blog, LinkedIn, Twitter/X, newsletter, YouTube), quelle fréquence cible, quels sujets.
+        prompt:`@growth Lis project-context.md (persona, canaux d'acquisition, budget). Lis docs/strategy/brand-platform.md (positionnement, promesse) et docs/copy/brand-voice.md (ton de marque) AVANT de décider les volumes et fréquences — la cadence de publication est une décision de positionnement autant que de croissance. Lis docs/growth/growth-strategy.md, docs/seo/seo-strategy.md et docs/social/social-strategy.md s'ils existent. S'ils n'existent pas, pose-moi les questions : quels canaux de contenu actifs (blog, LinkedIn, X, newsletter, YouTube), quelle fréquence cible, quels sujets.
 
 Rappel : cette stratégie applique la règle CLAUDE.md "Automatisation par défaut du contenu récurrent". Chaque canal DOIT documenter comment il s'automatise.
 
 Stratégie d'automatisation marketing :
 1. Audit des canaux de contenu : pour chaque canal actif, documenter le workflow actuel (manuel vs semi-auto vs full auto), la fréquence actuelle vs cible, le ROI estimé (trafic/leads par contenu publié).
 2. Pipeline de génération de contenu IA :
-   - Blog/SEO : template de prompt par type d'article (how-to, comparatif, case study, listicle). Input : keyword + brief → Output : article structuré avec meta title/description. Flux progressif obligatoire : brief → plan/storyboard → rédaction → review (ne jamais générer un article final en une seule passe). Workflow : génération → review humain rapide (5 min) → publication.
-   - Social : repurposing automatique d'un article en 3-5 posts (LinkedIn, Twitter/X, thread). Adaptation du format et du ton par plateforme. Template de prompt par plateforme.
+   - Blog/SEO : template de prompt par type d'article (how-to, comparatif, case study, listicle), chaque article avec un élément first-hand propre au projet (garde-fou « scaled content abuse »). Input : keyword + brief → Output : article structuré avec meta title/description. Flux progressif obligatoire : brief → plan/storyboard → rédaction → review (ne jamais générer un article final en une seule passe). Workflow : génération → review humain rapide (5 min) → publication.
+   - Social : repurposing automatique d'un article en 3-5 posts (LinkedIn, X, thread). Adaptation du format et du ton par plateforme. Template de prompt par plateforme.
    - Newsletter : agrégation automatique des contenus de la semaine + édito généré. Template avec sections récurrentes.
    - Email nurturing : séquences déclenchées par comportement (voir prompt "Emailing automation" pour le détail).
 3. Scheduling et publication perpétuelle : choix de l'outil (Buffer, Typefully, Resend, ou API directe). Calendrier éditorial automatisé : X articles/semaine, Y posts sociaux/jour, Z newsletters/mois. Horaires optimaux par plateforme et par secteur (via WebSearch — données réelles sur les meilleurs jours/heures de publication pour le persona cible). Le scheduling doit fonctionner à durée ILLIMITÉE : à chaque fin de cycle, le prochain cycle est généré automatiquement à partir du keyword map SEO (mots-clés non encore couverts), des performances du cycle précédent (taux d'engagement, trafic), et de la saisonnalité du secteur. Cron de régénération du planning : hebdomadaire.
@@ -2419,11 +2432,11 @@ Stratégie d'automatisation marketing :
 
 Livrable : docs/growth/marketing-automation-plan.md.
 
-Puis @ia : lis docs/growth/marketing-automation-plan.md, docs/copy/brand-voice.md ET docs/strategy/brand-platform.md. Conçois les prompts de génération pour chaque type de contenu. Chaque system prompt DOIT inclure : (a) la promesse de marque issue de brand-platform.md, (b) les 3 mots-clés du ton de marque de brand-voice.md, (c) les sujets/angles que la marque n'aborde PAS (exclusions du creative brief), (d) claims GEO et entités nommées à intégrer. User prompt template (variables : sujet, keyword, audience, titres des 5 derniers articles publiés comme contexte négatif). Few-shot examples tirés de docs/copy/content-templates.md. Intègre une étape LLM-as-judge avant le review humain : vérification automatique de la factualité, du ton de marque, et de l'absence d'hallucination. Optimise pour le modèle le moins cher qui atteint la qualité requise. Estime le coût mensuel de la production automatisée + budget cap avec alerte si dépassement. Livrable : docs/ia/prompt-library.md section "Content automation".
+Puis @ia : lis docs/growth/marketing-automation-plan.md, docs/copy/brand-voice.md ET docs/strategy/brand-platform.md. Conçois les prompts de génération pour chaque type de contenu. Chaque system prompt DOIT inclure : (a) la promesse de marque issue de brand-platform.md, (b) les 3 mots-clés du ton de marque de brand-voice.md, (c) les sujets/angles que la marque n'aborde PAS (exclusions du creative brief), (d) claims GEO et entités nommées à intégrer. User prompt template (variables : sujet, keyword, audience, titres des 5 derniers articles publiés comme contexte négatif). Few-shot examples tirés de docs/copy/content-templates.md. Intègre une étape LLM-as-judge avant le review humain : vérification automatique de la factualité, du ton de marque, et de l'absence d'hallucination. Optimise le coût dans l'ordre de ia.md (caching, batch, effort, puis routage mesuré) sans descendre sous la qualité requise. Estime le coût mensuel de la production automatisée + budget cap avec alerte si dépassement. Livrable : docs/ia/prompt-library.md section "Content automation".
 
 Puis @fullstack : lis docs/growth/marketing-automation-plan.md et docs/ia/prompt-library.md. Implémente :
-1. Table PostgreSQL content_registry : id, title, target_keyword, secondary_keywords[], url, status (draft/review/published/failed), published_at, performance_score, pillar_theme, content_type, word_count, created_at. + Table content_performance : content_id, views, clicks, time_on_page, conversions, bounce_rate, measured_at. Si le projet n'a pas de DB, utiliser un fichier JSON (pas markdown) avec le même schéma, limité à ~200 entrées avant migration DB.
-2. Crons de génération dans src/scripts/ (article generator, social post generator) — planifiés aux horaires optimaux identifiés par @growth. Résilience obligatoire : retry avec backoff exponentiel (3 tentatives, 1s/4s/16s), alerte admin si échec après retries, idempotence par clé unique (hash keyword + date), validation des inputs avant génération (keyword map non vide, brand voice présent). Utiliser le prompt caching Anthropic (system prompt identique pour toutes les générations d'un même type = ~50% de réduction tokens).
+1. Table content_registry (dans la base du projet, D1 ou Postgres) : id, title, target_keyword, secondary_keywords (tableau Postgres ou JSON sur D1), url, status (draft/review/published/failed), published_at, performance_score, pillar_theme, content_type, word_count, created_at. + Table content_performance : content_id, views, clicks, time_on_page, conversions, bounce_rate, measured_at. Si le projet n'a pas de DB, utiliser un fichier JSON (pas markdown) avec le même schéma, limité à ~200 entrées avant migration DB.
+2. Crons de génération dans src/scripts/ (article generator, social post generator) — planifiés aux horaires optimaux identifiés par @growth. Résilience obligatoire : retry avec backoff exponentiel (3 tentatives, 1s/4s/16s), alerte admin si échec après retries, idempotence par clé unique (hash keyword + date), validation des inputs avant génération (keyword map non vide, brand voice présent). Utiliser le prompt caching Anthropic (system prompt identique pour toutes les générations d'un même type : les lectures de cache coûtent une fraction du prix d'entrée, vérifier cache_read_input_tokens) et la Batch API pour les générations non urgentes.
 3. Cron de régénération du planning (hebdomadaire) : lit le keyword map SEO ET la table content_registry (pas un fichier markdown), vérifie anti-cannibalisation (similarité sémantique — demander au LLM "ce sujet est-il distinct de ces N articles existants ?"), diversité piliers (max 2 consécutifs), variété angles, équilibre funnel. Lit content_performance pour ajuster : pilier qui sous-performe → réduire fréquence, format qui surperforme → augmenter proportion. Met à jour content_registry après chaque publication. Le calendrier ne s'arrête JAMAIS.
 4. API routes : POST /api/admin/content/generate, GET /api/admin/content/queue, PATCH /api/admin/content/:id/approve, GET /api/admin/content/schedule, GET /api/admin/content/registry (consultation du registre avec filtres par keyword/pilier/date).
 5. Intégration APIs de publication (Buffer, Resend, ou API social directe) — publication automatique aux horaires configurés. Statut mis à jour dans content_registry (published/failed).
@@ -2508,10 +2521,11 @@ Vérifie la cohérence croisée sur ces axes :
 7. Conformité légale : si docs/legal/ existe, est-il cohérent avec le modèle économique et les données traitées ? Si docs/legal/ n'existe pas et que le projet traite des données personnelles ou du paiement, signaler comme blocker.
 8. Performance : les choix techniques et visuels documentés sont-ils compatibles avec un LCP < 2.5s ?
 9. GEO/SEO : le contenu existant est-il structuré pour le référencement (headings, meta, JSON-LD) et citable par les LLM (entités nommées, claims vérifiables) ?
+10. Écriture client-facing : accents, zéro tiret cadratin ni tic d'écriture IA, zéro témoignage inventé.
 
 Signale : contradictions, dérives par rapport au project-context.md, livrables manquants bloquants.
 
-Livrable : docs/reviews/mid-review.md avec statut par axe (OK / Warning / Blocker) et actions correctives recommandées.
+Livrable : docs/reviews/mid-review.md avec verdict PASS/FAIL par axe (gates applicables) et actions correctives assignées.
 
 Puis @legal : si des livrables existent dans docs/legal/, vérifie qu'ils sont toujours alignés avec l'état actuel du projet (le projet a pu évoluer depuis l'audit juridique initial). Signale les mises à jour nécessaires.
 
@@ -2531,7 +2545,7 @@ Règles cross-projets :
 
 Audit qualité complet :
 1. Tests unitaires Vitest : couverture cible > 80%. Mutation testing Stryker sur modules critiques (score mutation > 70%).
-2. Tests E2E Playwright : chaque parcours critique a un test E2E. Utiliser les Playwright Test Agents : Planner (explorer l'app, générer plan), Generator (créer les tests avec locators getByRole), Healer (auto-réparer les locators cassés en CI). Locators résilients obligatoires : getByRole > getByLabel > getByText > data-testid. JAMAIS de sélecteurs CSS fragiles.
+2. Tests E2E Playwright : chaque parcours critique a un test E2E. Utiliser les Playwright Test Agents : Planner (explorer l'app, générer plan), Generator (créer les tests avec locators getByRole), Healer (propose la réparation des locators cassés en PR, revue avant merge). Locators résilients obligatoires : getByRole > getByLabel > getByText > data-testid. JAMAIS de sélecteurs CSS fragiles.
 3. Contract testing : pour chaque API externe (Stripe, Resend, OAuth), définir un contrat (schema JSON expected) testé à chaque CI run. Si le schema change → test échoue immédiatement.
 4. Tests API REST : chaque endpoint testé avec méthodes autorisées ET interdites (GET sur POST-only → 405). Status codes couverts : 200/201/204, 400, 401, 403, 404, 409, 422, 429, 500. Pagination, idempotence.
 5. Tests DB : migrations réversibles (up/down), seeds reproductibles, intégrité FK, transactions + rollback.
@@ -2546,6 +2560,7 @@ Audit qualité complet :
 14. Audit clics & interactions : vérifier que CHAQUE élément cliquable fait ce qu'il doit faire. Pour chaque page : lister tous les liens, boutons, formulaires, filtres, toggles. Vérifier : le lien pointe vers la bonne destination, le bouton déclenche la bonne action, le formulaire soumet correctement, les filtres mettent à jour l'affichage, les états visuels (hover, focus, active, disabled) sont corrects. Tester aussi les combinaisons (filtre + recherche, double-clic, clic rapide).
 15. Régression visuelle (obligatoire) : vérifier que tests/screenshots/ contient des baselines pour les pages critiques sur 3 devices (375px, 768px, 1280px). Si baselines absentes, demander à @fullstack d'exécuter sa boucle visuelle. Comparer les screenshots actuels avec les baselines — seuil < 0.5% de pixels différents. Comparer aussi avec docs/design/page-compositions.md.
 16. Revue orthographe & accents : Grep le contenu visible (meta descriptions, titres, labels, textes) pour détecter les mots français sans accent (specialise→spécialisé, strategie→stratégie, deploiement→déploiement, etc.). Vérifier la cohérence : si un mot est accentué à un endroit, il doit l'être partout.
+17. Features IA : états attente/streaming/échec/refus/sortie hors schéma testés avec LLM mocké (réponses fixes) ; qualité des réponses via les évals @ia.
 
 Rapport avec blockers classés par sévérité (critique/majeur/mineur) .
 
@@ -2563,7 +2578,7 @@ Critères de validation : couverture > 80%, zéro blocker critique non résolu, 
 
 Audit UX sur les parcours critiques (calibration VALEUR — évaluer la valeur perçue par le persona, pas juste la conformité technique) :
 1. Onboarding : time-to-value actuel, taux d'abandon par étape, étapes de friction.
-2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles. Conviction-first : les CTAs de conversion apparaissent-ils APRÈS la démonstration de valeur (pas avant) ? Exception : pages d'action (pricing, signup).
+2. Conversion : parcours d'achat/upgrade, points de sortie, comparaison avec les best practices sectorielles. Placement des CTAs cohérent avec le mode Vitrine/Funnel tranché en Phase 0 (Vitrine : après la démonstration de valeur ; Funnel : dès le hero) ?
 3. Rétention : fréquence d'usage, features les plus/moins utilisées, patterns des power users vs churners.
 4. Accessibilité : navigation clavier, screen reader, contrastes, hiérarchie des headings.
 5. Mobile : parcours critiques testés sur device descriptors (iPhone 13, iPad), thumb zones, touch targets, temps de chargement.
@@ -2572,7 +2587,7 @@ Audit UX sur les parcours critiques (calibration VALEUR — évaluer la valeur p
 8. Cognitive walkthrough : simuler un first-time user sur les 2-3 parcours les plus critiques. 4 questions par étape (sait quoi faire ? action visible ? lien clair ? feedback immédiat ?).
 
 Pour chaque friction identifiée : description, impact estimé, solution proposée, effort de correction.
-3-5 quick wins priorisés par impact/effort.
+3-5 quick wins priorisés par impact.
 
 Livrable : docs/ux/ux-audit.md.
 
@@ -2580,7 +2595,7 @@ Puis @data-analyst : prends docs/ux/ux-audit.md et configure les dashboards de c
 
 Puis @growth : lis docs/ux/ux-audit.md et identifie les impacts sur le funnel d'acquisition. Les frictions UX identifiées affectent-elles le CAC ? Recommande les optimisations prioritaires. Ajoute dans docs/growth/funnel-audit.md.
 
-Critères de validation : chaque friction a un impact estimé, les quick wins sont actionnables en < 1 semaine, les dashboards sont configurés.`
+Critères de validation : chaque friction a un impact estimé, les quick wins sont actionnables immédiatement, les dashboards sont configurés.`
       },
       {
         title:"Audit stratégique first principles",
@@ -2596,7 +2611,7 @@ Audite en first principles — pas de complaisance :
 5. Vitesse (note /10) : combien de temps entre une idée et sa mise en production ? Qu'est-ce qui peut être supprimé/automatisé ?
 6. Risque n°1 : le plus gros risque d'échec — pas le risque évident, le risque que personne ne veut voir.
 7. Levier n°1 : la chose qui, si elle était 10x mieux, changerait tout.
-8. Théâtre vs valeur : qu'est-ce qui a l'air bien mais ne crée pas de valeur réelle ? Les agents testeurs évaluent-ils la VALEUR perçue par le persona (pas juste la conformité technique) ?
+8. Théâtre vs valeur : qu'est-ce qui a l'air bien mais ne crée pas de valeur réelle ? Si des agents testeurs existent : évaluent-ils la VALEUR perçue par le persona (pas juste la conformité technique) ?
 9. Valeur perçue : le persona paierait-il pour ce produit dans son état actuel ? Les outputs (documents, rapports, résultats) sont-ils réellement utiles ou juste impressionnants visuellement ?
 
 Verdict sans filtre. Pas de langue de bois. Livrable : docs/reviews/elon-audit.md.
@@ -2614,11 +2629,11 @@ Glob src/app/**/page.tsx (ou équivalent). Liste TOUTES les pages/routes dans un
 
 Phase 2 — Audit chirurgical par page (21 dimensions) :
 Pour CHAQUE page, vérifier systématiquement. Un bug sur N'IMPORTE quelle dimension = la page n'est PAS à 9/10.
-Renforcements cross-projets : anti-témoignage fictif (pas de noms de personas comme témoignages), backoffice = même design system, conviction-first (CTAs en fin de parcours sauf pages d'action), bugs corrigés immédiatement (corriger dans cette session, pas "en attente").
+Renforcements cross-projets : zéro témoignage inventé (même anonymisé), backoffice = même design system, CTAs placés selon le mode Vitrine/Funnel, bugs corrigés immédiatement (corriger dans cette session, pas "en attente").
 
 COPIE & ORTHOGRAPHE :
 1. Contenu textuel : texte correspond au copy approuvé (docs/copy/), zéro lorem ipsum, zéro placeholder [À REMPLIR], zéro texte dans la mauvaise langue, cohérence du ton avec brand-voice.md.
-2. Orthographe & accents : Grep chaque texte visible pour les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Vérifier grammaire, ponctuation, majuscules selon brand-voice.md. Un accent manquant = un bug.
+2. Orthographe & accents : Grep chaque texte visible pour les mots français sans accent (specialise, strategie, deploiement, securite, modele, etc.). Vérifier grammaire, ponctuation, majuscules selon brand-voice.md. Un accent manquant = un bug. Tiret cadratin ou tic d'écriture IA dans le texte visible = un bug.
 3. Microcopy : labels de boutons = verbes d'action (pas "Soumettre" mais "Créer mon compte"). Messages d'erreur : (a) expliquent le problème, (b) suggèrent une action corrective, (c) pas de jargon technique. Tooltips concis. Empty states guident l'action. Si brand-voice.md absent, appliquer ces critères par défaut.
 
 DESIGN & VISUEL :
@@ -2729,7 +2744,7 @@ Simule le parcours attendu du persona (cf. project-context.md) sur cette page :
 
 Phase 2b — Vérification des résultats réels (pas juste le feedback visuel) :
 Après CHAQUE action principale, vérifier que le résultat est RÉEL :
-1. Données persistées : après création/modification, rafraîchir la page — les données sont-elles toujours là ? Vérifier en base si possible (Prisma Studio, API directe).
+1. Données persistées : après création/modification, rafraîchir la page — les données sont-elles toujours là ? Vérifier en base si possible (Drizzle Studio, Prisma Studio, wrangler d1 execute, API directe).
 2. Redirections : après soumission, le redirect mène-t-il à la bonne page avec le bon contenu (pas une page vide, pas un 404) ?
 3. Emails/notifications : si l'action déclenche un email (confirmation, notification), est-il réellement envoyé ? Contenu correct ? Liens fonctionnels (pas localhost) ?
 4. Effets de bord : l'action met-elle à jour les compteurs, les listes, les tableaux de bord qui dépendent de cette donnée ? Vérifier les pages liées.
@@ -2749,7 +2764,7 @@ Si une étape ou un champ est inutile → signaler comme P2 "workflow : [étape/
 Phase 2d — Challenge du contenu et des choix (le fond, pas la forme) :
 1. Promesse vs réalité : le titre/CTA promet-il quelque chose que la page délivre réellement ? Si le bouton dit "Générer mon rapport en 30 secondes" et que ça prend 2 minutes → mensonge → P1.
 2. Copy convaincant : les textes donneraient-ils envie au persona de continuer ? Ou sont-ils génériques/ennuyeux ? Les bénéfices sont-ils mis en avant (pas juste les features) ? Les objections du persona (cf. personas.md) sont-elles adressées ?
-3. Preuve sociale / crédibilité : y a-t-il des éléments de confiance (témoignages réels, logos clients, chiffres) ? Sont-ils crédibles (pas de faux témoignages avec des noms de personas) ?
+3. Preuve sociale / crédibilité : y a-t-il des éléments de confiance (témoignages réels, logos clients, chiffres) ? Sont-ils réels et sourcés (aucun témoignage inventé, même anonymisé) ?
 4. Pertinence business : cette page/feature résout-elle le problème N°1 du persona ? Si on la supprimait, le persona s'en rendrait-il compte ? Si non → questionner son existence.
 5. Benchmark sectoriel : WebSearch 2-3 concurrents directs — leur équivalent de cette page est-il meilleur/pire ? En quoi ? Quelles bonnes pratiques leur emprunter ?
 6. Cohérence avec le positionnement : le ton, les visuels, le niveau de détail correspondent-ils à la plateforme de marque (docs/strategy/brand-platform.md) ? Si brand-platform absent, le ton est-il au moins cohérent avec le reste du site ?
@@ -2852,7 +2867,7 @@ Score après itération 2.
 Itération 3 (max — si encore P0/P1) :
 - Escalade à Thomas : "Après 2 itérations, [N] bugs P0/P1 persistent. Diagnostic : [cause]. Options : A) fix spécifique [détail], B) réécrire le composant, C) accepter en l'état."
 
-Critère de fin : 0 bug P0, 0 bug P1, score >= 9/10. Les P2 et P2-workflow sont documentés pour la prochaine itération (pas bloquants). Thomas valide le résultat final.`
+Critère de fin : 0 bug P0, 0 bug P1, score >= 9/10. Les P2 sont corrigés dans la foulée (préférence fondateur : P2 non optionnels) ; seules les suggestions P2-workflow (refonte de parcours) sont soumises à Thomas. Thomas valide le résultat final.`
       },
       {
         title:"Audit exhaustif d'une page ou feature (stress test production)",
@@ -2933,7 +2948,7 @@ Score avancé = tests OK / tests total × 10. Combiner avec le score de l'audit 
 
 Boucle d'itération : même protocole que l'audit rapide (3 itérations max, @fullstack corrige, @qa re-teste, escalade Thomas si P0/P1 persistants).
 
-Critère de fin combiné : audit rapide >= 9/10 ET audit exhaustif >= 8/10 ET 0 FAIL persona critique. Les P2 Priorité 3-4 sont documentés mais non bloquants.`
+Critère de fin combiné : audit rapide >= 9/10 ET audit exhaustif >= 8/10 ET 0 FAIL persona critique. Les P2 sont corrigés aussi (préférence fondateur), après les P0/P1.`
       },
       {
         title:"Checklist jour de lancement",
@@ -2998,17 +3013,18 @@ Critères de validation : chaque point a été vérifié concrètement (pas just
 Configure le monitoring complet :
 1. Erreurs : Sentry (erreurs JS/API, source maps Next.js, alertes par sévérité, regroupement par issue).
 2. Disponibilité : UptimeRobot (endpoint /api/health, intervalle 5min, alerte SMS + Slack si down > 1min).
-3. Health check : route /api/health (status, version, uptime, dernière erreur, latence DB, usage mémoire). Vérifier que le health check n'appelle pas l'URL publique du site (self-fetch) — utiliser 127.0.0.1:PORT ou appel direct.
+3. Health check : route /api/health (status, version, uptime, dernière erreur, latence DB, usage mémoire). Vérifier que le health check n'appelle pas l'URL publique du site (self-fetch) — appeler directement la fonction extraite dans src/lib/ (127.0.0.1:PORT uniquement sur Replit legacy).
 4. Performance : Core Web Vitals en continu (LCP, CLS, INP), alertes si dégradation > 20%.
 5. Business : taux d'erreur webhook (Stripe), taux d'échec signup, taux d'erreur API par endpoint.
 6. Alertes : Slack channel dédié, escalade (warning → critical → page), protocole de réponse (qui est prévenu, dans quel ordre).
 7. Status page : page publique (style status.monproduit.com) pour communiquer l'état du service aux utilisateurs.
+8. Jobs planifiés (crons Workers, crons VPS) : chaque exécution écrit une trace datée OK/ECHEC et une alerte part si aucun OK depuis N périodes. Un cron qui échoue en silence est un incident invisible (vécu : site figé 4 mois).
 
 Variables d'environnement à configurer documentées dans .env.example.
 
 Livrable : docs/infra/infrastructure.md + code dans src/app/api/health/.
 
-Puis @data-analyst : lis docs/infra/infrastructure.md et ajoute les métriques business dans le monitoring (conversion rate, signup rate, temps de session moyen). Alerte si une métrique business drop > 20% sur 24h. Mets à jour docs/analytics/dashboard-specs.md.
+Puis @data-analyst : lis docs/infra/infrastructure.md et ajoute les métriques business (Umami) dans le monitoring (conversion rate, signup rate, temps de session moyen). Alerte si une métrique business drop > 20% sur 24h. Mets à jour docs/analytics/dashboard-specs.md.
 
 Puis @copywriter : rédige le template de communication incident (status page update, email aux utilisateurs, post social). Ton : transparent, rassurant, factuel. Livrable : ajout dans docs/copy/ux-writing-guide.md section "Communication incident".
 
@@ -3018,7 +3034,7 @@ Critères de validation : chaque type de monitoring est configuré avec des seui
         title:"Audit accessibilité RGAA/WCAG",
         agents:["ux","fullstack","legal"],
         quand:"Avant la mise en production, ou après une refonte. L'accessibilité est une obligation légale en France (RGAA) et une bonne pratique UX — 15% de la population mondiale a un handicap. Audit détaillé + corrections code. Si coupure : 'Lis docs/ux/accessibility-audit.md, quels agents restent ?'",
-        prompt:`@ux Lis project-context.md (type de site, audience). Lis docs/ux/ux-audit.md et docs/design/design-system.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur le type de site (vitrine, SaaS, e-commerce), l'audience cible, et les obligations légales connues (secteur public = RGAA obligatoire, privé > 250M€ CA = RGAA obligatoire depuis 2025).
+        prompt:`@ux Lis project-context.md (type de site, audience). Lis docs/ux/ux-audit.md et docs/design/design-system.md s'ils existent. S'ils n'existent pas, pose-moi les questions sur le type de site (vitrine, SaaS, e-commerce), l'audience cible, et les obligations légales connues (secteur public et entreprises > 250 M€ de CA = RGAA ; depuis le 28 juin 2025, European Accessibility Act pour les services B2C comme l'e-commerce, hors microentreprises).
 
 Audit accessibilité complet RGAA/WCAG 2.1 AA :
 1. Audit automatisé : passer chaque page avec axe-core (via Playwright ou extension navigateur). Lister toutes les violations par sévérité (critical, serious, moderate, minor). Les outils automatisés détectent ~30% des problèmes — l'audit manuel est indispensable.
@@ -3045,14 +3061,15 @@ Critères de validation : zéro violation critique ou serious restante, la navig
         prompt:`@infrastructure Lis project-context.md (stack technique, hébergement). Lis docs/infra/infrastructure.md et docs/infra/security-checklist.md s'ils existent. S'ils n'existent pas, pose-moi les questions : stack, hébergeur, données sensibles traitées (PII, paiement, santé), auth provider, services tiers avec accès aux données.
 
 Audit de sécurité complet :
-1. OWASP Top 10 : vérifier chaque risque du Top 10 2021 sur le code et l'infrastructure. Pour chaque risque : statut (protégé / vulnérable / non applicable), preuve, correction si vulnérable. Priorité : injection (SQL, XSS, SSRF), broken authentication, broken access control.
+1. OWASP Top 10 : vérifier chaque risque de la dernière édition publiée (vérifier l'édition par WebSearch) sur le code et l'infrastructure. Pour chaque risque : statut (protégé / vulnérable / non applicable), preuve, correction si vulnérable. Priorité : injection (SQL, XSS, SSRF), broken authentication, broken access control.
 2. Headers HTTP : vérifier et configurer Content-Security-Policy (CSP strict, pas de unsafe-inline sauf nécessité documentée), Strict-Transport-Security (HSTS, max-age 1 an, includeSubDomains), X-Content-Type-Options (nosniff), X-Frame-Options (DENY ou SAMEORIGIN), Referrer-Policy (strict-origin-when-cross-origin), Permissions-Policy (désactiver les APIs non utilisées : camera, microphone, geolocation).
 3. Authentification : vérifier la robustesse (hash bcrypt/argon2, pas de MD5/SHA1), session management (httpOnly, secure, sameSite cookies), rate limiting sur login (max 5 tentatives/minute), 2FA disponible si données sensibles, password policy (min 8 caractères, pas de max artificiel).
 4. Dépendances vulnérables : npm audit, vérifier les CVE critiques et high. Plan de mise à jour pour les dépendances avec CVE connues. Configurer Dependabot ou Renovate pour les mises à jour automatiques.
 5. Secrets management : vérifier qu'aucun secret n'est dans le code (git history inclus), que les variables d'environnement sont documentées dans .env.example (sans valeurs réelles), que les secrets sont différents entre dev/staging/prod, que la rotation des clés API est planifiée.
 6. Protection des données : chiffrement at rest (base de données) et in transit (TLS 1.2+), anonymisation des logs (pas de PII dans les logs), backup chiffré, politique de rétention des données alignée RGPD.
 7. API security : rate limiting global et par endpoint, validation des inputs (zod/joi côté serveur, pas seulement côté client), CORS configuré strictement (pas de wildcard *), protection CSRF sur les mutations.
-8. Pentest léger : tester manuellement les scénarios d'attaque courants (IDOR : accéder aux données d'un autre utilisateur en changeant l'ID, privilege escalation : accéder à une route admin en tant qu'utilisateur, XSS : injecter du script dans les champs de saisie).
+8. Next.js et IA : autorisation vérifiée dans chaque handler (jamais uniquement dans proxy.ts/middleware, cf. CVE-2025-29927) ; si features IA : prompt injection, fuite du system prompt, sortie du modèle injectée sans échappement dans le DOM, données sensibles envoyées au fournisseur.
+9. Pentest léger : tester manuellement les scénarios d'attaque courants (IDOR : accéder aux données d'un autre utilisateur en changeant l'ID, privilege escalation : accéder à une route admin en tant qu'utilisateur, XSS : injecter du script dans les champs de saisie).
 
 Livrable : docs/infra/security-audit.md + mise à jour de docs/infra/security-checklist.md.
 
@@ -3211,11 +3228,11 @@ Protocole de création :
 
 7. Dimensions transversales : le nouvel agent doit intégrer les dimensions transversales dans son protocole quand pertinent — conformité légale (RGPD, accessibilité), performance (impact sur les Core Web Vitals), GEO/SEO (contenu structuré pour les LLM). Ne pas créer d'agents "en silo" qui ignorent ces dimensions.
 
-Livrables : .claude/agents/[nom-agent].md + mise à jour de CLAUDE.md (section agents, convention d'appel, tableau d'ordre de priorité) + mise à jour de .claude/agents/_orchestration-protocol.md (section pipeline, phase d'insertion).
+Livrables : .claude/agents/[nom-agent].md + ligne dans le tableau « Routage automatique » de CLAUDE.md. Dans un projet client : écrire cette ligne HORS du bloc GRADIENT-AGENTS-START/END et ne pas modifier _orchestration-protocol.md (update.sh réécrit les deux ; l'orchestration découvre les agents custom par Glob). Dans le repo Agent-Team : mettre aussi à jour _orchestration-protocol.md (phase d'insertion).
 
 Signale à @orchestrator la phase d'insertion pour intégration dans le séquencement.
 
-Critères de validation : l'agent créé passe le test unitaire (lit project-context.md, refuse si champs manquants, produit un livrable spécifique), le fichier agent suit le standard des agents existants, CLAUDE.md et _orchestration-protocol.md sont mis à jour, les dimensions transversales sont intégrées quand pertinent.`
+Critères de validation : l'agent créé passe le test unitaire (lit project-context.md, refuse si champs manquants, produit un livrable spécifique), le fichier agent suit le standard des agents existants, le routage est enregistré à un endroit qui survit à update.sh, les dimensions transversales sont intégrées quand pertinent.`
       },
       {
         title:"Migrer la stack technique",
@@ -3225,7 +3242,7 @@ Critères de validation : l'agent créé passe le test unitaire (lit project-con
 
 Évalue la migration de [stack actuelle, ex : "Create React App"] vers [stack cible, ex : "Next.js App Router"] :
 1. Inventaire complet : fichiers impactés, dépendances à remplacer, APIs à adapter, design tokens/composants à migrer, fichiers de traduction (i18n) à transférer.
-2. Plan de migration progressive (pas de big bang sauf si < 20 fichiers) : étapes ordonnées, fichiers impactés par étape, critère de succès par étape, durée estimée par étape.
+2. Plan de migration progressive (pas de big bang sauf si < 20 fichiers) : étapes ordonnées, fichiers impactés par étape, critère de succès par étape.
 3. Migration du tracking : identifier tous les events analytics en place (GTM, pixels, custom events), s'assurer qu'ils survivent à la migration. Plan de vérification post-migration.
 4. Migration du contenu : textes hardcodés, assets (images, fonts), CMS si applicable.
 5. Risques de régression : par étape, avec probabilité et impact. Plan de rollback pour chaque étape critique.
@@ -3300,10 +3317,10 @@ Critères de validation : la cause racine est identifiée (pas juste le symptôm
 Structure la collecte et la priorisation du feedback :
 1. Sources de feedback à mettre en place ou analyser : in-app survey (NPS à J+14, CSAT après action critique), interviews ciblées (protocole : 5 churners + 5 power users, questions ouvertes), tickets support (patterns récurrents, volume par catégorie), feature requests (agrégation et déduplication), avis publics (App Store, G2, Trustpilot si applicable), analytics comportementales (rage clicks, dead clicks, abandon flows).
 2. Matrice de synthèse : chaque feedback catégorisé (bug / amélioration / nouvelle feature / confusion UX / demande légale) avec fréquence, nombre d'utilisateurs impactés, et sévérité. Distinguer les retours des power users vs nouveaux utilisateurs.
-3. Priorisation RICE : chaque item scoré (Reach, Impact, Confidence, Effort) contre les métriques actuelles et le KPI North Star. Confidence basée sur des données réelles (nombre de demandes, pas de l'intuition).
+3. Priorisation RICE (effort quasi nul en équipe IA : prioriser Reach × Impact × Confidence) : chaque item scoré contre les métriques actuelles et le KPI North Star. Confidence basée sur des données réelles (nombre de demandes, pas de l'intuition).
 4. Roadmap v2 : les items retenus pour la prochaine itération (tous ceux qui impactent le KPI), avec pour chacun : justification, persona impacté, impact estimé sur le KPI North Star, dépendances techniques.
 5. Items exclus : avec raison et horizon potentiel (v3, never, conditionnel). Documenter = éviter de re-débattre.
-6. Quick wins : les items réalisables en < 1 jour qui ont un impact disproportionné (souvent des corrections UX ou des bugs mineurs fréquents).
+6. Quick wins : les corrections immédiates à impact disproportionné (souvent des corrections UX ou des bugs mineurs fréquents).
 
 Livrable : docs/product/feedback-roadmap-v2.md + mise à jour de docs/product/backlog.md.
 
@@ -3335,7 +3352,7 @@ Livrable : docs/growth/ab-testing-plan.md.
 
 Puis @data-analyst : lis docs/growth/ab-testing-plan.md et configure les métriques de suivi par test : events de tracking spécifiques, segments d'attribution, dashboards de suivi en temps réel, alertes si un test dégrade une métrique garde-fou > 10%. Calcule la taille d'échantillon exacte par test. Livrable : mise à jour de docs/analytics/tracking-plan.md.
 
-Puis @fullstack : lis docs/growth/ab-testing-plan.md et implémente l'infrastructure de feature flags pour les 3 premiers tests (Vercel Edge Config, ou lib type Unleash/GrowthBook). Le système doit supporter : allocation par pourcentage, sticky sessions (un utilisateur voit toujours la même variante), exclusion mutuelle entre tests sur le même composant. Code dans src/.
+Puis @fullstack : lis docs/growth/ab-testing-plan.md et implémente l'infrastructure de feature flags pour les 3 premiers tests (GrowthBook ou Unleash, auto-hébergeables sur le VPS, ou flags simples en KV Cloudflare), variantes tracées dans Umami. Le système doit supporter : allocation par pourcentage, sticky sessions (un utilisateur voit toujours la même variante), exclusion mutuelle entre tests sur le même composant. Code dans src/.
 
 Conformité : les A/B tests doivent respecter le RGPD — le tracking des variantes nécessite un consentement si les données sont personnelles. Pas de manipulation trompeuse (dark patterns) dans les variantes testées. @legal vérifie dans docs/legal/legal-audit.md.
 
@@ -3382,7 +3399,7 @@ Puis @data-analyst : lis docs/strategy/competitive-watch.md et configure les out
 
 Puis @growth : lis docs/strategy/competitive-watch.md et identifie les opportunités d'acquisition exploitables : mots-clés où les concurrents sont faibles, canaux sous-exploités par la concurrence, audiences des concurrents à cibler (audiences lookalike, comparatif content). Mets à jour docs/growth/growth-strategy.md section "Opportunités concurrentielles".
 
-GEO : surveiller la visibilité des concurrents sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity). Interroger les LLM sur les requêtes clés du secteur — si un concurrent est cité et pas nous, c'est un signal d'action. Ajouter un axe "visibilité LLM" dans le rapport mensuel.
+GEO : surveiller la visibilité des concurrents sur les IA génératives (ChatGPT, Claude, Gemini, Perplexity). Faire exécuter par l'utilisateur (ou un outil de suivi de citations) les prompts de test du secteur ; l'agent ne peut pas interroger les LLM lui-même. Si un concurrent est cité et pas nous, c'est un signal d'action. Ajouter un axe "visibilité LLM" dans le rapport mensuel.
 
 Conformité : la veille concurrentielle doit rester dans le cadre légal — pas de scraping de données personnelles, pas d'accès non autorisé à des informations confidentielles. La surveillance des prix et des features publiques est légale. La surveillance des marques déposées (contrefaçon, usage abusif du nom) est recommandée.
 
@@ -3490,14 +3507,14 @@ Catégories à couvrir :
 5. Patterns efficaces : agents/chaînes qui surperforment, bonnes pratiques à capitaliser.
 6. Recommandations framework : quoi ajouter/modifier/supprimer dans les agents, prompts, ou CLAUDE.md.
 7. Performance IA : latence anormale, coûts tokens élevés, hallucinations, modèle sous-performant sur une tâche. Pour chaque : quel modèle, quelle tâche, quel problème, quelle alternative.
-8. Préférences fondateur : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère NextAuth à Clerk — pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
+8. Préférences fondateur : tout ce qui révèle comment le fondateur pense, décide, et priorise. Exemples : choix technologiques (préfère une auth open source possédée à Clerk, pourquoi), standards de qualité (a refusé un livrable à 8/10 — pourquoi), arbitrages de scope (a ajouté/coupé une feature — critère utilisé), frustrations exprimées, corrections apportées aux agents. Format : "[PRÉFÉRENCE FONDATEUR] : Thomas préfère X à Y parce que Z" — une ligne par observation.
 
-IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) doivent aussi être copiés dans le fichier docs/founder-preferences.md (en plus de lessons-learned.md). Ce fichier est la source de vérité des préférences fondateur cross-projets.
+IMPORTANT — Accessibilité cross-projets : les learnings de catégorie 8 (préférences fondateur) et les recommandations framework remontent au repo Agent-Team, source de vérité unique. Dans le repo Agent-Team : les écrire dans docs/founder-preferences.md. Dans un projet client : ne pas modifier .claude/founder-preferences.md (copie écrasée à chaque mise à jour) ; les écrire dans docs/framework-feedback.md du projet, à intégrer côté Agent-Team avec le prompt « Intégrer des learnings d'un autre projet » (lien GitHub du fichier).
 
-Synchronisation entre projets : après avoir écrit docs/lessons-learned.md et docs/founder-preferences.md, pousser les changements sur la branche ET sur main (git push origin main). Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
+Synchronisation entre projets : pousser la branche ET main du repo courant (git push origin main). Seul le main du repo Agent-Team alimente les autres projets (via update.sh) ; un projet client transmet ses retours par docs/framework-feedback.md. Les autres projets accèdent à ces fichiers via les URLs GitHub raw :
 - Learnings : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/lessons-learned.md
 - Préférences fondateur : https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md
-Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Quand le prompt "Démarrer une nouvelle session" est utilisé sur un AUTRE projet, l'orchestrator DOIT lire ces deux fichiers via WebFetch pour se calibrer.
+Quand le prompt "Intégrer des learnings d'un autre projet" est utilisé, les préférences fondateur sont prioritaires. Dans un projet client, les préférences à jour sont dans .claude/founder-preferences.md (rafraîchi par update.sh) ; WebFetch des URLs ci-dessous seulement si ce fichier est absent.
 
 Format tableau v2 pour chaque learning (11 colonnes obligatoires) :
 | Session | Date | Catégorie | Sévérité | Description | Correction appliquée | Recommandation framework | Cible propagation | Fichiers impactés | Statut correction | Statut propagation |
@@ -3534,7 +3551,7 @@ Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATT
 5. Si un cap est dépassé après archivage : BLOQUER la clôture. Demander à l utilisateur de trancher : (a) raise le cap (justification écrite), (b) supprimer manuellement, (c) audit profond delégué.
 
 Étape 5e — Mesure perf-trend (OBLIGATOIRE, garantie de perf cross-sessions) :
-1. Exécute scripts/perf-trend.sh depuis la racine du repo. Le script mesure 7 métriques (M1 contexte commun, M2 /memories/*, M3 gates, M4 learnings actifs, M5 _orchestration-protocol.md, M6 fichiers docs/, M7 sur-invocation agent >3 = WARNING scope) et append une ligne dans docs/perf-trends.md.
+1. Si scripts/perf-trend.sh existe (repo Agent-Team ; absent des projets clients), exécute-le depuis la racine du repo, sinon passe cette étape en le signalant. Le script mesure 7 métriques (M1 contexte commun, M2 /memories/*, M3 gates, M4 learnings actifs, M5 _orchestration-protocol.md, M6 fichiers docs/, M7 sur-invocation agent >3 = WARNING scope) et append une ligne dans docs/perf-trends.md.
 2. Lecture du résultat affiché en console : verdict session (PASS / WARNING / CRITICAL) + détail des 7 métriques avec seuils.
 3. Si exit code non-zero (WARNING TREND DEGRADANT — 3 sessions consécutives en WARNING ou CRITICAL) : STOP clôture immédiatement. Déclencher un audit profond (délégué à @reviewer ou @elon selon ampleur de la dérive) AVANT de continuer. Aucune clôture autorisée tant que le trend n est pas stabilisé.
 4. Si verdict session = WARNING isolé (1ère ou 2ème session consécutive) : signaler dans le mémo de reprise la métrique en cause + plan d action correctif pour la prochaine session, mais ne pas bloquer la clôture.
@@ -3672,6 +3689,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 ];
 
 const CHANGELOG = [
+  {
+    date:"2026-09-29",
+    agent:"reviewer",
+    type:"mise à jour",
+    description:"Revue complète des 91 prompts : 58 modifiés. Corrigés en priorité : le prompt GEO ne prétend plus interroger ChatGPT lui-même, l'optimisation des prompts IA est à jour des modèles 5.5 (plus de temperature, de tool forcé ni de « raisonne étape par étape »), les migrations tiennent compte de D1, l'auth ne repose plus sur le seul middleware, le plan de lancement ne demande plus d'upvotes (interdit). Boucle entre projets réparée : les préférences découvertes dans un projet client remontent via docs/framework-feedback.md, et les agents sur mesure survivent aux mises à jour."
+  },
   {
     date:"2026-09-29",
     agent:"reviewer",

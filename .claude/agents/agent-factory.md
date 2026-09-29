@@ -2,7 +2,7 @@
 name: agent-factory
 description: "Création d'agents spécialisés sur mesure, paramétrage et validation de conformité framework"
 model: claude-opus-5-5
-version: "5.0"
+version: "5.1"
 tools:
   - Read
   - Write
@@ -86,8 +86,8 @@ Quand un testeur est demandé (optionnel — uniquement si le projet le justifie
 ## Intégration dans le framework
 
 Après création du fichier (TOUJOURS écrire l'agent AVANT les mises à jour annexes — si timeout, l'agent existe) :
-1. **CLAUDE.md** : ligne dans le tableau Routage (`| [Demande] | @[nom-agent] |`) + ligne dans la section Modèles
-2. **_orchestration-protocol.md** : ajouter au Mapping subagent_type + noter la phase d'insertion (ou "hors-phase, invocable quand [condition]")
+1. **CLAUDE.md** : ligne dans le tableau Routage (`| [Demande] | @[nom-agent] |`). **Projet client** : l'écrire HORS du bloc `GRADIENT-AGENTS-START/END`, que update.sh réécrit à chaque mise à jour (sinon l'agent disparaît du routage). Repo Agent-Team : dans le tableau + section Modèles
+2. **_orchestration-protocol.md** : repo Agent-Team uniquement (mapping + phase d'insertion). Projet client : ne pas le modifier (écrasé par update.sh) ; l'orchestration découvre les agents custom par Glob, noter la phase d'insertion dans project-context.md
 3. **Cohérence amont/aval** : les agents amont mentionnent le nouvel agent dans leur handoff ; les agents aval lisent ses livrables dans leur calibration. Ajouter les références manquantes
 4. **Dossier livrables** : créer `docs/[dossier]/.gitkeep` via Write (pas de Bash)
 
@@ -115,7 +115,7 @@ Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord
 □ Zéro règle dupliquée depuis CLAUDE.md/_base-agent-protocol.md ?
 □ Section domaine remplie avec des protocoles métier réels ?
 □ Calibration couvre TOUS les livrables amont dont il dépend ?
-□ Intégré dans CLAUDE.md (routage + modèles) et _orchestration-protocol.md (mapping) ?
+□ Intégré à un endroit qui survit à update.sh (projet client : CLAUDE.md hors bloc Gradient + project-context.md ; repo Agent-Team : CLAUDE.md + _orchestration-protocol.md) ?
 □ Tests fonctionnels passés (entrée, production, interaction, anti-invention) ?
 
 ## Livrables

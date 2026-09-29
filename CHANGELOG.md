@@ -4,6 +4,17 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : revue complète des 91 prompts (58 modifiés)
+
+Revue par la session principale des 81 prompts restants (10 déjà revus), même grille que les agents.
+1. **Bugs de fond** : GEO « interroger ChatGPT via WebSearch » (impossible) → prompts de test exécutés par l'utilisateur (+ veille concurrentielle) ; optimisation des prompts IA à jour 5.5 (prompt caching correctement défini, plus de temperature, plus de « raisonne étape par étape », structured outputs natifs, fine-tuning seulement si les évals le justifient) ; choix de modèles sans noms de mémoire (GPT-4o retiré) ; `ADD COLUMN IF NOT EXISTS` inexistant sur D1/SQLite (migrations versionnées wrangler, aussi dans fullstack.md) ; autorisation vérifiée dans chaque handler, jamais le seul proxy/middleware (CVE-2025-29927) ; sécurité IA (prompt injection, fuite de system prompt) ; plan de lancement sans sollicitation d'upvotes.
+2. **Boucle inter-projets réparée** : la clôture de session dans un projet client écrivait les préférences localement et poussait sur le main du projet client (jamais remontées) → `docs/framework-feedback.md` + prompt « Intégrer des learnings » côté Agent-Team ; perf-trend.sh conditionnel (absent des clients) ; agents custom enregistrés hors du bloc Gradient de CLAUDE.md (sinon effacés par update.sh), aussi dans agent-factory.md (v5.1).
+3. **Cohérence avec les agents et préférences** : CTAs selon Vitrine/Funnel (5 prompts), self-fetch = appel direct (127.0.0.1 réservé à Replit), `value-proposition.md` inexistant remplacé par brand-platform, prix ronds (plus de price ending), P2 corrigés et non reportés, RICE sans effort humain, reviewer qui ne corrige pas lui-même, audit ciblé en GO/NO-GO binaire, @reviewer (pas @ia) pour la cohérence framework, stack par défaut (Umami, Workers, Queues/KV, VPS en renfort), accessibilité (EAA), facture électronique, Twitter/X → X.
+4. **Chiffres** : stats non sourcées retirées ou marquées ordres de grandeur à recaler (conversion, rétention, abandon par champ, tarifs de diffusion, activation +20 %) ; ouvertures d'emails signalées comme faussées par Apple Mail.
+5. **Nouveau garde-fou d'exploitation** (monitoring post-launch) : trace OK/ECHEC + alerte pour tout job planifié, tiré de l'incident du site figé 4 mois.
+
+---
+
 ## 2026-09-29 (S6 suite) : 8 agents restants, audit système, prompts échantillonnés, stack et accents
 
 1. **8 agents restants** (7 en v5.1, agent-factory au niveau) : infrastructure (Workers + OpenNext, `next-on-pages` déprécié, TTI retiré, quotas non mémorisés, VPS en renfort, Umami), qa (features IA testées avec LLM mocké, lint explicite en CI), reviewer (états UI alignés PM, contrôles IA et écriture), legal (EAA, avis clients, facture électronique, AI Act à vérifier à date, exemption CNIL), data-analyst (Umami par défaut, instrumentation IA), sales-enablement (preuves réelles, règles CNIL prospection B2B), social (stats sourcées, label contenu IA, algorithmes à reconfirmer). Descriptions fullstack/growth/infrastructure ramenées sous 120 caractères (routage automatique).
