@@ -139,7 +139,7 @@ Session marathon multi-pivots déclenchée par une plainte directe de Thomas : "
 
 ### Travaux en cours / non termines (DEFER)
 1. **Cron VPS pre-commit hook actif** : `fatal: not in a git directory` durant update.sh = hook non installé sur projets clients. Fix : `git config core.hooksPath .githooks` post-update. À automatiser dans update.sh.
-2. **Permissions root vs thomas sur projets VPS** : Thomas a lancé update.sh en root sur Agent-Team + ISSA-Capital → fichiers root, cron tourne sous thomas. `chown -R thomas:thomas` ponctuel nécessaire ou exécuter via `sudo -u thomas`.
+2. **BLOQUANT site figé depuis le 2026-05-29** (constaté 2026-09-29 : last-modified 29 May 13:03, contenu = commit e459e50, soit 20 agents / Opus 4.8 / Sonnet 4.6 en ligne). Le cron `git pull` de `/home/thomas/Agent-Team` échoue en silence : fichiers passés en root (update.sh lancé en root) et/ou modifs locales (update.sh lancé DANS le repo source) qui bloquent le pull. Fix VPS : `chown -R thomas:thomas`, puis `git fetch origin main && git reset --hard origin/main` en thomas, cron remplacé par fetch + reset (miroir de déploiement, pas de travail local). Ne jamais lancer update.sh dans le repo source.
 3. **DEFER D9 diet `_base-agent-protocol.md`** (467L → 380 puis 280) : à reprendre.
 4. **DEFER D13 context layering** : à évaluer après D9 complet.
 5. **DEFER D11 Phases 2-3** : marqué partiellement fait S3 + cure S4 a réduit orchestrator 831→749. Cible 400L pas atteinte mais marge confortable. Priorité abaissée.
