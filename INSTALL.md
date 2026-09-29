@@ -6,7 +6,7 @@ Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et l
 
 | Fichier | Rôle | Mise à jour |
 |---|---|---|
-| `.claude/agents/*.md` | 19 agents + protocoles partagés (`_*.md`, pas des agents) | Remplacé, **sauf le bloc `PROJECT-RULES`** de chaque agent, recollé ; agents maison jamais touchés |
+| `.claude/agents/*.md` | 19 agents + protocoles partagés (`_*.md`, pas des agents) | Remplacé en recollant le bloc `PROJECT-RULES` ; ajouts en fin de fichier rangés en bloc ; agent modifié ailleurs conservé (mise à jour en attente) ; agents maison jamais touchés |
 | `.claude/settings.json` | Permissions pré-approuvées (sans elles, les sous-agents ne peuvent pas écrire) | **Fusionné** : réglages du projet (hooks, env, permissions) conservés, permissions Gradient ajoutées, sauvegarde dans `.claude/gradient-backup/` |
 | `.claude/founder-preferences.md` | Préférences fondateur et **stack par défaut** (Cloudflare, Umami, VPS en renfort), lecture seule | Écrasé |
 | `.claude/prompts-library.html` | Bibliothèque des prompts, cherchée par le protocole d'orchestration | Écrasé |
@@ -45,7 +45,7 @@ bash update.sh              # agent par agent (interactif)
 bash update.sh --rollback   # restaurer les agents d'avant la dernière mise à jour
 ```
 
-Le script sauvegarde agents et settings dans `.claude/gradient-backup/` (hors de `.claude/agents/`, que Claude Code charge récursivement ; une ancienne sauvegarde `.claude/agents/.backup/` est déplacée automatiquement), préserve le bloc `PROJECT-RULES` de chaque agent (règles propres au projet, voir `_base-agent-protocol.md`), avertit si un agent Gradient a été modifié ailleurs, retire les fichiers Gradient disparus en amont (jamais un agent maison), signale les doublons et les agents maison sur un vieux modèle, synchronise le tableau ci-dessus et réactive les hooks. Ne jamais le lancer dans le repo source Agent-Team lui-même.
+Le script sauvegarde agents et settings dans `.claude/gradient-backup/` (hors de `.claude/agents/`, que Claude Code charge récursivement ; une ancienne sauvegarde `.claude/agents/.backup/` est déplacée automatiquement), préserve le bloc `PROJECT-RULES` de chaque agent (règles propres au projet, voir `_base-agent-protocol.md`), range automatiquement en bloc les lignes ajoutées en fin d'agent, et si un agent Gradient a été modifié ailleurs le conserve tel quel (nouvelle version en attente dans `.claude/gradient-backup/pending/`) : aucune modification locale n'est jamais perdue ; retire les fichiers Gradient disparus en amont (jamais un agent maison), signale les doublons et les agents maison sur un vieux modèle, synchronise le tableau ci-dessus et réactive les hooks. Ne jamais le lancer dans le repo source Agent-Team lui-même.
 
 **Après la mise à jour** : comparer `project-context.md` au modèle (`templates/project-context.md` du repo source) et remplir les nouveaux champs éventuels.
 

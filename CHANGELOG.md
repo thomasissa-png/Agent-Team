@@ -4,6 +4,15 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : zéro perte locale à la mise à jour (retour Versi)
+
+Versi a perdu une règle ajoutée dans copywriter.md et son pipeline QA du pre-commit (script antérieur aux correctifs, mais deux trous subsistaient) :
+1. **Agent modifié hors bloc** : n'est plus remplacé. Si la version locale = une version Gradient d'origine + lignes ajoutées à la fin (vérifié par préfixe exact contre l'historique git), ces lignes sont rangées dans un bloc PROJECT-RULES et l'agent est mis à jour. Sinon l'agent est CONSERVÉ, la nouvelle version attend dans `.claude/gradient-backup/pending/`, alerte + compteur. Carte MAJ : contrôle (4b) aucun agent en attente.
+2. **Ancien hook Gradient** : reconnu uniquement s'il est identique octet pour octet à une version passée de `.githooks/pre-commit` (historique git), plus d'heuristique « moins de 20 lignes sans npm/tsc » qui aurait écrasé un pipeline comme `sh scripts/qa.sh`. Même règle dans install.sh.
+Testé : copywriter (ajout en fin → bloc), design (insertion au milieu → conservé + en attente), pre-commit Versi préservé, vrai ancien hook remplacé, second passage stable.
+
+---
+
 ## 2026-09-29 (S6 suite) : autres failles de même famille (install/update chez les clients)
 
 1. **Agents fantômes (grave)** : Claude Code charge `.claude/agents/` récursivement (doc officielle, vérifiée) et, à noms égaux, n'en garde qu'un selon l'ordre du système de fichiers. La sauvegarde `.claude/agents/.backup/` (ancienne copie de chaque agent) et `_deprecated/` pouvaient donc remplacer les vrais agents. Sauvegarde → `.claude/gradient-backup/`, dépréciés → `.claude/deprecated-agents/`, migration automatique de l'existant, signalement de tout doublon en sous-dossier. agent-factory aligné.

@@ -82,11 +82,19 @@ ensure_gitignore() {
   return 0
 }
 
-# Ancien pre-commit Gradient (avant le marqueur GRADIENT-HOOK), jamais modifié par le projet
+# Toutes les versions qu'un fichier a eues dans le repo Gradient (identifiants git,
+# sans télécharger les contenus). Vide = ce fichier n'a jamais appartenu à Gradient.
+gradient_history_blobs() {
+  (cd "$TEMP_DIR/repo" && git log --all --format=%H -- "$1" 2>/dev/null \
+    | while read -r c; do git rev-parse -q --verify "$c:$1" 2>/dev/null || true; done) | sort -u
+}
+
+# Ancien pre-commit Gradient : reconnu seulement s'il est IDENTIQUE, octet pour octet,
+# à une version passée du fichier dans le repo Gradient. Toute modification = hook du projet.
 is_legacy_gradient_hook() {
-  grep -q "Guard: la section Gradient de CLAUDE.md" "$1" \
-    && [ "$(wc -l < "$1")" -le 20 ] \
-    && ! grep -qE "tsc|npm|npx|pnpm|yarn|bun|vitest|jest|husky|claude-md-guard" "$1"
+  local h
+  h=$(git hash-object "$1" 2>/dev/null) || return 1
+  gradient_history_blobs ".githooks/pre-commit" | grep -qx "$h"
 }
 
 # Installe le garde-fou CLAUDE.md sans jamais écraser un hook propre au projet
@@ -157,11 +165,20 @@ strip_project_rules() {
        END{printf "%s", b}' "$1"
 }
 
-# Toutes les versions qu'un fichier a eues dans le repo Gradient (identifiants git,
-# sans télécharger les contenus). Vide = ce fichier n'a jamais appartenu à Gradient.
-gradient_history_blobs() {
-  (cd "$TEMP_DIR/repo" && git log --all --format=%H -- "$1" 2>/dev/null \
-    | while read -r c; do git rev-parse -q --verify "$c:$1" 2>/dev/null || true; done) | sort -u
+
+# Si le fichier = une version Gradient d'origine + des lignes ajoutées à la fin,
+# affiche ces lignes et renvoie 0 ; sinon renvoie 1. $1 fichier (bloc retiré), $2 chemin repo
+extract_appended_lines() {
+  local blob size
+  for blob in $(gradient_history_blobs "$2"); do
+    size=$(cd "$TEMP_DIR/repo" && git cat-file -s "$blob" 2>/dev/null) || continue
+    [ "$(wc -c < "$1")" -gt "$size" ] || continue
+    if [ "$(head -c "$size" "$1" | git hash-object --stdin)" = "$blob" ]; then
+      tail -c +"$((size+1))" "$1"
+      return 0
+    fi
+  done
+  return 1
 }
 
 # Le fichier (bloc projet retiré) est-il une version Gradient d'origine, jamais modifiée ?
@@ -277,7 +294,8 @@ echo ""
 updated=0
 skipped=0
 new_agents=0
-customized=0
+pending=0
+migrated=0
 
 for remote_agent in "$TEMP_DIR/repo/.claude/agents"/*.md; do
   agent_name=$(basename "$remote_agent")
@@ -303,18 +321,37 @@ for remote_agent in "$TEMP_DIR/repo/.claude/agents"/*.md; do
     continue
   fi
 
-  # Version Gradient d'origine (simple retard) ou modifiée par le projet hors du bloc ?
+  # Version Gradient d'origine (simple retard), ou modifiée par le projet hors du bloc ?
+  # Règle absolue : aucune modification locale n'est jamais perdue.
   strip_project_rules "$local_agent" > "$TEMP_DIR/stripped.md"
-  is_custom=false
+  mode="update"
   if ! is_pristine_gradient_version "$TEMP_DIR/stripped.md" ".claude/agents/$agent_name"; then
-    is_custom=true
+    if appended=$(extract_appended_lines "$TEMP_DIR/stripped.md" ".claude/agents/$agent_name"); then
+      appended=$(printf '%s' "$appended" | sed '/./,$!d')
+      if [ -n "$(printf '%s' "$appended" | tr -d '[:space:]')" ]; then
+        # Lignes ajoutées à la fin d'une version d'origine : rangées dans un bloc PROJECT-RULES
+        printf '\n<!-- PROJECT-RULES-START -->\n%s\n<!-- PROJECT-RULES-END -->\n' "$appended" >> "$candidate"
+        mode="migrated"
+      fi
+    else
+      mode="pending"
+    fi
+  fi
+
+  if [ "$mode" = "pending" ]; then
+    # Modifié au milieu du fichier : on ne remplace PAS, la nouvelle version attend à côté
+    mkdir -p "$OLDPWD/$BACKUP_DIR/pending"
+    cp "$candidate" "$OLDPWD/$BACKUP_DIR/pending/$agent_name"
+    pending=$((pending+1))
+    echo -e "  ${YELLOW}⚠ ${agent_name} : modifié par le projet (hors bloc PROJECT-RULES, pas seulement en fin de fichier) : CONSERVÉ tel quel, non mis à jour. Nouvelle version en attente : ${BACKUP_DIR}/pending/${agent_name}. Déplacez vos règles dans un bloc <!-- PROJECT-RULES-START --> … <!-- PROJECT-RULES-END --> en fin de fichier puis relancez update.sh.${NC}"
+    continue
   fi
 
   if [ "$UPDATE_ALL" = true ] || ask_yes_no "    ${agent_name} : mettre à jour ? [o/N] "; then
     cp "$candidate" "$local_agent"
-    if [ "$is_custom" = true ]; then
-      customized=$((customized+1))
-      echo -e "  ${YELLOW}⚠ ${agent_name} : modifié par le projet HORS du bloc PROJECT-RULES, remplacé. Ancienne version : ${BACKUP_DIR}/agents/${agent_name}. Remettez vos règles propres dans un bloc <!-- PROJECT-RULES-START --> … <!-- PROJECT-RULES-END --> en fin de fichier : il sera préservé aux prochaines mises à jour.${NC}"
+    if [ "$mode" = "migrated" ]; then
+      migrated=$((migrated+1))
+      echo -e "  ${GREEN}✓ Mis à jour : ${agent_name} (vos lignes ajoutées en fin de fichier sont conservées, rangées dans un bloc PROJECT-RULES)${NC}"
     else
       echo -e "  ${GREEN}✓ Mis à jour : ${agent_name}$([ -n "$project_rules" ] && echo ' (bloc PROJECT-RULES préservé)')${NC}"
     fi
@@ -431,7 +468,8 @@ echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "  ${GREEN}${updated}${NC} agents mis à jour"
 echo -e "  ${GREEN}${new_agents}${NC} nouveaux agents"
 echo -e "  ${BLUE}${skipped}${NC} déjà à jour"
-[ "$customized" -gt 0 ] && echo -e "  ${YELLOW}${customized}${NC} agent(s) modifié(s) par le projet remplacé(s) : voir les ⚠ ci-dessus" || true
+[ "$migrated" -gt 0 ] && echo -e "  ${GREEN}${migrated}${NC} agent(s) : ajouts du projet rangés en bloc PROJECT-RULES" || true
+[ "$pending" -gt 0 ] && echo -e "  ${YELLOW}${pending}${NC} agent(s) modifié(s) par le projet CONSERVÉ(S) sans mise à jour : nouvelle version dans ${BACKUP_DIR}/pending/ (voir les ⚠)" || true
 echo -e "  ${GREEN}✓${NC} settings.json fusionné, CLAUDE.md synchronisé (réglages du projet préservés)"
 echo ""
 echo -e "${YELLOW}Note : project-context.md n'est jamais écrasé.${NC}"

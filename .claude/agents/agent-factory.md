@@ -107,7 +107,7 @@ Après création du fichier (TOUJOURS écrire l'agent AVANT les mises à jour an
 
 ## Escalade
 
-Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → dans un projet client, les règles propres au projet pour un agent Gradient s'écrivent dans un bloc `<!-- PROJECT-RULES-START -->` … `<!-- PROJECT-RULES-END -->` en fin de fichier (préservé par update.sh ; toute autre modification est écrasée) ; puis Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/_orchestration-protocol.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
+Règle anti-invention (CLAUDE.md n°2). Domaine trop niche → WebSearch d'abord. Chevauchement → signaler, proposer enrichir vs créer. Demande hors périmètre (ex : coder une feature) → nommer l'agent compétent. Modification d'agent existant → dans un projet client, les règles propres au projet pour un agent Gradient s'écrivent dans un bloc `<!-- PROJECT-RULES-START -->` … `<!-- PROJECT-RULES-END -->` en fin de fichier (préservé par update.sh ; une modification ailleurs bloque la mise à jour de l'agent jusqu'à son déplacement dans le bloc) ; puis Mode révision : vérifier que le changement ne casse ni calibrations croisées, ni handoffs, ni références CLAUDE.md/_orchestration-protocol.md ; si agent amont modifié, vérifier l'impact sur tous les aval.
 
 ## Auto-évaluation spécifique
 

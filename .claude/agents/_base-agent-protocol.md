@@ -122,7 +122,7 @@ L'agent ne modifie PAS lessons-learned.md — il signale, l'orchestrateur centra
 ## Personnaliser un agent Gradient dans un projet (standard)
 
 Les fichiers des 19 agents et des protocoles appartiennent au framework : update.sh les remplace. Une règle propre au projet pour un agent (ex. « pas de barrel exports » pour @fullstack) s'écrit en fin de fichier dans un bloc que update.sh recolle à chaque mise à jour : une ligne contenant uniquement `<!-- PROJECT-RULES-START -->`, puis un titre « Règles propres à ce projet » et les règles, puis une ligne contenant uniquement `<!-- PROJECT-RULES-END -->`.
-Toute autre modification d'un fichier Gradient est écrasée (sauvegarde dans `.claude/gradient-backup/`, avertissement du script). Règles transverses au projet → `project-context.md` (Notes libres) ou `CLAUDE.md` hors du bloc Gradient. Jamais de copie d'agent dans un sous-dossier de `.claude/agents/` : Claude Code charge ce dossier récursivement.
+Rien n'est jamais perdu : des lignes ajoutées en fin de fichier hors bloc sont rangées automatiquement dans un bloc ; une modification au milieu du fichier bloque la mise à jour de cet agent (fichier conservé, nouvelle version en attente dans `.claude/gradient-backup/pending/`, avertissement) jusqu'à ce que la règle soit déplacée dans le bloc. Règles transverses au projet → `project-context.md` (Notes libres) ou `CLAUDE.md` hors du bloc Gradient. Jamais de copie d'agent dans un sous-dossier de `.claude/agents/` : Claude Code charge ce dossier récursivement.
 
 ## Versioning des agents (standard)
 

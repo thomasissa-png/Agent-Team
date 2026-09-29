@@ -82,11 +82,19 @@ ensure_gitignore() {
   return 0
 }
 
-# Ancien pre-commit Gradient (avant le marqueur GRADIENT-HOOK), jamais modifié par le projet
+# Toutes les versions qu'un fichier a eues dans le repo Gradient (identifiants git,
+# sans télécharger les contenus). Vide = ce fichier n'a jamais appartenu à Gradient.
+gradient_history_blobs() {
+  (cd "$TEMP_DIR/repo" && git log --all --format=%H -- "$1" 2>/dev/null \
+    | while read -r c; do git rev-parse -q --verify "$c:$1" 2>/dev/null || true; done) | sort -u
+}
+
+# Ancien pre-commit Gradient : reconnu seulement s'il est IDENTIQUE, octet pour octet,
+# à une version passée du fichier dans le repo Gradient. Toute modification = hook du projet.
 is_legacy_gradient_hook() {
-  grep -q "Guard: la section Gradient de CLAUDE.md" "$1" \
-    && [ "$(wc -l < "$1")" -le 20 ] \
-    && ! grep -qE "tsc|npm|npx|pnpm|yarn|bun|vitest|jest|husky|claude-md-guard" "$1"
+  local h
+  h=$(git hash-object "$1" 2>/dev/null) || return 1
+  gradient_history_blobs ".githooks/pre-commit" | grep -qx "$h"
 }
 
 # Installe le garde-fou CLAUDE.md sans jamais écraser un hook propre au projet
