@@ -9,7 +9,7 @@
 1. Lire `project-context.md` à la racine. Absent → STOP : "project-context.md manquant. Lance le prompt « Définir mon projet » (site Gradient Agents, section Démarrage) avant que je puisse travailler."
 2. Lire le tableau "Historique des interventions agents" — ne jamais contredire une décision sans le signaler
 3. Lire `docs/lessons-learned.md` si existant — un learning `non-propagé` qui concerne le domaine de l'agent : le signaler dans le handoff et l'intégrer au livrable
-4. Lire les préférences fondateur, valables sur TOUS les projets (dont la **stack par défaut** : Cloudflare, Umami, VPS en renfort) : `.claude/founder-preferences.md` dans un projet client (copie posée et rafraîchie par install/update, ne pas l'éditer : une nouvelle préférence se signale en `[LEARNING DÉTECTÉ]` cible founder-prefs), `docs/founder-preferences.md` dans le repo Agent-Team
+4. Lire les préférences fondateur, en deux couches : (a) **globales**, valables sur tous les projets (dont la **stack par défaut** : Cloudflare, Umami, VPS en renfort) : `.claude/founder-preferences.md` dans un projet client (copie rafraîchie par install/update, ne jamais l'éditer), `docs/founder-preferences.md` dans le repo Agent-Team ; (b) **propres au projet** : `docs/founder-preferences.md` du projet client s'il existe (vocabulaire, marque, règles métier). En cas de conflit, le projet l'emporte. Nouvelle préférence : propre au projet → `docs/founder-preferences.md` du projet ; valable partout → `docs/framework-feedback.md`
 5. Lire `docs/decisions-log.md` si existant — l'historique des décisions structurantes de CE projet. Ne jamais contredire sans signaler. Tout agent qui prend une décision structurante (architecture, lib, design, arbitrage) y ajoute une ligne : `| Date | Agent | Décision | Pourquoi | Contrainte |`
 6. Vérifier les champs critiques de l'agent (liste propre à chaque agent). Vides → lister les manques, refuser d'avancer
 
@@ -146,7 +146,7 @@ Exceptions : @agent-factory → `.claude/agents/`, @orchestrator → `docs/` rac
 
 ## Mémoire organisationnelle
 
-L'orchestrateur met à jour `docs/lessons-learned.md` (tableau v2, 11 colonnes) à chaque clôture. Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`. **Gate bloquante en reprise** : propager les P0/P1 non-propagés AVANT tout nouveau travail. Préférences fondateur → `docs/founder-preferences.md` dans le repo Agent-Team (source unique) ; dans un projet client, les nouvelles préférences et recommandations framework vont dans `docs/framework-feedback.md`, intégré côté Agent-Team par le prompt « Intégrer des learnings d'un autre projet ». Caps et TTL : voir CLAUDE.md commandement 8 (lessons 80L, TTL 5 sessions/90j, archivage vers `docs/lessons-learned-archive.md`).
+L'orchestrateur met à jour `docs/lessons-learned.md` (tableau v2, 11 colonnes) à chaque clôture. Un learning est "terminé" quand correction = `fait` ET propagation = `propagé`. **Gate bloquante en reprise** : propager les P0/P1 non-propagés AVANT tout nouveau travail. Préférences fondateur → `docs/founder-preferences.md` dans le repo Agent-Team (source unique) ; dans un projet client, les préférences propres au projet vont dans son `docs/founder-preferences.md`, celles valables partout et les recommandations framework dans `docs/framework-feedback.md`, intégré côté Agent-Team par le prompt « Intégrer des learnings d'un autre projet ». Caps et TTL : voir CLAUDE.md commandement 8 (lessons 80L, TTL 5 sessions/90j, archivage vers `docs/lessons-learned-archive.md`).
 
 ## Protocole de test du framework
 

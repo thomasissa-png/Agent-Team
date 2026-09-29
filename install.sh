@@ -26,6 +26,100 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# ─── Fonctions partagées install/update : ne jamais écraser un réglage propre au projet ───
+
+# Fusionne le settings.json Gradient dans celui du projet : les clés du projet
+# (hooks, env, permissions...) sont conservées, les permissions Gradient ajoutées.
+# $1 = settings.json Gradient, $2 = settings.json du projet, $3 = dossier de sauvegarde
+merge_settings_json() {
+  local src="$1" dst="$2" bak="$3"
+  mkdir -p "$(dirname "$dst")"
+  if [ ! -f "$dst" ]; then
+    cp "$src" "$dst"
+    echo -e "  ${GREEN}✓ .claude/settings.json installé${NC}"
+    return 0
+  fi
+  if cmp -s "$src" "$dst"; then
+    echo -e "  ${BLUE}= .claude/settings.json déjà à jour${NC}"
+    return 0
+  fi
+  mkdir -p "$bak" && cp "$dst" "$bak/settings.json"
+  if command -v node >/dev/null 2>&1 && node -e '
+const fs=require("fs");const [s,d]=process.argv.slice(1);
+const G=JSON.parse(fs.readFileSync(s,"utf8")),P=JSON.parse(fs.readFileSync(d,"utf8"));
+const out={...G,...P},gp=G.permissions||{},pp=P.permissions||{};
+out.permissions={...gp,...pp};
+for(const k of ["allow","deny","ask"]){const u=[...new Set([...(pp[k]||[]),...(gp[k]||[])])];if(u.length)out.permissions[k]=u;}
+fs.writeFileSync(d,JSON.stringify(out,null,2)+"\n");' "$src" "$dst" 2>/dev/null; then
+    echo -e "  ${GREEN}✓ .claude/settings.json fusionné (réglages du projet conservés, permissions Gradient ajoutées ; sauvegarde : ${bak}/settings.json)${NC}"
+  elif command -v python3 >/dev/null 2>&1 && python3 - "$src" "$dst" 2>/dev/null <<'PY'
+import json, sys
+s, d = sys.argv[1:3]
+G = json.load(open(s, encoding="utf-8")); P = json.load(open(d, encoding="utf-8"))
+out = {**G, **P}; gp = G.get("permissions", {}); pp = P.get("permissions", {})
+out["permissions"] = {**gp, **pp}
+for k in ("allow", "deny", "ask"):
+    u = list(dict.fromkeys(pp.get(k, []) + gp.get(k, [])))
+    if u: out["permissions"][k] = u
+with open(d, "w", encoding="utf-8") as f:
+    json.dump(out, f, indent=2, ensure_ascii=False); f.write("\n")
+PY
+  then
+    echo -e "  ${GREEN}✓ .claude/settings.json fusionné (réglages du projet conservés, permissions Gradient ajoutées ; sauvegarde : ${bak}/settings.json)${NC}"
+  else
+    cp "$src" "$(dirname "$dst")/settings.gradient.json"
+    echo -e "  ${YELLOW}⚠ Fusion de settings.json impossible (node/python absents ou JSON invalide) : le vôtre est conservé tel quel, la version Gradient est dans .claude/settings.gradient.json (à fusionner à la main)${NC}"
+  fi
+}
+
+# Ancien pre-commit Gradient (avant le marqueur GRADIENT-HOOK), jamais modifié par le projet
+is_legacy_gradient_hook() {
+  grep -q "Guard: la section Gradient de CLAUDE.md" "$1" \
+    && [ "$(wc -l < "$1")" -le 20 ] \
+    && ! grep -qE "tsc|npm|npx|pnpm|yarn|bun|vitest|jest|husky|claude-md-guard" "$1"
+}
+
+# Installe le garde-fou CLAUDE.md sans jamais écraser un hook propre au projet
+# ni désactiver Husky / .git/hooks. $1 = repo Gradient, $2 = racine du projet
+sync_githooks() {
+  local src="$1" dst="$2" hook="$2/.githooks/pre-commit"
+  [ -d "$src/.githooks" ] || return 0
+  mkdir -p "$dst/.githooks"
+  if [ -f "$src/.githooks/claude-md-guard.sh" ]; then
+    cp "$src/.githooks/claude-md-guard.sh" "$dst/.githooks/claude-md-guard.sh"
+    chmod +x "$dst/.githooks/claude-md-guard.sh"
+  fi
+  if [ ! -f "$hook" ] || grep -q "GRADIENT-HOOK" "$hook" || is_legacy_gradient_hook "$hook"; then
+    cp "$src/.githooks/pre-commit" "$hook" && chmod +x "$hook"
+    echo -e "  ${GREEN}✓ .githooks/pre-commit Gradient installé (garde-fou CLAUDE.md)${NC}"
+  else
+    echo -e "  ${BLUE}= .githooks/pre-commit propre au projet conservé${NC}"
+    grep -q "claude-md-guard" "$hook" || echo -e "  ${YELLOW}⚠ Pour le garde-fou CLAUDE.md, ajoutez dans votre pre-commit : sh .githooks/claude-md-guard.sh || exit 1${NC}"
+  fi
+  if ! (cd "$dst" && git rev-parse --git-dir >/dev/null 2>&1); then
+    echo -e "  ${YELLOW}⚠ Projet hors git : hooks copiés, non activés${NC}"
+    return 0
+  fi
+  local cur gitdir
+  cur=$(cd "$dst" && git config core.hooksPath 2>/dev/null || true)
+  gitdir=$(cd "$dst" && git rev-parse --git-dir)
+  case "$gitdir" in /*) ;; *) gitdir="$dst/$gitdir" ;; esac
+  if [ "$cur" = ".githooks" ]; then
+    echo -e "  ${GREEN}✓ Hooks actifs (core.hooksPath = .githooks)${NC}"
+    if [ -d "$dst/.husky" ]; then
+      echo -e "  ${YELLOW}⚠ Dossier .husky présent mais inactif (core.hooksPath = .githooks, posé par une ancienne mise à jour) : pour le réactiver, npx husky puis ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans .husky/pre-commit${NC}"
+    fi
+  elif [ -n "$cur" ]; then
+    echo -e "  ${BLUE}= core.hooksPath = ${cur} conservé (Husky ou autre)${NC} : ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans votre hook pre-commit"
+  elif [ -f "$gitdir/hooks/pre-commit" ]; then
+    echo -e "  ${BLUE}= .git/hooks/pre-commit existant conservé (core.hooksPath non modifié)${NC} : ajoutez-y « sh .githooks/claude-md-guard.sh || exit 1 »"
+  else
+    (cd "$dst" && git config core.hooksPath .githooks)
+    echo -e "  ${GREEN}✓ Hooks activés (core.hooksPath = .githooks)${NC}"
+  fi
+  return 0
+}
+
 print_header() {
   echo ""
   echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
@@ -121,9 +215,7 @@ install_settings_json() {
   fi
 
   if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
-    mkdir -p "$target_dir/.claude"
-    cp "$TEMP_DIR/repo/.claude/settings.json" "$target_dir/.claude/settings.json"
-    echo -e "${GREEN}✓ .claude/settings.json installé (permissions pré-approuvées)${NC}"
+    merge_settings_json "$TEMP_DIR/repo/.claude/settings.json" "$target_dir/.claude/settings.json" "$target_dir/.claude/agents/.backup"
   fi
 }
 
@@ -222,17 +314,7 @@ install_githooks() {
   if [ -n "${OLDPWD:-}" ]; then
     target_dir="$OLDPWD"
   fi
-
-  if [ -d "$TEMP_DIR/repo/.githooks" ]; then
-    mkdir -p "$target_dir/.githooks"
-    cp "$TEMP_DIR/repo/.githooks"/* "$target_dir/.githooks/" 2>/dev/null || true
-    chmod +x "$target_dir/.githooks"/* 2>/dev/null || true
-    if (cd "$target_dir" && git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks); then
-      echo -e "${GREEN}✓ .githooks/ installé et activé (garde-fou CLAUDE.md + pre-commit)${NC}"
-    else
-      echo -e "${YELLOW}⚠ .githooks/ copié. Projet hors git : lance 'git config core.hooksPath .githooks' après git init${NC}"
-    fi
-  fi
+  sync_githooks "$TEMP_DIR/repo" "$target_dir"
 }
 
 print_summary() {

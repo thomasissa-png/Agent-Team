@@ -7,15 +7,16 @@ Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et l
 | Fichier | Rôle | Mise à jour |
 |---|---|---|
 | `.claude/agents/*.md` | 19 agents + protocoles partagés (`_*.md`, pas des agents) | Écrasé |
-| `.claude/settings.json` | Permissions pré-approuvées (sans elles, les sous-agents ne peuvent pas écrire) | Écrasé |
+| `.claude/settings.json` | Permissions pré-approuvées (sans elles, les sous-agents ne peuvent pas écrire) | **Fusionné** : réglages du projet (hooks, env, permissions) conservés, permissions Gradient ajoutées, sauvegarde dans `.claude/agents/.backup/` |
 | `.claude/founder-preferences.md` | Préférences fondateur et **stack par défaut** (Cloudflare, Umami, VPS en renfort), lecture seule | Écrasé |
 | `.claude/prompts-library.html` | Bibliothèque des prompts, cherchée par le protocole d'orchestration | Écrasé |
 | `CLAUDE.md` | Règles globales entre les marqueurs `GRADIENT-AGENTS-START/END` | Section Gradient remplacée, contenu custom préservé |
 | `update.sh` | Script de mise à jour (se met à jour lui-même) | Écrasé |
-| `.githooks/` + `core.hooksPath` | Garde-fou taille de CLAUDE.md | Écrasé |
+| `.githooks/claude-md-guard.sh` | Garde-fou taille de CLAUDE.md | Écrasé |
+| `.githooks/pre-commit` + `core.hooksPath` | Appel du garde-fou | Remplacé seulement s'il porte le marqueur `GRADIENT-HOOK` ; un hook propre au projet, Husky ou `.git/hooks` ne sont jamais écrasés (le script indique la ligne d'appel à ajouter) |
 | `project-context.md` | Modèle vide à remplir (prompt « Définir mon projet ») | **Jamais touché** s'il existe |
 
-Jamais touchés : `docs/` (livrables), `src/` (code), `package.json`, agents custom (noms différents des 19).
+Jamais touchés : `docs/` (livrables, et `docs/founder-preferences.md` du projet : ses préférences propres, prioritaires sur les globales), `src/` (code), `package.json`, agents maison (update.sh signale ceux restés sur un modèle obsolète).
 
 ## Scénario A : nouveau projet
 
@@ -55,11 +56,13 @@ git clone --depth 1 https://github.com/thomasissa-png/Agent-Team -b main /tmp/Ag
 mkdir -p .claude/agents .githooks
 cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
 rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md .claude/agents/orchestrator.md
-cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
+[ -f .claude/settings.json ] || cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json   # sinon fusionner à la main
 cp /tmp/Agent-Team/docs/founder-preferences.md .claude/founder-preferences.md
 cp /tmp/Agent-Team/index.html .claude/prompts-library.html
 cp /tmp/Agent-Team/update.sh ./update.sh && chmod +x update.sh
-cp /tmp/Agent-Team/.githooks/* .githooks/ && chmod +x .githooks/* && git config core.hooksPath .githooks
+cp /tmp/Agent-Team/.githooks/claude-md-guard.sh .githooks/ && chmod +x .githooks/claude-md-guard.sh
+# pre-commit : si vous en avez déjà un (ou Husky), ajoutez-y « sh .githooks/claude-md-guard.sh || exit 1 » ;
+# sinon : cp /tmp/Agent-Team/.githooks/pre-commit .githooks/ && git config core.hooksPath .githooks
 [ -f project-context.md ] || cp /tmp/Agent-Team/templates/project-context.md ./project-context.md
 # CLAUDE.md : nouveau projet → copier ; existant → remplacer uniquement le bloc GRADIENT-AGENTS-START/END
 # (ou l'ajouter en fin de fichier s'il n'y a pas encore de marqueurs)

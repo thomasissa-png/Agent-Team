@@ -4,6 +4,17 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : mise à jour d'équipe non destructive (retour ISSA Capital)
+
+La session de mise à jour d'ISSA a dû empêcher à la main trois casses causées par nos scripts. Corrigé à la source :
+1. **settings.json fusionné, plus écrasé** (install.sh + update.sh) : clés du projet conservées (hooks, env…), permissions Gradient ajoutées en union, sauvegarde dans `.claude/agents/.backup/`. Fusion via node, sinon python ; JSON invalide ou outils absents → fichier du projet intact + `.claude/settings.gradient.json` à fusionner.
+2. **Hooks** : le garde-fou devient `.githooks/claude-md-guard.sh` (framework) ; `.githooks/pre-commit` n'est remplacé que s'il porte le marqueur `GRADIENT-HOOK` (ou est l'ancien hook Gradient non modifié). `core.hooksPath` n'est plus forcé si Husky, un autre chemin ou `.git/hooks/pre-commit` existe ; le script indique la ligne d'appel à ajouter. Signalement d'un Husky désactivé par une ancienne mise à jour.
+3. **Agents maison** : update.sh signale ceux restés sur un modèle obsolète (liste des modèles courants déduite des agents Gradient, sans ID codé en dur).
+4. **Régression de ce matin corrigée** : dans un projet client, les agents lisaient seulement les préférences globales ; ils relisent aussi `docs/founder-preferences.md` du projet, prioritaire en cas de conflit (base protocol, CLAUDE.md, prompts reprise et clôture).
+5. **Bug set -e** attrapé en test réel : un `[ -d .husky ] && echo` en fin de fonction arrêtait le script avant la fusion de CLAUDE.md. Testé bout en bout : projet type ISSA, Husky, ancien hook Gradient, installation sur projet existant, hors git, fusion sans node, JSON invalide.
+
+---
+
 ## 2026-09-29 (S6 suite) : revue complète des 91 prompts (58 modifiés)
 
 Revue par la session principale des 81 prompts restants (10 déjà revus), même grille que les agents.
