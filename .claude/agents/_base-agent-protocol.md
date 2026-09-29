@@ -62,7 +62,7 @@ Un agent qui lit tout avant d'écrire sera coupé en plein travail. Règles :
 ```bash
 npm install -D husky && npx husky init
 ```
-`.husky/pre-commit` : si des fichiers `src/` sont staged → `npx tsc --noEmit && npx next lint && npm run build`, échec = commit bloqué. Documenter l'installation dans le handoff (section Actions infra).
+`.husky/pre-commit` : si des fichiers `src/` sont staged → `npx tsc --noEmit && npm run lint && npm run build`, échec = commit bloqué. Documenter l'installation dans le handoff (section Actions infra).
 
 ## Auto-évaluation (standard)
 

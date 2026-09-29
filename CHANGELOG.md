@@ -4,6 +4,18 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : revue qualité post-5.5 de 11 agents
+
+Revue menée par la session principale (pas déléguée), agent par agent. 10 agents en v5.1, creative-strategy jugé au niveau (inchangé).
+1. **ia** : contraintes API génération 5.5 (thinking non désactivable, `tool_choice` forcé et prefill = 400, `stop_reason` refusal + fallback, historique append-only), effort explicite (Opus 5.5 par défaut à medium), ordre des leviers coût (caching → batch → effort → routing mesuré), ROI = éclairage pas veto (cmd 5), prompts sobres, embeddings sans nom de version de mémoire.
+2. **geo** : baseline impossible via WebSearch → prompts de test exécutés par l'utilisateur ou `[À MESURER]` ; stats non sourcées retirées (80 %, 47 %, +28 %) ; fausse fraîcheur interdite ; crawlers recherche vs entraînement ; tarifs outils non mémorisés.
+3. **seo** : garde-fou « scaled content abuse » sur le pipeline automatique, densité de mots-clés retirée, KPI au-delà du clic (AI Overviews), affirmations Bing douteuses retirées (HTTPS, .edu/.gov).
+4. **growth** : canaux composés jugés à 90 jours (plus de contradiction avec SEO/GEO), seuils LTV:CAC = arbitrage entre canaux pas GO/NO-GO, tarifs communiqués non mémorisés. **elon** : unit economics = éclairage (cmd 5), projets actifs lus dans le contexte, pas d'anecdote chiffrée inventée. **product-manager** : 19 agents (pas 20), comportement d'échec + critère qualité obligatoires pour les features IA.
+5. **fullstack** : Better Auth par défaut (Auth.js en correctifs de sécurité seulement depuis 09/2025), `proxy.ts` (Next.js 16), LLM en streaming + jobs longs en queue, `ctx.waitUntil` sur Workers. **copywriter** : zéro témoignage inventé même anonymisé (pratique trompeuse), liste anti-signature IA. **design** : directions issues du benchmark au lieu de clichés sectoriels, anti-look IA. **ux** : états propres aux features IA, typo glob corrigée.
+6. **Commande pre-commit** : `npx next lint` → `npm run lint` (CLAUDE.md, fullstack, protocoles, 3 prompts du site) : `next lint` a été retiré dans Next.js 16. Prompts auth du site : Better Auth, Lucia (abandonné) retiré.
+
+---
+
 ## 2026-09-29 (S6 suite) : migration Sonnet 5.5
 
 1. **Migration Sonnet 5.5** : les 12 agents Sonnet (copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, sales-enablement, seo, social, ux) passent de `claude-sonnet-5` à `claude-sonnet-5-5` (frontmatters v5.0, cartes index.html v5.0, template agent-factory, whitelist, card MAJ). Garde anti-régression : `claude-sonnet-5` nu et `-latest` rejetés. Toute l'équipe (19 agents) sur la génération 5.5, tiering 7 Opus / 12 Sonnet inchangé.

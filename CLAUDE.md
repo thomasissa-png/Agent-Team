@@ -40,9 +40,9 @@ Exception : si project-context.md mentionne une équipe humaine, adapter la cali
 
 Avant tout commit de code dans `src/` :
 ```bash
-npx tsc --noEmit && npx next lint && npm run build
+npx tsc --noEmit && npm run lint && npm run build
 ```
-Si échec : corriger d'abord, ne PAS commiter.
+Si échec : corriger d'abord, ne PAS commiter. (`npm run lint` = script ESLint/Biome du projet : `next lint` n'existe plus depuis Next.js 16.)
 
 ## 7. Anti-inflation de ce fichier
 

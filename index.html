@@ -382,7 +382,7 @@ const AGENTS = [
     required:["Secteur","Persona principal","Problème principal","Alternative actuelle"]
   },
   {
-    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"5.0", model:"claude-sonnet-5-5",
+    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"5.1", model:"claude-sonnet-5-5",
     role:"VP Product, 12 ans",
     phase:"Phase 0 : Produit",
     desc:"Traduit la stratégie en roadmap actionnable : vision produit, specs fonctionnelles, user stories priorisées et backlog.",
@@ -403,28 +403,28 @@ const AGENTS = [
     required:["Pays de commercialisation","Données sensibles collectées (santé/finance/mineurs : oui/non)","Utilisation d'IA générative (oui/non)","Modèle économique"]
   },
   {
-    id:"ux", name:"UX", at:"@ux", version:"5.0", model:"claude-sonnet-5-5",
+    id:"ux", name:"UX", at:"@ux", version:"5.1", model:"claude-sonnet-5-5",
     role:"Lead UX Researcher & Designer, 14 ans",
     phase:"Phase 1 : Expérience",
     desc:"Conçoit les parcours utilisateur : comment on arrive, comment on comprend, comment on agit. Wireframes, architecture de pages, conversion.",
     required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
   },
   {
-    id:"design", name:"Design", at:"@design", version:"5.0", model:"claude-sonnet-5-5",
+    id:"design", name:"Design", at:"@design", version:"5.1", model:"claude-sonnet-5-5",
     role:"Directeur artistique digital, 11 ans",
     phase:"Phase 1 : Visuel",
     desc:"Traduit les parcours UX en interface visuelle : couleurs, typographies, composants, tokens. Garant de la cohérence visuelle sur tous les écrans.",
     required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
   },
   {
-    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"5.0", model:"claude-sonnet-5-5",
+    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"5.1", model:"claude-sonnet-5-5",
     role:"Senior copywriter, 13 ans",
     phase:"Phase 1 à 3 : Contenu",
     desc:"Rédige tous les textes du projet : landing pages, brand voice, UX writing, emails. Chaque mot est calibré pour le persona cible.",
     required:["Persona principal","Ton de marque","Promesse unique"]
   },
   {
-    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"5.0", model:"claude-opus-5-5",
+    id:"fullstack", name:"Fullstack", at:"@fullstack", version:"5.1", model:"claude-opus-5-5",
     role:"Développeur senior full-stack, 16 ans",
     phase:"Phase 2 : Développement",
     desc:"Écrit le code frontend et backend : Next.js, React Native, API routes, auth, Neon Postgres (futurs projets) ou PostgreSQL Replit (legacy), Stripe. TypeScript strict uniquement.",
@@ -445,28 +445,28 @@ const AGENTS = [
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
-    id:"ia", name:"IA", at:"@ia", version:"5.0", model:"claude-opus-5-5",
+    id:"ia", name:"IA", at:"@ia", version:"5.1", model:"claude-opus-5-5",
     role:"AI Engineer, 7 ans en production",
     phase:"Phase 2 : Intelligence",
     desc:"Intègre les API LLM (Claude, GPT, Gemini), conçoit les pipelines IA et optimise le ratio coût/qualité des tokens.",
     required:["Stack technique","Outils IA utilisés","Budget mensuel infrastructure"]
   },
   {
-    id:"seo", name:"SEO", at:"@seo", version:"5.0", model:"claude-sonnet-5-5",
+    id:"seo", name:"SEO", at:"@seo", version:"5.1", model:"claude-sonnet-5-5",
     role:"Consultant SEO technique, 17 ans",
     phase:"Phase 3 : Référencement",
     desc:"Optimise le référencement Google : audit technique, stratégie de mots-clés, données structurées, maillage interne.",
     required:["Secteur","Persona principal","Stack technique (Next.js requis pour le SEO tech)"]
   },
   {
-    id:"geo", name:"GEO", at:"@geo", version:"5.0", model:"claude-sonnet-5-5",
+    id:"geo", name:"GEO", at:"@geo", version:"5.1", model:"claude-sonnet-5-5",
     role:"Spécialiste GEO, 4 ans de pratique",
     phase:"Phase 3 : Visibilité IA",
     desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google, le GEO cible les IA génératives.",
     required:["Secteur","Persona principal","Promesse unique"]
   },
   {
-    id:"growth", name:"Growth", at:"@growth", version:"5.0", model:"claude-sonnet-5-5",
+    id:"growth", name:"Growth", at:"@growth", version:"5.1", model:"claude-sonnet-5-5",
     role:"Head of Growth, 10 ans",
     phase:"Phase 4 : Acquisition",
     desc:"Conçoit la stratégie d'acquisition : canaux prioritaires, funnel de conversion, boucles virales, referral et modélisation CAC/LTV.",
@@ -501,7 +501,7 @@ const AGENTS = [
     required:["Nom du projet","Secteur","Objectif principal à 6 mois"]
   },
   {
-    id:"elon", name:"Elon", at:"@elon", version:"5.0", model:"claude-opus-5-5",
+    id:"elon", name:"Elon", at:"@elon", version:"5.1", model:"claude-opus-5-5",
     role:"Elon Musk, Vision stratégique",
     phase:"Hors-phase : Advisory",
     desc:"Ton interlocuteur stratégique. Audite le framework et les projets en first principles thinking. Challenge chaque décision, note chaque dimension sur 10, et pousse vers le 10x.",
@@ -672,7 +672,7 @@ Renforcements spécifiques (en plus de ton protocole standard) :
     - Agents testeurs calibrés VALEUR : évaluer la valeur perçue, pas juste la conformité technique.
     - @sales-enablement obligatoire en Phase 4 : playbook commercial, propositions, objection handling, ROI calculator. L'armurier qui équipe le fondateur pour closer.
     - Earned media en Phase 4 : activer les pipelines @growth earned media (communiqués, newsjacking, data stories, directories, Dev.to). ROI en [HYPOTHÈSE].
-    - Pre-commit build check (Règle n°6) : AVANT chaque commit sur src/, exécuter tsc --noEmit && next lint && npm run build. Si échec → NE PAS COMMITER.
+    - Pre-commit build check (Règle n°6) : AVANT chaque commit sur src/, exécuter tsc --noEmit && npm run lint && npm run build. Si échec → NE PAS COMMITER.
     - Actions infra (Replit legacy / Cloudflare) : chaque agent qui modifie src/ ou config DOIT lister les actions infra dans son handoff (variables env, packages, migrations).
     - Favicons/icônes : @design produit les assets (favicon.ico, PNG, SVG, apple-touch-icon, android-chrome, og-image), @fullstack implémente les balises Metadata API, @seo vérifie (Organization.logo inclus).
 
@@ -945,7 +945,7 @@ Afficher le plan et attendre ma validation.
 3. Aligner toutes les références au compteur de gates avec _gates.md actuel (actuellement 9 gates (voir _gates.md)). Grep les compteurs résiduels et corriger.
 4. Si .husky/pre-commit absent → @fullstack l'installe (voir _base-agent-protocol.md section "Setup pre-commit hook").
 5. Vérifier : git config core.hooksPath .githooks (pour le guard CLAUDE.md).
-6. Run final : npx tsc --noEmit && npx next lint && npm run build (si src/ existe).
+6. Run final : npx tsc --noEmit && npm run lint && npm run build (si src/ existe).
 
 Étape 4 — Validation :
 - CLAUDE.md section Gradient : <= 125 lignes ? Si non → du contenu custom n'a pas été migré.
@@ -1540,7 +1540,7 @@ Puis @qa : lis docs/product/functional-specs.md et le code produit dans src/. D�
 
 Puis @data-analyst : vérifie que les events de tracking de cette feature sont cohérents avec docs/analytics/tracking-plan.md. Signale les events manquants ou mal nommés. Mets à jour le tracking plan si nécessaire.
 
-Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npx next lint && npm run build. Si une commande échoue → corriger d'abord, ne JAMAIS commiter un build cassé.
+Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npm run lint && npm run build. Si une commande échoue → corriger d'abord, ne JAMAIS commiter un build cassé.
 
 Actions infra : lister dans le handoff toutes les actions infra nécessaires (variables d'environnement, packages ajoutés, migrations DB). Si aucune action → écrire "Aucune action infra requise."
 
@@ -1673,7 +1673,7 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
    - Cloudflare (défaut) : migration en GitHub Action pre-deploy (drizzle-kit migrate / prisma migrate deploy avec DATABASE_URL en secret), 1× par push — pas de boot stateful.
    - Replit (legacy) — persistance CRITIQUE : DATABASE_URL dans Replit Secrets (jamais .env), npm start exécute prisma migrate deploy AVANT le serveur (DB recréée si réinitialisée), seed conditionnel si tables vides, connection pool avec retry (cold starts).
    - Dans tous les cas : route /api/health avec SELECT 1, statut "degraded" si DB inaccessible (pas de crash).
-3. Configuration auth : setup complet de l'auth provider (Clerk ou NextAuth selon project-context.md). Middleware de protection des routes, layout authentifié vs public, gestion des rôles si pertinent.
+3. Configuration auth : setup complet de l'auth provider (Better Auth par défaut, Clerk si demandé, Auth.js/NextAuth uniquement s'il est déjà en place ; selon project-context.md). Protection des routes via proxy.ts (Next.js 16, ex-middleware.ts), layout authentifié vs public, gestion des rôles si pertinent.
 4. Variables d'environnement : fichier .env.example avec toutes les variables nécessaires (DB, auth, API keys) et commentaires explicatifs.
 5. Layout de base : layout racine avec providers (auth, theme), navigation responsive, footer. Composants squelettes des pages principales.
 6. Configuration TypeScript : tsconfig.json strict (no-any, strict null checks), paths aliases.
@@ -1696,7 +1696,7 @@ Mets à jour docs/infra/infrastructure.md.
 
 Puis @legal : lis docs/dev-decisions.md et vérifie les implications RGPD du schéma de données (quelles données personnelles, bases légales, durées de conservation). Mets à jour docs/legal/rgpd-checklist.md.
 
-Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npx next lint && npm run build. Si échec → corriger d'abord.
+Pre-commit obligatoire (Règle n°6) : AVANT de commiter, exécuter npx tsc --noEmit && npm run lint && npm run build. Si échec → corriger d'abord.
 Actions infra : lister TOUTES les variables d'environnement à ajouter (Replit Secrets ou équivalent Cloudflare), les packages à installer, et les commandes de migration DB dans le handoff.
 
 Critères de validation : le projet démarre avec npm run dev sans erreur, TypeScript strict passe, .env.example est complet, les routes sont protégées, le build (npm run build) passe.`
@@ -1973,7 +1973,7 @@ Critères de validation : chaque endpoint a ses types TypeScript (request + resp
         prompt:`@fullstack Lis project-context.md (stack technique, données sensibles). Lis docs/product/functional-specs.md s'il existe. S'il n'existe pas, pose-moi les questions : quels rôles utilisateur (admin, user, guest), quelles méthodes de connexion (email/password, OAuth, magic link), quelles données sensibles à protéger.
 
 Architecture d'authentification et d'autorisation :
-1. Choix de la solution : NextAuth.js, Clerk, Lucia, ou custom — justifier selon la valeur technique pour le projet (contrôle des données, flexibilité, ownership) et le budget récurrent. IMPORTANT (mindset IA) : ne JAMAIS choisir une solution parce qu'elle est "plus rapide à coder" — le temps de développement n'est PAS un critère de choix avec une équipe IA. Préférer la solution qui donne le plus de contrôle et de flexibilité au projet sur le long terme, même si elle demande plus de code initial. Tableau comparatif avec : prix mensuel, ownership des données, flexibilité (custom flows, branding), dépendance vendor, providers supportés.
+1. Choix de la solution : Better Auth (défaut nouveau projet), Clerk, Auth.js/NextAuth (projets existants seulement : correctifs de sécurité uniquement depuis septembre 2025), ou custom. Justifier selon la valeur technique pour le projet (contrôle des données, flexibilité, ownership) et le budget récurrent. IMPORTANT (mindset IA) : ne JAMAIS choisir une solution parce qu'elle est "plus rapide à coder" — le temps de développement n'est PAS un critère de choix avec une équipe IA. Préférer la solution qui donne le plus de contrôle et de flexibilité au projet sur le long terme, même si elle demande plus de code initial. Tableau comparatif avec : prix mensuel, ownership des données, flexibilité (custom flows, branding), dépendance vendor, providers supportés.
 2. Flows : signup (email/OAuth), login, logout, reset password, email verification — pour chacun : étapes, redirections, messages d'erreur, états UI (les standards de sécurité — hash moderne, cookies HttpOnly/SameSite/Secure, CSRF, lockout après 5 tentatives — sont appliqués d'office, pas re-spécifiés).
 3. Sessions : JWT stateless vs session DB (choix justifié), durées (7 jours avec refresh, 30 min pour les actions sensibles), invalidation (logout, changement de mot de passe).
 4. Autorisation : matrice rôle × action × ressource (RBAC par défaut), middleware de vérification sur chaque route protégée.
@@ -3664,6 +3664,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 ];
 
 const CHANGELOG = [
+  {
+    date:"2026-09-29",
+    agent:"reviewer",
+    type:"mise à jour",
+    description:"Revue qualité de 11 agents après le passage en génération 5.5 (v5.1 pour 10 d'entre eux). IA : contraintes API 5.5 intégrées (thinking, pas de tool forcé ni de prefill, refus, effort explicite) et ordre des leviers coût. GEO : baseline mesuré par l'utilisateur (l'agent ne peut pas interroger ChatGPT), chiffres d'études sourcés, crawlers IA recherche vs entraînement. SEO : garde-fou contenu produit en masse, mesure au-delà du clic. Développeur : Better Auth, proxy.ts, streaming LLM. Copy : plus aucun témoignage inventé, liste anti-signature IA. Design : fin des clichés sectoriels. Commande avant commit : npm run lint (next lint n'existe plus depuis Next.js 16)."
+  },
   {
     date:"2026-09-29",
     agent:"ia",

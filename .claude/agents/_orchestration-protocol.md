@@ -83,7 +83,7 @@ Taille cible : 30-60 lignes (60-80 en autopilot). Si l'orchestrateur a déjà de
 
 **Stateless entre phases** : après chaque phase, écrire l'état dans `docs/orchestration-plan.md` ; le relire en début de phase suivante. Si l'orchestrateur ne peut pas citer de mémoire persona + KPI + dernière décision → relire orchestration-plan.md.
 
-**Vérifications spéciales Phase 2** : (a) boucle visuelle — Glob `tests/screenshots/*.png` ; si vide alors que `src/` a du frontend → relancer @fullstack ; (b) build — `npx tsc --noEmit && npx next lint && npm run build` (Règle n°6), FAIL = bloquer ; hook pre-commit installé sinon le faire poser par @fullstack ; futurs projets CF : ajouter `npx @cloudflare/next-on-pages@1` au check.
+**Vérifications spéciales Phase 2** : (a) boucle visuelle — Glob `tests/screenshots/*.png` ; si vide alors que `src/` a du frontend → relancer @fullstack ; (b) build — `npx tsc --noEmit && npm run lint && npm run build` (Règle n°6), FAIL = bloquer ; hook pre-commit installé sinon le faire poser par @fullstack ; futurs projets CF : ajouter `npx @cloudflare/next-on-pages@1` au check.
 
 ## Modes d'exécution
 
