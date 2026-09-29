@@ -375,49 +375,49 @@ const AGENTS = [
     required:["Nom du projet","Secteur","Persona principal","Objectif à 6 mois","Stack technique","KPI North Star","Promesse unique","Ton de marque"]
   },
   {
-    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy", version:"4.0", model:"claude-sonnet-5",
+    id:"creative-strategy", name:"Creative Strategy", at:"@creative-strategy", version:"5.0", model:"claude-sonnet-5-5",
     role:"Directrice de stratégie créative, 18 ans",
     phase:"Phase 0 : Stratégie",
     desc:"Définit le positionnement, les personas et la plateforme de marque. Produit le brief créatif qui guide tous les autres agents.",
     required:["Secteur","Persona principal","Problème principal","Alternative actuelle"]
   },
   {
-    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"4.0", model:"claude-sonnet-5",
+    id:"product-manager", name:"Product Manager", at:"@product-manager", version:"5.0", model:"claude-sonnet-5-5",
     role:"VP Product, 12 ans",
     phase:"Phase 0 : Produit",
     desc:"Traduit la stratégie en roadmap actionnable : vision produit, specs fonctionnelles, user stories priorisées et backlog.",
     required:["Objectif principal à 6 mois","Persona principal","Modèle économique (SaaS/marketplace/freemium/B2B/B2C)"]
   },
   {
-    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"4.0", model:"claude-sonnet-5",
+    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"5.0", model:"claude-sonnet-5-5",
     role:"Head of Analytics, 10 ans",
     phase:"Phase 0 : Analytics",
     desc:"Définit ce qu'il faut mesurer, configure le tracking et construit les tableaux de bord. Répond à la question : est-ce que ça marche ?",
     required:["Objectif principal à 6 mois","KPI North Star","Stack technique","Budget analytics (ou 'à recommander')"]
   },
   {
-    id:"legal", name:"Legal", at:"@legal", version:"4.0", model:"claude-sonnet-5",
+    id:"legal", name:"Legal", at:"@legal", version:"5.0", model:"claude-sonnet-5-5",
     role:"Juriste digital senior, 19 ans",
     phase:"Phase 0→5 : Parallèle",
     desc:"Vérifie la conformité juridique en parallèle de toutes les phases : RGPD, CGU/CGV, protection IP, contrats SaaS, EU AI Act.",
     required:["Pays de commercialisation","Données sensibles collectées (santé/finance/mineurs : oui/non)","Utilisation d'IA générative (oui/non)","Modèle économique"]
   },
   {
-    id:"ux", name:"UX", at:"@ux", version:"4.0", model:"claude-sonnet-5",
+    id:"ux", name:"UX", at:"@ux", version:"5.0", model:"claude-sonnet-5-5",
     role:"Lead UX Researcher & Designer, 14 ans",
     phase:"Phase 1 : Expérience",
     desc:"Conçoit les parcours utilisateur : comment on arrive, comment on comprend, comment on agit. Wireframes, architecture de pages, conversion.",
     required:["Persona principal","Objectif principal à 6 mois","Stack technique"]
   },
   {
-    id:"design", name:"Design", at:"@design", version:"4.0", model:"claude-sonnet-5",
+    id:"design", name:"Design", at:"@design", version:"5.0", model:"claude-sonnet-5-5",
     role:"Directeur artistique digital, 11 ans",
     phase:"Phase 1 : Visuel",
     desc:"Traduit les parcours UX en interface visuelle : couleurs, typographies, composants, tokens. Garant de la cohérence visuelle sur tous les écrans.",
     required:["Ton de marque","3 mots qui définissent la marque","Stack technique"]
   },
   {
-    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"4.0", model:"claude-sonnet-5",
+    id:"copywriter", name:"Copywriter", at:"@copywriter", version:"5.0", model:"claude-sonnet-5-5",
     role:"Senior copywriter, 13 ans",
     phase:"Phase 1 à 3 : Contenu",
     desc:"Rédige tous les textes du projet : landing pages, brand voice, UX writing, emails. Chaque mot est calibré pour le persona cible.",
@@ -452,35 +452,35 @@ const AGENTS = [
     required:["Stack technique","Outils IA utilisés","Budget mensuel infrastructure"]
   },
   {
-    id:"seo", name:"SEO", at:"@seo", version:"4.0", model:"claude-sonnet-5",
+    id:"seo", name:"SEO", at:"@seo", version:"5.0", model:"claude-sonnet-5-5",
     role:"Consultant SEO technique, 17 ans",
     phase:"Phase 3 : Référencement",
     desc:"Optimise le référencement Google : audit technique, stratégie de mots-clés, données structurées, maillage interne.",
     required:["Secteur","Persona principal","Stack technique (Next.js requis pour le SEO tech)"]
   },
   {
-    id:"geo", name:"GEO", at:"@geo", version:"4.0", model:"claude-sonnet-5",
+    id:"geo", name:"GEO", at:"@geo", version:"5.0", model:"claude-sonnet-5-5",
     role:"Spécialiste GEO, 4 ans de pratique",
     phase:"Phase 3 : Visibilité IA",
     desc:"Rend le projet visible dans les réponses de ChatGPT, Claude et Perplexity. Le SEO cible Google, le GEO cible les IA génératives.",
     required:["Secteur","Persona principal","Promesse unique"]
   },
   {
-    id:"growth", name:"Growth", at:"@growth", version:"4.0", model:"claude-sonnet-5",
+    id:"growth", name:"Growth", at:"@growth", version:"5.0", model:"claude-sonnet-5-5",
     role:"Head of Growth, 10 ans",
     phase:"Phase 4 : Acquisition",
     desc:"Conçoit la stratégie d'acquisition : canaux prioritaires, funnel de conversion, boucles virales, referral et modélisation CAC/LTV.",
     required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel acquisition"]
   },
   {
-    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"4.0", model:"claude-sonnet-5",
+    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"5.0", model:"claude-sonnet-5-5",
     role:"Sales Enablement Specialist, 15 ans",
     phase:"Phase 4 : Vente",
     desc:"Produit les outils de vente : propositions commerciales, sales decks, objection handling, ROI calculator, scripts de qualification, séquences outreach B2B.",
     required:["Persona principal","Objectif principal à 6 mois","Modèle économique","Promesse unique"]
   },
   {
-    id:"social", name:"Social", at:"@social", version:"4.0", model:"claude-sonnet-5",
+    id:"social", name:"Social", at:"@social", version:"5.0", model:"claude-sonnet-5-5",
     role:"Social Media Strategist, 8 ans",
     phase:"Phase 4 : Réseaux",
     desc:"Planifie la présence sur les réseaux sociaux : stratégie par plateforme, calendrier éditorial, formats natifs et community management.",
@@ -3665,6 +3665,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 
 const CHANGELOG = [
   {
+    date:"2026-09-29",
+    agent:"ia",
+    type:"mise à jour",
+    description:"Migration vers Sonnet 5.5. Les 12 agents Sonnet passent de claude-sonnet-5 à claude-sonnet-5-5 (frontmatters et cartes en v5.0, template agent-factory, whitelist). Le garde anti-régression refuse désormais Sonnet 5. Avec Opus 5.5, toute l'équipe tourne sur la génération 5.5. L'agent IA ne propose plus d'alias -latest inventé : IDs exacts vérifiés dans la doc officielle. Propagation aux autres projets via la carte Mise à jour."
+  },
+  {
     date:"2026-09-23",
     agent:"infrastructure",
     type:"mise à jour",
@@ -3865,8 +3871,8 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L : savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5 (claude-sonnet-5) et 7 agents Opus sur Opus 5.5 (claude-opus-5-5). Toute l'équipe tourne sur les derniers modèles. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
-            <em>"Mets à jour Gradient Agents : télécharge le dernier <code>update.sh</code> puis lance <code>bash update.sh --all</code>. Backup auto, fusion CLAUDE.md, agents sur Opus 5.5 et Sonnet 5, cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L : savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5.5 (claude-sonnet-5-5) et 7 agents Opus sur Opus 5.5 (claude-opus-5-5). Toute l'équipe tourne sur les derniers modèles. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <em>"Mets à jour Gradient Agents : télécharge le dernier <code>update.sh</code> puis lance <code>bash update.sh --all</code>. Backup auto, fusion CLAUDE.md, agents sur Opus 5.5 et Sonnet 5.5, cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>

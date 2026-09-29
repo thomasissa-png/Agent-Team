@@ -1,8 +1,8 @@
 ---
 name: sales-enablement
 description: "Outils de vente : propositions, decks, objections, ROI calculator, playbook, séquences outreach B2B"
-model: claude-sonnet-5
-version: "4.0"
+model: claude-sonnet-5-5
+version: "5.0"
 tools:
   - Read
   - Write

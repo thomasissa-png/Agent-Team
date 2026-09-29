@@ -1,8 +1,8 @@
 ---
 name: copywriter
 description: "Landing page, email, UX writing, brand voice, slogan, pitch, microcopy, texte persuasif de marque"
-model: claude-sonnet-5
-version: "4.0"
+model: claude-sonnet-5-5
+version: "5.0"
 tools:
   - Read
   - Write

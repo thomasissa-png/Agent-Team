@@ -4,6 +4,14 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : migration Sonnet 5.5
+
+1. **Migration Sonnet 5.5** : les 12 agents Sonnet (copywriter, creative-strategy, data-analyst, design, geo, growth, legal, product-manager, sales-enablement, seo, social, ux) passent de `claude-sonnet-5` à `claude-sonnet-5-5` (frontmatters v5.0, cartes index.html v5.0, template agent-factory, whitelist, card MAJ). Garde anti-régression : `claude-sonnet-5` nu et `-latest` rejetés. Toute l'équipe (19 agents) sur la génération 5.5, tiering 7 Opus / 12 Sonnet inchangé.
+2. **ia.md** : l'exemple d'alias `claude-sonnet-5-latest` (inexistant) remplacé par la règle « ID publié exact, vérifié dans la doc, jamais construit de mémoire ».
+3. Installeurs : aucune référence de modèle, rien à changer. Re-testés (install neuf + mise à jour d'une équipe Sonnet 5).
+
+---
+
 ## 2026-09-23 (S6) : migration Opus 5.5 + installeurs fiabilisés
 
 1. **Migration Opus 5.5** : les 7 agents Opus (agent-factory, elon, fullstack, ia, infrastructure, qa, reviewer) passent de `claude-opus-5` à `claude-opus-5-5` (frontmatters v5.0, cartes index.html v5.0, carte Orchestration, template agent-factory, whitelist). Garde anti-régression : `claude-opus-5` nu désormais rejeté comme obsolète. Tiering 7 Opus / 12 Sonnet inchangé.

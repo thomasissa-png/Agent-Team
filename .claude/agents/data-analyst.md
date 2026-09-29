@@ -1,8 +1,8 @@
 ---
 name: data-analyst
 description: "KPIs, plan de tracking, analytics, cohortes, tests A/B, North Star Metric, décisions data-driven"
-model: claude-sonnet-5
-version: "4.0"
+model: claude-sonnet-5-5
+version: "5.0"
 tools:
   - Read
   - Write
