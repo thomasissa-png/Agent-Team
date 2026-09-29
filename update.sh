@@ -86,7 +86,7 @@ echo -e "${BLUE}  Branche cible : ${DETECTED_BRANCH}${NC}"
 # Clone avec fallback pour repos privés
 if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
   cd "$TEMP_DIR/repo"
-  git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /CLAUDE.md /.githooks/ /update.sh
+  git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /CLAUDE.md /.githooks/ /update.sh /docs/founder-preferences.md /index.html
 else
   if git clone --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
@@ -161,6 +161,16 @@ done
 if [ -f "$TEMP_DIR/repo/.claude/settings.json" ]; then
   cp "$TEMP_DIR/repo/.claude/settings.json" "$OLDPWD/.claude/settings.json"
   echo -e "  ${GREEN}✓ .claude/settings.json mis à jour${NC}"
+fi
+
+# ─── Préférences fondateur + bibliothèque de prompts ─
+if [ -f "$TEMP_DIR/repo/docs/founder-preferences.md" ]; then
+  cp "$TEMP_DIR/repo/docs/founder-preferences.md" "$OLDPWD/.claude/founder-preferences.md"
+  echo -e "  ${GREEN}✓ .claude/founder-preferences.md synchronisé${NC}"
+fi
+if [ -f "$TEMP_DIR/repo/index.html" ]; then
+  cp "$TEMP_DIR/repo/index.html" "$OLDPWD/.claude/prompts-library.html"
+  echo -e "  ${GREEN}✓ .claude/prompts-library.html synchronisé${NC}"
 fi
 
 # ─── Mise à jour de update.sh lui-même ─────────────

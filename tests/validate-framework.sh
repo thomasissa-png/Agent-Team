@@ -275,7 +275,7 @@ for agent in "$AGENTS_DIR"/*.md; do
   for target in $HANDOFF_TARGETS; do
     # Skip self, orchestrator, utilisateur, and known library/tool names
     case "$target" in
-      "$basename_agent"|orchestrator|utilisateur|playwright|testing-library|vercel|supabase|shadcn|tailwind|nextjs|react|expo|cloudflare|next|anthropic-ai|v) continue ;;
+      "$basename_agent"|orchestrator|utilisateur|playwright|testing-library|vercel|supabase|shadcn|tailwind|nextjs|react|expo|cloudflare|next|anthropic-ai|opennextjs|v) continue ;;
     esac
     if [ ! -f "$AGENTS_DIR/$target.md" ] && ! grep -q "@$target" "$CLAUDE_MD" 2>/dev/null; then
       warn "$basename_agent: référence @$target mais l'agent n'existe pas"
@@ -337,6 +337,31 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
     err "index.html : tiret cadratin (—) dans le brand-facing (signature IA, voir CLAUDE.md règle 12) : ${EMDASH_BRAND:0:60}${EMDASH_CARDS:0:60}"
   else
     ok "Brand-facing sans tiret cadratin (— dans chrome ET cartes)"
+  fi
+
+  # Garde syntaxe JS du site : un backtick dans un prompt casse toute la bibliothèque (learning P0 récurrent)
+  if command -v node >/dev/null 2>&1; then
+    JS_ERR=$(node -e 'const s=require("fs").readFileSync(process.argv[1],"utf8");for(const m of s.matchAll(/<script>([\s\S]*?)<\/script>/g)){try{new Function(m[1])}catch(e){console.log(e.message)}}' "$ROOT/index.html" 2>&1 || true)
+    if [ -n "$JS_ERR" ]; then
+      err "index.html : JavaScript invalide, la bibliothèque de prompts ne s'affiche plus (backtick dans un prompt ?) : ${JS_ERR:0:120}"
+    else
+      ok "index.html : JavaScript valide (bibliothèque de prompts affichable)"
+    fi
+  else
+    warn "node absent : syntaxe JS de index.html non vérifiée"
+  fi
+
+  # Garde accents FR (préférence fondateur : un livrable sans accents est inacceptable).
+  # Mots français sans ambiguïté (aucun homographe anglais ni forme verbale valide sans accent).
+  ACCENT_WORDS='deja|etre|tres|regle|regles|donnees|reponse|reponses|equipe|equipes|defaut|strategie|strategique|strategiques|systeme|securite|etape|etapes|probleme|problemes|modele|modeles|qualite|priorite|priorites|deploiement|developpement|apres|echec|necessaire|periode|controle|meme|cout|couts|francais|francaise|plutot|bientot|critere|criteres|etat|etats|ecran|ecrans|bibliotheque|coherence|methode|categorie|benefice|hierarchie|amelioration|generique|hypothese|metrique|metriques|specialises|mise a jour|jusqu.a|grace a|a ete'
+  # Locale UTF-8 : sinon « è » compte comme séparateur et « paramètres » matche « tres ».
+  # Exclus : identifiants HTML (#equipe, id="equipe"), jetons en MAJUSCULES (logs), exemples volontaires (« sans accent », « → »).
+  ACCENT_HITS=$(LC_ALL=C.UTF-8 grep -nwE "$ACCENT_WORDS" "$CLAUDE_MD" "$AGENTS_DIR"/*.md "$ROOT/docs/founder-preferences.md" "$ROOT"/templates/*.md "$ROOT/index.html" 2>/dev/null \
+    | grep -v 'sans accent\|→' | grep -vE '(#|id="|titre-)(equipe)' | head -5 || true)
+  if [ -n "$ACCENT_HITS" ]; then
+    err "Accents manquants (préférence fondateur) : $(echo "$ACCENT_HITS" | tr '\n' ' ' | cut -c1-200)"
+  else
+    ok "Accents FR : aucun mot courant sans accent (CLAUDE.md, agents, préférences, templates, site)"
   fi
 
   # Références mortes post-cure S4 dans les fichiers ACTIFS (docs/reviews et archives exclus)

@@ -48,7 +48,7 @@
 - **Backend** : [ ] Next.js API routes  [ ] Cloudflare Workers  [ ] Autre :
 - **Base de données** : [ ] Cloudflare D1 (SQLite edge)  [ ] Neon Postgres serverless  [ ] Supabase  [ ] PostgreSQL Replit (legacy)  [ ] Autre :
 - **Authentification** : [ ] NextAuth.js (recommandé)  [ ] Clerk  [ ] Supabase Auth  [ ] Autre :
-- **Hébergement** : [ ] Cloudflare Pages + Workers (recommandé futurs projets)  [ ] Replit (legacy / POC)  [ ] Vercel  [ ] Autre :
+- **Hébergement** : [ ] Cloudflare Workers (défaut)  [ ] VPS Thomas (Caddy, besoin spécifique)  [ ] Replit (legacy)  [ ] Autre :
 - **Outils IA utilisés** : [Modèles en production, APIs, fine-tunes existants]
 - **Budget IA mensuel (tokens)** : [Montant dédié ou 'inclus dans infra' ou 'à définir']
 - **Volume d'usage IA prévu** : [Requêtes IA / jour ou / mois — estimation]
@@ -78,7 +78,7 @@
 ## Existant (projets en place uniquement)
 - **URL du site actuel** :
 - **Comptes sociaux existants** : [URLs LinkedIn, Instagram, X, etc.]
-- **Outils analytics en place** : [GA4, Mixpanel, Plausible, aucun...]
+- **Outils analytics en place** : [Umami (défaut), autre, aucun...]
 - **Contenu existant** : [Blog, newsletter, docs, help center...]
 - **Historique SEO** : [Domaine indexé depuis quand, trafic approximatif]
 

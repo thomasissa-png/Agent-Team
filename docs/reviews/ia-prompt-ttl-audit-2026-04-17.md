@@ -12,7 +12,7 @@ Date : 2026-04-24 | Commit : 3cb427d | Auditeur : @ia | Cible : index.html ligne
 |---|---|---|---|
 | 1 | Logique DRY-RUN | 9/10 | Séparation étapes 1/2/3 explicite, "aucune écriture" affirmé Étape 2, feu vert utilisateur formalisé (Continue/Exempt/Skip). Seul risque résiduel : Étape 1 ne précise pas "read-only". |
 | 2 | Exemptions | 6/10 | "Learnings P0" : critère clair (colonne Sévérité). "Décisions fondatrices" et "préférences fondateur" : flous. Edge case décision S2 obsolète en S20 NON traité — exemption semble permanente, aucun mécanisme de re-qualification. |
-| 3 | Commandes techniques | 7/10 | wc -l OK. "Grep (^## )" sous-spécifié pour un agent (manque --count, --line-number, ou fichier cible explicite). wc -l "hors memo+historique" est un calcul, pas une commande — ambigu. |
+| 3 | Commandes techniques | 7/10 | wc -l OK. "Grep (^## )" sous-spécifié pour un agent (manque --count, --line-number, ou fichier cible explicite). wc -l "hors mémo+historique" est un calcul, pas une commande — ambigu. |
 | 4 | Étape 0 P3 systématique | 8/10 | BLOQUANT uniquement sur CLAUDE.md (125), le reste déclenche audit sans bloquer. "Skip audit" en mode hotfix est pragmatique MAIS non défini — qu'est-ce qu'un hotfix ? Risque interprétation agent. |
 | 5 | Cohérence cross-prompt | 9/10 | 125/80/250 cohérents entre CLAUDE.md cmd n°8, Étape 5d P2, Étape 0 P3, nouveau prompt TTL. Founder-prefs 150/180 cohérent P3 seul (pas dans cmd n°8 — OK car soft cap). |
 

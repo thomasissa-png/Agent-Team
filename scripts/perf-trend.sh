@@ -2,7 +2,7 @@
 # perf-trend.sh — Mesure 7 metriques de perf du framework Gradient Agents
 # Usage : bash scripts/perf-trend.sh
 # Sortie : append 1 ligne dans docs/perf-trends.md
-# Exit 0 = PASS, Exit 1 = WARNING TREND DEGRADANT (3 sessions consecutives)
+# Exit 0 = PASS, Exit 1 = WARNING TREND DEGRADANT (3 sessions consécutives)
 #
 # Conventions :
 # - Bash POSIX-friendly (Linux + macOS)

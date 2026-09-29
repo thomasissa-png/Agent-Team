@@ -1,11 +1,11 @@
 # Perf Trends — Gradient Agents
 
-Mesure objective de la derive performance du framework, session apres session.
-Genere automatiquement par scripts/perf-trend.sh a chaque cloture (P2 Etape 5e).
+Mesure objective de la derive performance du framework, session après session.
+Genere automatiquement par scripts/perf-trend.sh à chaque clôture (P2 Étape 5e).
 
 ## Seuils
 
-| Metrique | Cible | WARNING |
+| Métrique | Cible | WARNING |
 |---|---|---|
 | M1 — Contexte commun (lignes) | < 1100 | > 1300 |
 | M2 — Total /memories/* | < 250 | > 350 |
@@ -13,14 +13,14 @@ Genere automatiquement par scripts/perf-trend.sh a chaque cloture (P2 Etape 5e).
 | M4 — Learnings actifs | < 20 | > 30 |
 | M5 — orchestrator.md (lignes) | < 500 | > 900 |
 | M6 — Fichiers docs/ | < 100 | > 150 |
-| M7 — Max invocations agent (meme feature) | <= 3 | > 3 (CRITICAL > 6) |
+| M7 — Max invocations agent (même feature) | <= 3 | > 3 (CRITICAL > 6) |
 
 Verdict session :
-- PASS = 0 metrique en WARNING
-- WARNING = 1 metrique en WARNING
-- CRITICAL = 2+ metriques en WARNING
+- PASS = 0 métrique en WARNING
+- WARNING = 1 métrique en WARNING
+- CRITICAL = 2+ métriques en WARNING
 
-WARNING TREND DEGRADANT (exit 1 du script) = 3 sessions consecutives avec au moins 1 metrique au-dela de son seuil WARNING.
+WARNING TREND DEGRADANT (exit 1 du script) = 3 sessions consécutives avec au moins 1 métrique au-dela de son seuil WARNING.
 
 ## Mesures
 

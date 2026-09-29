@@ -1,10 +1,17 @@
 # Préférences fondateur — Thomas
 
-Ce fichier est la source de vérité des préférences du fondateur, lue par tous les agents (protocole d'entrée standard). Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible cross-projets via l'URL GitHub raw.
+Ce fichier est la source de vérité des préférences du fondateur, lue par tous les agents (protocole d'entrée standard). Il est alimenté par TOUS les projets (Gradient Agents, Sarani, Mandataire-Immo, etc.) et accessible dans chaque projet client via `.claude/founder-preferences.md` (copie posée par install.sh et rafraîchie par update.sh) et via l'URL GitHub raw.
 
 **URL d'accès** : `https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/docs/founder-preferences.md`
 
 ---
+
+## Stack par défaut (tous projets, sauf décision contraire dans project-context.md)
+
+- **Hébergement : Cloudflare** (Workers + static assets, D1, R2, DNS), déployé depuis GitHub (branche `main`). Replit = legacy des projets existants uniquement.
+- **Statistiques : Umami** (pas GA4). Events via le tracker Umami ; configuration à valider avec @legal pour la dispense de consentement.
+- **VPS de Thomas (Caddy) disponible si besoin**, en renfort de Cloudflare et pas par défaut : processus longs, services auto-hébergés, crons lourds, base de données dédiée. Toute mise en place sur le VPS se documente dans le repo d'infra (crons synchronisés par script, pas de `crontab -e` à la main).
+- **Auth : open source et possédée** (Better Auth pour les nouveaux projets, jamais un service payant par facilité).
 
 ## Préférences observées
 
@@ -12,7 +19,7 @@ Ce fichier est la source de vérité des préférences du fondateur, lue par tou
 
 | Date | Projet | Préférence | Contexte |
 |---|---|---|---|
-| 2026-03-26 | Agent-Team | Préfère NextAuth.js à Clerk — ownership total, gratuit, pas de vendor lock-in. Ne jamais choisir une techno par facilité de dev. | A insisté pour que le prompt Auth dise "ne JAMAIS choisir parce que plus rapide à coder" |
+| 2026-03-26 | Agent-Team | Préfère une auth open source qu'il possède à Clerk (NextAuth.js à l'époque ; Better Auth pour les nouveaux projets depuis qu'Auth.js est en maintenance, 2026-09) — ownership total, gratuit, pas de vendor lock-in. Ne jamais choisir une techno par facilité de dev. | A insisté pour que le prompt Auth dise "ne JAMAIS choisir parce que plus rapide à coder" |
 | 2026-03-26 | Agent-Team | Les P2 ne sont PAS optionnels — tout corriger, l'IA a un coût marginal quasi nul. La classification sert à ordonner, pas à filtrer. | A demandé "pourquoi est-ce que je ne voudrais pas corriger P2 ?" |
 | 2026-03-26 | Agent-Team | Exige 9/10 minimum sur chaque livrable, pas de compromis. Itère jusqu'à atteindre le seuil. | A dit "@orchestrator je veux 9/10" sur le chemin logique des prompts |
 | 2026-03-26 | Agent-Team | Le mode autopilot doit produire le MÊME résultat que les prompts lancés un par un. L'autopilot est un raccourci d'exécution, pas de qualité. | "ce qui m'intéresse c'est la création d'un projet de A à Z en utilisant le meilleur de tous nos agents" |
@@ -23,10 +30,9 @@ Ce fichier est la source de vérité des préférences du fondateur, lue par tou
 | 2026-03-26 | Agent-Team | Audit de tous les clics/interactions d'un site — pas juste visuellement, vérifier que chaque élément fait ce qu'il doit faire. | "un audit de tous les clics du site, que tout se passe bien" |
 | 2026-03-26 | Agent-Team | PostgreSQL Replit perd ses données — protections de persistance obligatoires (migrate deploy, seed conditionnel, Replit Secrets). | "y a souvent des soucis avec PostgreSQL où il faut faire pas mal d'aller retour" |
 | 2026-03-26 | Agent-Team | Veut que la clôture de session capture les learnings pour améliorer l'équipe — problèmes, insistances, requêtes, biais, préférences fondateur. | "résumer les learnings pour les donner à l'orchestrateur pour voir si on peut encore améliorer l'équipe" |
-| 2026-05-06 | Agent-Team | **Stack par défaut futurs projets : GitHub + Cloudflare** (Pages/Workers) plutôt que Replit. Raisons : déploiement automatisable par Claude (push direct, logs, rollback, DNS), coûts CDN edge quasi nuls, vélocité KPI North Star. **BDD à arbitrer post-investigation @infrastructure S3** (D1/Neon/Supabase). Replit reste fallback pour POC instantanés ou si besoin Postgres natif intégré. Migration progressive (DevRefs pilote, puis projet par projet). | "est-ce que ce serait pas plus simple de te donner la main sur github et cloudflare pour faciliter les déploiements" — peur explicite sur la BDD |
+| 2026-05-06 | Agent-Team | **Stack par défaut futurs projets : GitHub + Cloudflare** (Workers ; détail dans « Stack par défaut » ci-dessus) plutôt que Replit. Raisons : déploiement automatisable par Claude (push direct, logs, rollback, DNS), coûts CDN edge quasi nuls, vélocité KPI North Star. **BDD tranchée en S3** : D1 (CRUD simple) ou Neon (Postgres). Replit reste fallback pour POC instantanés ou si besoin Postgres natif intégré. Migration progressive (DevRefs pilote, puis projet par projet). | "est-ce que ce serait pas plus simple de te donner la main sur github et cloudflare pour faciliter les déploiements" — peur explicite sur la BDD |
 | 2026-03-25 | Agent-Team | Mindset IA obligatoire — pas de sprint-plan, pas de vélocité en jours/homme, parallélisation par défaut, MVP "complet et rapide". | A fait ajouter la règle n°5 dans CLAUDE.md |
-| 2026-03-25 | Agent-Team | PostgreSQL Replit obligatoire — pas de Supabase, pas de service externe pour la DB. | Décision de session, Supabase retiré comme option |
-| 2026-03-26 | ImmoCrew | Prix ronds obligatoires — pas de charm pricing "en 7" (497/197/97). Cohérence de marque "zero bullshit" prime sur l'optimisation tarifaire. | A refusé le charm pricing, préfère 400/150/100 même si ça augmente le seuil de rentabilité |
+| 2026-03-26 | ImmoCrew | Prix ronds obligatoires — pas de charm pricing "en 7" (497/197/97). Cohérence de marque "zéro bullshit" prime sur l'optimisation tarifaire. | A refusé le charm pricing, préfère 400/150/100 même si ça augmente le seuil de rentabilité |
 | 2026-03-26 | ImmoCrew | Zéro concurrent nommé dans le contenu client — utiliser des catégories génériques. | A fait supprimer toutes les mentions de concurrents par nom sur le site |
 | 2026-03-26 | ImmoCrew | Modal popup pour l'auth — pas de page pleine. Header + Footer visibles sur les pages auth. Sophie ne doit jamais perdre ses repères. | A insisté pour un modal au lieu d'une page dédiée |
 | 2026-03-26 | ImmoCrew | Pas de duplication d'info — si un champ est rempli à l'inscription, l'onboarding le pré-remplit. Ne jamais redemander une information déjà fournie. | A refusé que l'onboarding redemande prénom/nom |
@@ -36,7 +42,7 @@ Ce fichier est la source de vérité des préférences du fondateur, lue par tou
 | 2026-03-26 | ImmoCrew | Valeurs business centralisées — jamais de prix hardcodé dans 15+ fichiers. Un fichier config unique (pricing.ts). | Changement de prix a nécessité une passe Grep sur tout le code |
 | 2026-03-27 | Agent-Team | Les outputs générés par la plateforme doivent être au niveau des meilleurs du secteur — WebSearch les références avant de produire. | "je veux que la création utilise toujours les meilleures références possibles par rapport au marché" |
 | 2026-03-27 | Agent-Team | Personas des clients de nos personas obligatoires — comprendre toute la chaîne de valeur (le mandataire ET son acheteur). | "je veux qu'il définisse non seulement les personas projet mais aussi les personas des clients de nos personas" |
-| 2026-03-27 | Agent-Team | Agents testeurs sur TOUS les angles : copy, design, contenu, pricing, conviction, recommandation, fidélisation. Pas de revue partielle. | "je veux qu'ils soient impliqués sur toutes les étapes, sur tous les angles" |
+| 2026-03-27 | Agent-Team | [REMPLACÉ S4 : testeurs optionnels, @reviewer + G_PROOF par défaut] Agents testeurs sur TOUS les angles : copy, design, contenu, pricing, conviction, recommandation, fidélisation. Pas de revue partielle. | "je veux qu'ils soient impliqués sur toutes les étapes, sur tous les angles" |
 | 2026-03-27 | Agent-Team | Les alertes de session ne doivent pas être frustantes — seule ROUGE conservée, pas de JAUNE qui interrompt. | "l'alerte arrive très tôt, c'est très frustrant et oblige à changer de session très souvent" |
 | 2026-03-28 | Sarani S6 | Prompt engineering = livrable à part entière, avant le code. Pas un détail d'implémentation — un actif stratégique. | "le meilleur prompt du monde possible avant toute implémentation" |
 | 2026-03-28 | Sarani S6 | Documents client-facing (devis, proposals, PDF) = même niveau de design que le site web. Un devis "simpliste" pour une agence de designers est rédhibitoire. | Thomas juge "simpliste" un devis sans branding |

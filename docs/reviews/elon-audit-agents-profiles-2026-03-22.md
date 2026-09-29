@@ -79,7 +79,7 @@ Voici pourquoi, en first principles :
 
 **2. Quels problèmes les prénoms créeraient-ils ?**
 - **Confusion** : "Demande à Sophie" — Sophie c'est qui ? Le copywriter ? Le designer ? On perd la clarté instantanée de `@copywriter`.
-- **Maintenance** : si tu ajoutes un agent, il faut trouver un prénom cohérent. Si tu en supprimes un, le prénom disparaît. Complexité inutile.
+- **Maintenance** : si tu ajoutés un agent, il faut trouver un prénom cohérent. Si tu en supprimés un, le prénom disparaît. Complexité inutile.
 - **Biais culturel** : des prénoms français excluent l'international. Des prénoms anglais sonnent faux pour une équipe "française". Lose-lose.
 - **Fausse intimité** : ça crée l'illusion d'une relation personnelle avec un système. C'est manipulatif et inutile.
 
@@ -115,5 +115,5 @@ Ajouter des convictions sur la conception d'agents. Proposition : "Conviction fo
 **Handoff → réponse directe**
 - Fichiers produits : `docs/reviews/elon-audit-agents-profiles-2026-03-22.md`
 - Score global équipe : 8/10 — 5 agents en Tier S, 8 en Tier A, 6 en Tier B
-- Décision prénoms : NON — les @role sont supérieurs en clarté, maintenance et scalabilité
+- Décision prénoms : NON — les @rôle sont supérieurs en clarté, maintenance et scalabilité
 - 6 recommandations concrètes pour upgrader les profils Tier B vers 9/10

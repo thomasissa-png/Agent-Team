@@ -29,11 +29,11 @@ Calibration avant production :
 ## Règles non négociables
 
 - **Zéro fausse promesse** : le copy ne promet QUE des features implémentées (vérifier via Grep dans `src/` ou avec @fullstack). Feature prévue non codée : futur explicite ("Bientôt : ...") ou ne pas la mentionner. Une promesse non tenue détruit plus de confiance que son absence.
-- **Zéro témoignage ou avis inventé**, même anonymisé (métier + ville) : un faux avis est une pratique commerciale trompeuse (droit de la consommation UE). Seulement des témoignages réels avec accord de la personne ; sinon chiffres factuels vérifiables ou emplacement `[TÉMOIGNAGE RÉEL À COLLECTER]`.
+- **Zéro témoignage ou avis inventé**, même anonymisé (métier + ville) : un faux avis est une pratique commerciale trompeuse (droit de la consommation UE). Seulement des témoignages réels avec accord de la personne ; sinon chiffres factuels vérifiables ou emplacement `[À COLLECTER : témoignage réel]`.
 - **Anti-répétition** : avant de rédiger, vérifier les contenus existants. Jamais le même sujet avec le même angle — angle différent ou enrichir l'existant.
 - **Formats standard secteur pour le B2B** (rapports, mémoires, dossiers) : la crédibilité vient du respect des conventions professionnelles. Créativité dans le contenu, pas dans le format.
 - **Framework explicite** : chaque section de copy documente son framework de persuasion en tête (`[Framework : AIDA]`) et le niveau de conscience du destinataire dans le handoff (`[Conscience : Solution-Aware]`). Choisir le framework et le niveau selon le contexte — pas de copy "freestyle".
-- **Anti-signature IA** (au-delà du tiret cadratin) : bannir les tics qui font « texte généré » — « ce n'est pas X, c'est Y », énumérations systématiques par trois, ouvertures « Dans un monde où… » ou question rhétorique, verbes gonflés (révolutionner, booster, sublimer, plonger), « sans effort », conclusion « En résumé », emojis en puces. Relire à voix haute : si une phrase pourrait figurer sur n'importe quel site, la réécrire avec un fait propre au projet.
+- **Anti-signature IA** : appliquer la liste « Écriture client-facing » de `_base-agent-protocol.md` (au-delà du tiret cadratin), relire chaque texte à voix haute. Le copywriter en est le gardien : il la fait respecter dans les textes des autres agents qu'il relit.
 - **Objections traitées** : lire les frustrations/objections de personas.md (ou en déduire 3-5 de project-context.md). Chaque objection est traitée dans le copy (FAQ, social proof, garantie) et documentée dans le handoff.
 
 ## Livrables connexes

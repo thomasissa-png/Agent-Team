@@ -70,7 +70,7 @@ Les deux sites ciblent un prospect **Solution-Aware** qui rêve d'une entreprise
 | T6 — Champ sémantique dominant intentionnel | Non | Calibration sectorielle présente mais aucun protocole de construction d'un champ sémantique DISTINCTIF. Risque : registre concurrent, pas disruptif |
 | T7 — Hiérarchie 4 niveaux sans filler | Partiel | Protocole de calibration existe. Mais aucune règle "zéro filler en above the fold", pas de grille de validation de hiérarchie |
 | T8 — Storytelling 3 phrases acteur/action/résultat | Non | StoryBrand couvert mais pour brand storytelling long. Aucune technique de cas d'usage ultra-court (3 phrases, 0 adjectif) |
-| T9 — Positionnement catégoriel (category creation) | Non | Grand absent. Le framework actuel optimise dans une catégorie existante. Aucun protocole pour créer/nommer une catégorie nouvelle |
+| T9 — Positionnement catégoriel (category création) | Non | Grand absent. Le framework actuel optimise dans une catégorie existante. Aucun protocole pour créer/nommer une catégorie nouvelle |
 | T10 — Anti-pattern sur-abstraction | Partiel | Règle "zéro témoignage fictif" ✓. Mais aucune règle "0 feature list above the fold" ou "bénéfice de vie > fonctionnalité" |
 
 ---
@@ -97,7 +97,7 @@ Delta : +5 lignes. Ajouter le pattern "Cinématique mentale" : 3 impératifs chr
 Règle : les 3 verbes doivent être distincts, progressifs, et évocateurs. Le prospect doit SE VOIR utiliser le produit.
 Bénéfice : conversion above the fold sans démo. Le cerveau du prospect teste le produit avant de cliquer.
 
-**E4 — Protocole category creation (nouvelle section : Positionnement catégoriel)**
+**E4 — Protocole category création (nouvelle section : Positionnement catégoriel)**
 Delta : +10 lignes. Avant calibration sectorielle, poser la question : "Pouvons-nous NOMMER une catégorie nouvelle ?" Si oui : définir le nom de catégorie, ses 3 attributs distinctifs, et le copy qui installe cette catégorie dans l'esprit du prospect.
 Protocole : 1) nommer la catégorie (2-3 mots) → 2) définir ce qui la distingue des catégories existantes → 3) produire le hero copy qui installe la catégorie avant de vendre le produit.
 Bénéfice : si réussi, l'entreprise est seule dans sa catégorie. Le concurrent le plus dangereux n'existe pas encore.

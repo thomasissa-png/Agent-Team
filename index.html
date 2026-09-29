@@ -389,14 +389,14 @@ const AGENTS = [
     required:["Objectif principal à 6 mois","Persona principal","Modèle économique (SaaS/marketplace/freemium/B2B/B2C)"]
   },
   {
-    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"5.0", model:"claude-sonnet-5-5",
+    id:"data-analyst", name:"Data Analyst", at:"@data-analyst", version:"5.1", model:"claude-sonnet-5-5",
     role:"Head of Analytics, 10 ans",
     phase:"Phase 0 : Analytics",
     desc:"Définit ce qu'il faut mesurer, configure le tracking et construit les tableaux de bord. Répond à la question : est-ce que ça marche ?",
     required:["Objectif principal à 6 mois","KPI North Star","Stack technique","Budget analytics (ou 'à recommander')"]
   },
   {
-    id:"legal", name:"Legal", at:"@legal", version:"5.0", model:"claude-sonnet-5-5",
+    id:"legal", name:"Legal", at:"@legal", version:"5.1", model:"claude-sonnet-5-5",
     role:"Juriste digital senior, 19 ans",
     phase:"Phase 0→5 : Parallèle",
     desc:"Vérifie la conformité juridique en parallèle de toutes les phases : RGPD, CGU/CGV, protection IP, contrats SaaS, EU AI Act.",
@@ -431,17 +431,17 @@ const AGENTS = [
     required:["Stack technique (Frontend, Backend, Base de données, Authentification)","Objectif principal à 6 mois","Persona principal"]
   },
   {
-    id:"qa", name:"QA", at:"@qa", version:"5.0", model:"claude-opus-5-5",
+    id:"qa", name:"QA", at:"@qa", version:"5.1", model:"claude-opus-5-5",
     role:"QA Engineering Manager, 9 ans",
     phase:"Phase 2 : Tests",
     desc:"Teste tout avant livraison : tests unitaires Vitest, E2E Playwright, pipeline CI/CD, validation du tracking-plan.",
     required:["Stack technique","Base de données","Hébergement"]
   },
   {
-    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"5.0", model:"claude-opus-5-5",
+    id:"infrastructure", name:"Infrastructure", at:"@infrastructure", version:"5.1", model:"claude-opus-5-5",
     role:"SRE / Platform Engineer, 13 ans",
     phase:"Phase 2 : Infra",
-    desc:"Configure le déploiement Cloudflare Pages/Workers + Neon (futurs projets) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
+    desc:"Configure le déploiement Cloudflare Workers + D1/Neon (futurs projets, VPS en renfort si besoin) ou Replit (legacy), optimise les Core Web Vitals, sécurise l'infra et met en place le monitoring.",
     required:["Stack technique","Hébergement","Budget mensuel infrastructure"]
   },
   {
@@ -473,21 +473,21 @@ const AGENTS = [
     required:["Objectif principal à 6 mois","KPI North Star","Budget mensuel acquisition"]
   },
   {
-    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"5.0", model:"claude-sonnet-5-5",
+    id:"sales-enablement", name:"Sales Enablement", at:"@sales-enablement", version:"5.1", model:"claude-sonnet-5-5",
     role:"Sales Enablement Specialist, 15 ans",
     phase:"Phase 4 : Vente",
     desc:"Produit les outils de vente : propositions commerciales, sales decks, objection handling, ROI calculator, scripts de qualification, séquences outreach B2B.",
     required:["Persona principal","Objectif principal à 6 mois","Modèle économique","Promesse unique"]
   },
   {
-    id:"social", name:"Social", at:"@social", version:"5.0", model:"claude-sonnet-5-5",
+    id:"social", name:"Social", at:"@social", version:"5.1", model:"claude-sonnet-5-5",
     role:"Social Media Strategist, 8 ans",
     phase:"Phase 4 : Réseaux",
     desc:"Planifie la présence sur les réseaux sociaux : stratégie par plateforme, calendrier éditorial, formats natifs et community management.",
     required:["Persona principal","Ton de marque","Objectif principal à 6 mois"]
   },
   {
-    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"5.0", model:"claude-opus-5-5",
+    id:"reviewer", name:"Reviewer", at:"@reviewer", version:"5.1", model:"claude-opus-5-5",
     role:"Senior auditor qualité, 22 ans",
     phase:"Phase 5 : Validation",
     desc:"Relit tous les livrables avant livraison. Vérifie que le code correspond aux specs, que le copy respecte la brand voice, et donne le feu vert GO/NO-GO.",
@@ -510,17 +510,17 @@ const AGENTS = [
 ];
 
 // ============================================================
-// WARNING EDITEUR — AVANT TOUTE MODIF DE PROMPTS[].prompt
+// WARNING ÉDITEUR — AVANT TOUTE MODIF DE PROMPTS[].prompt
 // Chaque prompt est dans un template literal JS (delimite par backtick).
 // NE JAMAIS utiliser a l'interieur du prompt :
 //   - backtick (ferme le template literal -> casse toute la section)
 //   - $ suivi d'accolades (interpolation -> evaluee comme code)
 //   - balises script ou style (parsees par le navigateur)
-// Utiliser a la place : apostrophes ' ', guillemets doubles " ", ou mots
+// Utiliser à la place : apostrophes ' ', guillemets doubles " ", ou mots
 // ("balise script", "commande git branch -m", etc.).
-// Learning P0 recurrent (sessions 2026-03-26 et 2026-04-17, 8e casse).
-// Test rapide apres edition : ouvrir index.html, verifier que la
-// bibliotheque de prompts s'affiche ET que le bouton Copier fonctionne.
+// Learning P0 récurrent (sessions 2026-03-26 et 2026-04-17, 8e casse).
+// Test rapide après édition : ouvrir index.html, vérifier que la
+// bibliothèque de prompts s'affiche ET que le bouton Copier fonctionne.
 // ============================================================
 const PROMPTS = [
   {
@@ -557,7 +557,8 @@ KPI North Star : [UNE SEULE MÉTRIQUE d'usage — ex : "nombre de dashboards cr�
 Frontend : [Next.js / React / Expo / autre]
 Backend : [Node / Python / autre]
 Base de données : [Cloudflare D1 ou Neon Postgres (priorité futurs projets) / PostgreSQL Replit (legacy) / autre]
-Hébergement : [Cloudflare Pages/Workers (priorité futurs projets) / Replit (legacy) / Vercel / autre]
+Hébergement : [Cloudflare Workers (défaut) / VPS Thomas (besoin spécifique : process long, service auto-hébergé) / Replit (legacy) / autre]
+Statistiques : [Umami (défaut) / autre]
 IA utilisée : [oui/non — si oui : modèles, APIs, budget mensuel]
 
 — MODÈLE ÉCONOMIQUE —
@@ -719,7 +720,10 @@ Si des agents testeurs existent (Glob .claude/agents/testeur-*), les invoquer po
 
 Étape 2c — Vérifications cross-projets (en parallèle des audits) :
 - Zéro fausse promesse : Grep le copy visible pour les bénéfices non implémentés.
-- Anti-témoignage fictif : Grep les noms de personas utilisés comme témoignages.
+- Anti-témoignage fictif : aucun témoignage, avis ou chiffre inventé dans le client-facing (Grep des noms de personas + source de chaque témoignage).
+- Écriture client-facing : accents, zéro tiret cadratin, zéro tic d'écriture IA (section « Écriture client-facing » de _base-agent-protocol.md).
+- Features IA : chaque feature a ses états d'échec/refus, ses tests avec LLM mocké et du code compatible API génération 5.5 (pas de tool forcé ni de prefill, effort explicite).
+- Stack : conforme à la stack par défaut des préférences fondateur (Cloudflare, Umami) ou écart documenté ; lint lancé via npm run lint (Next.js 16).
 - Backoffice = même design system : vérifier que les pages admin utilisent les mêmes tokens.
 - Self-fetch : Grep les appels à l'URL publique dans Server Components / API routes.
 - Bugs non corrigés : vérifier qu'aucun bug documenté n'est resté "en attente".
@@ -953,7 +957,7 @@ Afficher le plan et attendre ma validation.
 - Hook pre-commit fonctionnel (tester un commit).
 - Lancer le prompt "Faire un check-up complet" pour vérifier la cohérence post-migration.
 
-Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions, caps cmd n°8 : CLAUDE.md 125L / lessons-learned 80L / project-context 250L hors memo+historique) :
+Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions, caps cmd n°8 : CLAUDE.md 125L / lessons-learned 80L / project-context 250L hors mémo+historique) :
 1. Mesurer docs/lessons-learned.md du projet (wc -l). Si > 80 lignes : audit TTL obligatoire.
 2. Mesurer project-context.md (wc -l). Si > 250 lignes hors mémo : archivage historique requis.
 3. Pour tout projet >= 10 sessions (ex : Versi 21+ sessions) : MODE DRY-RUN OBLIGATOIRE. @orchestrator produit un diff "voici ce que j archiverais" SANS exécuter. Validation utilisateur sur le diff. Exemption explicite des entrées critiques projet (auth, paiements, data model, learnings P0). Archive dans docs/lessons-learned-archive.md, JAMAIS delete.
@@ -1029,7 +1033,7 @@ Critères de validation : chaque feature du backlog est liée à un persona + un
 Produis le framework analytique complet :
 1. North Star Metric : définition précise, formule de calcul, fréquence de mesure, valeur cible à 3 et 6 mois.
 2. KPIs AARRR : pour chaque étape (Acquisition, Activation, Rétention, Revenue, Referral) — métrique, formule, valeur cible, outil de mesure.
-3. Tracking plan complet : chaque event (nom, trigger, propriétés, type user/system), naming convention (snake_case, préfixe par domaine), outil analytics recommandé selon le budget (gratuit : Plausible/PostHog ; payant : Mixpanel/Amplitude).
+3. Tracking plan complet : chaque event (nom, trigger, propriétés, type user/system), naming convention (snake_case, préfixe par domaine), outil analytics : Umami par défaut (préférence fondateur) ; complément seulement si un besoin n'est pas couvert (replay, cohortes fines : PostHog), justifié.
 4. Specs de dashboard : maquette textuelle de chaque dashboard (métriques affichées, filtres, granularité temporelle, alertes).
 5. Privacy by design : quelles données NE PAS collecter (PII), anonymisation, consentement requis par event (lien avec RGPD).
 
@@ -1079,6 +1083,7 @@ Pour chaque feature du backlog prioritaire, produis les specs fonctionnelles dé
 8. Cas limites et edge cases : que se passe-t-il si l'utilisateur fait X de manière inattendue ?
 9. Dépendances : quelles autres features ou APIs sont nécessaires.
 10. Notes pour @qa, @ux, @fullstack : contraintes spécifiques par agent consommateur.
+11. Features IA (si applicable) : comportement quand l'IA échoue, refuse ou est lente (état, message exact, alternative manuelle) + critère de qualité mesurable défini avec @ia.
 
 Dans les specs, inclure une section "Agents spécialisés recommandés" : identifier les agents custom nécessaires par user stories critiques, tests métier spécialisés, et parcours client. Fournir les specs de création pour @agent-factory (rôle, inputs/outputs, critère de succès).
 
@@ -1233,7 +1238,8 @@ Conçois les parcours utilisateur complets :
 3. Conversion : du gratuit au payant (si applicable). Points de friction identifiés, triggers d'upgrade contextuels.
 4. Rétention : boucles d'engagement (notifications, emails, contenu), fréquence d'usage cible.
 5. Architecture de navigation : hiérarchie des pages, navigation principale, actions rapides.
-6. Conviction-first : les CTAs de conversion (achat, upgrade) apparaissent en fin de parcours/section, APRÈS la démonstration de valeur — pas au premier écran. Exception : les pages dont le seul but est l'action (pricing, signup). Concevoir pour convaincre d'abord, convertir ensuite.
+6. Placement des CTAs selon le mode tranché en Phase 0 (project-context.md / orchestration-plan.md) : VITRINE → conviction-first, CTAs de conversion en fin de parcours après la démonstration de valeur ; FUNNEL → CTA principal visible dès le hero, répété après chaque preuve. Pages dont le seul but est l'action (pricing, signup) : CTA immédiat dans les deux modes.
+7. Features IA (si applicable) : états d'attente avec progression, streaming, échec/refus avec alternative, régénérer, éditer la sortie, saisie jamais perdue.
 
 Produis les wireframes textuels (ASCII) des écrans clés avec TOUS les états (default, loading, empty, error, success). Chaque écran doit indiquer les points de sortie et les fallback UX.
 
@@ -1275,9 +1281,9 @@ Crée le design system complet :
 4c. Anti-placeholder galerie : JAMAIS d'images identiques labellées différemment dans les maquettes ou les exemples. Chaque image/illustration doit être unique ou clairement marquée "[Image à remplacer : description]".
 5. Dark mode : remapping des semantic tokens (pas juste "inverser"), shadows → borders subtiles, accent désaturé. Vérification contrastes dans les deux modes.
 6. Accessibilité WCAG 2.2 AA : contrastes 4.5:1 texte + 3:1 interactifs, focus-visible obligatoire (outline 2px offset 2px), touch targets 44x44px min, prefers-reduced-motion supporté, pas de outline:none sans alternative.
-7. Validation : chaque page évaluée sur les 10 critères visuels (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE).
-5. Performance : les choix visuels doivent être compatibles avec un LCP < 2.5s. Signaler les éléments potentiellement lourds (images, animations, vidéos, fonts custom).
-6. Favicon & icônes : produire les specs pour le favicon (SVG recommandé, avec fallback PNG 32x32 et 16x16), apple-touch-icon (180x180), OG image par défaut (1200x630, avec le logo + baseline), site.webmanifest (nom, couleur thème, icônes 192 et 512). Ces assets sont indispensables pour le branding — un site sans favicon ou sans OG image paraît amateur.
+7. Validation : chaque page évaluée sur les 10 critères visuels (PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE). Anti-look IA : pas de rendu « template généré » (dégradés violet-bleu par défaut, glassmorphism partout, blobs 3D, icône dans un carré arrondi au-dessus de chaque paragraphe) sauf si la plateforme de marque le justifie.
+8. Performance : les choix visuels doivent être compatibles avec un LCP < 2.5s. Signaler les éléments potentiellement lourds (images, animations, vidéos, fonts custom).
+9. Favicon & icônes : produire les specs pour le favicon (SVG recommandé, avec fallback PNG 32x32 et 16x16), apple-touch-icon (180x180), OG image par défaut (1200x630, avec le logo + baseline), site.webmanifest (nom, couleur thème, icônes 192 et 512). Ces assets sont indispensables pour le branding — un site sans favicon ou sans OG image paraît amateur.
 
 Livrable (un fichier à la fois) : docs/design/design-system.md + docs/design/design-tokens.json.
 
@@ -1622,7 +1628,7 @@ Contract testing : inclure les tests de contrats API (Pact/Zod) dans le pipeline
 Livrables : .github/workflows/ci.yml + docs/qa/qa-strategy.md.
 
 Puis @infrastructure : lis docs/infra/infrastructure.md s'il existe. Configure :
-1. Si projet legacy Replit : compatibilité (.replit + replit.nix). Si futur projet : config Cloudflare Pages/Workers (wrangler.toml).
+1. Si projet legacy Replit : compatibilité (.replit + replit.nix). Si futur projet : config Cloudflare Workers (wrangler.toml, OpenNext pour Next.js).
 2. Route /api/health (status, version, uptime, dernière erreur).
 3. Sentry (Next.js, source maps, alertes Slack sur erreurs critiques).
 4. UptimeRobot (endpoint /api/health, intervalle 5min, alerte SMS/Slack si down).
@@ -1689,7 +1695,7 @@ Scaffolde le projet complet (un fichier par appel Write — commencer par les fi
 Livrable : code dans src/ + docs/dev-decisions.md (choix techniques documentés avec justification).
 
 Puis @infrastructure : lis docs/dev-decisions.md. Configure selon l'hébergement du projet :
-- Futurs projets (défaut) : repo GitHub + wrangler.toml + GitHub Actions auto-deploy Cloudflare Pages/Workers (preview par PR), secrets via wrangler secret put + GH Actions secrets, migration DB en step pre-deploy.
+- Futurs projets (défaut) : repo GitHub + wrangler.toml + GitHub Actions auto-deploy Cloudflare Workers (preview par PR ; Next.js via OpenNext), secrets via wrangler secret put + GH Actions secrets, migration DB en step pre-deploy.
 - Legacy Replit : .replit + replit.nix, DATABASE_URL dans Replit Secrets (jamais .env), script start = prisma migrate deploy → seed conditionnel → next start, documenter les limites (cold starts, storage éphémère — uploads vers R2/S3, DATABASE_URL lue au runtime jamais cachée au boot).
 - Dans tous les cas : .env.example complet SANS valeurs réelles, route /api/health avec vérification DB.
 Mets à jour docs/infra/infrastructure.md.
@@ -2113,7 +2119,7 @@ Définis la stratégie de contenu complète :
 1. Piliers thématiques : 3-5 thèmes récurrents alignés avec le positionnement, les mots-clés cibles et les entités GEO.
 2. Types de contenu : articles de fond (1500-2500 mots), guides pratiques, études de cas, comparatifs, FAQ longues, glossaire. Pour chaque type : objectif (SEO, conversion, autorité, GEO), fréquence, format, KPI de mesure.
 3. Calendrier éditorial perpétuel : planning des 8 premières semaines (1-2 contenus/semaine), avec titre, type, mot-clé cible, pilier, étape funnel (découverte/considération/décision), et format GEO (claims vérifiables inclus). Puis le mécanisme de renouvellement automatique : à chaque fin de cycle 8 semaines, le prochain cycle est généré automatiquement à partir du keyword map restant (mots-clés non encore couverts), des performances du cycle précédent (articles les plus performants → créer des contenus similaires), et de la saisonnalité (via WebSearch : quels sujets du secteur ont un pic de recherche dans les 2 prochains mois).
-   Anti-répétition obligatoire : le registre des articles déjà publiés (titres, mots-clés, piliers, dates, performances) est maintenu dans docs/copy/content-registry.md (ou en table PostgreSQL si la stack le permet). Avant de générer un nouveau planning, le cron DOIT : (a) relire docs/copy/brand-voice.md pour vérifier l'alignement tonalité, (b) vérifier qu'aucun mot-clé déjà couvert (ni variante sémantique proche) n'est réutilisé (anti-cannibalisation SEO), (c) équilibrer la répartition par pilier (pas plus de 2 consécutifs sur le même) ET par étape funnel (au moins 1 contenu découverte + 1 considération + 1 décision par cycle), (d) varier les angles (how-to, comparatif, case study, FAQ — pas le même format 2 fois de suite). Un article peut revisiter un sujet ancien uniquement si > 6 mois et avec un angle clairement différent. Si tous les mots-clés du keyword map sont couverts → alerter l'utilisateur et recommander un nouveau cycle de keyword research (@seo). Feedback loop : le cron lit les métriques de performance via l'API analytics (Umami/Plausible) — pages vues, temps de lecture, taux de rebond par article — pour prioriser les sujets similaires aux articles performants. Escalade stratégique : si un pilier thématique sous-performe sur 2 cycles consécutifs (engagement < 50% de la moyenne), signaler à l'utilisateur "Pilier [X] en sous-performance — à revoir avec @creative-strategy avant le prochain cycle." Un pilier qui ne performe pas est peut-être un problème de positionnement, pas de SEO.
+   Anti-répétition obligatoire : le registre des articles déjà publiés (titres, mots-clés, piliers, dates, performances) est maintenu dans docs/copy/content-registry.md (ou en table PostgreSQL si la stack le permet). Avant de générer un nouveau planning, le cron DOIT : (a) relire docs/copy/brand-voice.md pour vérifier l'alignement tonalité, (b) vérifier qu'aucun mot-clé déjà couvert (ni variante sémantique proche) n'est réutilisé (anti-cannibalisation SEO), (c) équilibrer la répartition par pilier (pas plus de 2 consécutifs sur le même) ET par étape funnel (au moins 1 contenu découverte + 1 considération + 1 décision par cycle), (d) varier les angles (how-to, comparatif, case study, FAQ — pas le même format 2 fois de suite). Un article peut revisiter un sujet ancien uniquement si > 6 mois et avec un angle clairement différent. Si tous les mots-clés du keyword map sont couverts → alerter l'utilisateur et recommander un nouveau cycle de keyword research (@seo). Feedback loop : le cron lit les métriques de performance via l'API Umami — pages vues, temps de lecture, taux de rebond par article — pour prioriser les sujets similaires aux articles performants. Escalade stratégique : si un pilier thématique sous-performe sur 2 cycles consécutifs (engagement < 50% de la moyenne), signaler à l'utilisateur "Pilier [X] en sous-performance — à revoir avec @creative-strategy avant le prochain cycle." Un pilier qui ne performe pas est peut-être un problème de positionnement, pas de SEO.
 4. Horaires de publication optimaux : via WebSearch, identifier les jours et heures de publication les plus performants par canal pour le secteur et le persona du projet. Blog : jour + heure de publication (ex : mardi 7h vs jeudi 10h selon le secteur). Social : horaires par plateforme (LinkedIn mardi-jeudi 8h-10h, Twitter/X 12h-14h, etc.). Newsletter : jour d'envoi + heure. Documenter les sources des données. Le scheduling des crons doit utiliser ces horaires.
 5. Lead magnets : 1-2 contenus premium (checklist, template, guide PDF) servant de capture email. Lien avec la proposition de valeur.
 6. Distribution : où et comment promouvoir chaque contenu (newsletter, social, communities, syndication, Product Hunt Blog si pertinent).
@@ -2231,7 +2237,7 @@ Critères de validation : les plateformes sont justifiées par le persona (pas p
         title:"Auditer le funnel existant",
         agents:["growth","data-analyst","ux"],
         quand:"Produit en production avec trafic, conversion à optimiser. Fournis les données analytics (coller les chiffres dans le prompt, ou les ajouter dans project-context.md section Notes libres). 3 agents. Si coupure : 'Lis docs/growth/funnel-audit.md, quels agents restent ?'",
-        prompt:`@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (GA4, Mixpanel, PostHog, etc.), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques exactes dont tu as besoin pour diagnostiquer.
+        prompt:`@growth Lis docs/analytics/kpi-framework.md. S'il n'existe pas, pose-moi les questions pour le créer (North Star Metric, KPIs par étape AARRR, outils analytics) et génère-le avant de continuer. Lis aussi docs/analytics/tracking-plan.md pour les events de conversion. Si des données analytics sont disponibles (Umami, ou autre outil en place), colle-les dans le prompt ou dans project-context.md section Notes libres — sinon, signale les métriques exactes dont tu as besoin pour diagnostiquer.
 
 Diagnostic funnel AARRR complet :
 1. Taux par étape : Acquisition → Activation → Rétention → Revenue → Referral. Identifier l'étape avec le plus fort drop.
@@ -2475,7 +2481,8 @@ Critères de validation : chaque source de feedback est inventoriée, le pipelin
 Identifie les angles morts et contradictions. Applique les 9 gates binaires du framework (voir _gates.md) sur chaque livrable audité. Toutes les gates sont BLOQUANT : 1 FAIL = NO-GO. Problèmes hors gates classés P0/P1/P2.
 
 Calibration VALEUR (pas juste code) : évaluer la valeur perçue par le persona final — le produit résout-il vraiment son problème ? Les outputs générés sont-ils utiles ? La promesse marketing correspond-elle à l'expérience réelle ?
-Bugs corrigés immédiatement : tout problème identifié est corrigé dans la session — ne JAMAIS lister des bugs "à corriger plus tard".
+Bugs corrigés dans la session : tout problème identifié est corrigé par l'agent responsable, relancé immédiatement avec le rapport de corrections (le reviewer ne corrige pas lui-même). Ne JAMAIS lister des bugs "à corriger plus tard".
+11. Écriture et IA : zéro tiret cadratin ni tic d'écriture IA, zéro témoignage inventé dans le client-facing ; chaque feature IA a ses états d'échec/refus et ses tests avec LLM mocké.
 
 Agents testeurs persona (optionnels) : vérifier via Glob .claude/agents/testeur-* si des agents testeurs ont été créés. Si oui → les invoquer sur le site/livrables pour évaluer l'EXPÉRIENCE RÉELLE (6 questions valeur + 10 scénarios d'usage + comparaison SaaS premium), pas juste la conformité technique.
 
@@ -2957,11 +2964,11 @@ Checklist GO/NO-GO :
 
 **Contenu & SEO**
 □ Meta title et description sur chaque page
-□ Sitemap.xml accessible et soumis à Google Search Console
+□ Sitemap.xml accessible et soumis à Google Search Console ET Bing Webmaster Tools, IndexNow actif
 □ robots.txt correct (pas de disallow: / en production !)
 □ Données structurées JSON-LD validées (Schema.org validator)
-□ Favicon + OG image configurés (tester avec un partage LinkedIn/Twitter)
-□ Analytics installé et fonctionnel (vérifier un event test)
+□ Favicon + OG image configurés (tester avec un partage LinkedIn/X)
+□ Umami installé et fonctionnel (un event test visible dans le dashboard Umami)
 
 **Légal (vérification @legal)**
 □ Mentions légales accessibles
@@ -3062,7 +3069,7 @@ Critères de validation : zéro vulnérabilité critique ou high restante, les h
         prompt:`@data-analyst Lis project-context.md (budget, stack). Lis docs/analytics/tracking-plan.md et docs/analytics/kpi-framework.md s'ils existent. S'ils n'existent pas, pose-moi les questions : parcours critiques à analyser, volume d'utilisateurs, budget outils analytics, données déjà collectées.
 
 Stratégie de monitoring UX complète :
-1. Choix de l'outil : comparatif Hotjar vs PostHog vs FullStory vs Microsoft Clarity (gratuit). Critères : prix (volume de sessions/mois), fonctionnalités (replay, heatmaps, funnels, rage click detection), conformité RGPD (hébergement EU, anonymisation), intégration avec la stack. Recommandation avec justification.
+1. Choix de l'outil : Umami reste l'outil de statistiques (préférence fondateur) ; il ne fait ni replay ni heatmaps, donc on choisit un complément : comparatif Hotjar vs PostHog vs FullStory vs Microsoft Clarity (gratuit, données hors UE : consentement obligatoire). Critères : prix (volume de sessions/mois), fonctionnalités (replay, heatmaps, funnels, rage click detection), conformité RGPD (hébergement EU, anonymisation), intégration avec la stack. Recommandation avec justification.
 2. Session replay : configuration (quelles pages enregistrer, sampling rate selon le volume — 100% si < 1000 sessions/jour, 10-30% au-delà), masquage des données sensibles (inputs password, données bancaires, PII), rétention (30 jours minimum).
 3. Heatmaps : pages à instrumenter en priorité (landing page, pricing, signup, dashboard principal). Types : click maps, scroll maps, move maps.
 4. Rage clicks & dead clicks : détection automatique des clics de frustration. Alerte si taux > 3% sur une page.
@@ -3228,7 +3235,7 @@ Critères de validation : l'agent créé passe le test unitaire (lit project-con
 
 Livrable : docs/dev-decisions.md (avec plan de migration détaillé).
 
-Puis @infrastructure : lis docs/dev-decisions.md et adapte la configuration de déploiement à la nouvelle stack : Cloudflare Pages/Workers + wrangler.toml (futurs projets), .replit (legacy) ou Docker, CI/CD pipeline, variables d'environnement, CDN, cache strategy. Vérifie que les performances sont au moins équivalentes post-migration (TTFB, Core Web Vitals). Livrable : docs/infra/infrastructure.md mis à jour.
+Puis @infrastructure : lis docs/dev-decisions.md et adapte la configuration de déploiement à la nouvelle stack : Cloudflare Workers (OpenNext pour Next.js) + wrangler.toml (futurs projets), .replit (legacy) ou Docker, CI/CD pipeline, variables d'environnement, CDN, cache strategy. Vérifie que les performances sont au moins équivalentes post-migration (TTFB, Core Web Vitals). Livrable : docs/infra/infrastructure.md mis à jour.
 
 Puis @qa : lis docs/dev-decisions.md et définis la stratégie de test pour la migration : tests de non-régression sur les parcours critiques (Playwright), tests unitaires sur les composants migrés (Vitest), smoke tests post-déploiement. Livrable : docs/qa/qa-strategy.md section "Migration".
 
@@ -3348,7 +3355,7 @@ Dashboard et reporting investisseurs :
 
 Livrable : docs/analytics/investor-reporting.md + docs/analytics/dashboard-specs.md (section investisseurs).
 
-Puis @product-manager : lis docs/analytics/investor-reporting.md et complète avec la narrative produit : roadmap highlights pour le prochain trimestre, milestones atteints, decisions clés et leur rationale. Ajoute dans docs/product/investor-narrative.md. Le deck investisseur doit raconter une histoire cohérente entre les métriques et la vision produit.
+Puis @product-manager : lis docs/analytics/investor-reporting.md et complète avec la narrative produit : roadmap highlights pour le prochain trimestre, milestones atteints, décisions clés et leur rationale. Ajoute dans docs/product/investor-narrative.md. Le deck investisseur doit raconter une histoire cohérente entre les métriques et la vision produit.
 
 Conformité : si le reporting est destiné à des investisseurs dans le cadre d'une levée de fonds, vérifier les obligations de transparence (pas de métriques trompeuses, définitions cohérentes d'un mois à l'autre, distinction entre MRR contractuel et MRR réalisé). Les projections doivent être identifiées comme telles (pas présentées comme des faits). Les données personnelles des utilisateurs ne doivent pas apparaître dans le reporting (pas de noms, pas d'emails — uniquement des métriques agrégées).
 
@@ -3390,7 +3397,7 @@ Critères de validation : au moins 3 concurrents directs cartographiés avec don
       {
         title:"Auditer project-context.md volumineux (TTL)",
         agents:["orchestrator"],
-        quand:"Quand project-context.md dépasse 250 lignes hors memo+historique, ou quand la session de reprise signale un cap atteint. Utilisable sur tout projet existant avec historique accumulé (Versi 21+ sessions, ISSA, Sarani, etc.). Lancable ponctuellement ou récurrent (tous les 5 sessions).",
+        quand:"Quand project-context.md dépasse 250 lignes hors mémo+historique, ou quand la session de reprise signale un cap atteint. Utilisable sur tout projet existant avec historique accumulé (Versi 21+ sessions, ISSA, Sarani, etc.). Lancable ponctuellement ou récurrent (tous les 5 sessions).",
         prompt:`@orchestrator Mode audit TTL project-context.md. Ne lance aucun agent.
 
 Étape 1 — Mesure et diagnostic (READ-ONLY, aucune modification) :
@@ -3403,7 +3410,7 @@ Critères de validation : au moins 3 concurrents directs cartographiés avec don
    - Notes libres / Décisions anciennes si > 5 sessions
 4. Afficher le diagnostic :
    - Total : X lignes
-   - Cap cible : 250 lignes hors memo courant + historique récent
+   - Cap cible : 250 lignes hors mémo courant + historique récent
    - À archiver estimé : Y lignes dans Z entrées
    - Sections intouchables : Identité, Cible, Positionnement, Objectifs, Stack, Budget, Notes libres actives, Mémo de reprise courant uniquement
 
@@ -3435,7 +3442,7 @@ Affiche :
 ✓ Exemptions respectées : liste des entrées gardées sur demande
 ✓ Cap cmd n°8 : PASS / FAIL
 
-Critères de validation : project-context.md <= 250 lignes hors memo+historique, archive créée sans perte de données, toutes exemptions respectées, git diff review-friendly.`
+Critères de validation : project-context.md <= 250 lignes hors mémo+historique, archive créée sans perte de données, toutes exemptions respectées, git diff review-friendly.`
       },
       {
         title:"Clôturer ma session (avant de quitter)",
@@ -3523,7 +3530,7 @@ Si timeout imminent : documenter dans le mémo de reprise "PROPAGATION P0 EN ATT
    - Sinon : déplacer la ligne dans docs/lessons-learned-archive.md (créer si absent)
    - Les P0 sont JAMAIS archivés automatiquement (garde-fous silencieux). Exemption stricte.
 3. Audit project-context.md : si > 250 lignes, archiver les entrées historique des interventions plus anciennes que 5 sessions vers docs/project-context-archive.md. Garder les 5 dernières sessions actives + le mémo de reprise courant.
-4. Verification net-zero : compter les lignes ajoutees dans CLAUDE.md, agents, gates ET index.html (prompts) cette session. Verifier qu un nombre equivalent a ete supprime/archive. Si ajout net positif : justifier dans le memo de reprise OU corriger avant cloture.
+4. Vérification net-zero : compter les lignes ajoutées dans CLAUDE.md, agents, gates ET index.html (prompts) cette session. Vérifier qu'un nombre équivalent a été supprimé/archivé. Si ajout net positif : justifier dans le mémo de reprise OU corriger avant clôture.
 5. Si un cap est dépassé après archivage : BLOQUER la clôture. Demander à l utilisateur de trancher : (a) raise le cap (justification écrite), (b) supprimer manuellement, (c) audit profond delégué.
 
 Étape 5e — Mesure perf-trend (OBLIGATOIRE, garantie de perf cross-sessions) :
@@ -3550,7 +3557,7 @@ Première fois OUI atteinte : célébrer et noter la durée exacte (date début 
 Étape 5g — Sync branche par défaut (anti-fragmentation, mesurabilité cross-sessions) :
 1. Identifier la branche courante : git branch --show-current
 2. Identifier la branche par défaut du repo : git symbolic-ref refs/remotes/origin/HEAD ou config locale
-3. Si branche courante != branche par défaut : RAPPELER explicitement "Cette session a tourné sur [branche-courante]. Pour préserver la mesurabilité cross-sessions, mergez vers [branche-defaut] dès que stable. Sinon, l audit time-to-V1 et le perf-trend ne capturent pas l avancement réel."
+3. Si branche courante != branche par défaut : RAPPELER explicitement "Cette session a tourné sur [branche-courante]. Pour préserver la mesurabilité cross-sessions, mergez vers [branche-par-défaut] dès que stable. Sinon, l audit time-to-V1 et le perf-trend ne capturent pas l avancement réel."
 4. Pousser systématiquement la branche courante : git push origin [branche-courante]
 5. Si project-context.md a été modifié cette session : forcer une mise à jour sur la branche par défaut aussi (cherry-pick ou push direct du fichier) pour que les futurs audits voient le bon historique.
 
@@ -3585,8 +3592,9 @@ Critères de validation : project-context.md est à jour (historique + mémo de 
 Systématique à chaque ouverture de session. Mesurer via wc -l (fallback : Read + count lignes si Bash indisponible) :
 - CLAUDE.md (cap 125, règle n°7) — viol = blocage jusqu à réduction
 - docs/lessons-learned.md (cap 80, commandement n°8) — viol = déclencher audit TTL (promote-or-archive, P0 exempté) avant de continuer
-- project-context.md — si > 250 lignes hors memo courant + historique 5 dernières sessions : déclencher le prompt "Auditer project-context.md volumineux" (DRY-RUN puis validation utilisateur). Exception : si projet nouveau (< 5 entrées historique) : skip ce check et signaler "Projet en phase initiale, audit TTL non applicable".
-- docs/founder-preferences.md (soft cap 150, alerte à partir de 180) — si > 180 : signaler pour dédoublonnage, non bloquant
+- project-context.md — si > 250 lignes hors mémo courant + historique 5 dernières sessions : déclencher le prompt "Auditer project-context.md volumineux" (DRY-RUN puis validation utilisateur). Exception : si projet nouveau (< 5 entrées historique) : skip ce check et signaler "Projet en phase initiale, audit TTL non applicable".
+- docs/founder-preferences.md (repo Agent-Team uniquement ; soft cap 150, alerte à partir de 180) — si > 180 : signaler pour dédoublonnage, non bloquant. Dans un projet client, .claude/founder-preferences.md est une copie en lecture seule
+- Fraîcheur du framework : si .claude/prompts-library.html ou .claude/founder-preferences.md est absent, l'équipe date d'avant le 2026-09-29 : proposer la mise à jour d'équipe (carte Mise à jour du site) avant tout travail
 - _gates.md — vérifier cohérence nombre de gates (actuellement 9 G1/G3/G5/G7/G12/G13/G15/G17/G_PROOF). Si compteur incohérent dans CLAUDE.md ou les agents : signaler.
 
 Règle : un seuil dépassé = sanity check OBLIGATOIRE avant Étape 1. Mode hotfix défini = bug bloquant en production qui exige correction immédiate (< 1h), chaque skip doit justifier nature du bug + durée estimée + plan de reprise du check TTL dans la clôture. Hors ce cas, WARNING reste visible dans le mémo de reprise.
@@ -3630,7 +3638,7 @@ Vérifie rapidement que les livrables existants sont cohérents avec project-con
 - Le persona cité dans les livrables correspond au persona de project-context.md ?
 - Le KPI North Star est le même partout ?
 - Le ton de marque est cohérent ?
-Si un drift est detecte, signale-le avec les fichiers concernes. Si livrable web/UI present (src/app, src/pages, public/) : verifier la favicon-checklist (12 favicons + 7 balises HTML) et la typographie FR (guillemets francais, apostrophes typo, espaces insecables FR). Checks recommandes, plus des gates formelles.
+Si un drift est détecté, signale-le avec les fichiers concernés. Si livrable web/UI présent (src/app, src/pages, public/) : vérifier la favicon-checklist (12 favicons + 7 balises HTML) et la typographie FR (guillemets français, apostrophes typographiques, espaces insécables FR). Checks recommandés, plus des gates formelles.
 
 Étape 5 — Diagnostic et plan d'action :
 Affiche un tableau d'avancement clair :
@@ -3664,6 +3672,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 ];
 
 const CHANGELOG = [
+  {
+    date:"2026-09-29",
+    agent:"reviewer",
+    type:"mise à jour",
+    description:"Revue des 8 agents restants et audit du système. Les projets clients reçoivent enfin les préférences fondateur et la bibliothèque de prompts (les agents les cherchaient sans les trouver). Stack par défaut écrite noir sur blanc : Cloudflare, Umami, VPS en renfort. Infrastructure sur Workers + OpenNext (next-on-pages déprécié). Juridique : accessibilité européenne, facture électronique, calendrier AI Act vérifié. Nouvelles vérifications automatiques : accents français et JavaScript du site. Plus de 2 000 accents manquants corrigés, README et INSTALL réécrits."
+  },
   {
     date:"2026-09-29",
     agent:"reviewer",
@@ -3877,12 +3891,12 @@ const CHANGELOG = [
         <div class="install-step"><span class="step-num">1</span><span>Ouvrez Claude Code <strong>sur votre projet existant</strong></span></div>
         <div class="install-step"><span class="step-num">2</span><span>Copiez ce prompt :
           <div class="install-prompt">
-            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L : savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5.5 (claude-sonnet-5-5) et 7 agents Opus sur Opus 5.5 (claude-opus-5-5). Toute l'équipe tourne sur les derniers modèles. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.">Copier</button>
+            <button class="install-btn-copy" data-text="Mets à jour l'équipe Gradient Agents. TOUJOURS refresh update.sh d'abord (évite le bootstrap problem si ancien script local pointe sur une branche renommée) puis lance : curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh && bash update.sh --all. Le script détecte automatiquement la branche par défaut (main préférée, master fallback legacy), fait un backup dans .claude/agents/.backup/, écrase les agents et settings.json, fusionne CLAUDE.md via les marqueurs GRADIENT-AGENTS-START/END, installe .githooks/, auto-copie le nouveau update.sh. Ne touche pas à project-context.md, docs/ (livrables), src/ (code), package.json. update.sh retire automatiquement les fichiers obsolètes (moi.md, orchestrator-reference.md, et orchestrator.md renommé en _orchestration-protocol.md) : plus de nettoyage manuel. Inclut la cure S5 2026-06-11 « trust the model » : les 19 agents réécrits en v3.0 (-67%, ~5700→~1900L : savoir générique LLM coupé, learnings projet conservés), _base-agent-protocol.md 470→152L, testeurs persona optionnels (plus de phases obligatoires), 9 gates toutes BLOQUANT dont G_PROOF (plus de distinction REQUIS ni scoring persona/B2B), comptes alignés 19 agents spécialisés + protocole d'orchestration / 91 prompts / 9 gates. Orchestrator rétrogradé d'agent en protocole (_orchestration-protocol.md) : la session principale EST l'orchestrator, routage automatique (plus besoin de taper @agent). Migration modèles : 12 agents Sonnet sur Sonnet 5.5 (claude-sonnet-5-5) et 7 agents Opus sur Opus 5.5 (claude-opus-5-5). Toute l'équipe tourne sur les derniers modèles. Hérite de la cure S4 : brief-first cmd 0, suppression @moi + orchestrator-reference, branche main, domaine agents.issa-capital.com. WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors mémo+historique au prochain prompt de reprise.">Copier</button>
             <em>"Mets à jour Gradient Agents : télécharge le dernier <code>update.sh</code> puis lance <code>bash update.sh --all</code>. Backup auto, fusion CLAUDE.md, agents sur Opus 5.5 et Sonnet 5.5, cure S5 (19 agents v3.0 -67%, 9 gates toutes BLOQUANT, testeurs optionnels) héritant de la cure S4 (brief-first, G_PROOF, @moi supprimé). Audit TTL local proposé si lessons > 80L, CLAUDE.md > 125L ou project-context > 250L."</em>
           </div></span>
         </div>
         <div class="install-step"><span class="step-num">3</span><span>Vérifiez si <code>project-context.md</code> a de nouveaux champs à remplir, et si <code>docs/lessons-learned.md</code> dépasse 80 lignes (cap commandement n°8)</span></div>
-        <div class="install-step"><span class="step-num">4</span><span>Pour les projets avec >= 5 sessions (verifier via le memo de reprise ou le compteur historique) : <strong>lancez le prompt "Démarrer une nouvelle session"</strong> qui déclenchera l'audit TTL pré-bloquant en mode DRY-RUN d'abord</span></div>
+        <div class="install-step"><span class="step-num">4</span><span>Pour les projets avec >= 5 sessions (vérifier via le mémo de reprise ou le compteur historique) : <strong>lancez le prompt "Démarrer une nouvelle session"</strong> qui déclenchera l'audit TTL pré-bloquant en mode DRY-RUN d'abord</span></div>
       </div>
       <div class="install-result">
         <div class="install-result-label">Préservé :</div>

@@ -1,6 +1,6 @@
 ---
 name: fullstack
-description: "Code React, Next.js, Expo, API routes, hooks, BDD (D1/Neon priorité, Postgres Replit legacy), Stripe, formulaires, animations, développement frontend backend"
+description: "Code React, Next.js, Expo, API routes, BDD (D1/Neon, Postgres legacy), Stripe, auth, formulaires, front et back"
 model: claude-opus-5-5
 version: "5.1"
 tools:
@@ -27,6 +27,7 @@ Calibration (lire avant de coder) : `docs/design/design-system.md` + `design-tok
 
 **Mindset IA — choix techniques** : ne JAMAIS choisir une techno parce qu'elle est "plus rapide à coder" — le temps de dev n'est pas un critère avec une équipe IA. Critères : valeur, ownership, indépendance vendor, coût récurrent.
 
+- **Analytics : Umami** (préférence fondateur) : events du tracking-plan envoyés via le tracker Umami (`umami.track`), script chargé selon la config validée par @legal. Autre outil seulement si le tracking-plan l'exige, justifié
 - **BDD (décision S3 2026-05-06)** : futurs projets = Cloudflare D1 (CRUD simple) ou Neon Postgres serverless (si JSONB/full-text) + Drizzle (edge) ou Prisma. Projets legacy Replit : PostgreSQL Replit + Prisma + protections persistance (`prisma migrate deploy` au boot, seed conditionnel, `DATABASE_URL` lu au runtime — jamais caché au boot, il peut changer après redéploiement)
 - Auth : Better Auth pour les nouveaux projets (open source, ownership ; Auth.js/NextAuth n'est plus qu'en correctifs de sécurité depuis septembre 2025, le garder sur les projets existants) ; Clerk seulement si demandé. Emails : Resend + React Email. Paiements : Stripe. Uploads : R2/S3/UploadThing — JAMAIS de stockage local (storage Replit éphémère)
 - Route `/api/health` obligatoire : `SELECT 1`, status "degraded" si DB inaccessible (pas de crash)
@@ -62,7 +63,7 @@ Calibration (lire avant de coder) : `docs/design/design-system.md` + `design-tok
 
 ### Self-fetch (dépend de l'hébergeur)
 Ne JAMAIS appeler l'URL publique du projet depuis un Server Component ou une API route (les reverse proxies coupent à 30-60s).
-- **Cloudflare Pages/Workers (défaut)** : pas de self-fetch du tout — extraire la logique dans `src/lib/[feature].ts`, l'importer directement depuis Server Component ET route handler. Jobs > 30s : Cloudflare Queues / Durable Objects
+- **Cloudflare Workers (défaut)** : pas de self-fetch du tout — extraire la logique dans `src/lib/[feature].ts`, l'importer directement depuis Server Component ET route handler. Jobs > 30s : Cloudflare Queues / Durable Objects
 - **Replit (legacy)** : `http://127.0.0.1:${process.env.PORT}` avec `AbortSignal.timeout`, parse via `res.text()` puis `JSON.parse` (fallback safe)
 
 ### Migrations SQL idempotentes

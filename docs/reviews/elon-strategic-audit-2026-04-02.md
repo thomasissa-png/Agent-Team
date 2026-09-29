@@ -141,11 +141,11 @@ Six choses que le framework ne couvre pas et devrait :
 |---|---|---|---|---|
 | 1 | **Lancer 1 projet réel en autopilot cette semaine.** Pas demain. Pas "quand le framework sera prêt". Maintenant. ImmoCrew ou MarchesFaciles. Le framework est prêt depuis 3 sessions. L'inaction est le vrai bug. | CRITIQUE | Faible | Exécution |
 | 2 | **Couper les gates de 32 à 10.** Garder G5, G6, G7, G12, G13, G15, G19, G21, G28, et une gate globale "le livrable résout le problème du persona". Supprimer tout le reste. | CRITIQUE | Faible | Simplification |
-| 3 | **Diviser CLAUDE.md par 3.** Maximum 200 lignes. Déplacer les détails dans les agents individuels. CLAUDE.md = les 5 règles absolues + la table de routage. C'est tout. | ELEVE | Moyen | Simplification |
-| 4 | **Tracker le coût tokens par phase.** Ajouter un compteur dans l'orchestrator qui log le nombre de tokens consommés. Objectif : un projet complet < 5$ en tokens. | ELEVE | Faible | Observabilité |
-| 5 | **Raccourcir chaque prompt agent de 50%.** Appliquer la règle "si tu peux le dire en 10 mots, ne le dis pas en 30". Chaque ligne du prompt système consomme des tokens à chaque invocation. Le ROI de la concision est exponentiel. | ELEVE | Moyen | Simplification |
-| 6 | **Créer un "mode lean" pour les side projects.** 5 agents au lieu de 20. Orchestrator -> creative-strategy -> fullstack -> qa -> reviewer. Le reste est optionnel et invoqué à la demande. | ELEVE | Moyen | Adoption |
-| 7 | **Ajouter un benchmark "avec vs sans framework".** Chronomètre + coût + qualité résultat. C'est le seul argument de vente qui compte pour les 500 utilisateurs GitHub. | ELEVE | Moyen | Validation |
+| 3 | **Diviser CLAUDE.md par 3.** Maximum 200 lignes. Déplacer les détails dans les agents individuels. CLAUDE.md = les 5 règles absolues + la table de routage. C'est tout. | Élevé | Moyen | Simplification |
+| 4 | **Tracker le coût tokens par phase.** Ajouter un compteur dans l'orchestrator qui log le nombre de tokens consommés. Objectif : un projet complet < 5$ en tokens. | Élevé | Faible | Observabilité |
+| 5 | **Raccourcir chaque prompt agent de 50%.** Appliquer la règle "si tu peux le dire en 10 mots, ne le dis pas en 30". Chaque ligne du prompt système consomme des tokens à chaque invocation. Le ROI de la concision est exponentiel. | Élevé | Moyen | Simplification |
+| 6 | **Créer un "mode lean" pour les side projects.** 5 agents au lieu de 20. Orchestrator -> creative-strategy -> fullstack -> qa -> reviewer. Le reste est optionnel et invoqué à la demande. | Élevé | Moyen | Adoption |
+| 7 | **Ajouter un benchmark "avec vs sans framework".** Chronomètre + coût + qualité résultat. C'est le seul argument de vente qui compte pour les 500 utilisateurs GitHub. | Élevé | Moyen | Validation |
 | 8 | **Supprimer l'agent @moi** (ou le geler). Un agent proxy du fondateur avec un Shadow Mode à 3 phases et un score de fidélité — pour 1 utilisateur qui est déjà là. C'est de l'over-engineering existentiel. Thomas, c'est toi qui décides. Tu n'as pas besoin d'un agent pour simuler tes décisions. | MOYEN | Nul | Simplification |
 | 9 | **Préparer une version anglaise.** Même si le framework reste en français, un README.md en anglais + des prompts bilingues multiplieraient le TAM par 20x. | MOYEN | Moyen | Croissance |
 | 10 | **Documenter 3 case studies.** Projet X : de l'idée au déploiement en Y heures, Z$ de tokens, résultat visible. C'est la preuve sociale qui manque pour l'adoption. | MOYEN | Variable | Validation |
@@ -173,9 +173,9 @@ Le framework s'auto-évalue à 9.4/10. Mon score : 6.5/10. L'écart de 2.9 point
 
 ## Hypothèses à valider
 
-- [HYPOTHESE : le coût token d'un run autopilot complet est entre 500K et 1M tokens] — à mesurer sur un vrai projet
-- [HYPOTHESE : 5-6 gates sur 32 attrapent 90% des vrais problèmes] — à valider en trackant les gates FAIL sur les 3 prochains projets
-- [HYPOTHESE : le TAM francophone est ~5% du marché dev tools mondial] — à confirmer via données GitHub language stats
+- [Hypothèse : le coût token d'un run autopilot complet est entre 500K et 1M tokens] — à mesurer sur un vrai projet
+- [Hypothèse : 5-6 gates sur 32 attrapent 90% des vrais problèmes] — à valider en trackant les gates FAIL sur les 3 prochains projets
+- [Hypothèse : le TAM francophone est ~5% du marché dev tools mondial] — à confirmer via données GitHub language stats
 
 ## Dimensions non auditées (données manquantes)
 

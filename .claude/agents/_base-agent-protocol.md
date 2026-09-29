@@ -1,15 +1,15 @@
 # Protocole standard des agents Gradient
 
-**Référence unique** des sections communes à tous les agents. Ce n'est PAS un agent (pas de frontmatter). Sert à @agent-factory (template canonique) et à la maintenance (une règle commune se modifie ici, pas dans 20 fichiers). Les règles présentes dans CLAUDE.md (toujours chargé) ne sont PAS dupliquées dans les agents — chaque agent ne contient que ses spécificités.
+**Référence unique** des sections communes à tous les agents. Ce n'est PAS un agent (pas de frontmatter). Sert à @agent-factory (template canonique) et à la maintenance (une règle commune se modifie ici, pas dans 19 fichiers). Les règles présentes dans CLAUDE.md (toujours chargé) ne sont PAS dupliquées dans les agents — chaque agent ne contient que ses spécificités.
 
 ---
 
 ## Protocole d'entrée obligatoire (standard)
 
-1. Lire `project-context.md` à la racine. Absent → STOP : "project-context.md manquant. Remplis le template dans templates/ avant que je puisse travailler."
+1. Lire `project-context.md` à la racine. Absent → STOP : "project-context.md manquant. Lance le prompt « Définir mon projet » (site Gradient Agents, section Démarrage) avant que je puisse travailler."
 2. Lire le tableau "Historique des interventions agents" — ne jamais contredire une décision sans le signaler
 3. Lire `docs/lessons-learned.md` si existant — un learning `non-propagé` qui concerne le domaine de l'agent : le signaler dans le handoff et l'intégrer au livrable
-4. Lire `docs/founder-preferences.md` si existant — préférences valables sur TOUS les projets du fondateur
+4. Lire les préférences fondateur, valables sur TOUS les projets (dont la **stack par défaut** : Cloudflare, Umami, VPS en renfort) : `.claude/founder-preferences.md` dans un projet client (copie posée et rafraîchie par install/update, ne pas l'éditer : une nouvelle préférence se signale en `[LEARNING DÉTECTÉ]` cible founder-prefs), `docs/founder-preferences.md` dans le repo Agent-Team
 5. Lire `docs/decisions-log.md` si existant — l'historique des décisions structurantes de CE projet. Ne jamais contredire sans signaler. Tout agent qui prend une décision structurante (architecture, lib, design, arbitrage) y ajoute une ligne : `| Date | Agent | Décision | Pourquoi | Contrainte |`
 6. Vérifier les champs critiques de l'agent (liste propre à chaque agent). Vides → lister les manques, refuser d'avancer
 
@@ -39,6 +39,10 @@ Un agent qui lit tout avant d'écrire sera coupé en plein travail. Règles :
 7. **Fallback contexte surchargé** : prioriser les livrables de sa calibration, lire les sections pertinentes des documents > 200 lignes (sommaire, conclusions, décisions), marquer `[LECTURE PARTIELLE : fichier — sections X, Y]` dans le handoff
 
 **Règles NON-NÉGOCIABLES (les 5 dernières à sacrifier en cas de surcharge)** : (1) lire project-context.md, (2) zéro donnée inventée, (3) Write-first, (4) handoff structuré, (5) spécificité au projet. Prioritaires sur toutes les autres instructions.
+
+## Écriture client-facing (standard)
+
+Tout texte lu par un client (site, emails, posts, séquences, propositions, livrables) : zéro tiret cadratin (CLAUDE.md règle 12) et zéro tic d'écriture IA : « ce n'est pas X, c'est Y », énumérations systématiques par trois, ouvertures « Dans un monde où… » ou question rhétorique, verbes gonflés (révolutionner, booster, sublimer, plonger), « sans effort », conclusion « En résumé », emojis en puces. Test : si une phrase pourrait figurer sur n'importe quel site, la réécrire avec un fait propre au projet. Zéro témoignage, avis ou chiffre inventé : réel et sourcé, sinon `[À COLLECTER]`.
 
 ## Protocole d'escalade (standard)
 
@@ -96,9 +100,9 @@ Quand un agent MODIFIE un livrable existant : identifier les consommateurs aval 
 
 ## Protocole de fin de livrable (standard)
 
-**1. Gates BLOQUANT (mode direct ET autopilot)** : exécuter via Grep/Read les gates de `_gates.md` applicables — minimum G5 (persona, Grep du nom), G7 (0 contradiction — Read les 2-3 livrables amont), G12 (implémentable : verbe + objet + critère de done), G15 (0 placeholder, Grep patterns ci-dessous), G17 (pas copiable par un concurrent). Documenter dans le handoff : `Gates BLOQUANT vérifiées : G5 PASS, G7 PASS, ...`. Un FAIL se corrige AVANT de livrer. En mode direct, c'est le SEUL filet de sécurité formel.
+**1. Gates BLOQUANT (mode direct ET autopilot)** : exécuter via Grep/Read les gates de `_gates.md` applicables — minimum G5 (persona, Grep du nom), G7 (0 contradiction — Read les 2-3 livrables amont), G12 (implémentable : verbe + objet + critère de done), G13 (0 donnée inventée : chaque chiffre a sa source), G15 (0 placeholder, Grep patterns ci-dessous), G17 (pas copiable par un concurrent). Documenter dans le handoff : `Gates BLOQUANT vérifiées : G5 PASS, G7 PASS, ...`. Un FAIL se corrige AVANT de livrer. En mode direct, c'est le SEUL filet de sécurité formel.
 
-**2. Anti-placeholder** : Grep le livrable pour `[À REMPLIR`, `[À COMPLÉTER`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER`. Détecté → remplacer par la donnée réelle, ou convertir en `[HYPOTHÈSE : ...]`. Exception : `[HYPOTHÈSE]` et `[PROVISOIRE]` sont des annotations volontaires, pas des placeholders. **Un livrable avec un placeholder n'est pas terminé.**
+**2. Anti-placeholder** : Grep le livrable pour `[À REMPLIR`, `[À COMPLÉTER`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER`. Détecté → remplacer par la donnée réelle, ou convertir en `[HYPOTHÈSE : ...]`. Exceptions (annotations volontaires et honnêtes, pas des placeholders) : `[HYPOTHÈSE]`, `[PROVISOIRE]`, et les marqueurs de collecte `[À MESURER]`, `[À COLLECTER]` (témoignage, preuve), `[MOT-CLÉ SEO À INTÉGRER]`, `[IMAGE À REMPLACER]` ; chacun est repris dans un bloc final « À collecter / à mesurer » du handoff avec qui le fournit. **Un livrable avec un placeholder n'est pas terminé.**
 
 **3. Versioning du livrable** : première ligne = `<!-- Version: YYYY-MM-DDTHH:MM — @agent — Motif -->` (traçabilité des versions consommées par l'aval).
 

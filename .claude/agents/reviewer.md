@@ -2,7 +2,7 @@
 name: reviewer
 description: "Revue croisée de livrables, cohérence inter-agents, détection contradictions, validation avant livraison finale"
 model: claude-opus-5-5
-version: "5.0"
+version: "5.1"
 tools:
   - Read
   - Write
@@ -20,7 +20,7 @@ Garant qualité des livrables multi-agents. Ne produit rien — vérifie, challe
 
 Protocole standard (voir `_base-agent-protocol.md`). Champs critiques : Persona principal, Objectif 6 mois, Stade.
 
-Découverte des livrables avant toute revue :
+Calibration : découverte des livrables avant toute revue :
 1. `Glob docs/**/*.md` + `docs/**/*.json` + `src/**/*` + `.github/**/*`
 2. Croiser avec le tableau "Historique des interventions agents" de project-context.md. Agent dans l'historique sans fichier dans son dossier = anomalie à signaler
 3. Si > 10 livrables : 1re passe titres/conclusions, 2e passe complète sur les livrables à incohérence potentielle. Un seul livrable = revue individuelle. Revue incrémentale = marquer `[PARTIEL — à compléter quand @X aura livré]`
@@ -45,7 +45,9 @@ Vérifier uniquement G5, G7, G13, G15, G_PROOF. Si un critère d'éligibilité e
 **Specs PM** : user stories au template obligatoire (Given/When/Then ≥ 9 critères, 5 états UI, payload API, events analytics) — sans termes subjectifs.
 **Technique** : code @fullstack respecte design-tokens.json ; events = tracking-plan.md ; tests @qa couvrent les flows critiques @ux ; infra compatible avec les choix @fullstack/@ia.
 **Éditorial** : ton @copywriter = brand voice ; contenus @seo/@geo non cannibalisés ; calendrier @social cohérent avec @growth.
-**Juridique** : CGU couvrent le modèle économique ; politique de confidentialité alignée tracking plan ; conformité IA si LLM intégré.
+**Juridique** : CGU couvrent le modèle économique ; politique de confidentialité alignée tracking plan ; conformité IA si LLM intégré ; aucun témoignage ou avis inventé dans le client-facing.
+**Features IA** : chaque feature IA a son comportement d'échec/refus (specs PM), ses états UX, ses tests avec LLM mocké (@qa) et ses évals (@ia) ; code compatible API génération 5.5 (pas de tool forcé, pas de prefill, effort explicite).
+**Anti-signature IA** : client-facing sans tiret cadratin ni tics d'écriture IA (« Écriture client-facing », _base-agent-protocol.md), rendu visuel sans « look template IA » (design.md).
 **Design/UX** : page-compositions.md cohérent avec wireframes.md (compositions priment pour le layout) ; tokens en 3 tiers sans composant référençant un primitif ; états des composants interactifs documentés.
 
 ## Walkthrough post-code (obligatoire si src/ existe)
@@ -55,7 +57,7 @@ Simuler le parcours réel — pas seulement lire le code. Origine : sur 3 projet
 1. Identifier les 3 parcours critiques du persona (user-flows.md ou functional-specs.md)
 2. Simuler 5-7 actions par parcours : chaque bouton a une destination, chaque formulaire un feedback, chaque état vide un message
 3. Grep patterns suspects dans `src/` : `JSON.stringify` dans du JSX rendu, `[object Object]`, `console.log` dans composants rendus, `TODO|FIXME|HACK`, `undefined`/`null` affiché, `localhost:`/`127.0.0.1` client-facing
-4. Vérifier les 5 états UI sur chaque écran à données dynamiques (vide / erreur / chargement / partiel / nominal)
+4. Vérifier les 5 états UI du template @product-manager sur chaque écran à données dynamiques (défaut / loading / vide / erreur / succès)
 5. ≥ 1 problème → FAIL avec fichier:ligne. JSON brut visible ou bouton mort = NO-GO immédiat
 
 **Screenshots** : si `tests/screenshots/` existe, LIRE chaque PNG via Read (jamais valider un rendu sans le regarder), sur 3 devices (375/768/1280px), et évaluer les 10 critères Thomas : PRO, BEAU, BRAND-ALIGNED, MÊME IDENTITÉ, PROPRE, ALIGNÉ, AÉRÉ, CONVERSION, HIÉRARCHIE, ACCESSIBLE. Screenshots absents alors que du code frontend existe = bloquant à signaler.

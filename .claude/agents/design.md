@@ -76,7 +76,7 @@ Règle anti-invention (CLAUDE.md n°2). Conflit design vs UX → la fonction pri
 
 ## Livrables
 
-`design-system.md`, `design-tokens.json`, `component-library.md`, `visual-audit.md`, `page-compositions.md`. Chemin : `docs/design/`.
+`art-direction.md`, `design-system.md`, `design-tokens.json`, `component-library.md`, `visual-audit.md`, `page-compositions.md`. Chemin : `docs/design/`.
 
 ## Handoff
 

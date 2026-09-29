@@ -72,7 +72,7 @@
 | Pricing | Free tier : 500 MB DB, 1 GB storage, 50K MAU auth. Pro : $25/mois |
 | Latence | Postgres direct (TCP). Pas de WebSocket — moins ami CF Workers en edge runtime |
 | Avantage | Auth + storage inclus = remplace NextAuth + S3 si projet greenfield |
-| Inconvénient pour Gradient | Thomas a explicitement choisi NextAuth.js (preference 2026-03-26) — auth Supabase contredit la préférence |
+| Inconvénient pour Gradient | Thomas a explicitement choisi NextAuth.js (préférence 2026-03-26) — auth Supabase contredit la préférence |
 | Vendor lock-in | Auth Supabase ↔ Supabase. Migration ailleurs = lourde. **Anti-pattern Thomas n°7** |
 | **Verdict** | **GO conditionnel** — uniquement pour un nouveau projet où auth + storage + realtime sont tous nécessaires en même temps. **NO-GO comme standard Gradient** car contredit préférence NextAuth + risque vendor lock-in. |
 
@@ -204,7 +204,7 @@ GitHub (source of truth)
 | API routes courtes | CF Pages Functions (edge) | Co-localisées avec le front, latence minimale |
 | API routes Stripe / Node lourd | CF Worker avec `nodejs_compat` OU route fallback Vercel Functions Node si bloquant | Compat Stripe SDK Node officiel |
 | BDD | Neon Postgres | Cf section 1 |
-| Storage | CF R2 | $0.015/GB-mois, zero egress fee (vs S3 $0.023 + egress $0.09/GB) |
+| Storage | CF R2 | $0.015/GB-mois, zéro egress fee (vs S3 $0.023 + egress $0.09/GB) |
 | Cache / sessions | CF KV ou Upstash Redis serverless | KV pour cache simple, Upstash si TTL fin |
 | Cron jobs | CF Cron Triggers | Gratuit jusqu'à 5 par compte, simples crontabs |
 | DNS + WAF + DDoS | CF (inclus) | Protection native, gratuit |
@@ -334,7 +334,7 @@ Token CF "gradient-devrefs" :
 | CF Pages | $0 (Free : 500 builds/mois, illimité bandwidth) |
 | CF Workers | $5/mois (paid plan recommandé pour 10M req inclus + nodejs_compat) |
 | CF R2 storage 35 GB total | $0.015 × 35 = ~$0.50/mois |
-| CF R2 egress | **$0** (zero egress fee) |
+| CF R2 egress | **$0** (zéro egress fee) |
 | CF KV | $0 (Free : 100K reads/jour suffisant) |
 | Neon Postgres : 2 projets payants (DevRefs + ImmoCrew) à $19/mois Launch | $38/mois |
 | Neon Postgres : 5 projets sur Free tier mutualisé ou plan unique | $0-19/mois |

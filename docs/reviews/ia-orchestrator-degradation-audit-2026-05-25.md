@@ -50,7 +50,7 @@ Verdict : **GO partiel** sur 4 actions P0/P1 — les 6 régressions ISSA + démo
 
 ### H5 — Volume du protocole de reprise sature l'attention (force : 2/3)
 
-**Mécanisme** : project-context.md "Memo de reprise" L95-156 + orchestrator.md 819L = ~1000L de protocole avant que le brief utilisateur soit traité. L'attention est consommée par la cérémonie.
+**Mécanisme** : project-context.md "Mémo de reprise" L95-156 + orchestrator.md 819L = ~1000L de protocole avant que le brief utilisateur soit traité. L'attention est consommée par la cérémonie.
 
 **Preuves** :
 - orchestrator.md 819L (cap WARN 900L atteint)
@@ -113,7 +113,7 @@ Les règles "applique défaut + signale", "audit empirique", "testing honesty" e
 
 ### A3 (P0, S) — Retrait : protocole de reprise 6 étapes
 
-**Description** : le protocole de reprise scripté (project-context → historique → gates → tableau → arbitrage → restitution, défini dans `orchestrator-reference.md` L323+ et reflété dans le "Memo de reprise" de `project-context.md` L95-156) est REMPLACÉ par un protocole adaptatif conditionnel : appliqué UNIQUEMENT si le brief contient un signal de reprise explicite ("on reprend", "session suivante", référence à mémo). Sinon : skip total.
+**Description** : le protocole de reprise scripté (project-context → historique → gates → tableau → arbitrage → restitution, défini dans `orchestrator-reference.md` L323+ et reflété dans le "Mémo de reprise" de `project-context.md` L95-156) est REMPLACÉ par un protocole adaptatif conditionnel : appliqué UNIQUEMENT si le brief contient un signal de reprise explicite ("on reprend", "session suivante", référence à mémo). Sinon : skip total.
 
 **Fichier** : `.claude/agents/orchestrator-reference.md` L323-329 — éditer la section "Protocole de reprise après interruption" pour ajouter en 1ère ligne : "Déclencheur OBLIGATOIRE : signal de reprise dans le brief. Sans signal, skip ce protocole entièrement." Effet : le protocole reste disponible mais ne s'auto-déclenche plus sur brief courant.
 

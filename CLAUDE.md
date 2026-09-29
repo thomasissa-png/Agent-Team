@@ -109,6 +109,6 @@ Agents dans `.claude/agents/`. Ambiguïté de domaine → trancher soi-même (fo
 - Protocoles communs, conventions de chemin, mémoire organisationnelle : `_base-agent-protocol.md`
 - Gates binaires 9 gates + G_PROOF + verdicts : `_gates.md`
 - Protocole de test du framework : `_base-agent-protocol.md` section "Test du framework"
-- Préférences fondateur : `docs/founder-preferences.md`
+- Préférences fondateur et stack par défaut (Cloudflare, Umami, VPS en renfort) : `docs/founder-preferences.md` (projets clients : `.claude/founder-preferences.md`)
 - Historique des sessions : `CHANGELOG.md`
 <!-- GRADIENT-AGENTS-END -->

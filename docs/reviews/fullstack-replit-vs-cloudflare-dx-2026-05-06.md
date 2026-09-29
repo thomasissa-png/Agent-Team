@@ -178,7 +178,7 @@ npm run build && next-on-pages  # build CI
 
 ### Top 3 pièges à anticiper (par ordre de probabilité)
 
-1. **Lib Node "qu'on n'avait pas vu venir"** — au moment d'intégrer une feature (PDF generation, image manipulation, scraping), on tombera sur une lib avec binding natif. Anticipation : pour chaque nouvelle feature DevRefs, **lister les libs candidates AVANT install** et vérifier compat edge sur https://workers.cloudflare.com/works ou en testant `wrangler pages dev`. Mitigation prévue : Browser Rendering API CF (puppeteer-as-a-service), CF Image Resizing (sharp), parsing PDF côté client si possible.
+1. **Lib Node "qu'on n'avait pas vu venir"** — au moment d'intégrer une feature (PDF génération, image manipulation, scraping), on tombera sur une lib avec binding natif. Anticipation : pour chaque nouvelle feature DevRefs, **lister les libs candidates AVANT install** et vérifier compat edge sur https://workers.cloudflare.com/works ou en testant `wrangler pages dev`. Mitigation prévue : Browser Rendering API CF (puppeteer-as-a-service), CF Image Resizing (sharp), parsing PDF côté client si possible.
 2. **NextAuth v5 + Neon + edge** — la combo fonctionne mais le tuning du `session strategy: 'jwt'` (pas `'database'` pour éviter les writes DB sur chaque hit) et la config du `trustHost: true` sur preview deploys (URLs *.pages.dev varient) sont des mines. Prévoir 2-3h de setup auth dédiées sur le pilote, documenter dans `dev-decisions.md` comme template Gradient.
 3. **`next-on-pages` build occasionnellement cassé sur upgrade Next.js mineur** — l'adapter est maintenu par CF mais avec lag sur les nouveaux features Next. Pinner Next.js et `next-on-pages` à des versions exactes (pas de `^`), upgrader manuellement avec test, et **ne pas faire `next dev` et `wrangler pages dev` en environnements de versions différentes**.
 
@@ -260,7 +260,7 @@ crons = ["*/5 * * * *"]  # ping Neon toutes les 5 min pour éviter scale-to-zero
 | Stripe | `stripe@latest` avec `Stripe.createSubtleCryptoProvider()` | SDK officiel, mode async pour edge. |
 | OpenAI / Anthropic | SDK officiels (compat edge documentée) | OK avec `nodejs_compat`. |
 | Email | **Resend** (`resend`) | API HTTP, edge-compat. React Email pour templates. |
-| Upload | **R2** via binding (`env.BUCKET.put()`) | Zero egress fee, sécurité par binding. UploadThing reste OK mais coût cumulé. |
+| Upload | **R2** via binding (`env.BUCKET.put()`) | Zéro egress fee, sécurité par binding. UploadThing reste OK mais coût cumulé. |
 | Image optimization | **Cloudflare Images** ($5/mois flat) ou `next/image unoptimized: true` + R2 | Sharp interdit edge. CF Images = simple, prédictible. |
 | Validation | `zod` | Edge-compat, déjà standard Gradient. |
 | Forms | `react-hook-form` + `@hookform/resolvers/zod` | Client-side, pas d'enjeu edge. |

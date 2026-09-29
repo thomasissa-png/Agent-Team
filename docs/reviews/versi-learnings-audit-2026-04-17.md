@@ -62,7 +62,7 @@ Standards 2026 vérifiés : Google SERP (48×48 min, recommandé multiple de 48)
 | 13 | MS Tile 310 wide | 310×150 | PNG | `/mstile-310x150.png` | `browserconfig.xml` | Windows wide tile |
 | 14 | MS Tile 310 | 310×310 | PNG | `/mstile-310x310.png` | `browserconfig.xml` | Windows large tile |
 | 15 | Safari pinned tab | vectoriel monochrome | SVG | `/safari-pinned-tab.svg` | `<link rel="mask-icon" href="..." color="#HEX">` | Safari macOS pinned tabs |
-| 16 | Theme color | — | hex | — | `<meta name="theme-color" content="#HEX">` | Mobile browser chrome |
+| 16 | Thème color | — | hex | — | `<meta name="theme-color" content="#HEX">` | Mobile browser chrome |
 | 17 | MS application tile color | — | hex | — | `<meta name="msapplication-TileColor" content="#HEX">` | Windows tile |
 | 18 | MS browserconfig ref | XML | XML | `/browserconfig.xml` | `<meta name="msapplication-config" content="/browserconfig.xml">` | Windows tiles config |
 | 19 | Web manifest | JSON | JSON | `/site.webmanifest` ou `/manifest.json` | `<link rel="manifest" href="/site.webmanifest">` | PWA / Android |

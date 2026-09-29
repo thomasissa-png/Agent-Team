@@ -1,162 +1,68 @@
 # Installer l'équipe Gradient Agents dans un projet
 
-Ce repo est le **repo source** de l'équipe Gradient Agents. Pour utiliser l'équipe dans un projet existant :
+Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et la mise à jour passent par deux scripts testés de bout en bout : `install.sh` et `update.sh`. Toujours les lancer **à la racine du repo git du projet** (`cd "$(git rev-parse --show-toplevel)"`), jamais dans un sous-dossier : Claude Code ne cherche `.claude/agents/` qu'à la racine.
 
-## Scénario A — Nouveau projet (pas encore de code)
+## Ce qui est installé
 
-Ouvrir une session Claude Code **sur le dossier du nouveau projet** et dire :
-
-> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un nouveau projet."
-
-Claude Code va :
-1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — installer `.claude/agents/` là, pas dans un sous-dossier
-2. Copier les 19 agents dans `.claude/agents/` à la racine du repo git
-3. Copier `.claude/settings.json` (permissions pré-approuvées pour les agents) — **indispensable** pour que les sous-agents puissent écrire des fichiers
-4. Copier le `CLAUDE.md` (instructions globales) à la racine du repo git
-5. Copier le template et créer `project-context.md` à la racine du repo git
-6. Créer la structure `docs/` et `src/` si absentes
-
-**Ensuite :** remplir `project-context.md` → demander "lance le projet" (routage automatique : Claude applique le protocole de coordination ; `@orchestrator` reste un déclencheur explicite valide).
-
-## Scénario B — Projet existant (code déjà en place)
-
-Ouvrir une session Claude Code **sur le projet existant** et dire :
-
-> "Installe l'équipe Gradient Agents depuis `/chemin/vers/Agent-Team` dans ce projet. C'est un projet existant, ne rien écraser."
-
-Claude Code va :
-1. **Détecter la racine du repo git** via `git rev-parse --show-toplevel` — c'est là que `.claude/agents/` DOIT être installé, PAS dans un sous-dossier du repo
-2. Copier les 19 agents dans `.claude/agents/` **à la racine du repo git** (crée le dossier s'il n'existe pas, ne touche pas aux agents déjà présents)
-3. Copier `.claude/settings.json` (permissions pré-approuvées) — **fusionner** avec le `settings.json` existant s'il y en a un (ajouter les permissions manquantes, ne pas écraser les permissions existantes)
-4. **Fusionner** le `CLAUDE.md` Gradient Agents avec le `CLAUDE.md` existant **à la racine du repo git** (ajouter les instructions en fin de fichier, ne pas écraser)
-5. Copier le template dans `templates/` et créer `project-context.md` à la racine du repo git
-6. **Ne pas toucher** à `src/`, `docs/`, `.replit`, `.github/`, `package.json` ni à aucun fichier existant
-
-> **ATTENTION — Piège fréquent :** si le projet est un sous-dossier d'un repo git parent (ex : `monorepo/mon-projet/`), les agents DOIVENT être installés à la racine du repo git (`monorepo/.claude/agents/`), PAS dans le sous-dossier. Claude Code cherche `.claude/agents/` uniquement à la racine du repo git détectée par `git rev-parse --show-toplevel`.
-
-**Différences clés sur un projet existant :**
-
-| Aspect | Nouveau projet | Projet existant |
+| Fichier | Rôle | Mise à jour |
 |---|---|---|
-| `CLAUDE.md` | Copié tel quel | **Fusionné** — les instructions Gradient sont ajoutées au CLAUDE.md existant |
-| `.claude/agents/` | Créé de zéro | Agents ajoutés sans écraser les agents custom déjà présents |
-| `src/` | Créé vide | **Pas touché** — le code existant est préservé |
-| `docs/` | Créé vide | **Pas touché** — les agents créeront leurs sous-dossiers au fur et à mesure |
-| `project-context.md` | Template vierge | Template vierge — **mais il faut documenter l'existant** (stack, décisions déjà prises, code en place) |
-| `package.json` | N'existe pas encore | **Pas touché** — les agents respectent les dépendances existantes |
+| `.claude/agents/*.md` | 19 agents + protocoles partagés (`_*.md`, pas des agents) | Écrasé |
+| `.claude/settings.json` | Permissions pré-approuvées (sans elles, les sous-agents ne peuvent pas écrire) | Écrasé |
+| `.claude/founder-preferences.md` | Préférences fondateur et **stack par défaut** (Cloudflare, Umami, VPS en renfort), lecture seule | Écrasé |
+| `.claude/prompts-library.html` | Bibliothèque des prompts, cherchée par le protocole d'orchestration | Écrasé |
+| `CLAUDE.md` | Règles globales entre les marqueurs `GRADIENT-AGENTS-START/END` | Section Gradient remplacée, contenu custom préservé |
+| `update.sh` | Script de mise à jour (se met à jour lui-même) | Écrasé |
+| `.githooks/` + `core.hooksPath` | Garde-fou taille de CLAUDE.md | Écrasé |
+| `project-context.md` | Modèle vide à remplir (prompt « Définir mon projet ») | **Jamais touché** s'il existe |
 
-**Ensuite :** remplir `project-context.md` en documentant ce qui existe déjà (stack actuelle, architecture, conventions de code, décisions passées) → invoquer l'agent adapté à la tâche ciblée.
+Jamais touchés : `docs/` (livrables), `src/` (code), `package.json`, agents custom (noms différents des 19).
 
-**Important :** sur un projet existant, décris simplement le besoin — Claude route automatiquement vers l'agent spécifique (fullstack pour du code, qa pour des tests, seo pour du référencement) plutôt que de relancer une planification complète.
-
-## Scénario C — Mise à jour (l'équipe est déjà installée)
-
-L'équipe Gradient Agents évolue régulièrement. Pour mettre à jour les agents dans un projet où ils sont déjà installés :
-
-### Option 1 — Script automatisé (recommandé)
-
-Si `update.sh` est déjà dans le projet :
+## Scénario A : nouveau projet
 
 ```bash
-bash update.sh        # mise à jour interactive (agent par agent)
-bash update.sh --all  # tout mettre à jour d'un coup
-bash update.sh --rollback  # annuler la dernière mise à jour
+git init   # si le dossier n'est pas encore un repo git
+curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/install.sh | bash
 ```
 
-Si `update.sh` n'est pas dans le projet, l'installer d'abord :
+Ensuite : lancer le prompt « Définir mon projet » du site (section Démarrage), puis décrire le besoin (« lance mon projet ») : le routage vers les agents est automatique.
+
+## Scénario B : projet existant
+
+Même commande. Le script ne touche ni à `docs/`, ni à `src/`, ni à un `project-context.md` existant, et fusionne `CLAUDE.md` (section Gradient ajoutée entre marqueurs, contenu existant préservé). Si `.claude/agents/` contient déjà les agents Gradient, c'est une **mise à jour** (scénario C), pas une installation.
+
+Ensuite : remplir `project-context.md` en documentant l'existant (stack, architecture, conventions, décisions passées), puis décrire le besoin.
+
+## Scénario C : mise à jour
+
+Toujours récupérer le dernier `update.sh` avant de le lancer : un ancien `update.sh` local peut ne pas savoir se mettre à jour lui-même.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/thomasissa-png/Agent-Team/main/update.sh -o update.sh && chmod +x update.sh
+bash update.sh --all        # tout mettre à jour
+bash update.sh              # agent par agent (interactif)
+bash update.sh --rollback   # restaurer les agents d'avant la dernière mise à jour
 ```
 
-### Option 2 — Via Claude Code (prompt à copier tel quel)
+Le script sauvegarde les agents dans `.claude/agents/.backup/`, retire les fichiers framework obsolètes (`moi.md`, `orchestrator-reference.md`, `orchestrator.md`), synchronise tout le tableau ci-dessus et réactive les hooks. Ne jamais le lancer dans le repo source Agent-Team lui-même.
 
-Ouvrir une session Claude Code **sur le projet cible** et copier ce prompt :
+**Après la mise à jour** : comparer `project-context.md` au modèle (`templates/project-context.md` du repo source) et remplir les nouveaux champs éventuels.
 
-> Mets à jour l'équipe Gradient Agents. Voici les étapes exactes à suivre :
->
-> 1. `git clone https://github.com/thomasissa-png/Agent-Team -b main /tmp/Agent-Team 2>/dev/null || (cd /tmp/Agent-Team && git pull origin main)`
-> 2. `cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/` — écraser tous les agents
-> 3. `cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json` — écraser les permissions
-> 4. Pour le CLAUDE.md, vérifie si le fichier contient le marqueur `<!-- GRADIENT-AGENTS-START -->` :
->    - **Si oui** : remplace tout le bloc entre `<!-- GRADIENT-AGENTS-START -->` et `<!-- GRADIENT-AGENTS-END -->` par le contenu du CLAUDE.md source (qui contient ces mêmes marqueurs)
->    - **Si non** : le CLAUDE.md actuel est soit un ancien CLAUDE.md Gradient (sans marqueurs), soit un CLAUDE.md custom du projet. Demande-moi si je veux le remplacer entièrement ou ajouter la section Gradient en fin de fichier
-> 5. `cp /tmp/Agent-Team/update.sh ./update.sh && chmod +x update.sh` — installer le script de mise à jour
-> 6. Ne touche PAS à `project-context.md`, `docs/`, `src/`, `package.json`
-
-### Option 3 — Manuelle
+## Méthode manuelle (secours, sans les scripts)
 
 ```bash
-cd $(git rev-parse --show-toplevel)
-
-# 1. Récupérer la dernière version
-git clone https://github.com/thomasissa-png/Agent-Team -b main /tmp/Agent-Team 2>/dev/null || \
-  (cd /tmp/Agent-Team && git pull)
-
-# 2. Écraser les agents
+cd "$(git rev-parse --show-toplevel)"
+git clone --depth 1 https://github.com/thomasissa-png/Agent-Team -b main /tmp/Agent-Team
+mkdir -p .claude/agents .githooks
 cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
-
-# 3. Mettre à jour les permissions
+rm -f .claude/agents/moi.md .claude/agents/orchestrator-reference.md .claude/agents/orchestrator.md
 cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
-
-# 4. Remplacer le CLAUDE.md entièrement (si pas de contenu custom)
-cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
-
-# 4bis. OU fusionner (si le projet a du contenu custom dans CLAUDE.md)
-#   → Garder le contenu custom du projet
-#   → Remplacer uniquement la section entre les marqueurs GRADIENT-AGENTS-START/END
-#   → Si pas de marqueurs : ajouter le contenu de Agent-Team/CLAUDE.md en fin de fichier
-
-# 5. Installer update.sh pour les prochaines fois
+cp /tmp/Agent-Team/docs/founder-preferences.md .claude/founder-preferences.md
+cp /tmp/Agent-Team/index.html .claude/prompts-library.html
 cp /tmp/Agent-Team/update.sh ./update.sh && chmod +x update.sh
-
-# 6. Vérifier les nouveaux champs du template
-diff /tmp/Agent-Team/templates/project-context.md project-context.md
-```
-
-### Ce qui est écrasé vs préservé
-
-| Écrasé | Préservé |
-|---|---|
-| `.claude/agents/*.md` (prompts améliorés) | `project-context.md` (historique projet) |
-| `.claude/settings.json` (permissions) | `docs/` (livrables des agents) |
-| `CLAUDE.md` (nouvelles règles) | `src/` (code du projet) |
-| `templates/project-context.md` (template) | Agents custom (noms différents des 19 Gradient) |
-
-**Après la mise à jour :** vérifier que `project-context.md` est toujours compatible avec le nouveau template. Si de nouveaux champs ont été ajoutés, les remplir.
-
-## Variante — Si le repo Agent-Team n'est pas cloné localement
-
-> "Clone `<url-du-repo-agent-team>` dans /tmp et installe l'équipe Gradient Agents dans ce projet. C'est un [nouveau projet / projet existant]."
-
-## Méthode manuelle — Copier les fichiers à la main
-
-Si tu préfères ne pas passer par Claude Code :
-
-```bash
-# 0. Se placer à la racine du repo git (IMPORTANT)
-cd $(git rev-parse --show-toplevel)
-
-# 1. Cloner le repo Agent-Team
-git clone <url-agent-team> /tmp/Agent-Team
-
-# 2. Copier les agents (à la RACINE du repo git, pas dans un sous-dossier)
-mkdir -p .claude/agents
-cp /tmp/Agent-Team/.claude/agents/*.md .claude/agents/
-
-# 2b. Copier les permissions (INDISPENSABLE pour que les agents puissent écrire)
-cp /tmp/Agent-Team/.claude/settings.json .claude/settings.json
-
-# 3. CLAUDE.md
-#    → Nouveau projet : copier directement
-cp /tmp/Agent-Team/CLAUDE.md ./CLAUDE.md
-#    → Projet existant : ajouter en fin de fichier
-cat /tmp/Agent-Team/CLAUDE.md >> ./CLAUDE.md
-
-# 4. Template et project-context
-mkdir -p templates
-cp /tmp/Agent-Team/templates/project-context.md templates/
-cp templates/project-context.md ./project-context.md
-# → Remplir project-context.md avant de lancer un agent
+cp /tmp/Agent-Team/.githooks/* .githooks/ && chmod +x .githooks/* && git config core.hooksPath .githooks
+[ -f project-context.md ] || cp /tmp/Agent-Team/templates/project-context.md ./project-context.md
+# CLAUDE.md : nouveau projet → copier ; existant → remplacer uniquement le bloc GRADIENT-AGENTS-START/END
+# (ou l'ajouter en fin de fichier s'il n'y a pas encore de marqueurs)
 ```
 
 ## Structure résultante
@@ -164,24 +70,20 @@ cp templates/project-context.md ./project-context.md
 ```
 ton-projet/
 ├── .claude/
-│   ├── agents/          ← les 19 agents Gradient
-│   └── settings.json    ← permissions pré-approuvées (Write, Edit, Bash, etc.)
-├── templates/
-│   └── project-context.md  ← template vierge (référence)
-├── project-context.md      ← contexte rempli pour CE projet
-├── CLAUDE.md               ← instructions Gradient (seul ou fusionné avec l'existant)
-├── docs/                   ← livrables des agents (créés au fur et à mesure)
-└── src/                    ← code existant ou à créer
+│   ├── agents/                 ← 19 agents + protocoles partagés (_*.md)
+│   ├── settings.json           ← permissions pré-approuvées
+│   ├── founder-preferences.md  ← préférences + stack par défaut (lecture seule)
+│   └── prompts-library.html    ← bibliothèque des 91 prompts
+├── .githooks/                  ← garde-fou CLAUDE.md
+├── CLAUDE.md                   ← règles Gradient (seules ou fusionnées)
+├── project-context.md          ← contexte de CE projet
+├── update.sh
+├── docs/                       ← livrables des agents
+└── src/                        ← code
 ```
 
-## Invocation des agents dans Claude Code
+## Invocation des agents
 
-Dans une session Claude Code sur ton projet :
-
-- **Par défaut** : demander une tâche en langage naturel — Claude route automatiquement vers le bon agent (CLAUDE.md présent requis)
-- **Override explicite** : mentionner `@fullstack`, `@design`, etc. pour forcer un agent précis
-- **Via le menu** : taper `/` puis sélectionner l'agent dans la liste
-
-## Mise à jour des agents
-
-Voir **Scénario C** ci-dessus pour la procédure complète (prompt à copier, méthode manuelle, ce qui est préservé vs écrasé).
+- **Par défaut** : décrire la tâche en langage naturel, Claude route vers le bon agent (CLAUDE.md requis)
+- **Override** : mentionner `@fullstack`, `@design`, etc. pour forcer un agent
+- **Menu** : taper `/agents` pour voir la liste

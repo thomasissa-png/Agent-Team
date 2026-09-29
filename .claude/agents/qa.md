@@ -2,7 +2,7 @@
 name: qa
 description: "Tests unitaires Vitest, E2E Playwright, intégration, pipeline CI/CD, audit qualité, non-régression"
 model: claude-opus-5-5
-version: "5.0"
+version: "5.1"
 tools:
   - Read
   - Write
@@ -38,7 +38,7 @@ Chaque user story de functional-specs.md a ≥ 1 test E2E/intégration, document
 ## Pipeline pre-deploy (obligatoire, dans l'ordre)
 
 1. `tsc --noEmit` 0 erreur → 2. ESLint 0 erreur → 3. unit Vitest PASS → 4. E2E critiques PASS → 5. Grep clés placeholders (`sk_test_`, `pk_test_`, `="..."`, `=xxx`) dans src/ = zéro résultat. Un échec = déploiement bloqué.
-CI GitHub Actions : lint → unit → integration → E2E → build ; futurs projets CF : + step deploy `cloudflare/wrangler-action@v3` (preview sur PR, prod sur main) ; legacy Replit : stop à build. Husky + lint-staged en pre-commit. Branch protection : merge bloqué si rouge. Pipeline complet < 10 min.
+CI GitHub Actions : lint → unit → integration → E2E → build (lint explicite : `next build` ne lint plus depuis Next.js 16) ; futurs projets CF : + step deploy `cloudflare/wrangler-action@v3` (preview sur PR, prod sur main) ; legacy Replit : stop à build. Husky + lint-staged en pre-commit. Branch protection : merge bloqué si rouge. Pipeline complet < 10 min.
 
 ## Checklists de domaine
 
@@ -53,6 +53,7 @@ CI GitHub Actions : lint → unit → integration → E2E → build ; futurs pro
 **Accessibilité (WCAG 2.2 AA)** : axe-core dans CHAQUE test E2E (échec si violation A/AA), navigation clavier dédiée par parcours (ordre, focus visible, pas de piège), contrastes 4.5:1 (y compris texte sur images/gradients), landmarks, zoom 200%, hiérarchie headings.
 **Résilience** : offline (`context.setOffline(true)` — message clair, pas de perte de saisie), timeout API externe mocké (pas de spinner infini), 429 expliqué, schema serveur inattendu (error boundary, pas de crash), session expirée en plein formulaire (redirect avec contexte préservé), modification concurrente 2 onglets.
 **Outputs B2B** (si applicable) : PDF (formatage, données, taille), CSV (UTF-8 BOM, échappement), liens de partage (accès, expiration, révocation, rendu non-authentifié), CSS print.
+**Features IA** : en E2E, le LLM est mocké (réponses fixes, déterministes) pour tester l'UI et les états : attente longue, streaming, échec, refus (`stop_reason: refusal`), timeout, sortie hors schéma. La qualité des réponses se teste par les évals de @ia, jamais par un E2E sur le vrai modèle (flaky et coûteux). Un smoke test [LIVE] sur le vrai modèle avant release.
 **Tracking** : Grep statique de chaque event du tracking-plan + interception dynamique Playwright en E2E (ordre, propriétés non-null typées, couverture funnel, détection d'events orphelins non documentés).
 
 ## Données adversariales (obligatoire)
@@ -82,7 +83,8 @@ Règle anti-invention (CLAUDE.md n°2).
 
 □ Parcours d'achat complet testé E2E (CTA → auth → checkout Stripe → retour) pour CHAQUE persona ? `lib/stripe.ts` = UI pricing exactement ?
 □ Chaque chemin critique du persona couvert par un E2E ? Chaque US dans la matrice de traçabilité ?
-□ Galeries : aucune image placeholder identique entre items ? Témoignages : aucun nom de persona du projet ?
+□ Galeries : aucune image placeholder identique entre items ? Témoignages : aucun témoignage inventé (Grep des noms de personas + vérification de la source) ?
+□ Features IA : états attente/échec/refus/hors-schéma testés avec LLM mocké ?
 □ axe-core + clavier intégrés aux E2E ? Sécurité XSS/CSRF/IDOR/rate-limit couverte ?
 □ Events tracking vérifiés statique + dynamique ?
 □ Screenshots lus visuellement (critères Thomas), pas seulement pixel-diff ?

@@ -82,7 +82,7 @@ clone_repo() {
   # Tentative avec sparse checkout (repos publics et privés avec auth)
   if git clone --filter=blob:none --sparse --quiet -b "$DETECTED_BRANCH" "$REPO_URL" "$TEMP_DIR/repo" 2>/dev/null; then
     cd "$TEMP_DIR/repo"
-    git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /templates/ /CLAUDE.md /update.sh /.githooks/
+    git sparse-checkout set --no-cone /.claude/agents/ /.claude/settings.json /templates/ /CLAUDE.md /update.sh /.githooks/ /docs/founder-preferences.md /index.html
     echo -e "${GREEN}✓ Agents téléchargés (sparse checkout)${NC}"
   else
     # Fallback : clone complet si sparse échoue (certaines configs git anciennes)
@@ -198,6 +198,24 @@ install_update_script() {
   fi
 }
 
+install_shared_refs() {
+  local target_dir
+  target_dir="$(pwd)"
+  if [ -n "${OLDPWD:-}" ]; then
+    target_dir="$OLDPWD"
+  fi
+  mkdir -p "$target_dir/.claude"
+  # Préférences fondateur + bibliothèque de prompts : lues par les agents, absentes sans cette copie
+  if [ -f "$TEMP_DIR/repo/docs/founder-preferences.md" ]; then
+    cp "$TEMP_DIR/repo/docs/founder-preferences.md" "$target_dir/.claude/founder-preferences.md"
+    echo -e "${GREEN}✓ .claude/founder-preferences.md installé (stack par défaut, préférences fondateur)${NC}"
+  fi
+  if [ -f "$TEMP_DIR/repo/index.html" ]; then
+    cp "$TEMP_DIR/repo/index.html" "$target_dir/.claude/prompts-library.html"
+    echo -e "${GREEN}✓ .claude/prompts-library.html installé (bibliothèque de prompts)${NC}"
+  fi
+}
+
 install_githooks() {
   local target_dir
   target_dir="$(pwd)"
@@ -260,5 +278,6 @@ install_settings_json
 install_claude_md
 install_project_context
 install_update_script
+install_shared_refs
 install_githooks
 print_summary

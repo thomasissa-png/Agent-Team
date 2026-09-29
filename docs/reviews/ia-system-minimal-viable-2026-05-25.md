@@ -17,7 +17,7 @@ Audit froid, parallèle à @elon / @qa / @moi. Perspective : qu'est-ce qu'on ret
 
 **TOTAL framework** : ~**8 100 L** (hors project-context, qui est data, pas framework).
 
-Frequence d'usage S1-S5 (historique project-context.md, 27 interventions) :
+Fréquence d'usage S1-S5 (historique project-context.md, 27 interventions) :
 - orchestrator 1, reviewer 2, elon 2, ia 1, data-analyst 1, agent-factory 1, fullstack 1, creative-strategy 1, qa 1
 - **Jamais utilisés sur les 5 dernières sessions** : copywriter, design, geo, growth, infrastructure, legal, moi, product-manager, sales-enablement, seo, social, ux
 
@@ -27,7 +27,7 @@ Frequence d'usage S1-S5 (historique project-context.md, 27 interventions) :
 Sous le cap de 125 L, mais le tableau "Routage agents" (22 L) + "Modèles" (3 L) + "Règles communes condensé" (12 L) dupliquent ce qui est dans `_base-agent-protocol.md` et les frontmatters. **Cible : 80 L.** Économie : **-28 L**.
 
 ### orchestrator.md (831 L) — CONDENSE -60%
-Monstrueux. Critères de qualité par champ (8 L tableau + 20 L protocole), boucle qualité 4.5/5, gates de validation, mapping subagent_type (déjà dans reference), boucle reviewer, boucle UX post-impl, agent-factory triggers — **tout est de la procédure que l'orchestrateur exécute, pas du contexte qu'il a besoin de relire à chaque invocation**. Un orchestrateur Opus n'a pas besoin de 831 L pour piéger un brief. **Cible : 330 L** (règle d'ouverture + identité + mapping court + protocole phases + handoff). Économie : **-500 L**.
+Monstrueux. Critères de qualité par champ (8 L tableau + 20 L protocole), boucle qualité 4.5/5, gates de validation, mapping subagent_type (déjà dans référence), boucle reviewer, boucle UX post-impl, agent-factory triggers — **tout est de la procédure que l'orchestrateur exécute, pas du contexte qu'il a besoin de relire à chaque invocation**. Un orchestrateur Opus n'a pas besoin de 831 L pour piéger un brief. **Cible : 330 L** (règle d'ouverture + identité + mapping court + protocole phases + handoff). Économie : **-500 L**.
 
 ### orchestrator-reference.md (355 L) — FUSIONNE avec orchestrator.md
 Référence externe créée pour soulager orchestrator.md. Mais orchestrator.md fait quand même 831 L. Le split a doublé la surface au lieu de la réduire. **Garder uniquement le mapping subagent_type (30 L) dans orchestrator.md, supprimer le reste.** Économie : **-325 L**.

@@ -4,6 +4,19 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-29 (S6 suite) : 8 agents restants, audit système, prompts échantillonnés, stack et accents
+
+1. **8 agents restants** (7 en v5.1, agent-factory au niveau) : infrastructure (Workers + OpenNext, `next-on-pages` déprécié, TTI retiré, quotas non mémorisés, VPS en renfort, Umami), qa (features IA testées avec LLM mocké, lint explicite en CI), reviewer (états UI alignés PM, contrôles IA et écriture), legal (EAA, avis clients, facture électronique, AI Act à vérifier à date, exemption CNIL), data-analyst (Umami par défaut, instrumentation IA), sales-enablement (preuves réelles, règles CNIL prospection B2B), social (stats sourcées, label contenu IA, algorithmes à reconfirmer). Descriptions fullstack/growth/infrastructure ramenées sous 120 caractères (routage automatique).
+2. **Trou système corrigé : préférences et bibliothèque absentes des projets clients.** Le protocole lisait `docs/founder-preferences.md` et Greppait `index.html`, deux fichiers jamais installés : les préférences (tirets, stack) étaient ignorées en silence. install.sh et update.sh posent désormais `.claude/founder-preferences.md` et `.claude/prompts-library.html` ; protocoles et CLAUDE.md pointent dessus. Testé bout en bout.
+3. **Stack par défaut explicite** (founder-preferences.md, section dédiée) : Cloudflare, Umami, VPS de Thomas en renfort, auth open source. Préférences périmées retirées ou marquées (PostgreSQL Replit obligatoire, testeurs sur tous les angles, NextAuth). Template project-context, agents et prompts alignés (Umami au lieu de GA4/Plausible/Mixpanel, Workers au lieu de Pages).
+4. **Écriture client-facing centralisée** dans `_base-agent-protocol.md` (tirets, tics d'écriture IA, zéro témoignage inventé) au lieu de copywriter.md ; marqueurs de collecte honnêtes (`[À MESURER]`, `[À COLLECTER]`…) reconnus comme non-placeholders ; G13 ajouté au minimum des gates de fin de livrable ; brief-first du protocole aligné sur CLAUDE.md (3 puces).
+5. **Accents** : plus de 2 000 corrections (project-context, CHANGELOG, docs, site) par dictionnaire de mots sans ambiguïté + tournures « à » + participes après « été ». Nouvelle garde bloquante dans validate-framework (locale UTF-8, exemples volontaires exclus).
+6. **Garde JavaScript du site** : la suite passait au vert avec une bibliothèque cassée (backtick dans un prompt, bug réel attrapé pendant cette session). validate-framework parse désormais le JS de index.html.
+7. **10 prompts tirés au sort** : 3 au niveau (reporting investisseurs, specs, définir mon projet après stack), 7 corrigés (check-up : contrôles IA/écriture/stack ; parcours : CTAs selon Vitrine/Funnel au lieu de conviction-first universel ; design system : numérotation cassée + anti-look IA ; revue croisée : le reviewer ne corrige plus lui-même ; checklist lancement : Bing + IndexNow + Umami ; monitoring UX : Umami reste l'outil de stats ; reprise : détection d'une équipe non mise à jour). Termes périmés retirés de toute la bibliothèque.
+8. **README et INSTALL réécrits** : 19 agents et leurs vrais modèles, installation par scripts, méthode manuelle complète.
+
+---
+
 ## 2026-09-29 (S6 suite) : revue qualité post-5.5 de 11 agents
 
 Revue menée par la session principale (pas déléguée), agent par agent. 10 agents en v5.1, creative-strategy jugé au niveau (inchangé).
@@ -53,23 +66,23 @@ Revue menée par la session principale (pas déléguée), agent par agent. 10 ag
 
 ## Session du 2026-03-22 — 20 nouveaux prompts (39→59) post-audits de couverture
 
-**Ce qui a ete fait :**
+**Ce qui a été fait :**
 
 1. **Consolidation de 5 audits de couverture** : @elon (6/10), @creative-strategy (5.5/10), @growth (3/10), @product-manager, @design — identification des prompts manquants avec deduplication croisee
-2. **20 nouveaux prompts ajoutes** dans `index.html` (39→59 prompts) :
+2. **20 nouveaux prompts ajoutés** dans `index.html` (39→59 prompts) :
    - Phase 0 (6) : Valider la demande, Proposition de valeur, Messaging matrix, Pricing, Scope MVP, Storytelling
-   - Phase 1 (4) : Direction artistique, Identite verbale, Specs interaction composants, Specs responsive
+   - Phase 1 (4) : Direction artistique, Identité verbale, Specs interaction composants, Specs responsive
    - Phase 2 (2) : Setup initial projet, Audit handoff design→code
-   - Phase 3 (1) : Strategie de contenu & calendrier editorial
+   - Phase 3 (1) : Stratégie de contenu & calendrier editorial
    - Phase 4 (5) : Plan de lancement, Referral, Retention/churn, PLG, PMF
    - Raccourcis (2) : Feedback & roadmap v2, A/B testing
 3. **Standard 9/10 applique** : chaque prompt inclut le pattern d'autonomie ("Lis [fichier]. S'il n'existe pas, pose-moi les questions..."), les chemins de livrables explicites, le chainage multi-agents avec handoffs, et les notes anti-timeout quand pertinent
 4. **8 prompts dedupliques** : Naming, Unit economics, Scalabilite technique, Sprint planning, Retrospective, Upsell/expansion, Scale 1K-10K, Prototype interactif — fusionnes ou integres dans les prompts existants/nouveaux
-5. **Plan d'orchestration** : `docs/orchestration-plan-new-prompts.md` mis a jour avec la liste consolidee, la methode de deduplication, et les prompts non retenus avec justification
+5. **Plan d'orchestration** : `docs/orchestration-plan-new-prompts.md` mis à jour avec la liste consolidee, la méthode de deduplication, et les prompts non retenus avec justification
 
-**Decisions de conception :**
-- Priorite aux prompts couvrant les phases manquantes du cycle business (retention, monetisation, validation marche) plutot qu'a la granularite operationnelle (sprint planning, retrospective)
-- Les prompts de scale (1K→10K) et d'expansion revenue integres dans PMF et PLG plutot qu'isoles
+**Décisions de conception :**
+- Priorité aux prompts couvrant les phases manquantes du cycle business (retention, monetisation, validation marche) plutôt qu'a la granularite opérationnelle (sprint planning, retrospective)
+- Les prompts de scale (1K→10K) et d'expansion revenue integres dans PMF et PLG plutôt qu'isoles
 - Le naming reste geerable via le prompt brand-platform existant (ajout optionnel si demande)
 
 ---

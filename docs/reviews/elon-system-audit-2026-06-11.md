@@ -140,6 +140,6 @@ $ grep -c "V1 atteinte" docs/perf-trends.md
 → 0
 
 # @moi supprimé S4 mais Score de fidélité encore présent (résidu mort)
-$ grep -n "Score de fidelite @moi" project-context.md
-→ 90:## Score de fidelite @moi
+$ grep -n "Score de fidélité @moi" project-context.md
+→ 90:## Score de fidélité @moi
 ```

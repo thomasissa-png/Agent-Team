@@ -38,7 +38,7 @@ Faiblesses : (a) référence "32 gates G1-G32" répétée 3x mais G32 jamais nom
 
 **Patch 1.1 — Étape 4 (l.959), nommer G32**
 - AVANT : `(32 gates G1-G32 incluant G31 Favicon Coverage et G32 Typographie FR)`
-- APRÈS : `(32 gates G1-G32 incluant G31 Favicon Coverage 12 fichiers + 7 balises et G32 Typographie FR : guillemets francais + apostrophes typographiques + insecables)`
+- APRÈS : `(32 gates G1-G32 incluant G31 Favicon Coverage 12 fichiers + 7 balises et G32 Typographie FR : guillemets français + apostrophes typographiques + insécables)`
 
 **Patch 1.2 — Étape 5.3 (l.966), généraliser**
 - AVANT : `Pour Versi spécifiquement (21+ sessions) : MODE DRY-RUN OBLIGATOIRE.`
@@ -46,7 +46,7 @@ Faiblesses : (a) référence "32 gates G1-G32" répétée 3x mais G32 jamais nom
 
 **Patch 1.3 — Étape 5 entête (l.963), ajouter caps explicites**
 - AVANT : `Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions) :`
-- APRÈS : `Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions, caps cmd n°8 : CLAUDE.md 125L / lessons-learned 80L / project-context 250L hors memo+historique) :`
+- APRÈS : `Étape 5 — Audit TTL post-migration (BLOQUANT pour projets >= 5 sessions, caps cmd n°8 : CLAUDE.md 125L / lessons-learned 80L / project-context 250L hors mémo+historique) :`
 
 ---
 
@@ -75,7 +75,7 @@ Faiblesses : (a) Étape 5d.2 mentionne "5 sessions OU 90 jours" — corrige cmd 
 
 **Patch 2.2 — Étape 5d.4 (l.3577), inclure index.html dans net-zero**
 - AVANT : `Vérification net-zero : compter les lignes ajoutées dans CLAUDE.md, agents et gates cette session.`
-- APRÈS : `Verification net-zero : compter les lignes ajoutees dans CLAUDE.md, agents, gates ET index.html (prompts) cette session.`
+- APRÈS : `Verification net-zero : compter les lignes ajoutées dans CLAUDE.md, agents, gates ET index.html (prompts) cette session.`
 
 ---
 
@@ -96,19 +96,19 @@ Faiblesses : (a) Étape 5d.2 mentionne "5 sessions OU 90 jours" — corrige cmd 
 
 **Moyenne : 8.9/10. Verdict : GO avec patches.**
 
-Faiblesses : (a) Étape 0 ne pré-checke pas index.html (cap implicite absent — pourtant inflation prompts est un risque réel), (b) Étape 4 cohérence ne vérifie pas G31/G32 alors que ce serait l'occasion de détecter une régression typo/favicon, (c) Étape 0 cap project-context "> 400 lignes au total" est ambigu vs cmd n°8 qui dit "250 hors memo+historique" — incohérence avec P1 patché.
+Faiblesses : (a) Étape 0 ne pré-checke pas index.html (cap implicite absent — pourtant inflation prompts est un risque réel), (b) Étape 4 cohérence ne vérifie pas G31/G32 alors que ce serait l'occasion de détecter une régression typo/favicon, (c) Étape 0 cap project-context "> 400 lignes au total" est ambigu vs cmd n°8 qui dit "250 hors mémo+historique" — incohérence avec P1 patché.
 
 **Patch 3.1 — Étape 0 (l.3609), aligner seuil project-context**
 - AVANT : `project-context.md (cap 250 hors historique) — si > 400 lignes au total : risque de bloat historique`
-- APRÈS : `project-context.md (cap 250 hors memo+historique, cmd n°8) — si > 400 lignes au total OU > 250 hors memo+historique : risque bloat, audit TTL recommande`
+- APRÈS : `project-context.md (cap 250 hors mémo+historique, cmd n°8) — si > 400 lignes au total OU > 250 hors mémo+historique : risque bloat, audit TTL recommande`
 
 **Patch 3.2 — Étape 4 (l.3644), ajouter check G31/G32 si livrable web/UI**
 - AVANT : `Si un drift est détecté, signale-le avec les fichiers concernés.`
-- APRÈS : `Si un drift est detecte, signale-le avec les fichiers concernes. Si livrable web/UI present (src/app, src/pages, public/) : verifier G31 (12 favicons + 7 balises HTML) et G32 (guillemets francais, apostrophes typo, espaces insecables FR).`
+- APRÈS : `Si un drift est detecte, signale-le avec les fichiers concernés. Si livrable web/UI present (src/app, src/pages, public/) : vérifier G31 (12 favicons + 7 balises HTML) et G32 (guillemets français, apostrophes typo, espaces insécables FR).`
 
 ---
 
-### P4 — Card HTML "Équipe déjà installée" (Scenario C)
+### P4 — Card HTML "Équipe déjà installée" (Scénario C)
 
 | # | Critère | Note |
 |---|---|---|
@@ -129,7 +129,7 @@ Faiblesses : (a) data-text bouton (l.3824) est très long (1 paragraphe, ~250 mo
 
 **Patch 4.1 — data-text bouton (l.3824), condenser et préciser caps**
 - AVANT : `...WARNING : si docs/lessons-learned.md local > 80 lignes, audit TTL sera proposé au prochain prompt de reprise.`
-- APRÈS : `...WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors memo+historique au prochain prompt de reprise.`
+- APRÈS : `...WARNING caps cmd n8 : audit TTL propose si lessons-learned > 80L OU CLAUDE.md > 125L OU project-context > 250L hors mémo+historique au prochain prompt de reprise.`
 
 **Patch 4.2 — em microcopie (l.3825), aligner sur tous les caps**
 - AVANT : `Audit TTL local proposé si lessons > 80L.`
@@ -137,17 +137,17 @@ Faiblesses : (a) data-text bouton (l.3824) est très long (1 paragraphe, ~250 mo
 
 **Patch 4.3 — Étape 4 (l.3829), généraliser projets**
 - AVANT : `Pour les projets avec ≥ 5 sessions (Versi, ISSA, Sarani) :`
-- APRÈS : `Pour les projets avec >= 5 sessions (verifier via le memo de reprise ou le compteur historique) :`
+- APRÈS : `Pour les projets avec >= 5 sessions (vérifier via le mémo de reprise ou le compteur historique) :`
 
 ---
 
 ## 3. Risques transverses
 
-1. **Incohérence des seuils caps** entre P1, P2, P3, P4 : "250 hors historique", "250 hors memo+historique", "400 lignes au total". Source unique : cmd n°8 = 250 hors memo de reprise ET historique. Tous les prompts doivent converger vers cette formule. Patches 1.3, 3.1, 4.1, 4.2 alignent.
+1. **Incohérence des seuils caps** entre P1, P2, P3, P4 : "250 hors historique", "250 hors mémo+historique", "400 lignes au total". Source unique : cmd n°8 = 250 hors mémo de reprise ET historique. Tous les prompts doivent converger vers cette formule. Patches 1.3, 3.1, 4.1, 4.2 alignent.
 2. **G32 sous-spécifiée** : G31 a sa formule (12 favicons + 7 balises) mais G32 est citée nominalement sans critère vérifiable. Risque : agent ne sait pas comment auditer. Patch 1.1 corrige côté P1 ; recommandation transverse : enrichir la définition dans `_gates.md` (hors scope ce rapport).
 3. **Hard-coding de noms de projets** (Versi, ISSA, Sarani) dans P1 et P4 : crée une dette de maintenance. Patches 1.2 et 4.3 généralisent.
 4. **Net-zero ignore index.html** : les prompts pèsent ~3700 lignes, ajout silencieux possible à chaque session sans contre-mesure. Patch 2.2 inclut index.html dans le compteur.
-5. **Absence de verification G31/G32 en pré-check de session** : régression typographique ou favicon possible entre sessions sans détection. Patch 3.2 corrige.
+5. **Absence de vérification G31/G32 en pré-check de session** : régression typographique ou favicon possible entre sessions sans détection. Patch 3.2 corrige.
 6. **Pré-check anti-dérive ne s'applique qu'à la reprise** (P3) : un projet ouvert en continu sans reprise échappe au check. Recommandation hors scope : ajouter un pré-check léger dans @orchestrator au démarrage de toute phase.
 
 ---
@@ -171,4 +171,4 @@ Top 3 corrections prioritaires :
 **Handoff -> @orchestrator**
 - Fichiers produits : `/home/user/Agent-Team/docs/reviews/reviewer-prompts-audit-2026-04-17.md`
 - Décisions : GO conditionnel sur 10 patches. Aucun prompt 10/10 en l'état. P4 le plus faible (8.0), P2 le plus solide (8.9).
-- Points d'attention : aligner la formulation du cap project-context dans les 4 prompts (250 hors memo+historique). Enrichir definition G32 dans `_gates.md` (hors scope ce rapport, recommandation).
+- Points d'attention : aligner la formulation du cap project-context dans les 4 prompts (250 hors mémo+historique). Enrichir definition G32 dans `_gates.md` (hors scope ce rapport, recommandation).

@@ -81,10 +81,10 @@
 
 | Prompt | Localisation | Verdict | Delta requis |
 |---|---|---|---|
-| P1 — Migrer projet existant | index.html ~L908 | À METTRE À JOUR | Ajouter étape "audit TTL lessons-learned post-update" + verifier alignement 32 gates G1-G32 + appliquer favicon-checklist |
+| P1 — Migrer projet existant | index.html ~L908 | À METTRE À JOUR | Ajouter étape "audit TTL lessons-learned post-update" + vérifier alignement 32 gates G1-G32 + appliquer favicon-checklist |
 | P2 — Clôturer ma session | index.html ~L3473 | À METTRE À JOUR | Ajouter section "Commandement n°8 net-zero" : audit TTL, check cap 80L, promote-or-archive, update CHANGELOG delta |
 | P3 — Démarrer nouvelle session (reprise) | index.html ~L3568 | À METTRE À JOUR | Ajouter pré-check caps bloquant : CLAUDE.md ≤125L, lessons ≤80L, _gates 32 gates |
-| P4 — Scenario C MAJ équipe installée | index.html ~L3784 | À METTRE À JOUR | Ajouter mention 8 changements 2026-04-17 + warning "lessons-learned local AUDITÉ post-update — risque archivage massif si > 80L" |
+| P4 — Scénario C MAJ équipe installée | index.html ~L3784 | À METTRE À JOUR | Ajouter mention 8 changements 2026-04-17 + warning "lessons-learned local AUDITÉ post-update — risque archivage massif si > 80L" |
 
 **Delta exact P2 (à insérer après section "Mettre à jour project-context.md")** :
 ```

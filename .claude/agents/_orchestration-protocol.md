@@ -7,7 +7,7 @@
 **1ère action sur tout brief utilisateur**, AVANT tout Read/Grep/Glob/Task, aucune exception y compris reprises de session :
 ```
 Brief compris : <reformulation 1 ligne, mots du fondateur préservés>
-Plan : <1 ligne — action immédiate ou clarification ciblée si vraiment ambigu>
+Plan : <3 puces max — action immédiate ou clarification ciblée si vraiment ambigu>
 ```
 Anti-pattern : enchaîner étapes de protocole, tableaux ou questions A/B/C avant d'avoir formulé la compréhension. Brief court (< 20 mots) = réponse courte.
 
@@ -52,7 +52,7 @@ Champ insuffisant → poser une question qui guide (pas "complète ce champ") �
 
 ## Tool Task — mode d'emploi
 
-**Routage bibliothèque d'abord** : pour toute demande, chercher si un prompt d'`index.html` (91 prompts) correspond (Grep sur le titre). Si oui : en extraire la substance (sections, critères, livrables) dans le prompt Task — ne pas improviser. 80% de la qualité d'un livrable vient du prompt de lancement.
+**Routage bibliothèque d'abord** : pour toute demande, chercher si un prompt de la bibliothèque (91 prompts : `.claude/prompts-library.html` dans un projet client, `index.html` dans le repo Agent-Team) correspond (Grep `title:` puis lire le bloc `prompt:`). Si oui : en extraire la substance (sections, critères, livrables) dans le prompt Task — ne pas improviser. 80% de la qualité d'un livrable vient du prompt de lancement.
 
 **Template obligatoire de prompt Task producteur** :
 ```
@@ -83,7 +83,7 @@ Taille cible : 30-60 lignes (60-80 en autopilot). Si l'orchestrateur a déjà de
 
 **Stateless entre phases** : après chaque phase, écrire l'état dans `docs/orchestration-plan.md` ; le relire en début de phase suivante. Si l'orchestrateur ne peut pas citer de mémoire persona + KPI + dernière décision → relire orchestration-plan.md.
 
-**Vérifications spéciales Phase 2** : (a) boucle visuelle — Glob `tests/screenshots/*.png` ; si vide alors que `src/` a du frontend → relancer @fullstack ; (b) build — `npx tsc --noEmit && npm run lint && npm run build` (Règle n°6), FAIL = bloquer ; hook pre-commit installé sinon le faire poser par @fullstack ; futurs projets CF : ajouter `npx @cloudflare/next-on-pages@1` au check.
+**Vérifications spéciales Phase 2** : (a) boucle visuelle — Glob `tests/screenshots/*.png` ; si vide alors que `src/` a du frontend → relancer @fullstack ; (b) build — `npx tsc --noEmit && npm run lint && npm run build` (Règle n°6), FAIL = bloquer ; hook pre-commit installé sinon le faire poser par @fullstack ; futurs projets CF avec Next.js : ajouter le build OpenNext (`npx opennextjs-cloudflare build`) au check ; `next-on-pages` est déprécié.
 
 ## Modes d'exécution
 
@@ -124,7 +124,7 @@ Croiser avant de planifier :
 **Phase 1 — Expérience** : `ux` → `design` ; `copywriter` en parallèle de `ux` si brand-platform.md existe.
 **Checkpoint specs (OBLIGATOIRE entre Phase 1 et 2)** : @reviewer quick-check sur functional-specs.md ("@fullstack peut-il coder ça sans poser une seule question ?") ; chaque user story a Given/When/Then, 5 états UI, events analytics ; chaque écran interactif a ≥ 5 scénarios persona concrets. Si features IA : `docs/ia/prompt-library.md` avec test cases DOIT exister AVANT que @fullstack code (séquence stricte : @ia → validation → @fullstack, pas en parallèle).
 
-**Phase 2 — Développement** : `infrastructure` (setup : skeleton, env vars, CI/CD ; futurs projets : repo GitHub + wrangler.toml + GH Actions CF Pages/Workers + Neon ; legacy : Replit) → `fullstack` + `ia` (parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : wireframes vs code réel → `docs/ux/ux-review.md`) → `qa` (intègre les écarts UX, matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring, perf, sécurité ; CF piloté par tokens scopés, legacy Replit : déploiement manuel par Thomas).
+**Phase 2 — Développement** : `infrastructure` (setup : skeleton, env vars, CI/CD ; futurs projets : repo GitHub + wrangler.toml + GH Actions Cloudflare Workers + D1/Neon + Umami, VPS seulement si un besoin le justifie ; legacy : Replit) → `fullstack` + `ia` (parallèle si specs IA claires ET prompt-library.md existe) → `ux` (revue post-implémentation : wireframes vs code réel → `docs/ux/ux-review.md`) → `qa` (intègre les écarts UX, matrice de traçabilité US→tests) → `infrastructure` (finalisation : monitoring, perf, sécurité ; CF piloté par tokens scopés, legacy Replit : déploiement manuel par Thomas).
 - Boucle visuelle @fullstack obligatoire : screenshot Playwright 3 devices par page, comparaison page-compositions.md, correction des écarts, sauvegarde tests/screenshots/.
 - Séquencement features IA strict : schema DB → API routes → UI avec mocks → intégration LLM → polish.
 - Si user-flows.md recommande des agents spécialisés non créés → @agent-factory.

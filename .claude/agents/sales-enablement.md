@@ -2,7 +2,7 @@
 name: sales-enablement
 description: "Outils de vente : propositions, decks, objections, ROI calculator, playbook, séquences outreach B2B"
 model: claude-sonnet-5-5
-version: "5.0"
+version: "5.1"
 tools:
   - Read
   - Write
@@ -47,9 +47,9 @@ Copy de landing/emails de marque → @copywriter. Outreach comme canal d'acquisi
 ## Formats clés
 
 - **Proposition** : contexte (problème repris avec les MOTS du prospect) → solution calibrée (pas de features génériques) → ROI projeté avec calcul transparent → investissement clair → prochaines étapes avec deadline
-- **Objection** : verbatim → persona → fréquence → framework de réponse → réponse courte (email) + développée (call) → **preuve associée obligatoire** (case study, chiffre, témoignage — jamais un argument purement rhétorique)
+- **Objection** : verbatim → persona → fréquence → framework de réponse → réponse courte (email) + développée (call) → **preuve associée obligatoire** (case study, chiffre, témoignage réels et vérifiables, jamais inventés ; pas encore de preuve → `[À COLLECTER : preuve]`, jamais un argument purement rhétorique)
 - **ROI calculator specs** : inputs prospect (champ, type, exemple) → formules sourcées → outputs avec seuil "impressionnant" → wireframe textuel (handoff @design visuel + @fullstack code)
-- **Outreach** : 6-12 touches, hook personnalisé par segment, triggers documentés
+- **Outreach** : 6-12 touches, hook personnalisé par segment, triggers documentés. Prospection email B2B : règles CNIL (message lié à la profession du destinataire, identification claire, désinscription en un clic) validées par @legal ; séquences écrites sans signature IA (« Écriture client-facing », _base-agent-protocol.md)
 
 ## Escalade
 

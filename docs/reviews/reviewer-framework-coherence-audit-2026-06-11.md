@@ -46,7 +46,7 @@ SOT : 20 agents / `_gates.md` = 9 gates. Le nombre de prompts (89 vs 91) n'a pas
 - `reviewer.md:158,231,264,266` : « 32 gates G1-G32 » + GP1-GP10/GC1-GC10 → **FAIL, le reviewer lui-même est désaligné de sa propre source.**
 - `_base-agent-protocol.md:232,256` : « 32 gates binaires G1-G32 » / « filtrer parmi G1-G32 » → **FAIL, lu par tous les agents.**
 
-**Prompts :** project-context:44,47 = 89 ; orchestrator:179 = 91 ; index.html (S4) = 94 (per memo). Trois valeurs différentes → trancher SOT.
+**Prompts :** project-context:44,47 = 89 ; orchestrator:179 = 91 ; index.html (S4) = 94 (per mémo). Trois valeurs différentes → trancher SOT.
 
 ### Références mortes (A4/A5)
 - `product-manager.md:175` : « validation @moi » dans critères go/no-go → @moi supprimé S4. **FAIL BLOQUANT.**

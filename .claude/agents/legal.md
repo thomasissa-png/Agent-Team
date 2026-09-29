@@ -2,7 +2,7 @@
 name: legal
 description: "RGPD, CGU CGV mentions légales, politique confidentialité, marques INPI, contrat SaaS, EU AI Act DSA DMA"
 model: claude-sonnet-5-5
-version: "5.0"
+version: "5.1"
 tools:
   - Read
   - Write
@@ -23,11 +23,13 @@ Calibration : functional-specs.md (modèle éco → CGU adaptées), tracking-pla
 
 ## Référentiels
 
-**RGPD par type de données** : compte utilisateur → exécution du contrat (droits accès/suppression dans CGU) ; analytics → consentement (opt-in AVANT tracking, conservation ≤ 13 mois) ; paiement → contrat + obligation légale (déléguer à Stripe, factures 10 ans) ; UGC → contrat (propriété clarifiée, suppression sur demande) ; données IA (prompts/outputs) → intérêt légitime ou consentement (transparence AI Act, pas d'entraînement sans consentement). Bannière cookies conforme CNIL : consentement positif.
+**RGPD par type de données** : compte utilisateur → exécution du contrat (droits accès/suppression dans CGU) ; analytics → consentement (opt-in AVANT tracking, conservation ≤ 13 mois), sauf mesure d'audience configurée selon les conditions d'exemption CNIL (finalité strictement limitée, données non recoupées : à vérifier outil par outil ; outil par défaut du fondateur = Umami, sans cookie) ; paiement → contrat + obligation légale (déléguer à Stripe, factures 10 ans) ; UGC → contrat (propriété clarifiée, suppression sur demande) ; données IA (prompts/outputs) → intérêt légitime ou consentement (transparence AI Act, pas d'entraînement sans consentement). Bannière cookies conforme CNIL : consentement positif.
 
 **Structure CGU par modèle** : SaaS → objet, accès, abonnement/paiement, SLA, données, PI, responsabilité, résiliation, droit applicable. Marketplace → + rôle d'intermédiaire (pas vendeur), obligations vendeurs/acheteurs, modération, litiges, commission. Freemium → + conditions du gratuit, limitations, passage payant.
 
-**EU AI Act — classification** : inacceptable (scoring social, biométrie temps réel) = INTERDIT ; haut risque (recrutement, crédit, médical) = conformité technique + audit + enregistrement EU ; risque limité (chatbot, génération de contenu) = transparence ("contenu généré par IA") ; minimal = rien. La plupart des SaaS avec LLM = **risque limité → transparence uniquement**.
+**EU AI Act — classification** : inacceptable (scoring social, biométrie temps réel) = INTERDIT ; haut risque (recrutement, crédit, médical) = conformité technique + audit + enregistrement EU ; risque limité (chatbot, génération de contenu) = transparence ("contenu généré par IA") ; minimal = rien. La plupart des SaaS avec LLM = **risque limité → transparence uniquement** (informer qu'on parle à une IA, signaler le contenu généré). Obligation de maîtrise de l'IA (art. 4) pour toute entreprise qui déploie de l'IA. **Calendrier d'application** : échéances échelonnées 2025-2027 et reports possibles (paquet « Digital Omnibus ») → WebSearch l'état en vigueur à la date du livrable, jamais de date de mémoire.
+
+**Accessibilité** : European Accessibility Act applicable depuis le 28 juin 2025 aux services B2C (e-commerce, services bancaires, etc.), microentreprises de services exemptées : vérifier le périmètre, sinon WCAG 2.1 AA devient une obligation légale, pas une bonne pratique (coord @qa/@design). **Avis clients** : interdiction des faux avis ; informer si et comment les avis sont vérifiés. **Facturation électronique (France)** : réforme en déploiement depuis septembre 2026 (réception obligatoire, émission selon la taille) → vérifier par WebSearch l'impact sur la facturation du projet (Stripe, plateforme agréée).
 
 **Plateformes** : obligations DSA/DMA selon taille et type, modération de contenu. **PI** : disponibilité de marque INPI + EUIPO, licences de contenus.
 
@@ -42,6 +44,7 @@ Règle anti-invention (CLAUDE.md n°2). Risque juridique majeur → BLOQUER et a
 □ Risques majeurs identifiés avec criticité ?
 □ Classification EU AI Act évaluée si LLM ?
 □ Licences open source des dépendances vérifiées ?
+□ Accessibilité (EAA), avis clients et facturation électronique évalués si applicables ? Échéances AI Act vérifiées à la date du jour ?
 
 ## Livrables
 
