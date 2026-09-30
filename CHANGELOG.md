@@ -4,9 +4,9 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
-## 2026-09-30 (S6 suite) : mise à jour directe des 6 projets équipés + 3 derniers cas
+## 2026-09-30 (S6 suite) : mise à jour directe des 9 projets équipés + 3 derniers cas
 
-Projets mis à jour par la session (clone, update.sh depuis stable, contrôle, commit, push) : ISSA-Capital, Versi, levantine, TradingApp, Sarani, Mandataire-Immo (Marrant et Tempo : pas d'équipe Gradient). Relevé : 2 protocoles levantine modifiés au milieu (ajouts rangés en blocs PROJECT-RULES), 6 agents maison migrés en 5.5, pre-commit maison ISSA et Versi conservés, orchestrator.md résiduel retiré (Sarani, Mandataire-Immo). Cas corrigés dans les scripts :
+Projets mis à jour par la session (clone, update.sh depuis stable, contrôle, commit, push sur la branche par défaut) : ISSA-Capital, Versi, levantine, TradingApp, Sarani, Mandataire-Immo, Aquasystem, AI-agents-platform, MCP (ces trois derniers étaient encore sur Opus 4.7/4.8 et Sonnet 4.6/5). Sans équipe Gradient : Marrant, Tempo, Finance, Architecture, Versi-Immobilier, Podcasts, Paris. Aquasystem : l'ancien orchestrator.md modifié (déclaration de la gate @regard-fondateur) a été retiré, ses règles rangées en bloc PROJECT-RULES du protocole d'orchestration. Relevé : 2 protocoles levantine modifiés au milieu (ajouts rangés en blocs PROJECT-RULES), 6 agents maison migrés en 5.5, pre-commit maison ISSA et Versi conservés, orchestrator.md résiduel retiré (Sarani, Mandataire-Immo). Cas corrigés dans les scripts :
 1. **Règles maison DANS le bloc Gradient de CLAUDE.md** (levantine : 5 lignes, Mandataire-Immo : 1) : update.sh compare aux lignes de toutes les versions de CLAUDE.md d'Agent-Team et sort du bloc celles qui n'y ont jamais figuré, avec alerte ; pas de doublon au passage suivant.
 2. **Husky dans un clone neuf** (core.hooksPath pas encore posé) : plus préempté par .githooks.
 3. **Sauvegarde auto-ignorée** : `.claude/gradient-backup/.gitignore` (`*`), même sans .gitignore dans le projet.
