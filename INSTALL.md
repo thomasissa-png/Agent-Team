@@ -1,6 +1,6 @@
 # Installer l'équipe Gradient Agents dans un projet
 
-Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et la mise à jour passent par deux scripts testés de bout en bout (`tests/test-installers.sh`, 28 vérifications lancées par la CI à chaque push) : `install.sh` et `update.sh`. Ils récupèrent la branche `stable`, que la CI ne fait avancer que si tous les tests passent (à défaut `main`). Toujours les lancer **à la racine du repo git du projet** (`cd "$(git rev-parse --show-toplevel)"`), jamais dans un sous-dossier : Claude Code ne cherche `.claude/agents/` qu'à la racine.
+Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et la mise à jour passent par deux scripts testés de bout en bout (`tests/test-installers.sh`, 31 vérifications lancées par la CI à chaque push) : `install.sh` et `update.sh`. Ils récupèrent la branche `stable`, que la CI ne fait avancer que si tous les tests passent (à défaut `main`). Toujours les lancer **à la racine du repo git du projet** (`cd "$(git rev-parse --show-toplevel)"`), jamais dans un sous-dossier : Claude Code ne cherche `.claude/agents/` qu'à la racine.
 
 ## Ce qui est installé
 

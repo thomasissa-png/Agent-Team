@@ -23,7 +23,7 @@ G() { git -c user.email=t@t -c user.name=t "$@"; }
 # ─── Dépôt source de test : historique réel + arbre de travail courant ───
 git clone -q "$ROOT" "$WORK/src" || { echo "clone impossible"; exit 1; }
 (cd "$WORK/src" && git rm -rq . && (cd "$ROOT" && git ls-files -co --exclude-standard | tar cf - -T -) | tar xf - \
-  && git add -A && G commit -qm "WIP test" && git checkout -q -B main)
+  && git add -A && { G commit -qm "WIP test" >/dev/null 2>&1 || true; } && git checkout -q -B main)
 for f in install update; do
   sed -e "s#^REPO_URL=.*#REPO_URL=\"file://$WORK/src\"#" -e "s#--filter=blob:none ##" "$ROOT/$f.sh" > "$WORK/$f-src.sh"
 done

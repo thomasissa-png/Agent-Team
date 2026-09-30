@@ -69,13 +69,13 @@ extract_value() {
   field=$(echo "$1" | strip_accents)
   local line
   # Try bold format first: **Field** : value
-  line=$(echo "$CONTEXT_ASCII" | grep -i "\\*\\*$field\\*\\*" 2>/dev/null | head -1 || true)
+  line=$(grep -i "\\*\\*$field\\*\\*" <<< "$CONTEXT_ASCII" 2>/dev/null | head -1 || true)
   if [ -n "$line" ]; then
     echo "$line" | sed "s/.*\\*\\*[^*]*\\*\\* *: *//" | sed 's/^ *//' | sed 's/ *$//'
     return
   fi
   # Try table format: | Field | value |
-  line=$(echo "$CONTEXT_ASCII" | grep -i "| *$field *|" 2>/dev/null | head -1 || true)
+  line=$(grep -i "| *$field *|" <<< "$CONTEXT_ASCII" 2>/dev/null | head -1 || true)
   if [ -n "$line" ]; then
     echo "$line" | sed "s/.*| *$field *| *//" | sed 's/ *|.*//' | sed 's/^ *//' | sed 's/ *$//' | tr -d '*'
     return
@@ -87,7 +87,9 @@ extract_value() {
 field_exists() {
   local field
   field=$(echo "$1" | strip_accents)
-  echo "$CONTEXT_ASCII" | grep -qi "\\*\\*$field\\*\\*\| *$field *|" 2>/dev/null
+  # Here-string, pas de tuyau : avec pipefail, « echo | grep -q » peut échouer par SIGPIPE
+  # sur un gros fichier (grep -q sort tôt), faux « champ absent » aléatoire.
+  grep -qi "\\*\\*$field\\*\\*\| *$field *|" <<< "$CONTEXT_ASCII" 2>/dev/null
 }
 
 for field in "${CRITICAL_FIELDS[@]}"; do
