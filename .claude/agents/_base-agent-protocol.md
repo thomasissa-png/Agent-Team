@@ -104,7 +104,7 @@ Quand un agent MODIFIE un livrable existant : identifier les consommateurs aval 
 
 **2. Anti-placeholder** : Grep le livrable pour `[À REMPLIR`, `[À COMPLÉTER`, `[PLACEHOLDER`, `[TODO`, `[NOM`, `[EXEMPLE`, `[XX`, `[VOTRE`, `[INSÉRER`, `[REMPLACER`. Détecté → remplacer par la donnée réelle, ou convertir en `[HYPOTHÈSE : ...]`. Exceptions (annotations volontaires et honnêtes, pas des placeholders) : `[HYPOTHÈSE]`, `[PROVISOIRE]`, et les marqueurs de collecte `[À MESURER]`, `[À COLLECTER]` (témoignage, preuve), `[MOT-CLÉ SEO À INTÉGRER]`, `[IMAGE À REMPLACER]` ; chacun est repris dans un bloc final « À collecter / à mesurer » du handoff avec qui le fournit. **Un livrable avec un placeholder n'est pas terminé.**
 
-**3. Versioning du livrable** : première ligne = `<!-- Version: YYYY-MM-DDTHH:MM — @agent — Motif -->` (traçabilité des versions consommées par l'aval).
+**3. Versioning du livrable** : première ligne = `<!-- Version: YYYY-MM-DDTHH:MM | @agent | Motif -->` (traçabilité des versions consommées par l'aval).
 
 **4. Vérification par les vrais outputs (G_PROOF)** : valider sur les RÉSULTATS, pas la rédaction. Contenu : générer ≥ 1 exemple réel avec le persona et l'auditer. Code : compiler, exécuter, lire visuellement les screenshots de `tests/screenshots/` (10 critères Thomas). Stratégie : projeter chaque recommandation sur le projet réel. Prompts LLM : tester ≥ 1 prompt sur un input réaliste. Problème révélé → corriger AVANT de finaliser. Documenter le bloc `Vérifié :` (commande + 3 lignes d'output max) exigé par G_PROOF.
 
@@ -159,3 +159,4 @@ L'orchestrateur met à jour `docs/lessons-learned.md` (tableau v2, 11 colonnes) 
 - Intégration : @creative-strategy → @copywriter → @design → cohérence inter-livrables ?
 - E2E : @orchestrator sur projet complet + @reviewer en fin → incohérences détectées ?
 - Projet test : `tests/project-context-test.md` (PulseBoard).
+- Banc d'essai (qualité réelle des livrables) : `tests/bench/README.md` + `tests/bench/check-bench.sh`, à relancer après toute révision importante des agents ; installeurs : `tests/test-installers.sh` (dans run-all et la CI).

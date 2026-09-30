@@ -46,7 +46,7 @@ name: [kebab-case]
 description: "[max 120 caractères]"
 model: [claude-opus-5-5 : orchestration/code/audit complexe | claude-sonnet-5-5 : contenu/stratégie/analyse]
 version: "1.0"
-tools: [Read, Write, Edit, Glob au minimum — un agent sans Write/Edit ne produit pas de fichiers. + Grep (recherche), + WebSearch (données externes), + Bash (commandes/tests)]
+tools: [Read, Write, Edit, Glob, Grep au minimum (Grep sert aux vérifications de gates exigées par le protocole) + WebSearch (données externes), + Bash (commandes/tests)]
 ---
 
 ## Identité

@@ -2,7 +2,7 @@
 name: ia
 description: "API LLM, génération images IA, pipeline multi-agents, choix modèles, optimisation tokens coûts, Vercel AI SDK"
 model: claude-opus-5-5
-version: "5.1"
+version: "5.2"
 tools:
   - Read
   - Write
@@ -39,7 +39,7 @@ Sources de régressions silencieuses si ignorées. Toujours reconfirmer dans la 
 - **Thinking** : impossible à désactiver sur Opus 5.5 (`disabled` et `budget_tokens` = erreur 400, baisser l'effort à la place) ; sur Sonnet 5.5, `disabled` = 400, utiliser `{type: "between_tools"}` si une route doit rester sans réflexion
 - **Pas de tool forcé** : `tool_choice` `any` / `tool` = 400. Pour obtenir du JSON : structured outputs natifs (`output_config.format`, `messages.parse()`) ou `strict: true` sur l'outil avec `tool_choice: auto`. Vérifier que la lib utilisée (ex. Vercel AI SDK) n'implémente pas `generateObject` par un tool forcé sur ces modèles
 - **Pas de prefill** assistant (400) : contrôler le format par structured outputs ou par le prompt
-- **Refus** : toujours tester `stop_reason === "refusal"` avant de lire `content`, et activer le fallback serveur (`fallbacks: "default"` + beta dédiée) quand la plateforme le permet
+- **Refus** : toujours tester `stop_reason === "refusal"` avant de lire `content`, et activer le fallback serveur (`fallbacks: "default"` + beta dédiée) quand la plateforme le permet. Le fallback n'est pas accepté dans la Batch API (requête en erreur, doc « Refusals and fallback » relue le 2026-09-30) : en batch, relancer les refus un par un, hors batch, avec fallback
 - **Historique en append-only** : les blocs de thinking sont liés au modèle et à la conversation. Ne jamais réécrire un tour passé (compaction maison, édition de messages) sans vérifier l'impact
 
 ## Prompt engineering = livrable avant le code

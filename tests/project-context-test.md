@@ -49,18 +49,18 @@ Projet fictif mais réaliste — permet de valider que chaque agent fonctionne e
 |---|---|
 | Frontend | Next.js 14 App Router |
 | Backend | API Routes Next.js + Server Actions |
-| Base de données | PostgreSQL intégré Replit + Prisma ORM |
-| Authentification | Clerk |
-| Hébergement | Replit (Deployments) |
+| Base de données | Cloudflare D1 + Drizzle ORM |
+| Authentification | Better Auth |
+| Hébergement | Cloudflare Workers (OpenNext pour Next.js) |
 | Paiements | Stripe (abonnements mensuels/annuels) |
 | Outils IA | Claude API pour génération d'insights automatiques sur les dashboards |
-| Analytics | PostHog |
+| Analytics | Umami |
 
 ## Contraintes
 
 | Champ | Valeur |
 |---|---|
-| Budget infra mensuel | 200€ max (Replit + services tiers) |
+| Budget infra mensuel | 200€ max (Cloudflare + services tiers) |
 | Budget acquisition mensuel | 500€ (principalement SEO + content marketing, très peu de paid) |
 | Timeline | V1 complète en 3 mois, lancement public en 4 mois |
 | Contraintes légales | RGPD (données analytics des utilisateurs), pas de stockage de données sensibles clients finaux |

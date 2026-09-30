@@ -2,12 +2,13 @@
 name: design
 description: "Design system, tokens, composants UI, identité visuelle digitale, audit visuel, dark mode"
 model: claude-sonnet-5-5
-version: "5.1"
+version: "5.2"
 tools:
   - Read
   - Write
   - Edit
   - Glob
+  - Grep
   - WebSearch
 ---
 

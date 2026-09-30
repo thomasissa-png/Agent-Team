@@ -360,6 +360,18 @@ if [ -f "$ROOT/index.html" ] && grep -q "Gradient Agents" "$ROOT/index.html" 2>/
     ok "Aucun marqueur PROJECT-RULES dans les fichiers Gradient"
   fi
 
+  # Chaque agent doit avoir Grep : le protocole exige des vérifications de gates par Grep
+  # (G5, G15, anti-placeholder). Sans l'outil, l'agent saute le contrôle (constaté au banc d'essai).
+  NO_GREP=""
+  for ag in "$AGENTS_DIR"/[a-z]*.md; do
+    awk '/^tools:/{f=1;next} f&&/^  - /{print $2} f&&!/^  - /{exit}' "$ag" | grep -qx Grep || NO_GREP="$NO_GREP $(basename "$ag" .md)"
+  done
+  if [ -n "$NO_GREP" ]; then
+    err "Agents sans l'outil Grep (vérification des gates impossible) :$NO_GREP"
+  else
+    ok "Tous les agents ont Grep (vérifications de gates possibles)"
+  fi
+
   # Garde accents FR (préférence fondateur : un livrable sans accents est inacceptable).
   # Mots français sans ambiguïté (aucun homographe anglais ni forme verbale valide sans accent).
   ACCENT_WORDS='deja|etre|tres|regle|regles|donnees|reponse|reponses|equipe|equipes|defaut|strategie|strategique|strategiques|systeme|securite|etape|etapes|probleme|problemes|modele|modeles|qualite|priorite|priorites|deploiement|developpement|apres|echec|necessaire|periode|controle|meme|cout|couts|francais|francaise|plutot|bientot|critere|criteres|etat|etats|ecran|ecrans|bibliotheque|coherence|methode|categorie|benefice|hierarchie|amelioration|generique|hypothese|metrique|metriques|specialises|mise a jour|jusqu.a|grace a|a ete'

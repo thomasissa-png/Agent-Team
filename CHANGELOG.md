@@ -4,6 +4,17 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-30 (S6 suite) : premier banc d'essai des agents
+
+Banc PulseBoard (`tests/bench/`) : creative-strategy, copywriter et ia lancés sur le projet de test, contrôle automatique `check-bench.sh` (34/34 PASS) + relecture. Qualité : plateforme de marque sourcée et datée (framework justifié, faits / engagements / preuves à produire séparés) ; landing honnête sans tic IA ni faux témoignage, mais H1 générique et document chargé d'annotations ; architecture IA conforme 5.5 (effort explicite, structured outputs, refus, batch + cache chiffrés). Défauts du framework révélés et corrigés :
+1. **8 agents sans Grep** (creative-strategy, design, geo, growth, legal, product-manager, social, ux) alors que le protocole exige des vérifications de gates par Grep → ajouté (versions bumpées, cartes du site), template agent-factory, garde de validation.
+2. **Format de version des livrables** avec tirets cadratins (contraire à la règle 12) → séparateur `|`.
+3. **Projet de test** sur Replit/Clerk/PostHog → Cloudflare D1, Better Auth, Workers, Umami.
+4. **ia.md** : le fallback de refus n'est pas accepté en Batch API → relancer les refus hors batch.
+Mode d'emploi et historique du banc dans `tests/bench/README.md`, référencé dans le protocole de test du framework.
+
+---
+
 ## 2026-09-30 (S6 suite) : filet de sécurité automatique
 
 1. **Tests des installeurs** : `tests/test-installers.sh` rejoue 12 scénarios réels (installation neuve, équipe déjà là, agents maison seuls, ISSA, Husky, hors git, settings invalide, auto-mise à jour, ancienne équipe avec historique git, second passage stable, rollback) : 28 vérifications, ~10 s, branché dans run-all (étape 4/4). Test de mutation : réintroduire l'écrasement de settings.json fait échouer 2 vérifications.

@@ -2,12 +2,13 @@
 name: ux
 description: "Architecture information, parcours utilisateur, wireframes, conversion, onboarding SaaS, audit UX, frictions"
 model: claude-sonnet-5-5
-version: "5.1"
+version: "5.2"
 tools:
   - Read
   - Write
   - Edit
   - Glob
+  - Grep
   - WebSearch
 ---
 
