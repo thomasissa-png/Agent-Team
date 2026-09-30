@@ -11,7 +11,7 @@ Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et l
 | `.claude/founder-preferences.md` | Préférences fondateur et **stack par défaut** (Cloudflare, Umami, VPS en renfort), lecture seule | Écrasé |
 | `.claude/prompts-library.html` | Bibliothèque des prompts, cherchée par le protocole d'orchestration | Écrasé |
 | `.claude/checklists/` | Checklists citées par les agents (favicon…) | Écrasé |
-| `CLAUDE.md` | Règles globales entre les marqueurs `GRADIENT-AGENTS-START/END` | Section Gradient remplacée, contenu custom préservé |
+| `CLAUDE.md` | Règles globales entre les marqueurs `GRADIENT-AGENTS-START/END` | Section Gradient remplacée, contenu custom préservé ; une ligne propre au projet écrite DANS le bloc (absente de toute version Gradient) est déplacée hors du bloc, avec alerte |
 | `update.sh` | Script de mise à jour (se met à jour lui-même) | Écrasé |
 | `.githooks/claude-md-guard.sh` | Garde-fou taille de CLAUDE.md | Écrasé |
 | `.githooks/pre-commit` + `core.hooksPath` | Appel du garde-fou | Remplacé seulement s'il porte le marqueur `GRADIENT-HOOK` ; un hook propre au projet, Husky ou `.git/hooks` ne sont jamais écrasés (le script indique la ligne d'appel à ajouter) |

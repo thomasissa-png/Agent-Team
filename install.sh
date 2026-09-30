@@ -43,7 +43,7 @@ merge_settings_json() {
     echo -e "  ${BLUE}= .claude/settings.json déjà à jour${NC}"
     return 0
   fi
-  mkdir -p "$bak" && cp "$dst" "$bak/settings.json"
+  mkdir -p "$bak" && cp "$dst" "$bak/settings.json" && printf '*\n' > "$bak/.gitignore"
   if command -v node >/dev/null 2>&1 && node -e '
 const fs=require("fs");const [s,d]=process.argv.slice(1);
 const G=JSON.parse(fs.readFileSync(s,"utf8")),P=JSON.parse(fs.readFileSync(d,"utf8"));
@@ -140,6 +140,10 @@ sync_githooks() {
     fi
   elif [ -n "$cur" ]; then
     echo -e "  ${BLUE}= core.hooksPath = ${cur} conservé (Husky ou autre)${NC} : ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans votre hook pre-commit"
+  elif [ -d "$dst/.husky" ]; then
+    # Husky pose son propre core.hooksPath à l'installation des dépendances (npm install) :
+    # ne pas le préempter, même s'il n'est pas encore réglé dans ce clone
+    echo -e "  ${BLUE}= Husky détecté : core.hooksPath laissé à Husky${NC} : ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans .husky/pre-commit"
   elif [ -f "$gitdir/hooks/pre-commit" ]; then
     echo -e "  ${BLUE}= .git/hooks/pre-commit existant conservé (core.hooksPath non modifié)${NC} : ajoutez-y « sh .githooks/claude-md-guard.sh || exit 1 »"
   else

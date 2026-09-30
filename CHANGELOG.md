@@ -4,6 +4,16 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-30 (S6 suite) : mise à jour directe des 6 projets équipés + 3 derniers cas
+
+Projets mis à jour par la session (clone, update.sh depuis stable, contrôle, commit, push) : ISSA-Capital, Versi, levantine, TradingApp, Sarani, Mandataire-Immo (Marrant et Tempo : pas d'équipe Gradient). Relevé : 2 protocoles levantine modifiés au milieu (ajouts rangés en blocs PROJECT-RULES), 6 agents maison migrés en 5.5, pre-commit maison ISSA et Versi conservés, orchestrator.md résiduel retiré (Sarani, Mandataire-Immo). Cas corrigés dans les scripts :
+1. **Règles maison DANS le bloc Gradient de CLAUDE.md** (levantine : 5 lignes, Mandataire-Immo : 1) : update.sh compare aux lignes de toutes les versions de CLAUDE.md d'Agent-Team et sort du bloc celles qui n'y ont jamais figuré, avec alerte ; pas de doublon au passage suivant.
+2. **Husky dans un clone neuf** (core.hooksPath pas encore posé) : plus préempté par .githooks.
+3. **Sauvegarde auto-ignorée** : `.claude/gradient-backup/.gitignore` (`*`), même sans .gitignore dans le projet.
+Tests installeurs : 31 vérifications (S4b règle dans le bloc, S5b Husky clone neuf).
+
+---
+
 ## 2026-09-30 (S6 suite) : premier banc d'essai des agents
 
 Banc PulseBoard (`tests/bench/`) : creative-strategy, copywriter et ia lancés sur le projet de test, contrôle automatique `check-bench.sh` (34/34 PASS) + relecture. Qualité : plateforme de marque sourcée et datée (framework justifié, faits / engagements / preuves à produire séparés) ; landing honnête sans tic IA ni faux témoignage, mais H1 générique et document chargé d'annotations ; architecture IA conforme 5.5 (effort explicite, structured outputs, refus, batch + cache chiffrés). Défauts du framework révélés et corrigés :

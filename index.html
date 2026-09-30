@@ -3691,6 +3691,12 @@ Critères de validation : le diagnostic couvre 100% des livrables existants, auc
 const CHANGELOG = [
   {
     date:"2026-09-30",
+    agent:"infrastructure",
+    type:"mise à jour",
+    description:"Mise à jour faite directement sur les 6 projets équipés (ISSA Capital, Versi, levantine, TradingApp, Sarani, Mandataire-Immo). Elle a révélé 3 derniers cas, corrigés dans les scripts et testés : des règles maison écrites à l'intérieur du bloc Gradient de CLAUDE.md sont désormais sorties du bloc au lieu d'être écrasées, Husky n'est plus préempté dans un clone neuf, et la sauvegarde s'ignore elle-même dans git."
+  },
+  {
+    date:"2026-09-30",
     agent:"reviewer",
     type:"mise à jour",
     description:"Premier banc d'essai des agents sur le projet de test PulseBoard (creative-strategy, copywriter, ia) : 34 contrôles sur 34 et livrables sourcés, sans invention. Il a révélé 4 défauts du framework, corrigés : 8 agents n'avaient pas l'outil de recherche nécessaire pour vérifier leurs gates, le format de version des livrables contenait des tirets cadratins, le projet de test utilisait une stack périmée, et une subtilité de l'API (fallback de refus refusé en traitement par lot) est ajoutée à l'agent IA."

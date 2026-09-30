@@ -75,10 +75,22 @@ check "pre-commit maison intact" "grep -q 'scripts/qa.sh' .githooks/pre-commit"
 check "agent maison intact et signalé obsolète" "grep -q sonnet-4-6 .claude/agents/karim.md && clean ../s4.log | grep -q 'karim.md sur claude-sonnet-4-6'"
 check "préférences projet et règles CLAUDE.md maison intactes" "grep -q patrimonial docs/founder-preferences.md && grep -q 'R1 maison' CLAUDE.md"
 
+echo "--- S4b règle maison écrite DANS le bloc Gradient de CLAUDE.md"
+newproj s4b; team; sed -i 's/^## Routage automatique$/## Routage automatique\n| Généalogie maison | @genealogiste |/' CLAUDE.md
+upd ../s4b.log; rc=$?
+check "ligne maison sortie du bloc, pas perdue" "[ $rc -eq 0 ] && sed '/GRADIENT-AGENTS-START/,/GRADIENT-AGENTS-END/d' CLAUDE.md | grep -q 'Généalogie maison'"
+upd ../s4c.log
+check "second passage : pas de doublon" "[ \$(grep -c 'Généalogie maison' CLAUDE.md) -eq 1 ]"
+
 echo "--- S5 Husky conservé"
 newproj s5; team; mkdir -p .husky/_; git config core.hooksPath .husky/_
 upd ../s5.log; rc=$?
 check "exit 0 et core.hooksPath inchangé" "[ $rc -eq 0 ] && [ \"\$(git config core.hooksPath)\" = .husky/_ ]"
+
+echo "--- S5b Husky présent mais pas encore installé (clone neuf)"
+newproj s5b; team; mkdir -p .husky; printf 'npm test\n' > .husky/pre-commit
+upd ../s5b.log; rc=$?
+check "exit 0 et core.hooksPath laissé à Husky (non réglé)" "[ $rc -eq 0 ] && [ -z \"\$(git config core.hooksPath)\" ]"
 
 echo "--- S6 projet hors git"
 P="$WORK/p/s6"; mkdir -p "$P/.claude/agents" && cd "$P" && cp "$WORK/src/.claude/agents/"*.md .claude/agents/

@@ -43,7 +43,7 @@ merge_settings_json() {
     echo -e "  ${BLUE}= .claude/settings.json déjà à jour${NC}"
     return 0
   fi
-  mkdir -p "$bak" && cp "$dst" "$bak/settings.json"
+  mkdir -p "$bak" && cp "$dst" "$bak/settings.json" && printf '*\n' > "$bak/.gitignore"
   if command -v node >/dev/null 2>&1 && node -e '
 const fs=require("fs");const [s,d]=process.argv.slice(1);
 const G=JSON.parse(fs.readFileSync(s,"utf8")),P=JSON.parse(fs.readFileSync(d,"utf8"));
@@ -140,6 +140,10 @@ sync_githooks() {
     fi
   elif [ -n "$cur" ]; then
     echo -e "  ${BLUE}= core.hooksPath = ${cur} conservé (Husky ou autre)${NC} : ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans votre hook pre-commit"
+  elif [ -d "$dst/.husky" ]; then
+    # Husky pose son propre core.hooksPath à l'installation des dépendances (npm install) :
+    # ne pas le préempter, même s'il n'est pas encore réglé dans ce clone
+    echo -e "  ${BLUE}= Husky détecté : core.hooksPath laissé à Husky${NC} : ajoutez « sh .githooks/claude-md-guard.sh || exit 1 » dans .husky/pre-commit"
   elif [ -f "$gitdir/hooks/pre-commit" ]; then
     echo -e "  ${BLUE}= .git/hooks/pre-commit existant conservé (core.hooksPath non modifié)${NC} : ajoutez-y « sh .githooks/claude-md-guard.sh || exit 1 »"
   else
@@ -300,6 +304,8 @@ echo ""
 # Créer une sauvegarde avant mise à jour (hors de .claude/agents/)
 mkdir -p "$OLDPWD/$BACKUP_DIR/agents"
 cp "$OLDPWD/$AGENTS_DIR"/*.md "$OLDPWD/$BACKUP_DIR/agents/" 2>/dev/null || true
+# Dossier auto-ignoré par git (même sans .gitignore dans le projet)
+printf '*\n' > "$OLDPWD/$BACKUP_DIR/.gitignore"
 echo -e "${BLUE}→ Sauvegarde créée dans ${BACKUP_DIR}/ (rollback : bash update.sh --rollback)${NC}"
 echo ""
 
@@ -457,6 +463,20 @@ if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then
     cp "$source_claude" "$local_claude"
     echo -e "  ${GREEN}✓ CLAUDE.md installé${NC}"
   elif grep -q "GRADIENT-AGENTS-START" "$local_claude"; then
+    # Lignes écrites par le projet DANS le bloc Gradient (absentes de toute version Gradient
+    # de CLAUDE.md) : sorties du bloc avant remplacement, jamais perdues.
+    known_lines="$TEMP_DIR/claude_known_lines"
+    (cd "$TEMP_DIR/repo" && git log --all -p --format= -- CLAUDE.md 2>/dev/null | grep -E '^[-+ ]' | sed 's/^[-+ ]//') | sort -u > "$known_lines"
+    project_lines=$(sed -n '/<!-- GRADIENT-AGENTS-START -->/,/<!-- GRADIENT-AGENTS-END -->/p' "$local_claude" \
+      | grep -v 'GRADIENT-AGENTS-' | grep -v '^[[:space:]]*$' | grep -vxFf "$known_lines" || true)
+    if [ -n "$project_lines" ] && [ -s "$known_lines" ]; then
+      outside=$(sed '/<!-- GRADIENT-AGENTS-START -->/,/<!-- GRADIENT-AGENTS-END -->/d' "$local_claude")
+      missing=$(printf '%s\n' "$project_lines" | grep -vxFf <(printf '%s\n' "$outside") || true)
+      if [ -n "$missing" ]; then
+        printf '\n## Règles propres à ce projet (sorties du bloc Gradient par update.sh le %s)\n\n%s\n' "$(date +%Y-%m-%d)" "$missing" >> "$local_claude"
+        echo -e "  ${YELLOW}⚠ CLAUDE.md : $(printf '%s\n' "$missing" | wc -l | tr -d ' ') ligne(s) propres au projet étaient DANS le bloc Gradient : déplacées hors du bloc (section « Règles propres à ce projet »), à relire.${NC}"
+      fi
+    fi
     # Remplacement de la section Gradient entre les marqueurs
     gradient_content=$(sed -n '/<!-- GRADIENT-AGENTS-START -->/,/<!-- GRADIENT-AGENTS-END -->/p' "$source_claude")
     tmp_merged="$TEMP_DIR/claude_md_merged"
