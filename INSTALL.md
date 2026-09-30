@@ -1,6 +1,6 @@
 # Installer l'équipe Gradient Agents dans un projet
 
-Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et la mise à jour passent par deux scripts testés de bout en bout : `install.sh` et `update.sh`. Toujours les lancer **à la racine du repo git du projet** (`cd "$(git rev-parse --show-toplevel)"`), jamais dans un sous-dossier : Claude Code ne cherche `.claude/agents/` qu'à la racine.
+Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et la mise à jour passent par deux scripts testés de bout en bout (`tests/test-installers.sh`, 28 vérifications lancées par la CI à chaque push) : `install.sh` et `update.sh`. Ils récupèrent la branche `stable`, que la CI ne fait avancer que si tous les tests passent (à défaut `main`). Toujours les lancer **à la racine du repo git du projet** (`cd "$(git rev-parse --show-toplevel)"`), jamais dans un sous-dossier : Claude Code ne cherche `.claude/agents/` qu'à la racine.
 
 ## Ce qui est installé
 
@@ -15,6 +15,7 @@ Ce repo est le **repo source** de l'équipe Gradient Agents. L'installation et l
 | `update.sh` | Script de mise à jour (se met à jour lui-même) | Écrasé |
 | `.githooks/claude-md-guard.sh` | Garde-fou taille de CLAUDE.md | Écrasé |
 | `.githooks/pre-commit` + `core.hooksPath` | Appel du garde-fou | Remplacé seulement s'il porte le marqueur `GRADIENT-HOOK` ; un hook propre au projet, Husky ou `.git/hooks` ne sont jamais écrasés (le script indique la ligne d'appel à ajouter) |
+| `.claude/gradient-version` | Version installée (branche, commit, date), lue au démarrage de session pour détecter un framework en retard | Réécrit |
 | `project-context.md` | Modèle vide à remplir (prompt « Définir mon projet ») | **Jamais touché** s'il existe |
 
 Jamais touchés : `docs/` (livrables, et `docs/founder-preferences.md` du projet : ses préférences propres, prioritaires sur les globales), `src/` (code), `package.json`, agents maison (update.sh signale ceux restés sur un modèle obsolète).

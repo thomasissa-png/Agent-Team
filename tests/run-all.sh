@@ -28,8 +28,8 @@ echo "Racine: $ROOT"
 [ -n "$STRICT_FLAG" ] && echo "Mode: STRICT"
 echo ""
 
-# --- 1/3 Framework validation ---
-echo "--- 1/3 Framework validation ---"
+# --- 1/4 Framework validation ---
+echo "--- 1/4 Framework validation ---"
 if bash "$SCRIPT_DIR/validate-framework.sh" "$ROOT" $STRICT_FLAG; then
   green "Framework: OK"
 else
@@ -40,8 +40,8 @@ fi
 
 echo ""
 
-# --- 2/3 Context validation ---
-echo "--- 2/3 Context validation ---"
+# --- 2/4 Context validation ---
+echo "--- 2/4 Context validation ---"
 if [ -f "$ROOT/project-context.md" ]; then
   if bash "$SCRIPT_DIR/validate-context.sh" "$ROOT/project-context.md"; then
     green "Context: OK"
@@ -56,33 +56,52 @@ fi
 
 echo ""
 
-# --- 3/3 Deliverable validation ---
-echo "--- 3/3 Deliverable validation ---"
+# --- 3/4 Deliverable validation ---
+echo "--- 3/4 Deliverable validation ---"
 if [ -d "$ROOT/docs" ]; then
   DELIVERABLE_COUNT=0
   DELIVERABLE_ERRORS=0
   while IFS= read -r f; do
     [ -z "$f" ] && continue
     DELIVERABLE_COUNT=$((DELIVERABLE_COUNT + 1))
-    if ! bash "$SCRIPT_DIR/validate-deliverable.sh" "$f"; then
-      EXIT_CODE=$?
-      DELIVERABLE_ERRORS=$((DELIVERABLE_ERRORS + EXIT_CODE))
-    fi
+    bash "$SCRIPT_DIR/validate-deliverable.sh" "$f"
+    EXIT_CODE=$?   # (un « if ! » masquait ce code : il valait toujours 0)
+    DELIVERABLE_ERRORS=$((DELIVERABLE_ERRORS + EXIT_CODE))
     echo ""
   done < <(find "$ROOT/docs" -name "*.md" -not -name ".gitkeep" 2>/dev/null)
 
   if [ "$DELIVERABLE_COUNT" -eq 0 ]; then
     yellow "SKIP: Aucun livrable trouve dans docs/"
   else
-    TOTAL_ERRORS=$((TOTAL_ERRORS + DELIVERABLE_ERRORS))
-    if [ "$DELIVERABLE_ERRORS" -eq 0 ]; then
+    if [ -f "$ROOT/install.sh" ] && [ -f "$ROOT/update.sh" ]; then
+      # Repo Agent-Team : docs/ contient des documents internes (revues, plans), pas des
+      # livrables d'agents au format handoff. Contrôle informatif, non bloquant.
+      yellow "Livrables (informatif, docs internes du framework) : $DELIVERABLE_ERRORS écart(s) sur $DELIVERABLE_COUNT fichier(s)"
+    elif [ "$DELIVERABLE_ERRORS" -eq 0 ]; then
       green "Livrables: $DELIVERABLE_COUNT fichier(s) valide(s)"
     else
+      TOTAL_ERRORS=$((TOTAL_ERRORS + DELIVERABLE_ERRORS))
       red "Livrables: $DELIVERABLE_ERRORS erreur(s) sur $DELIVERABLE_COUNT fichier(s)"
     fi
   fi
 else
   yellow "SKIP: Dossier docs/ non trouve"
+fi
+
+echo ""
+
+# --- 4/4 Installeurs (repo Agent-Team uniquement) ---
+echo "--- 4/4 Installeurs (install.sh / update.sh, scénarios réels) ---"
+if [ -f "$ROOT/install.sh" ] && [ -f "$ROOT/update.sh" ] && [ -f "$SCRIPT_DIR/test-installers.sh" ]; then
+  if bash "$SCRIPT_DIR/test-installers.sh" "$ROOT"; then
+    green "Installeurs: OK"
+  else
+    EXIT_CODE=$?
+    TOTAL_ERRORS=$((TOTAL_ERRORS + EXIT_CODE))
+    red "Installeurs: $EXIT_CODE scénario(s) en échec"
+  fi
+else
+  yellow "SKIP: installeurs absents (projet client)"
 fi
 
 echo ""

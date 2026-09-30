@@ -72,6 +72,17 @@ PY
   fi
 }
 
+# Tampon de version : quelle version du framework tourne dans ce projet
+write_gradient_version() {  # $1 = racine du projet, $2 = branche source
+  local commit date
+  commit=$(cd "$TEMP_DIR/repo" && git rev-parse --short HEAD 2>/dev/null || echo inconnu)
+  date=$(cd "$TEMP_DIR/repo" && git log -1 --format=%cI 2>/dev/null || echo inconnue)
+  mkdir -p "$1/.claude"
+  printf 'branche: %s\ncommit: %s\ndate: %s\nsource: %s\n' "$2" "$commit" "$date" "$REPO_URL" > "$1/.claude/gradient-version"
+  echo -e "  ${GREEN}✓ .claude/gradient-version : ${2}@${commit}${NC}"
+  return 0
+}
+
 # Ajoute au .gitignore du projet les fichiers techniques du framework (sauvegardes)
 ensure_gitignore() {
   local gi="$1/.gitignore" line
@@ -250,10 +261,11 @@ echo -e "${BOLD}gradient-agents : mise à jour${NC}"
 echo ""
 echo -e "${BLUE}→ Récupération des dernières versions...${NC}"
 
-# Détection automatique de la branche par défaut (main préférée, master fallback legacy)
+# Branche source : `stable` (promue par la CI quand tous les tests passent) en priorité,
+# puis main, puis master (legacy). Un commit cassé sur main n'atteint donc pas les projets.
 # Couvre le bootstrap problem : ancien update.sh local pointe sur master qui peut avoir été renommé
 DETECTED_BRANCH=""
-for BRANCH in main master; do
+for BRANCH in stable main master; do
   if git ls-remote --exit-code --heads "$REPO_URL" "$BRANCH" >/dev/null 2>&1; then
     DETECTED_BRANCH="$BRANCH"
     break
@@ -261,7 +273,7 @@ for BRANCH in main master; do
 done
 
 if [ -z "$DETECTED_BRANCH" ]; then
-  echo -e "${RED}✗ Aucune branche main/master détectée sur $REPO_URL${NC}"
+  echo -e "${RED}✗ Aucune branche stable/main/master détectée sur $REPO_URL${NC}"
   echo -e "${RED}  Vérifie l'URL et les droits d'accès.${NC}"
   exit 1
 fi
@@ -434,6 +446,7 @@ fi
 # ─── Hooks git : garde-fou CLAUDE.md, hook du projet et Husky préservés ───
 sync_githooks "$TEMP_DIR/repo" "$OLDPWD"
 ensure_gitignore "$OLDPWD"
+write_gradient_version "$OLDPWD" "$DETECTED_BRANCH"
 
 # ─── Mise à jour de CLAUDE.md (fusion avec marqueurs) ─
 if [ -f "$TEMP_DIR/repo/CLAUDE.md" ]; then

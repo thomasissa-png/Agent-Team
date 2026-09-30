@@ -72,6 +72,17 @@ PY
   fi
 }
 
+# Tampon de version : quelle version du framework tourne dans ce projet
+write_gradient_version() {  # $1 = racine du projet, $2 = branche source
+  local commit date
+  commit=$(cd "$TEMP_DIR/repo" && git rev-parse --short HEAD 2>/dev/null || echo inconnu)
+  date=$(cd "$TEMP_DIR/repo" && git log -1 --format=%cI 2>/dev/null || echo inconnue)
+  mkdir -p "$1/.claude"
+  printf 'branche: %s\ncommit: %s\ndate: %s\nsource: %s\n' "$2" "$commit" "$date" "$REPO_URL" > "$1/.claude/gradient-version"
+  echo -e "  ${GREEN}✓ .claude/gradient-version : ${2}@${commit}${NC}"
+  return 0
+}
+
 # Ajoute au .gitignore du projet les fichiers techniques du framework (sauvegardes)
 ensure_gitignore() {
   local gi="$1/.gitignore" line
@@ -183,9 +194,10 @@ check_existing_agents() {
 clone_repo() {
   echo -e "${BLUE}→ Téléchargement des agents...${NC}"
 
-  # Détection automatique de la branche par défaut (main préférée, master fallback legacy)
-  local DETECTED_BRANCH=""
-  for BRANCH in main master; do
+  # Branche source : `stable` (promue par la CI quand tous les tests passent) en priorité,
+# puis main, puis master (legacy). Un commit cassé sur main n'atteint donc pas les projets.
+  DETECTED_BRANCH=""
+  for BRANCH in stable main master; do
     if git ls-remote --exit-code --heads "$REPO_URL" "$BRANCH" >/dev/null 2>&1; then
       DETECTED_BRANCH="$BRANCH"
       break
@@ -193,7 +205,7 @@ clone_repo() {
   done
 
   if [ -z "$DETECTED_BRANCH" ]; then
-    echo -e "${RED}✗ Aucune branche main/master détectée sur $REPO_URL${NC}"
+    echo -e "${RED}✗ Aucune branche stable/main/master détectée sur $REPO_URL${NC}"
     exit 1
   fi
 
@@ -394,4 +406,5 @@ install_project_context
 install_update_script
 install_shared_refs
 install_githooks
+write_gradient_version "${OLDPWD:-$(pwd)}" "${DETECTED_BRANCH:-main}"
 print_summary

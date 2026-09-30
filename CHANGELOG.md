@@ -4,6 +4,15 @@ Historique des modifications du framework. Ce fichier est séparé du CLAUDE.md 
 
 ---
 
+## 2026-09-30 (S6 suite) : filet de sécurité automatique
+
+1. **Tests des installeurs** : `tests/test-installers.sh` rejoue 12 scénarios réels (installation neuve, équipe déjà là, agents maison seuls, ISSA, Husky, hors git, settings invalide, auto-mise à jour, ancienne équipe avec historique git, second passage stable, rollback) : 28 vérifications, ~10 s, branché dans run-all (étape 4/4). Test de mutation : réintroduire l'écrasement de settings.json fait échouer 2 vérifications.
+2. **CI + branche stable** : `.github/workflows/validate.yml` lance run-all à chaque push (historique complet) ; sur main, si tout est vert, le commit est promu sur `stable`. install.sh et update.sh utilisent `stable` en priorité (puis main, master) : un commit cassé sur main n'atteint plus les projets.
+3. **Version installée** : `.claude/gradient-version` (branche, commit, date) écrit par install et update ; le prompt de reprise compare au dernier commit de `stable` et signale un framework en retard ; carte MAJ : contrôle en 6 points.
+4. **Mémoire** : audit TTL de `lessons-learned.md` (70 → 32 lignes : sessions S3 et antérieures archivées, toutes appliquées ou obsolètes) et 5 leçons S6 ajoutées (agents fantômes, mise à jour destructive, test réel, fichiers non installés, site figé).
+
+---
+
 ## 2026-09-29 (S6 suite) : zéro perte locale à la mise à jour (retour Versi)
 
 Versi a perdu une règle ajoutée dans copywriter.md et son pipeline QA du pre-commit (script antérieur aux correctifs, mais deux trous subsistaient) :

@@ -1,0 +1,30 @@
+# Valide chaque push : cohérence du framework, JavaScript du site, accents, et les
+# scénarios réels d'install.sh / update.sh. Si tout est vert sur main, le commit est
+# promu sur la branche `stable`, que les installeurs utilisent en priorité :
+# un commit cassé sur main n'atteint jamais les projets clients.
+name: Validation du framework
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # historique complet : update.sh reconnaît les versions d'origine par l'historique git
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Suite complète (framework, site, installeurs)
+        run: bash tests/run-all.sh .
+      - name: Promotion sur stable (main uniquement, tests verts)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: git push origin HEAD:refs/heads/stable --force
